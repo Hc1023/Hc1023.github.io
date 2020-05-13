@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="生信,Linux,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="vcfWhat is a VCF and how should I interpret it?  VCF stands for Variant Call Format. It is a standardized text file format for representing SNP, indel, and structural variation calls.A valid VCF file">
+<meta name="keywords" content="生信,Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux --vcf格式文件处理">
+<meta property="og:url" content="http://yoursite.com/2019/09/23/linux-vcf/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="vcfWhat is a VCF and how should I interpret it?  VCF stands for Variant Call Format. It is a standardized text file format for representing SNP, indel, and structural variation calls.A valid VCF file">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/09/23/linux-vcf/0917.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/23/linux-vcf/0917-2.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/23/linux-vcf/0917-3.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/23/linux-vcf/0917-4.png">
+<meta property="og:updated_time" content="2019-09-27T07:07:40.214Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux --vcf格式文件处理">
+<meta name="twitter:description" content="vcfWhat is a VCF and how should I interpret it?  VCF stands for Variant Call Format. It is a standardized text file format for representing SNP, indel, and structural variation calls.A valid VCF file">
+<meta name="twitter:image" content="http://yoursite.com/2019/09/23/linux-vcf/0917.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/23/linux-vcf/">
+
+
+
+
+
+  <title>Linux --vcf格式文件处理 | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/23/linux-vcf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux --vcf格式文件处理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-23T19:42:32+08:00">
+                2019-09-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="vcf"><a href="#vcf" class="headerlink" title="vcf"></a>vcf</h2><p><a href="https://gatkforums.broadinstitute.org/gatk/discussion/1268/how-should-i-interpret-vcf-files-produced-by-the-gatk" target="_blank" rel="noopener">What is a VCF and how should I interpret it?</a></p>
+<blockquote>
+<p>VCF stands for Variant Call Format. It is a standardized text file format for representing SNP, indel, and structural variation calls.<br>A valid VCF file is composed of two main parts: the <strong>header</strong>, and the <strong>variant call records</strong>.<br>The <strong>header</strong> contains information about the dataset and relevant reference sources (e.g. the organism, genome build version etc.), as well as definitions of all the annotations used to qualify and quantify the properties of the variant calls contained in the VCF file.<br>For each <strong>site record</strong>, the information is structured into columns (also called fields) as follows:<br>CHROM  POS ID  REF ALT     QUAL    FILTER  INFO    FORMAT  NA12878 [other samples…]</p>
+</blockquote>
+<a id="more"></a>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/biosoft</span><br><span class="line"><span class="built_in">cd</span> ~/biosoft</span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh </span><br><span class="line">bash Miniconda3-latest-Linux-x86_64.sh </span><br><span class="line"><span class="built_in">source</span> ~/.bashrc </span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda</span><br><span class="line">conda config --<span class="built_in">set</span> show_channel_urls yes</span><br><span class="line">conda create -y -n <span class="built_in">test</span></span><br><span class="line">conda activate <span class="built_in">test</span></span><br><span class="line">conda install -y samtools bcftools</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.4.3/bowtie2-2.3.4.3-linux-x86_64.zip </span><br><span class="line">unzip bowtie2-2.3.4.3-linux-x86_64.zip </span><br><span class="line"><span class="built_in">cd</span> ~/biosoft/bowtie2-2.3.4.3-linux-x86_64/example/reads</span><br><span class="line"><span class="comment"># 用bowtie2进行比对，生成bam文件</span></span><br><span class="line"><span class="comment"># sort 可以使bam文件最小 @ 5 5线程</span></span><br><span class="line">../../bowtie2 -x ../index/lambda_virus -1 reads_1.fq -2 reads_2.fq | samtools sort -@ 5 -o tmp.bam - </span><br><span class="line"><span class="comment"># bcftools生成vcf文件</span></span><br><span class="line">bcftools mpileup -f ../reference/lambda_virus.fa tmp.bam |bcftools call -vm &gt; tmp.vcf</span><br></pre></td></tr></table></figure>
+
+<h2 id="小练习"><a href="#小练习" class="headerlink" title="小练习"></a>小练习</h2><p>1.把突变记录的vcf文件区分成 INDEL和SNP条目</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">less tmp.vcf|grep -v <span class="string">"^#"</span>|grep INDEL|less -S</span><br><span class="line">less tmp.vcf|grep -v <span class="string">"^#"</span>|grep -v INDEL|less -S</span><br></pre></td></tr></table></figure>
+
+<p>或者根据SNP第四列和第五列都只有一个字符，否则是INDEL</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ less tmp.vcf | grep -v <span class="string">'^#'</span>| awk <span class="string">'&#123;if(length($4)!=1) print&#125;'</span> | less -S</span><br><span class="line">$ less tmp.vcf | grep -v <span class="string">'^#'</span>| awk <span class="string">'&#123;if(length($4)==1 &amp;&amp; length($5)==1) print&#125;'</span> | less -S</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 人类基因组上的变异主要分为三大类：1. 单核苷酸变异，（通常称为单核苷酸多态性，通俗的说法就是单个DNA碱基的不同，简称SNP）；2. 小的Indel（Insertion 和 Deletion的简），指的是在基因组的某个位置上所发生的小片段序列的插入或者删除，其长度通常在50bp以下（这个长度范围的变异可以利用Smith-Waterman 的比对算法来获得）；3. 大的结构性变异，这种类型比较多，包括长度在50bp以上的长片段序列的插入或者删除、染色体倒位，染色体内部或染色体之间的序列易位，拷贝数变异，以及一些形式更为复杂的变异。为了和SNP变异作区分，第2和第3类变异通常也被称为基因组结构性变异（Structural variation，简称SV）。</p>
+</blockquote>
+<p>2.统计INDEL和SNP条目的各自的平均测序深度</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># indel</span></span><br><span class="line">$  less tmp.vcf | grep -v <span class="string">'^#'</span>|grep INDEL| cut -f 8 | cut -d <span class="string">";"</span> -f 4 | cut -d <span class="string">"="</span> -f 2 | awk <span class="string">'&#123;sum+=$1&#125;END&#123;print sum/NR&#125;'</span></span><br><span class="line">40.4429</span><br><span class="line"><span class="comment"># snp</span></span><br><span class="line">$ less tmp.vcf | grep -v <span class="string">'^#'</span>|grep -v INDEL| cut -f 8 | cut -d <span class="string">";"</span> -f 1 | cut -d <span class="string">"="</span> -f 2 | awk <span class="string">'&#123;sum+=$1&#125;END&#123;print sum/NR&#125;'</span></span><br><span class="line">37</span><br></pre></td></tr></table></figure>
+
+<p>3.把INDEL条目再区分成insertion和deletion情况</p>
+<p>insertion，第5列比第4列字符数多；deletion，那么第5列比第4列字符数少</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># insertion</span></span><br><span class="line">$ less tmp.vcf | grep -v <span class="string">'^#'</span> | grep INDEL | awk <span class="string">'&#123;if(length($5)&gt;length($4)) print&#125;'</span> | less -S</span><br><span class="line"><span class="comment"># deletion</span></span><br><span class="line">$ less tmp.vcf | grep -v <span class="string">'^#'</span> | grep INDEL | awk <span class="string">'&#123;if(length($5)&lt;length($4)) print&#125;'</span> | less -S</span><br></pre></td></tr></table></figure>
+
+<p>该文件明显deletion多得多</p>
+<p>4.统计SNP条目的突变组合分布频率</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ less tmp.vcf | grep -v <span class="string">'^#'</span>| grep -v INDEL | cut -f 4,5 | sort | uniq -c</span><br><span class="line">      7 A       C</span><br><span class="line">      1 A       G</span><br><span class="line">      4 A       T</span><br><span class="line">      2 C       A</span><br><span class="line">      4 C       G</span><br><span class="line">      3 G       A</span><br><span class="line">      2 G       C</span><br><span class="line">      4 G       T</span><br><span class="line">      6 T       A</span><br><span class="line">      1 T       C</span><br><span class="line">      2 T       G</span><br></pre></td></tr></table></figure>
+
+<p>SNP行的第4、5列分别表示参考基因和研究对象的碱基类型</p>
+<p>5.找到基因型不是 1/1 的条目，个数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ grep -n --color 1/1 tmp.vcf</span><br><span class="line">$ grep 1/1 tmp.vcf|wc -l</span><br><span class="line">81</span><br></pre></td></tr></table></figure>
+
+<p>6.筛选测序深度大于20的条目</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">'^#'</span> tmp.vcf| grep -v <span class="string">"DP=[1-20]"</span>| less -S</span><br></pre></td></tr></table></figure>
+
+<p>7.筛选变异位点质量值大于30的条目</p>
+<p>质量值在第6列</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">'^#'</span> tmp.vcf| awk <span class="string">'&#123;if($6&gt;30)print&#125;'</span>| less -S</span><br></pre></td></tr></table></figure>
+
+<p>8.组合筛选变异位点质量值大于30并且深度大于20的条目</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">'^#'</span> tmp.vcf| awk <span class="string">'&#123;if($6&gt;30)print&#125;'</span>| grep -v <span class="string">"DP=[1-20]"</span>| less -S</span><br></pre></td></tr></table></figure>
+
+<p>9.理解DP4=4,7,11,18 这样的字段，就是 Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases 计算每个变异位点的 AF</p>
+<p>DP4的话放到IGV看一下就知道。reads有正反，然后还有跟参考基因组相同和不相同的，还有正向相同、正向相反、反向相同、反向相反，就是DP4。如果DP4比例失衡，蕴含变异。</p>
+<blockquote>
+<p>DP4: number of high-quality ref-forward bases, ref-reverse, alt-forward and alt-reverse bases</p>
+</blockquote>
+<blockquote>
+<p>The definition for “DP” in the INFO column is “raw read depth”;  “DP4” in the INFO column is a breakdown of “high quality bases”.  The sum of “DP4” bases from the INFO column should be equal to the sum of “DP” values from the genotype fields for all individuals, and, obviously, this will be less than or equal to the “raw read depth” by the number of NOT “high quality” bases.</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">'^#'</span> tmp.vcf| cut -f 8|grep -Eo <span class="string">'DP4=[0-9]+,[0-9]+,[0-9]+,[0-9]+'</span>| cut -d = -f 2| awk -F <span class="string">','</span> <span class="string">'&#123;print ($3+$4)/($1+$2+$3+$4)&#125;'</span>| less -S</span><br></pre></td></tr></table></figure>
+
+<p>问题：为什么SNP的DP4四个加起来小于DP呢？</p>
+<p><img src="0917.png" alt></p>
+<p>10.在前面步骤的bam文件里面找到这个vcf文件的某一个突变位点的测序深度表明的那些reads，并且在IGV里面可视化bam和vcf定位到该变异位点。</p>
+<h2 id="概念题"><a href="#概念题" class="headerlink" title="概念题"></a>概念题</h2><p>1.<strong>vcf的全称是什么？是用来记录什么信息的标准格式的文本？</strong></p>
+<p>VCF：Variant Call Format，表示基因组的SNP, INDEL和SV变异信息。</p>
+<p>2.<strong>一般选用哪个指令查看vcf文件，为什么不用vim</strong>?</p>
+<p><code>less -SN</code>，vim可以对文本进行编辑，有误操作文件的风险，且不能单行显示。</p>
+<p>3.<strong>vcf文件以’##’开头的是什么信息？请认真查看这些信息。’#’开头的是什么信息？</strong></p>
+<ul>
+<li>以##开头：mate-information line，格式为key=value。<br>fileformat是必须的字段，表明VCF格式的版本，其他行主要用来描述INFO, FORMAT, FILTER等字段的具体含义。</li>
+</ul>
+<p><img src="0917-2.png" alt></p>
+<ul>
+<li>以#开头：heaher line，只有一行，行内以<code>\t</code>分隔，是下方具体信息的表头。</li>
+</ul>
+<p><img src="0917-3.png" alt></p>
+<blockquote>
+<p>VCF is a text file format (most likely stored in a compressed manner). It contains meta-information lines, a header line, and then data lines each containing information about a position in the genome.</p>
+</blockquote>
+<p>4.<strong>vcf文件除头信息，每行有多少列，请详细叙述每列的含义！请准确记忆。</strong></p>
+<p><img src="0917-4.png" alt><br>参考<a href="https://mp.weixin.qq.com/s?__biz=MzAxMDkxODM1Ng==&mid=2247483826&idx=1&sn=bd60f79d3dfacd5178e87ee0558810ba&chksm=9b484109ac3fc81f06ce406956287cd012252adbab409302d966ef5d9aef63317411fddb55fc&scene=25#wechat_redirect&tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">必须要理解vcf格式记录的变异位点信息</a></p>
+<p>必有的是8列，一般有9列，最后可能会有样本的名称本就是10列</p>
+<ul>
+<li>CHROM：参考序列名。</li>
+<li>POS：variant的位置；如果是INDEL的话，位置是INDEL的第一个碱基位置。起始位置为1。</li>
+<li>ID：variant的ID。比如在dbSNP中有该SNP的id，则会在此行给出rs号；若没有，则用<code>.</code>表示其为一个novel variant。</li>
+<li>REF：参考基因组上的碱基。</li>
+<li>ALT：Variant的碱基。</li>
+<li>QUAL：Phred格式(Phred_scaled)的质量值，Phred值 $= -10  log_{10} p $为variant存在的概率。该值越高，为真实的变异位点的概率越大。通过计算公式可以看出值为10的表示错误概率$p=0.1$，则该位点为variant的概率为90%。</li>
+<li>FILTER：使用上一个QUAL值来进行过滤的话，是不够的。GATK能使用其它的方法来进行过滤，过滤结果中通过则该值为”PASS”;若variant不可靠，则该项不为”PASS”或”.”。</li>
+<li>INFO：额外的信息，具体的含义可以查看mate-information line 中对INFO 字段的描述，看上去是一列，但其中的内容可以无限扩增。</li>
+<li>FORMAT：表头的##FORMAT就是对第九列的解释，主要包括某一个特定位点基因型、测序深度的表述。</li>
+</ul>
+<p>5.<strong>理解format列和样本列的对应关系以及GT AD DP的含义。</strong></p>
+<p>format列例如：<code>GT:PL 2 1/1:36,1,0</code></p>
+<p>两列内容是对应的，前者为格式，后者为格式对应的数据。</p>
+<ul>
+<li>GT：样品的基因型（genotype）。两个数字中间用’/“分 开，这两个数字表示双倍体的sample的基因型。0 表示样品中有ref的allele； 1 表示样品中variant的allele； 2表示有第二个variant的allele。因此： 0/0 表示sample中该位点为纯合的，和ref一致； 0/1 表示sample中该位点为杂合的，有ref和variant两个基因型； 1/1 表示sample中该位点为纯合的，和variant一致。</li>
+<li>PL：指定的三种基因型的质量值(provieds the likelihoods of the given genotypes)。这三种指定的基因型为(0/0,0/1,1/1)，这三种基因型的概率总和为1。和之前不一致，该值越大，表明为该种基因型的可能性越小。 Phred值 $= -10 * log (p) $，其中p为基因型存在的概率。</li>
+<li>AD 和 DP：AD(Allele Depth)为sample中每一种allele的reads覆盖度,在diploid中则是用逗号分割的两个值，前者对应ref基因型，后者对应variant基因型； DP（Depth）为sample中该位点的覆盖度。</li>
+</ul>
+<p>6.<strong>vcf文件第三列如果不是’.’，出现的rs号的id是什么？</strong></p>
+<p>变异位点名称，对应dbSNP数据库中的ID</p>
+<p>7.<strong>vcf文件的ref，alt列和样本列的<code>0/1</code>、<code>1/1</code> 或者<code>1/2</code>的联系？</strong></p>
+<blockquote>
+<p>0/0表示sample中该位点为纯合位点，和REF的碱基类型一致<br>0/1表示sample中该位点为杂合突变，有REF和ALT两个基因型（部分碱基和REF碱基类型一致，部分碱基和ALT碱基类型一致）<br>1/1表示sample中该位点为纯合突变，总体突变类型和ALT碱基类型一致<br>1/2表示sample中该位点为杂合突变，有ALT1和ALT2两个基因型（部分和ALT1碱基类型一致，部分和ALT2碱基类型一致）</p>
+</blockquote>
+<p>8.<strong>vcf文件一般用什么软件生成？请至少说出两个软件。请注意不同软件生成的vcf格式的稍有不同的地方。</strong></p>
+<p>GATK和bcftools，不同之处主要在mate-information line部分</p>
+<p>9.<strong>Vcf文件一般都比较大，压缩后的.gz文件用什么指令直接查看而不用解压后查看？</strong></p>
+<p><code>zless</code> <code>zcat</code></p>
+<p>10.<strong>了解gvcf是什么格式，gvcf全称是什么？他与vcf有什么前后联系？</strong></p>
+<p><a href="https://gatkforums.broadinstitute.org/gatk/discussion/4017/what-is-a-gvcf-and-how-is-it-different-from-a-regular-vcf" target="_blank" rel="noopener">What is a GVCF and how is it different from a ‘regular’ VCF?</a></p>
+<blockquote>
+<p>GVCF stands for Genomic VCF. A GVCF is a kind of VCF, so the basic format specification is the same as for a regular VCF (see the spec documentation <a href="http://vcftools.sourceforge.net/specs.html" target="_blank" rel="noopener">here</a>), but a Genomic VCF contains extra information.<br>The key difference between a regular VCF and a gVCF is that the gVCF has records for all sites, whether there is a variant call there or not. </p>
+</blockquote>
+<p>11.<strong>把alt列出现<code>.</code>的行提取出来</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">"^#"</span> tmp.vcf |awk <span class="string">'&#123;if($5 ~".")print&#125;'</span>|head</span><br></pre></td></tr></table></figure>
+
+<p>12.<strong>请将chrid、postion、ref、alt、format、样本列切割出来生成一个文本</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">"^#"</span> tmp.vcf|cut -f 1,2,4,5,9 &gt; tmp.cut.txt</span><br></pre></td></tr></table></figure>
+
+<p>13.<strong>将一个含snp，indel信息的vcf拆成一个只含snp，一个只含indel信息的2个vcf文件。可借鉴软件</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">"^#"</span> tmp.vcf|grep INDEL&gt;indel.vcf</span><br><span class="line">$ grep -v <span class="string">"^#"</span> tmp.vcf|grep -v INDEL&gt;snp.vcf</span><br></pre></td></tr></table></figure>
+
+<p>14.<strong>用指令操作indel的vcf文件，提取indel长度&gt;4的变异行数，存成一个文本。</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;if(length($5)&gt;4)print&#125;'</span> indel.vcf &gt; indel.new.txt</span><br></pre></td></tr></table></figure>
+
+<p>15.<strong>用vcftools过滤vcf文件，如maf设置成0.05， depth设置成5-20，统计过滤前后的变异位点的总个数</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ vcftools --vcf tmp.vcf --maf 0.05 --minDP 5 --maxDP 20 --recode --out tmpout.vcf</span><br><span class="line">Outputting VCF file...</span><br><span class="line">After filtering, kept 25 out of a possible 106 Sites</span><br><span class="line">$ grep -v <span class="string">"^#"</span> tmpout.vcf.recode.vcf| wc -l</span><br><span class="line">25</span><br></pre></td></tr></table></figure>
+
+<p>16.<strong>利用vcftools提取每个样本每一个位点的变异信息和深度信息，生成一个矩阵的文件，至少含chrid，postion，sample_DP，sample_GT四项信息</strong></p>
+<p>17.<strong>提取出变异位点上样本有纯和突变的行数</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep 1/1 tmp.vcf |wc -l</span><br><span class="line">81</span><br></pre></td></tr></table></figure>
+
+<p>18.<strong>统计一下1号染色体上的变异总个数。</strong></p>
+<p>示例文件的序列全部在一条染色体上。</p>
+<p>19.<strong>提取一下BRCA1基因上发生变异的行数，如果是人类wes变异结果文件</strong></p>
+<p>20.<strong>统计vcf文件各样本的缺失率，如果是多个样本的群体call结果。</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/生信/" rel="tag"># 生信</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/07/conda/" rel="next" title="Conda环境搭建">
+                <i class="fa fa-chevron-left"></i> Conda环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/27/R-statistic/" rel="prev" title="R统计基础">
+                R统计基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vcf"><span class="nav-number">1.</span> <span class="nav-text">vcf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小练习"><span class="nav-number">2.</span> <span class="nav-text">小练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概念题"><span class="nav-number">3.</span> <span class="nav-text">概念题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

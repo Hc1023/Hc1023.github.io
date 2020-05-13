@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="统计,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="之前主要做了两类的判别，下面进行$k$类的多元总体判别分析。不同之处主要在于初始组间均值显著性差异与组间方差显著性的分析。 利用判别分析的统计方法建立肝胆疾病的判别函数（a）检验组间均值显著性差异（b）分析组间方差显著性差异（c）建立判别函数（d）分析判别效果并应用于“体检数据”中，根据体检资料分析是否有得肝胆疾病的可能性。">
+<meta name="keywords" content="统计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="判别分析2">
+<meta property="og:url" content="http://yoursite.com/2019/12/19/multi-Discriminant/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="之前主要做了两类的判别，下面进行$k$类的多元总体判别分析。不同之处主要在于初始组间均值显著性差异与组间方差显著性的分析。 利用判别分析的统计方法建立肝胆疾病的判别函数（a）检验组间均值显著性差异（b）分析组间方差显著性差异（c）建立判别函数（d）分析判别效果并应用于“体检数据”中，根据体检资料分析是否有得肝胆疾病的可能性。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/12/19/multi-Discriminant/2.png">
+<meta property="og:updated_time" content="2019-12-21T10:20:21.957Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="判别分析2">
+<meta name="twitter:description" content="之前主要做了两类的判别，下面进行$k$类的多元总体判别分析。不同之处主要在于初始组间均值显著性差异与组间方差显著性的分析。 利用判别分析的统计方法建立肝胆疾病的判别函数（a）检验组间均值显著性差异（b）分析组间方差显著性差异（c）建立判别函数（d）分析判别效果并应用于“体检数据”中，根据体检资料分析是否有得肝胆疾病的可能性。">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/19/multi-Discriminant/2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/19/multi-Discriminant/">
+
+
+
+
+
+  <title>判别分析2 | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/multi-Discriminant/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">判别分析2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-19T23:07:21+08:00">
+                2019-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前主要做了两类的判别，下面进行$k$类的多元总体判别分析。<br>不同之处主要在于初始组间均值显著性差异与组间方差显著性的分析。</p>
+<p>利用判别分析的统计方法建立肝胆疾病的判别函数<br>（a）检验组间均值显著性差异<br>（b）分析组间方差显著性差异<br>（c）建立判别函数<br>（d）分析判别效果<br>并应用于“体检数据”中，根据体检资料分析是否有得肝胆疾病的可能性。</p>
+<a id="more"></a>
+
+<p>数据的临床诊断指标为总胆红素（T-BIL），白蛋白（Alb），碱性磷酸酶（ALP），谷丙转氨酶（ALT），样本分为五组，1代表慢肝，2比较杂糅，3代表慢胆，4代表急胆，5代表正常。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rawdata&lt;-read.csv(<span class="string">"data.csv"</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>观察数据</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt; rawdata[rawdata$group==<span class="number">1</span>,][<span class="number">1</span>,]</span><br><span class="line">  临床诊断  BIL  Alb ALP ALT group</span><br><span class="line"><span class="number">1</span>     肝炎 <span class="number">97.5</span> <span class="number">40.1</span> <span class="number">189</span> <span class="number">446</span>     <span class="number">1</span></span><br><span class="line">&gt; rawdata[rawdata$group==<span class="number">2</span>,][<span class="number">1</span>:<span class="number">5</span>,]</span><br><span class="line">    临床诊断   BIL  Alb ALP  ALT group</span><br><span class="line"><span class="number">109</span>     肝炎 <span class="number">140.8</span> <span class="number">39.0</span> <span class="number">241</span>  <span class="number">761</span>     <span class="number">2</span></span><br><span class="line"><span class="number">110</span>     肝炎 <span class="number">127.2</span> <span class="number">37.0</span> <span class="number">126</span> <span class="number">3443</span>     <span class="number">2</span></span><br><span class="line"><span class="number">111</span>     急肝  <span class="number">42.8</span> <span class="number">30.3</span> <span class="number">187</span>  <span class="number">623</span>     <span class="number">2</span></span><br><span class="line"><span class="number">112</span>     急肝 <span class="number">112.7</span> <span class="number">33.7</span> <span class="number">132</span> <span class="number">1232</span>     <span class="number">2</span></span><br><span class="line"><span class="number">113</span>     肝炎 <span class="number">292.9</span> <span class="number">29.4</span> <span class="number">206</span> <span class="number">1364</span>     <span class="number">2</span></span><br><span class="line">&gt; rawdata[rawdata$group==<span class="number">3</span>,][<span class="number">1</span>,]</span><br><span class="line">    临床诊断  BIL  Alb ALP ALT group</span><br><span class="line"><span class="number">124</span>     慢胆 <span class="number">18.3</span> <span class="number">45.5</span>  <span class="number">71</span> <span class="number">108</span>     <span class="number">3</span></span><br><span class="line">&gt; rawdata[rawdata$group==<span class="number">4</span>,][<span class="number">1</span>,]</span><br><span class="line">    临床诊断  BIL  Alb ALP ALT group</span><br><span class="line"><span class="number">183</span>     急胆 <span class="number">20.9</span> <span class="number">46.5</span>  <span class="number">81</span>  <span class="number">34</span>     <span class="number">4</span></span><br><span class="line">&gt; rawdata[rawdata$group==<span class="number">5</span>,][<span class="number">1</span>,]</span><br><span class="line">    临床诊断  BIL  Alb ALP ALT group</span><br><span class="line"><span class="number">217</span>     正常 <span class="number">19.8</span> <span class="number">51.9</span> <span class="number">118</span>  <span class="number">22</span>     <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>处理data</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data&lt;-rawdata[,-<span class="number">1</span>]</span><br><span class="line">data&lt;-data[,<span class="number">1</span>:<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step1-k-个多元正态总体的均值方差分析"><a href="#Step1-k-个多元正态总体的均值方差分析" class="headerlink" title="Step1 $k$个多元正态总体的均值方差分析"></a>Step1 $k$个多元正态总体的均值方差分析</h2><p>我们要对$k$类总体进行判别分析，首先希望这$k$类总体有均值显著性差异，而若它有方差显著性差异那么一般的线性判别法将忽略掉方差信息，也会影响它的准确性。</p>
+<p>首先可以提取它们前两个主成分直观地感受不同肝胆疾病的数据差异。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(<span class="string">"FactoMineR"</span>)</span><br><span class="line"><span class="keyword">library</span>(<span class="string">"factoextra"</span>)</span><br><span class="line">res.pca &lt;- PCA(data, graph = <span class="literal">FALSE</span>)</span><br><span class="line">fviz_pca_ind(res.pca,</span><br><span class="line">             geom.ind = <span class="string">"point"</span>, <span class="comment"># show points only (nbut not "text")</span></span><br><span class="line">             col.ind = as.character(rawdata$group), <span class="comment"># color by groups</span></span><br><span class="line">             palette = c(<span class="string">"#00AFBB"</span>, <span class="string">"#E7B800"</span>, <span class="string">"#FC4E07"</span>,<span class="string">"#2E9FDF"</span>,<span class="string">"#dd1c77"</span>),</span><br><span class="line">             addEllipses = <span class="literal">TRUE</span>, <span class="comment"># Concentration ellipses</span></span><br><span class="line">             legend.title = <span class="string">"Groups"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><img src="2.png" alt></p>
+<p>每个椭圆中心都有点代表它们的二维均值，直观上看它们是有差异的，且它们的方差也有差异。</p>
+<h3 id="多总体协方差阵的检验"><a href="#多总体协方差阵的检验" class="headerlink" title="多总体协方差阵的检验"></a>多总体协方差阵的检验</h3><p>检验<br>$$H_0: \Sigma_{1}=\Sigma_{2}=\ldots=\Sigma_{m}=\Sigma$$</p>
+<p>构造检验统计量<br>$$\lambda_{4}=\prod_{l=1}^{m}(|S_{l}| /|{S}_{pooled}|)^{(n_l-1) / 2}$$</p>
+<p>其中，$n_l$是第$l$组的样本量，$S_l$是第$l$组<br>样本协方差矩阵，$S_{pooled}$是合并的样本协方差矩阵，满足</p>
+<p>$$S_{pooled}=\frac{1}{\sum_{l=1}^{m}(n_l-1)} \sum_{l=1}^{m}(n_l-1) S_l$$</p>
+<p>当样本容量$n=\Sigma_{l=1}^m n_l$很大时，在$H_0$为真时有以下近似分布</p>
+<p>$$<br>-2(1-b) \ln \lambda_{4} \sim_{a p p r o x} \chi^{2}(\nu), \nu=p(p+1)(m-1) / 2<br>$$</p>
+<p>其中 $b=\left(\sum_{l=1}^{m}\left(n_{l}-1\right)^{-1}-\left(\sum_{l=1}^{m}\left(n_{l}-1\right)\right)^{-1}\right)\left(\frac{2 p^{2}+3 p-1}{6(p+1)(m-1)}\right)$</p>
+<p>由此我们可以自己写出进行<strong>多元变量多总体协方差的检验</strong>的函数，以下代码的字符与运算公式基本与前面的数学公式保持一致。<br>一个需要注意的事情是$\lambda_4$是幂次乘积直接对它去做运算极有可能不是0就是Inf，这是十分不明智的，所以应该直接取对数运算。总之在写代码时还是需要一些小skills，我们得体谅一下计算机的运算精度。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">varcomp &lt;- <span class="keyword">function</span>(covmat,n) &#123;</span><br><span class="line">  <span class="keyword">if</span> (is.list(covmat)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (length(covmat) &lt; <span class="number">2</span>)</span><br><span class="line">      <span class="keyword">stop</span>(<span class="string">"covmat must be a list with at least 2 elements"</span>)</span><br><span class="line">    ps &lt;- as.vector(sapply(covmat,dim))</span><br><span class="line">    <span class="keyword">if</span> (sum(ps[<span class="number">1</span>] == ps) != length(ps))</span><br><span class="line">      <span class="keyword">stop</span>(<span class="string">"all covariance matrices must have the same dimension"</span>)</span><br><span class="line">    p &lt;- ps[<span class="number">1</span>] <span class="comment"># 样本维度p</span></span><br><span class="line">    m &lt;- length(covmat) <span class="comment"># 样本组数m</span></span><br><span class="line">    <span class="keyword">if</span> (length(n) == <span class="number">1</span>)</span><br><span class="line">      nl &lt;- rep(n,m)</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (length(n) == m)</span><br><span class="line">      nl &lt;- n <span class="comment"># n存储每组样本的样本数量</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">stop</span>(<span class="string">"n must be equal length(covmat) or 1"</span>)</span><br><span class="line">    </span><br><span class="line">    DNAME &lt;- deparse(substitute(covmat)) <span class="comment"># data.name</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">stop</span>(<span class="string">"covmat must be a list"</span>)</span><br><span class="line">  Sl &lt;- covmat <span class="comment"># S_l是第l组样本协方差矩阵</span></span><br><span class="line">  <span class="comment"># (n_l-1)*S_l</span></span><br><span class="line">  S1 &lt;- lapply(<span class="number">1</span>:length(covmat),<span class="keyword">function</span>(i,mat,n) &#123; (n[i]-<span class="number">1</span>) * mat[[i]] &#125;,mat=covmat,n=nl)</span><br><span class="line">  S &lt;- matrix(colSums(matrix(unlist(S1),ncol=p^<span class="number">2</span>,byrow=<span class="literal">T</span>)),ncol=p)</span><br><span class="line">  S_pooled &lt;- <span class="number">1</span>/sum(nl-<span class="number">1</span>)*S <span class="comment"># S_pooled是合并的样本协方差矩阵</span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  detSl &lt;- sapply(Sl,det)</span><br><span class="line">  det_S_pooled &lt;- det(S_pooled)</span><br><span class="line">  <span class="comment"># lambda4 &lt;- prod((detSl/det_S_pooled)^((nl-1)/2)) </span></span><br><span class="line">  <span class="comment"># 这个很容易Nan，直接取对数进行运算</span></span><br><span class="line">  ln_lambda4 &lt;- sum((nl-<span class="number">1</span>)/<span class="number">2</span>*log(detSl/det_S_pooled))</span><br><span class="line">  b &lt;- (sum(<span class="number">1</span>/(nl-<span class="number">1</span>)) - <span class="number">1</span>/sum(nl-<span class="number">1</span>))*(<span class="number">2</span>*p^<span class="number">2</span>+<span class="number">3</span>*p-<span class="number">1</span>)/(<span class="number">6</span>*(p+<span class="number">1</span>)*(m-<span class="number">1</span>))</span><br><span class="line">  </span><br><span class="line">  STATISTIC &lt;- -<span class="number">2</span>*(<span class="number">1</span>-b)*ln_lambda4</span><br><span class="line">  mu &lt;- p*(p+<span class="number">1</span>)*(m-<span class="number">1</span>)/<span class="number">2</span></span><br><span class="line">  PVAL &lt;- <span class="number">1</span> - pchisq(STATISTIC,mu)</span><br><span class="line"></span><br><span class="line">  names(STATISTIC) &lt;- <span class="string">"corrected lambda*"</span></span><br><span class="line">  names(mu) &lt;- <span class="string">"df"</span></span><br><span class="line">  RVAL &lt;- structure(list(statistic = STATISTIC, parameter = mu,p.value = PVAL, data.name = DNAME, method = <span class="string">"Equality of Covariances Matrices Test"</span>),class=<span class="string">"htest"</span>)</span><br><span class="line">  <span class="keyword">return</span>(RVAL)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>函数应用</li>
+</ul>
+<p>首先计算好每个组别的协方差阵将其存为list，每个组别的样本量存为一个向量。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">covmat &lt;- vector(<span class="string">"list"</span>,<span class="number">5</span>) </span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:<span class="number">5</span>)&#123;</span><br><span class="line">  covmat[[i]]&lt;-cov(data[rawdata$group==i,])</span><br><span class="line">&#125;</span><br><span class="line">n=c()</span><br><span class="line"><span class="keyword">for</span>(i <span class="keyword">in</span> <span class="number">1</span>:<span class="number">5</span>)&#123;</span><br><span class="line">  n[i]=length(rawdata$group==i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Perfectly done!</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; varcomp(covmat,n=n)</span><br><span class="line"></span><br><span class="line">	Equality of Covariances Matrices Test</span><br><span class="line"></span><br><span class="line">data:  covmat</span><br><span class="line">corrected lambda* = 9661.6, df = 40, p-value &lt; 2.2e-16</span><br></pre></td></tr></table></figure>
+
+<p>其$p$值远小于$0.01$，说明方差有显著性差异。</p>
+<h3 id="多总体均值的检验"><a href="#多总体均值的检验" class="headerlink" title="多总体均值的检验"></a>多总体均值的检验</h3><p><strong>多元方差分析</strong></p>
+<p>这里我们需要在方差不相等情况下进行均值的检验。</p>
+<p>又没有现成的函数可以用，我又要写理论写函数了，天越来越冷了，我越来越懒了，我们直接抓两个组别出来比一下。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x1&lt;-data[rawdata$group==<span class="number">1</span>,];x1m&lt;-apply(x1,<span class="number">2</span>,mean);S1&lt;-var(x1) </span><br><span class="line">x2&lt;-data[rawdata$group==<span class="number">2</span>,];x2m&lt;-apply(x2,<span class="number">2</span>,mean);S2&lt;-var(x2)</span><br><span class="line">n=nrow(x1);m=nrow(x2);A1&lt;-(n-<span class="number">1</span>)*S1;A2&lt;-(m-<span class="number">1</span>)*S2;</span><br><span class="line">Dsq=(n+m-<span class="number">2</span>)%*%t(x1m-x2m)%*%solve(A1+A2)%*%(x1m-x2m)</span><br><span class="line">p=<span class="number">2</span></span><br><span class="line">Tsq=n*m/(n+m)*Dsq</span><br><span class="line">FF=(n+m-p-<span class="number">1</span>)/((n+m-<span class="number">2</span>)*p)*Tsq</span><br><span class="line">pf(FF, df1=p, df2=n+m-p-<span class="number">1</span>, lower.tail = <span class="literal">F</span>)<span class="comment"># P[X &gt; x]</span></span><br></pre></td></tr></table></figure>
+
+<p>$p=1.575946e-13$，故在显著水平0.01时两总体的均值有显著差异。</p>
+<p>是否有现成的函数或包比如说ANOVA做<strong>多元变量多总体而且方差不齐性的均值检验</strong>有待探索。<br>好了，上面的这些工作其实都是为了保证后面的判别有意义。</p>
+<h2 id="Step2-多总体判别"><a href="#Step2-多总体判别" class="headerlink" title="Step2 多总体判别"></a>Step2 多总体判别</h2><h3 id="建立判别函数"><a href="#建立判别函数" class="headerlink" title="建立判别函数"></a>建立判别函数</h3><p>利用<strong>马氏距离</strong>进行多总体距离判别<br>$$d^2(X,G)=(X-\mu)’\Sigma^{-1}(X-\mu)$$</p>
+<ul>
+<li>多总体距离判别</li>
+</ul>
+<p>把$X$判给距离最近的那一个，设$i=l$时，若<br>$$d_l^2(X)=min_{i=1,…,k}{d_i^2(X)}$$则$X\in G_l$</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">gnum&lt;-length(unique(rawdata$group))</span><br><span class="line">covmat &lt;- vector(<span class="string">"list"</span>,gnum) </span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:gnum)&#123;</span><br><span class="line">  covmat[[i]]&lt;-cov(data[rawdata$group==i,])</span><br><span class="line">&#125;</span><br><span class="line">meanmat &lt;- vector(<span class="string">"list"</span>,gnum) </span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:gnum)&#123;</span><br><span class="line">  meanmat[[i]]&lt;-apply(data[rawdata$group==i,],<span class="number">2</span>,mean)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">group&lt;-rawdata$group</span><br><span class="line">discri &lt;- <span class="keyword">function</span>(x,gnum,meanmat,covmat)&#123;</span><br><span class="line">  re&lt;-c()</span><br><span class="line">  r=nrow(x)</span><br><span class="line">  <span class="keyword">for</span>(r <span class="keyword">in</span> <span class="number">1</span>:nrow(x))&#123;</span><br><span class="line">    dist&lt;-c()</span><br><span class="line">    <span class="keyword">for</span>(i <span class="keyword">in</span> <span class="number">1</span>:gnum)&#123;</span><br><span class="line">      dist[i]&lt;-as.matrix(x[r,]-meanmat[[i]])%*%solve(covmat[[i]])%*%t(x[r,]-meanmat[[i]]) </span><br><span class="line">    &#125;</span><br><span class="line">    re[r]&lt;-which(dist==min(dist))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span>(re)</span><br><span class="line">&#125;</span><br><span class="line">re&lt;-discri(data,gnum,meanmat,covmat)</span><br><span class="line">table(re==rawdata$group)/nrow(rawdata)</span><br></pre></td></tr></table></figure>
+
+<h3 id="分析判别效果"><a href="#分析判别效果" class="headerlink" title="分析判别效果"></a>分析判别效果</h3><p>判断正确的概率为56.1%，由于是五类判别，样本数据集也不多，还过得去吧。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; table(re==rawdata$group)/nrow(rawdata)</span><br><span class="line">    <span class="literal">FALSE</span>      <span class="literal">TRUE</span> </span><br><span class="line"><span class="number">0.4389535</span> <span class="number">0.5610465</span></span><br></pre></td></tr></table></figure>
+
+<p>可以稍微看看它的结果，我发现它很容易把第五类错判为第三类，再反观之前的PCA图发现两者确实重合度比较高。所以说如果被判为慢胆，很容易是误诊说不定你就是正常人？？？<br>好吧其实还是可以考虑换其它判别方法再做尝试。或者有其它诊断指标，进一步鉴定……</p>
+<h2 id="Step3-应用于待测数据"><a href="#Step3-应用于待测数据" class="headerlink" title="Step3 应用于待测数据"></a>Step3 应用于待测数据</h2><p>然后我们将其应用于“体检数据”，进行医生肝胆病乱诊断系列</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">data2&lt;-read.csv(<span class="string">"data2.csv"</span>)</span><br><span class="line"><span class="comment"># 提取相应变量数据</span></span><br><span class="line">data2&lt;-cbind(data2$总胆红素.T.BIL.,</span><br><span class="line">             data2$白蛋白.Alb.,data2$碱性磷酸酶.ALP.,data2$谷丙转氨酶.ALT.)</span><br><span class="line">colnames(data2)&lt;-c(<span class="string">"BIL"</span>,<span class="string">"ALB"</span>,<span class="string">"ALP"</span>,<span class="string">"ALT"</span>)</span><br><span class="line">data2&lt;-as.data.frame(na.omit(data2))</span><br><span class="line">redata2&lt;-discri(data2,gnum,meanmat,covmat)</span><br><span class="line">result&lt;-as.data.frame(cbind(data2,redata2))</span><br><span class="line">write.csv(result,<span class="string">"result.csv"</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; table(redata2)</span><br><span class="line">redata2</span><br><span class="line">  <span class="number">1</span>   <span class="number">3</span>   <span class="number">4</span>   <span class="number">5</span> </span><br><span class="line">  <span class="number">4</span> <span class="number">159</span>  <span class="number">10</span>  <span class="number">49</span></span><br></pre></td></tr></table></figure>
+
+<p>哈哈哈根据前面的分析判断为第三类（慢胆）的人极有可能是正常人，得出结论：看病不要找统计学家……<br>尴尬而不失礼貌地微笑，结束啦</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/统计/" rel="tag"># 统计</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/18/Microbial-GWAS/" rel="next" title="Microbial GWAS">
+                <i class="fa fa-chevron-left"></i> Microbial GWAS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/25/Factor-analysis/" rel="prev" title="因子分析">
+                因子分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Step1-k-个多元正态总体的均值方差分析"><span class="nav-number">1.</span> <span class="nav-text">Step1 $k$个多元正态总体的均值方差分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多总体协方差阵的检验"><span class="nav-number">1.1.</span> <span class="nav-text">多总体协方差阵的检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多总体均值的检验"><span class="nav-number">1.2.</span> <span class="nav-text">多总体均值的检验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step2-多总体判别"><span class="nav-number">2.</span> <span class="nav-text">Step2 多总体判别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建立判别函数"><span class="nav-number">2.1.</span> <span class="nav-text">建立判别函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析判别效果"><span class="nav-number">2.2.</span> <span class="nav-text">分析判别效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step3-应用于待测数据"><span class="nav-number">3.</span> <span class="nav-text">Step3 应用于待测数据</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

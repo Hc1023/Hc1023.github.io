@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="统计,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="因子分析是主成分分析的推广和发展，将多个变量综合为少数几个因子，以再现原始变量和因子之间的相关关系。原始变量是可观测的显在变量，而潜在变量是不可观测的称为潜在因子。 因子分析和主成分分析的区别：主成分分析不能作为一个模型来描述，它只是通常的变量变换，而因子分析需要构造因子模型，它希望选取尽可能少的公因子，以便构造一个结构简单的因子模型；主成分分析是将主成分表示为原始变量的线性组合，而因子分析是将原">
+<meta name="keywords" content="统计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="因子分析">
+<meta property="og:url" content="http://yoursite.com/2019/12/25/Factor-analysis/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="因子分析是主成分分析的推广和发展，将多个变量综合为少数几个因子，以再现原始变量和因子之间的相关关系。原始变量是可观测的显在变量，而潜在变量是不可观测的称为潜在因子。 因子分析和主成分分析的区别：主成分分析不能作为一个模型来描述，它只是通常的变量变换，而因子分析需要构造因子模型，它希望选取尽可能少的公因子，以便构造一个结构简单的因子模型；主成分分析是将主成分表示为原始变量的线性组合，而因子分析是将原">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/12/25/Factor-analysis/scree.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/25/Factor-analysis/cluster.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/25/Factor-analysis/cluster2.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/25/Factor-analysis/corrplot.png">
+<meta property="og:updated_time" content="2019-12-25T10:21:17.260Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="因子分析">
+<meta name="twitter:description" content="因子分析是主成分分析的推广和发展，将多个变量综合为少数几个因子，以再现原始变量和因子之间的相关关系。原始变量是可观测的显在变量，而潜在变量是不可观测的称为潜在因子。 因子分析和主成分分析的区别：主成分分析不能作为一个模型来描述，它只是通常的变量变换，而因子分析需要构造因子模型，它希望选取尽可能少的公因子，以便构造一个结构简单的因子模型；主成分分析是将主成分表示为原始变量的线性组合，而因子分析是将原">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/25/Factor-analysis/scree.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/25/Factor-analysis/">
+
+
+
+
+
+  <title>因子分析 | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/25/Factor-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">因子分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-25T17:12:09+08:00">
+                2019-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>因子分析是主成分分析的推广和发展，将多个变量综合为少数几个因子，以再现原始变量和因子之间的相关关系。原始变量是可观测的显在变量，而潜在变量是不可观测的称为潜在因子。</p>
+<p>因子分析和主成分分析的区别：<br>主成分分析不能作为一个模型来描述，它只是通常的变量变换，而因子分析需要构造因子模型，它希望选取尽可能少的公因子，以便构造一个结构简单的因子模型；<br>主成分分析是将主成分表示为原始变量的线性组合，而因子分析是将原始变量表示为公因子和特殊因子的线性组合，用假设的公因子来解释相关阵的内部依赖关系。</p>
+<a id="more"></a>
+
+<h2 id="因子模型"><a href="#因子模型" class="headerlink" title="因子模型"></a>因子模型</h2><p>设${X_{i}, i=1, \ldots, p}$为$p$个变量，因子分析模型表示为<br>$$X_{i}=\mu_{i}+\alpha_{i 1} F_{1}+\cdots+\alpha_{i m} F_{m}+\epsilon_{i}, \quad i=1, \ldots, p$$</p>
+<p>$$<br>\mathbf{X}-\boldsymbol{\mu}=\mathbf{A} \mathbf{F}+\boldsymbol{\epsilon}<br>$$</p>
+<ul>
+<li>称$F_{1}, \ldots, F_{m}$为公共因子，是不可观测的变量，他们的系数称为因子载荷。</li>
+<li>$\epsilon $为特殊因子，是不能被前$m$个公共因子包含的部分。</li>
+</ul>
+<h2 id="参数估计方法"><a href="#参数估计方法" class="headerlink" title="参数估计方法"></a>参数估计方法</h2><p>这里主要讲述<strong>主成分法</strong>，此外还有<strong>主因子解</strong>，<strong>极大似然法</strong>。其中主因子法常常采用迭代主因子法，它是主成分法的一种修正。</p>
+<p>设样本协方差为$S$的特征值为$\lambda_{1} \geq \ldots \geq \lambda_{p} \geq 0$，相应单位特征向量为$l_1,l_2,…,l_p$，则$S$有谱分解式：<br>$$S=\Sigma_{i=1}^{p}\lambda_i l_i l_i’$$</p>
+<p>当最后$p-m$个特征值较小时，$S$可近似地分解为</p>
+<p>$$S =\lambda_{1} l_{1} l_{1}’+\cdots+\lambda_{m} l_{m} l_{m}’+D=AA’+D$$</p>
+<p>其中，</p>
+<p>$$A=\sqrt{\lambda_{1}} l_{1}+\cdots+\sqrt{\lambda_{m}} l_{m}=\left(a_{i j}\right)_{p \times m} $$</p>
+<p>$$\sigma_{i}^{2}=s_{ii}-\sum_{t=1}^{m} a_{i t}^{2}$$</p>
+<p>$A$和$D$即为因子模型的一个解，称为主成分解。</p>
+<p>公因子个数$m$的确定方法:</p>
+<ul>
+<li>根据实际问题的意义或专业理论知识来确定</li>
+<li>用确定主成分个数的原则，选$m$为满足<br>$$\frac{\lambda_{1}+\cdots+\lambda_{m}}{\lambda_{1}+\cdots+\lambda_{p}} \geq P_{0}$$<br>一般$P_0\geq 0.7$</li>
+</ul>
+<p>主成分估计的具体步骤</p>
+<ul>
+<li>step1: 计算样本相关阵$R$</li>
+<li>step2: 求$R$的特征值和标准化特征向量</li>
+<li>step3: 求因子模型的因子载荷矩阵$A$</li>
+<li>step4: 求特殊因子方差及共同度</li>
+<li>step5: 结合专业知识对$m$个公共因子作解释</li>
+</ul>
+<p>对应函数</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">factor.analy1&lt;-<span class="keyword">function</span>(S, m)&#123;</span><br><span class="line">  p&lt;-nrow(S); diag_S&lt;-diag(S); sum_rank&lt;-sum(diag_S)</span><br><span class="line">  rowname&lt;-paste(<span class="string">"X"</span>, <span class="number">1</span>:p, sep=<span class="string">""</span>)</span><br><span class="line">  colname&lt;-paste(<span class="string">"Factor"</span>, <span class="number">1</span>:m, sep=<span class="string">""</span>)</span><br><span class="line">  A&lt;-matrix(<span class="number">0</span>, nrow=p, ncol=m,</span><br><span class="line">            dimnames=list(rowname, colname))</span><br><span class="line">  eig&lt;-eigen(S)</span><br><span class="line">  <span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:m)</span><br><span class="line">    A[,i]&lt;-sqrt(eig$values[i])*eig$vectors[,i]</span><br><span class="line">  h&lt;-diag(A%*%t(A))</span><br><span class="line">  rowname&lt;-c(<span class="string">"SS loadings"</span>,<span class="string">"Proportion Var"</span>,<span class="string">"Cumulative Var"</span>)</span><br><span class="line">  B&lt;-matrix(<span class="number">0</span>, nrow=<span class="number">3</span>, ncol=m,</span><br><span class="line">            dimnames=list(rowname, colname))</span><br><span class="line">  <span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:m)&#123;</span><br><span class="line">    B[<span class="number">1</span>,i]&lt;-sum(A[,i]^<span class="number">2</span>)</span><br><span class="line">    B[<span class="number">2</span>,i]&lt;-B[<span class="number">1</span>,i]/sum_rank</span><br><span class="line">    B[<span class="number">3</span>,i]&lt;-sum(B[<span class="number">1</span>,<span class="number">1</span>:i])/sum_rank</span><br><span class="line">  &#125;</span><br><span class="line">  method&lt;-c(<span class="string">"Principal Component Method"</span>)</span><br><span class="line">  list(mehod=method, loadings=A,</span><br><span class="line">       var=cbind(common=h, spcific=diag_S-h), B=B)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数应用<br>注意由于数据没有标准化，所以采用cor, 如果数据标准化过了，可采用cov或cor.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">S&lt;-cor(ex1)</span><br><span class="line">factor.analy1(S,<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="方差最大的正交旋转"><a href="#方差最大的正交旋转" class="headerlink" title="方差最大的正交旋转"></a>方差最大的正交旋转</h2><p>只用前面方法初始因子的载荷矩阵不满足“简单结构准则”，即各个公共因子的典型代表变量不很突出。为此需要对因子载荷矩阵进行旋转变换，使得各因子载荷矩阵的每一列各元素的平方按列向0或1两级转化以达到简化结构的目的。</p>
+<h2 id="因子得分"><a href="#因子得分" class="headerlink" title="因子得分"></a>因子得分</h2><p>因子得分：把公共因子表示成变量的线性组合，反过来对每一个样品计算公共因子的估计值。</p>
+<ul>
+<li><p>加权最小二乘法–巴特莱特因子得分</p>
+</li>
+<li><p>回归法–汤普森因子得分</p>
+</li>
+</ul>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="Q1"><a href="#Q1" class="headerlink" title="Q1"></a>Q1</h3><p>（1）我国2010你那各地区城镇居民家庭平均每人全年消费数据如ex6.7所示，这些数据指标分别从食品（x1）,衣着（x2），居住(x3)，医疗(x4)，交通通信(x5)，教育(x6)，家政(x7)和耐用消费品(x8)来描述消费。试对该数据进行因子分析。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; head(ex1)</span><br><span class="line">          食品    衣着    居住    医疗 交通通讯   教育 家庭服务 耐用消费品</span><br><span class="line">北京   <span class="number">5561.54</span> <span class="number">1571.74</span> <span class="number">1286.32</span> <span class="number">1563.10</span>  <span class="number">2293.23</span> <span class="number">809.25</span>    <span class="number">84.71</span>     <span class="number">548.55</span></span><br><span class="line">天津   <span class="number">5005.09</span> <span class="number">1153.66</span> <span class="number">1528.28</span> <span class="number">1220.92</span>  <span class="number">1567.87</span> <span class="number">715.24</span>    <span class="number">45.50</span>     <span class="number">467.75</span></span><br><span class="line">河北   <span class="number">3155.40</span> <span class="number">1137.22</span> <span class="number">1097.41</span>  <span class="number">808.88</span>  <span class="number">1062.31</span> <span class="number">386.60</span>    <span class="number">28.84</span>     <span class="number">305.70</span></span><br><span class="line">山西   <span class="number">2974.76</span> <span class="number">1137.71</span> <span class="number">1250.87</span>  <span class="number">769.79</span>   <span class="number">931.33</span> <span class="number">570.79</span>    <span class="number">35.38</span>     <span class="number">259.05</span></span><br><span class="line">内蒙古 <span class="number">3553.48</span> <span class="number">1616.56</span> <span class="number">1028.19</span>  <span class="number">869.71</span>  <span class="number">1191.70</span> <span class="number">568.35</span>    <span class="number">30.49</span>     <span class="number">307.92</span></span><br><span class="line">辽宁   <span class="number">4378.14</span> <span class="number">1187.41</span> <span class="number">1270.95</span>  <span class="number">913.13</span>  <span class="number">1295.70</span> <span class="number">670.13</span>    <span class="number">30.40</span>     <span class="number">235.46</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用factanal函数进行因子分析"><a href="#使用factanal函数进行因子分析" class="headerlink" title="使用factanal函数进行因子分析"></a>使用factanal函数进行因子分析</h4><p>该函数是基于<strong>极大似然方法</strong>来进行参数估计的</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">factanal(ex1, <span class="number">3</span>, scores=<span class="string">"none"</span>, rotation=<span class="string">"none"</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Call:</span><br><span class="line">factanal(x = ex1, factors = <span class="number">3</span>, scores = <span class="string">"Bartlett"</span>, rotation = <span class="string">"none"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>x 为数值矩阵或数据表单<br>factors 为因子个数<br>scores 为因子得分的计算方法，包括 <code>regression</code>, <code>Barlett</code><br>rotation 为因子旋转方法，缺省为<code>varimax</code>，如果rotation=”none”则不做因子旋转. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Uniquenesses:</span><br><span class="line">      食品       衣着       居住       医疗   交通通讯       教育   家庭服务 耐用消费品 </span><br><span class="line">     0.108      0.426      0.005      0.200      0.041      0.253      0.108      0.292</span><br></pre></td></tr></table></figure>
+
+<p>Uniquenesses是特殊因子方差</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Loadings:</span><br><span class="line">           Factor1 Factor2 Factor3</span><br><span class="line">食品        <span class="number">0.710</span>           <span class="number">0.621</span> </span><br><span class="line">衣着        <span class="number">0.402</span>   <span class="number">0.630</span>   <span class="number">0.124</span> </span><br><span class="line">居住        <span class="number">0.993</span>                 </span><br><span class="line">医疗        <span class="number">0.564</span>   <span class="number">0.669</span>  -<span class="number">0.186</span> </span><br><span class="line">交通通讯    <span class="number">0.821</span>           <span class="number">0.533</span> </span><br><span class="line">教育        <span class="number">0.787</span>   <span class="number">0.225</span>   <span class="number">0.277</span> </span><br><span class="line">家庭服务    <span class="number">0.836</span>           <span class="number">0.438</span> </span><br><span class="line">耐用消费品  <span class="number">0.730</span>   <span class="number">0.398</span>   <span class="number">0.127</span></span><br></pre></td></tr></table></figure>
+
+<p>Loadings是因子载荷矩阵</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">               Factor1 Factor2 Factor3</span><br><span class="line">SS loadings      4.497   1.057   1.014</span><br><span class="line">Proportion Var   0.562   0.132   0.127</span><br><span class="line">Cumulative Var   0.562   0.694   0.821</span><br><span class="line"></span><br><span class="line">Test of the hypothesis that 3 factors are sufficient.</span><br><span class="line">The chi square statistic is 9.15 on 7 degrees of freedom.</span><br><span class="line">The p-value is 0.242</span><br></pre></td></tr></table></figure>
+
+<p>SS loadings: 公共因子对变量的总方差贡献<br>Proportion Var: 方差贡献率<br>Cumulative Var: 累积方差贡献率</p>
+<p>经假设检验，三个因子是充分的。</p>
+<ul>
+<li>因子得分：1）巴特莱特因子得分；2）汤普森因子得分</li>
+</ul>
+<p><strong>巴特莱特因子得分</strong></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; Bartl&lt;-factanal(ex1, <span class="number">3</span>, scores=<span class="string">"Bartlett"</span>, rotation=<span class="string">"none"</span>)</span><br><span class="line">&gt; head(Bartl[[<span class="string">"scores"</span>]])</span><br><span class="line">            Factor1     Factor2    Factor3</span><br><span class="line">北京    <span class="number">1.012075607</span>  <span class="number">3.65074030</span>  <span class="number">1.3827337</span></span><br><span class="line">天津    <span class="number">1.595980067</span>  <span class="number">0.63256369</span> -<span class="number">1.4386557</span></span><br><span class="line">河北   -<span class="number">0.008233732</span>  <span class="number">0.08854715</span> -<span class="number">1.0211025</span></span><br><span class="line">山西    <span class="number">0.478065655</span> -<span class="number">0.52055606</span> -<span class="number">1.9193149</span></span><br><span class="line">内蒙古 -<span class="number">0.177533525</span>  <span class="number">1.44303078</span> -<span class="number">0.2255898</span></span><br><span class="line">辽宁    <span class="number">0.644342090</span> -<span class="number">0.18723749</span> -<span class="number">0.9589437</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>汤普森因子得分</strong></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; Regre&lt;-factanal(ex1, <span class="number">3</span>, scores=<span class="string">"regression"</span>, rotation=<span class="string">"none"</span>)</span><br><span class="line">&gt; head(Regre[[<span class="string">"scores"</span>]])</span><br><span class="line">            Factor1     Factor2    Factor3</span><br><span class="line">北京    <span class="number">1.007712631</span>  <span class="number">2.92227721</span>  <span class="number">1.2946290</span></span><br><span class="line">天津    <span class="number">1.589099926</span>  <span class="number">0.50634291</span> -<span class="number">1.3469877</span></span><br><span class="line">河北   -<span class="number">0.008198237</span>  <span class="number">0.07087858</span> -<span class="number">0.9560401</span></span><br><span class="line">山西    <span class="number">0.476004752</span> -<span class="number">0.41668510</span> -<span class="number">1.7970204</span></span><br><span class="line">内蒙古 -<span class="number">0.176768193</span>  <span class="number">1.15509064</span> -<span class="number">0.2112157</span></span><br><span class="line">辽宁    <span class="number">0.641564384</span> -<span class="number">0.14987641</span> -<span class="number">0.8978419</span></span><br></pre></td></tr></table></figure>
+
+<p>可以发现两种方法的因子得分是较为接近的。</p>
+<h3 id="Q2"><a href="#Q2" class="headerlink" title="Q2"></a>Q2</h3><p>（2）采用“体检数据”。这是一组4000多个样本的体检资料，分别有常规体检的一系列指标。</p>
+<table>
+<thead>
+<tr>
+<th>Sbp</th>
+<th>Dbp</th>
+<th>Sphygmus</th>
+<th>Weight</th>
+<th>Height</th>
+<th>TC</th>
+<th>TG</th>
+<th>ALT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>收缩压</td>
+<td>舒张压</td>
+<td>脉搏</td>
+<td>体重</td>
+<td>身高</td>
+<td>总胆固醇</td>
+<td>甘油三酯</td>
+<td>谷丙转氨酶</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>AST</th>
+<th>T-BIL</th>
+<th>IB</th>
+<th>ALP</th>
+<th>TP</th>
+<th>Alb</th>
+<th>GLB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>谷草转氨酶</td>
+<td>总胆红素</td>
+<td>间接胆红素</td>
+<td>碱性磷酸酶</td>
+<td>总蛋白</td>
+<td>白蛋白</td>
+<td>球蛋白</td>
+</tr>
+</tbody></table>
+<p>请考虑下面的问题：<br>一、    利用主成分方法变量进行降维，然后进行相应的主成分方法聚类分析；<br>二、    构建因子分析模型，进行因子旋转，分析每个因子的意义及这些潜在的因子与年龄的关系。</p>
+<h4 id="判断PCA中需要多少个主成分"><a href="#判断PCA中需要多少个主成分" class="headerlink" title="判断PCA中需要多少个主成分"></a>判断PCA中需要多少个主成分</h4><p>判断主成分的个数PCA中需要多少个主成分的准则：</p>
+<ul>
+<li>根据先验经验和理论知识判断主成分数；</li>
+<li>根据要解释变量方差的积累值的阈值来判断需要的主成分数；</li>
+<li>通过检查变量间k*k的相关系数矩阵来判断保留的主成分数。</li>
+</ul>
+<p>判断主成分的个数PCA中需要多少个主成分的方法：</p>
+<ul>
+<li>最常见的是基于特征值的方法，每个主成分都与相关系数矩阵的特征值 关联，第一主成分与最大的特征值相关联，第二主成分与第二大的特征值相关联，依此类推。Kaiser-Harris准则建议保留特征值大于1的主成分，特征值小于1的成分所解释的方差比包含在单个变量中的方差更少。</li>
+<li>Cattell碎石检验则绘制了特征值与主成分数的图形，这类图形可以展示图形弯曲状况，在图形变化最大处之上的主成分都保留。</li>
+<li>还可以进行模拟，依据与初始矩阵相同大小的随机数矩阵来判断要提取的特征值。若基于真实数据的某个特征值大于一组随机数据矩阵相应的平均特征值，那么该主成分可以保留。该方法称作平行分析。<br>利用fa.parallel（）函数，可同时对三种特征值判别准则进行评价。</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; fa.parallel(data)</span><br><span class="line">In factor.scores, the correlation matrix is singular, an approximation is used</span><br><span class="line">Parallel analysis suggests that the number of factors =  <span class="number">7</span>  and the number of components =  <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<p>注意到这组数据给出了警告说它的相关性阵奇异，这和运算有关，理论上相关性矩阵必是正定的。</p>
+<p><img src="scree.png" alt></p>
+<p>并行分析表明，因子数量= 7，主成分数量= 6</p>
+<h4 id="对数据作因子分析"><a href="#对数据作因子分析" class="headerlink" title="对数据作因子分析"></a>对数据作因子分析</h4><p>由上我们选取nfactors=7作因子分析</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pc&lt;-principal(data,nfactors=<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; pc</span><br><span class="line">Principal Components Analysis</span><br><span class="line">Call: principal(r = data, nfactors = <span class="number">7</span>)</span><br><span class="line">Standardized loadings (pattern matrix) based upon correlation matrix</span><br><span class="line">           RC2   RC3  RC4  RC1   RC5   RC6   RC7   h2    u2 com</span><br><span class="line">Sbp       <span class="number">0.03</span>  <span class="number">0.06</span> <span class="number">0.09</span> <span class="number">0.91</span>  <span class="number">0.10</span>  <span class="number">0.10</span>  <span class="number">0.03</span> <span class="number">0.86</span> <span class="number">0.144</span> <span class="number">1.1</span></span><br><span class="line">Dbp       <span class="number">0.01</span>  <span class="number">0.06</span> <span class="number">0.11</span> <span class="number">0.87</span>  <span class="number">0.21</span>  <span class="number">0.15</span>  <span class="number">0.07</span> <span class="number">0.84</span> <span class="number">0.159</span> <span class="number">1.2</span></span><br><span class="line"><span class="keyword">...</span></span><br><span class="line">                       RC2  RC3  RC4  RC1  RC5  RC6  RC7</span><br><span class="line">SS loadings           <span class="number">2.06</span> <span class="number">2.02</span> <span class="number">1.98</span> <span class="number">1.95</span> <span class="number">1.78</span> <span class="number">1.39</span> <span class="number">1.07</span></span><br><span class="line">Proportion Var        <span class="number">0.14</span> <span class="number">0.13</span> <span class="number">0.13</span> <span class="number">0.13</span> <span class="number">0.12</span> <span class="number">0.09</span> <span class="number">0.07</span></span><br><span class="line">Cumulative Var        <span class="number">0.14</span> <span class="number">0.27</span> <span class="number">0.40</span> <span class="number">0.53</span> <span class="number">0.65</span> <span class="number">0.75</span> <span class="number">0.82</span></span><br><span class="line">Proportion Explained  <span class="number">0.17</span> <span class="number">0.17</span> <span class="number">0.16</span> <span class="number">0.16</span> <span class="number">0.15</span> <span class="number">0.11</span> <span class="number">0.09</span></span><br><span class="line">Cumulative Proportion <span class="number">0.17</span> <span class="number">0.33</span> <span class="number">0.49</span> <span class="number">0.65</span> <span class="number">0.80</span> <span class="number">0.91</span> <span class="number">1.00</span></span><br></pre></td></tr></table></figure>
+
+<p>h2：成分公因子方差，主成分对每个变量的方差解释度<br>u2：成分唯一性，方差无法被主成分解释的比例（1-h2）<br>SS loadings: 公共因子对变量的总方差贡献<br>Proportion Var: 方差贡献率</p>
+<h4 id="降维聚类"><a href="#降维聚类" class="headerlink" title="降维聚类"></a>降维聚类</h4><p><strong>利用主成分方法变量进行降维，然后进行相应的主成分方法聚类分析</strong></p>
+<ul>
+<li>获取主成分因子得分</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pc_score&lt;-pc[[<span class="string">"scores"</span>]]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; head(pc_score)</span><br><span class="line">        RC2        RC3        RC4       RC1         RC5        RC6         RC7</span><br><span class="line"><span class="number">1</span>  <span class="number">1.892982</span> -<span class="number">1.5148726</span>  <span class="number">0.4933003</span> <span class="number">0.3668276</span> -<span class="number">0.73979339</span>  <span class="number">0.9957062</span> -<span class="number">0.97378488</span></span><br><span class="line"><span class="number">2</span>  <span class="number">3.051180</span> -<span class="number">0.3061955</span>  <span class="number">2.6866616</span> <span class="number">2.1760673</span>  <span class="number">3.21241749</span>  <span class="number">4.1203251</span>  <span class="number">0.02224937</span></span><br><span class="line"><span class="number">3</span> -<span class="number">1.626402</span> -<span class="number">0.3290738</span> -<span class="number">0.7417566</span> <span class="number">1.0001617</span> -<span class="number">0.58242742</span> -<span class="number">1.0700201</span> -<span class="number">0.05415316</span></span><br><span class="line"><span class="number">4</span>  <span class="number">1.373654</span> -<span class="number">0.6278311</span>  <span class="number">2.0686446</span> <span class="number">1.7096333</span>  <span class="number">0.06686839</span> -<span class="number">0.8993047</span>  <span class="number">0.62305456</span></span><br><span class="line"><span class="number">5</span>  <span class="number">7.858934</span>  <span class="number">0.5630579</span>  <span class="number">1.8601846</span> <span class="number">0.5413701</span> -<span class="number">1.02962353</span>  <span class="number">1.3344843</span>  <span class="number">0.44059275</span></span><br><span class="line"><span class="number">6</span>  <span class="number">1.185143</span>  <span class="number">2.3756103</span>  <span class="number">0.2678939</span> <span class="number">0.8180852</span>  <span class="number">1.06814244</span> -<span class="number">2.0453084</span> -<span class="number">0.51913645</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用因子得分进行聚类分析</li>
+</ul>
+<p>注意我们此时已经将数据进行降维，即我们利用主成分进行聚类分析。那么先降维再聚类的好处在哪里呢？<br>这是因为在维度很高时，有很多变量比如$(x_1,x_2,…,x_m)$，样本$A_1$与$A_2$的$x_i$都很接近，而样本$A_2$和$A_3$在$x_1,…,x_p$相差较大，而$x_{p+1},…,x_m$十分接近相等，直观上我们自然会相信样本$A_1$与$A_2$较为接近而$A_2$与$A_3$相差较大。但是若我们直接进行聚类，比如利用欧式距离，$A_2$与$A_3$的距离可能反而比$A_1$与$A_2$的距离小，这时就会失真。所以我们可以采用主成分分析的方法先对其进行降维，又能尽量保留原始数据的又可以减少之前那种情况。总之，先降维再聚类是十分不错的聚类方式。</p>
+<p>不过我觉得对于我们这个问题来说，维度还OK啦没有很大。。。</p>
+<p>由于样本量较大，我们将因子得分矩阵采用<strong>K-means动态聚类法</strong>进行聚类</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(factoextra) </span><br><span class="line">b&lt;-scale(pc_score)</span><br><span class="line">set.seed(<span class="number">123</span>)  </span><br><span class="line">fviz_nbclust(b,kmeans,method=<span class="string">"wss"</span>)+geom_vline(xintercept=<span class="number">3</span>,linetype=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="cluster.png" alt></p>
+<p>根据碎石图，在第三类附近发生转折，我们认为分成三类比较合适。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res&lt;-kmeans(b,<span class="number">3</span>)</span><br><span class="line">fviz_cluster(res,data=data)</span><br></pre></td></tr></table></figure>
+
+<p><img src="cluster2.png" alt></p>
+<p>嘎嘎嘎样本有点多点太密集了憨憨，不过还是能发现每一类的点都基本集中在一块。</p>
+<h4 id="分析潜在因子并作因子回归"><a href="#分析潜在因子并作因子回归" class="headerlink" title="分析潜在因子并作因子回归"></a>分析潜在因子并作因子回归</h4><p><strong>构建因子分析模型，进行因子旋转，分析每个因子的意义及这些潜在的因子与年龄的关系</strong></p>
+<ul>
+<li>主成分因子分析模型</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mr &lt;- fa(data,<span class="number">7</span>,rotate=<span class="string">"varimax"</span>,fm=<span class="string">"pa"</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Standardized loadings (pattern matrix) based upon correlation matrix</span><br><span class="line">           PA3  PA4   PA2  PA1   PA6   PA5   PA7    h2       u2 com</span><br><span class="line">Sbp       <span class="number">0.06</span> <span class="number">0.12</span>  <span class="number">0.02</span> <span class="number">0.88</span>  <span class="number">0.09</span>  <span class="number">0.02</span>  <span class="number">0.14</span> <span class="number">0.811</span>  <span class="number">0.18918</span> <span class="number">1.1</span></span><br><span class="line">Dbp       <span class="number">0.06</span> <span class="number">0.13</span> -<span class="number">0.01</span> <span class="number">0.82</span>  <span class="number">0.18</span>  <span class="number">0.05</span>  <span class="number">0.19</span> <span class="number">0.765</span>  <span class="number">0.23462</span> <span class="number">1.3</span></span><br><span class="line"><span class="keyword">...</span></span><br><span class="line">                       PA3  PA4  PA2  PA1  PA6  PA5  PA7</span><br><span class="line">SS loadings           <span class="number">1.97</span> <span class="number">1.86</span> <span class="number">1.70</span> <span class="number">1.63</span> <span class="number">1.40</span> <span class="number">1.26</span> <span class="number">0.89</span></span><br><span class="line">Proportion Var        <span class="number">0.13</span> <span class="number">0.12</span> <span class="number">0.11</span> <span class="number">0.11</span> <span class="number">0.09</span> <span class="number">0.08</span> <span class="number">0.06</span></span><br><span class="line">Cumulative Var        <span class="number">0.13</span> <span class="number">0.26</span> <span class="number">0.37</span> <span class="number">0.48</span> <span class="number">0.57</span> <span class="number">0.66</span> <span class="number">0.71</span></span><br><span class="line">Proportion Explained  <span class="number">0.18</span> <span class="number">0.17</span> <span class="number">0.16</span> <span class="number">0.15</span> <span class="number">0.13</span> <span class="number">0.12</span> <span class="number">0.08</span></span><br><span class="line">Cumulative Proportion <span class="number">0.18</span> <span class="number">0.36</span> <span class="number">0.52</span> <span class="number">0.67</span> <span class="number">0.80</span> <span class="number">0.92</span> <span class="number">1.00</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以使用函数corrplot（）[corrplot包]highlight the most contributing variables for each dimension，直观分析每个因子的意义</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">load&lt;-mr[[<span class="string">"loadings"</span>]][<span class="number">1</span>:<span class="number">15</span>,]</span><br><span class="line">corrplot(load, is.corr=<span class="literal">FALSE</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="corrplot.png" alt></p>
+<p>从图中我们可以发现：<br>PA3主要代表了总胆红素（T-BIL）和间接胆红素（IB）<br>PA4主要代表了谷丙转氨酶（ALT）和谷草转氨酶（AST）<br>PA2主要代表了总蛋白（TP）和球蛋白（GLB）<br>PA1主要代表了收缩压（Sbp）和舒张压（Dbp）<br>PA6主要代表了体重（Weight）和身高（Height）<br>PA5主要代表了白蛋白（Alb）<br>PA7主要代表了总胆固醇（TC）和甘油三酯（TG）</p>
+<p>试图分析点什么，但是我医学知识尚匮乏不敢乱来，但是直观感受一下就能发现这些主成分的构成因素确实有内在关联。于是我们找到了这7个潜在因子。</p>
+<ul>
+<li>分析潜在因子与年龄的关系</li>
+</ul>
+<p>采用<strong>主成分回归分析</strong>（Principal Component Regression PCR），它是一种多元回归分析方法，旨在解决自变量间存在多重共线性问题。</p>
+<p>但是应该有更好的代码，我是用因子的score直接去做的QVQ</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mr_score&lt;-mr[[<span class="string">"scores"</span>]]</span><br><span class="line">regredata&lt;- as.data.frame(cbind(mr_score,rawdata$Age)) </span><br><span class="line">regre &lt;-lm(V8~PA3+PA4+PA2+PA1+PA6+PA5+PA7, data=regredata)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&gt; summary(regre)</span><br><span class="line"></span><br><span class="line">Call:</span><br><span class="line">lm(formula = V8 ~ PA3 + PA4 + PA2 + PA1 + PA6 + PA5 + PA7, data = regredata)</span><br><span class="line"></span><br><span class="line">Residuals:</span><br><span class="line">    Min      1Q  Median      3Q     Max </span><br><span class="line">-<span class="number">31.226</span>  -<span class="number">6.823</span>  -<span class="number">0.568</span>   <span class="number">6.213</span>  <span class="number">42.096</span> </span><br><span class="line"></span><br><span class="line">Coefficients:</span><br><span class="line">            Estimate Std. Error t value Pr(&gt;|t|)    </span><br><span class="line">(Intercept)  <span class="number">44.5965</span>     <span class="number">0.1554</span> <span class="number">287.070</span>  &lt; <span class="number">2e-16</span> ***</span><br><span class="line">PA3           <span class="number">0.1896</span>     <span class="number">0.1565</span>   <span class="number">1.212</span>    <span class="number">0.226</span>    </span><br><span class="line">PA4           <span class="number">0.1546</span>     <span class="number">0.1619</span>   <span class="number">0.955</span>    <span class="number">0.340</span>    </span><br><span class="line">PA2          -<span class="number">0.2333</span>     <span class="number">0.1582</span>  -<span class="number">1.474</span>    <span class="number">0.140</span>    </span><br><span class="line">PA1           <span class="number">3.5479</span>     <span class="number">0.1695</span>  <span class="number">20.933</span>  &lt; <span class="number">2e-16</span> ***</span><br><span class="line">PA6          -<span class="number">0.7958</span>     <span class="number">0.1758</span>  -<span class="number">4.527</span> <span class="number">6.17e-06</span> ***</span><br><span class="line">PA5          -<span class="number">3.3678</span>     <span class="number">0.1557</span> -<span class="number">21.635</span>  &lt; <span class="number">2e-16</span> ***</span><br><span class="line">PA7           <span class="number">2.6525</span>     <span class="number">0.2199</span>  <span class="number">12.061</span>  &lt; <span class="number">2e-16</span> ***</span><br><span class="line">---</span><br><span class="line">Signif. codes:  <span class="number">0</span> ‘***’ <span class="number">0.001</span> ‘**’ <span class="number">0.01</span> ‘*’ <span class="number">0.05</span> ‘.’ <span class="number">0.1</span> ‘ ’ <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Residual standard error: <span class="number">9.897</span> on <span class="number">4051</span> degrees of freedom</span><br><span class="line">Multiple R-squared:  <span class="number">0.2157</span>,	Adjusted R-squared:  <span class="number">0.2144</span> </span><br><span class="line"><span class="literal">F</span>-statistic: <span class="number">159.2</span> on <span class="number">7</span> and <span class="number">4051</span> DF,  p-value: &lt; <span class="number">2.2e-16</span></span><br></pre></td></tr></table></figure>
+
+<p>并得出以下潜在因子更能反映年龄：<br>PA1：收缩压（Sbp）和舒张压（Dbp）<br>PA6：体重（Weight）和身高（Height）<br>PA5：白蛋白（Alb）<br>PA7：总胆固醇（TC）和甘油三酯（TG）</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/统计/" rel="tag"># 统计</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/19/multi-Discriminant/" rel="next" title="判别分析2">
+                <i class="fa fa-chevron-left"></i> 判别分析2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/26/PCA-corrects-for-stratification-in-GWAS/" rel="prev" title="PCA corrects for stratification in GWAS">
+                PCA corrects for stratification in GWAS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#因子模型"><span class="nav-number">1.</span> <span class="nav-text">因子模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数估计方法"><span class="nav-number">2.</span> <span class="nav-text">参数估计方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方差最大的正交旋转"><span class="nav-number">3.</span> <span class="nav-text">方差最大的正交旋转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#因子得分"><span class="nav-number">4.</span> <span class="nav-text">因子得分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">5.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1"><span class="nav-number">5.1.</span> <span class="nav-text">Q1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用factanal函数进行因子分析"><span class="nav-number">5.1.1.</span> <span class="nav-text">使用factanal函数进行因子分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2"><span class="nav-number">5.2.</span> <span class="nav-text">Q2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#判断PCA中需要多少个主成分"><span class="nav-number">5.2.1.</span> <span class="nav-text">判断PCA中需要多少个主成分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对数据作因子分析"><span class="nav-number">5.2.2.</span> <span class="nav-text">对数据作因子分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#降维聚类"><span class="nav-number">5.2.3.</span> <span class="nav-text">降维聚类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析潜在因子并作因子回归"><span class="nav-number">5.2.4.</span> <span class="nav-text">分析潜在因子并作因子回归</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

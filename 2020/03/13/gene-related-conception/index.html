@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="生物,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文主要介绍了基因结构，包含开放阅读框open reading frames（ORF），内含子intron，外显子exon，编码基因 coding sequence（CDS），非翻译区untranslated region（UTR）,互补DNA complementary DNA（cDNA），核糖体结合位点 ribosome binding site（RBS）。 对于真核生物而言，一个基因经转录产">
+<meta name="keywords" content="生物">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因结构">
+<meta property="og:url" content="http://yoursite.com/2020/03/13/gene-related-conception/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="本文主要介绍了基因结构，包含开放阅读框open reading frames（ORF），内含子intron，外显子exon，编码基因 coding sequence（CDS），非翻译区untranslated region（UTR）,互补DNA complementary DNA（cDNA），核糖体结合位点 ribosome binding site（RBS）。 对于真核生物而言，一个基因经转录产">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/gene-related-conception/0313.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/gene-related-conception/0313-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/gene-related-conception/0313-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/gene-related-conception/0313-4.png">
+<meta property="og:updated_time" content="2020-03-15T09:41:20.175Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基因结构">
+<meta name="twitter:description" content="本文主要介绍了基因结构，包含开放阅读框open reading frames（ORF），内含子intron，外显子exon，编码基因 coding sequence（CDS），非翻译区untranslated region（UTR）,互补DNA complementary DNA（cDNA），核糖体结合位点 ribosome binding site（RBS）。 对于真核生物而言，一个基因经转录产">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/13/gene-related-conception/0313.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/13/gene-related-conception/">
+
+
+
+
+
+  <title>基因结构 | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/gene-related-conception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基因结构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-13T17:35:14+08:00">
+                2020-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文主要介绍了基因结构，包含开放阅读框open reading frames（ORF），内含子intron，外显子exon，编码基因 coding sequence（CDS），非翻译区untranslated region（UTR）,互补DNA complementary DNA（cDNA），核糖体结合位点 ribosome binding site（RBS）。</p>
+<p>对于真核生物而言，一个基因经转录产生mRNA，在剪接过程中除去内含子intron，保留外显子exon。能翻译为蛋白的exon区域是CDS区域，不能翻译的为5’和3’非翻译区UTR区域。以mRNA或microRNA（miRNA））为模板逆转录合成的DNA为cDNA，它仅包含外显子（包含5’UTR，3’UTR），不含内含子。</p>
+<p>intron和exon是针对转录而言的，CDS和UTR是针对翻译而言的。</p>
+<p>这些基因结构信息用GTF file保存。</p>
+<a id="more"></a>
+
+
+<h2 id="基因结构gene-structure"><a href="#基因结构gene-structure" class="headerlink" title="基因结构gene structure"></a>基因结构gene structure</h2><p><img src="0313.png" alt></p>
+<p>真核eukaryotic蛋白质编码基因的结构。 调控序列regulatory sequence控制蛋白质编码区coding region（红色）表达的时间和地点。 启动子Promoter和增强子enhancer区域（黄色）调节基因转录为前mRNA，将其修饰以去除内含子intron（浅灰色）并添加5’帽和poly-A尾巴（深灰色）。 mRNA的5’和3’非翻译区untranslated regions（蓝色）调节翻译成最终蛋白质产物。</p>
+<p><img src="0313-2.png" alt></p>
+<p>蛋白质编码基因的原核操纵子prokaryotic operon的结构。 调节序列控制何时多个蛋白质编码区（红色）发生表达。 启动子Promoter，操纵子operator和增强子enhancer区域（黄色）调节基因转录为mRNA。 mRNA非翻译区untranslated regions（蓝色）调节翻译成最终蛋白质产物。</p>
+<h3 id="ORF-and-ORFeome"><a href="#ORF-and-ORFeome" class="headerlink" title="ORF and ORFeome"></a>ORF and ORFeome</h3><p>在分子遗传学中，开放阅读框open reading frames（ORF）是具有翻译功能的阅读框的一部分。 ORF是从起始密码子（通常为AUG）开始到终止密码子（通常为UAA，UAG或UGA）结束的连续密码子序列，但不包括终止密码子。</p>
+<p> ORF中的（不一定是第一个）ATG密码子（相对于RNA而言是AUG）可以指示翻译在何处开始。转录终止位点位于ORF之后，在翻译终止密码子之后。如果转录在终止密码子之前停止，则翻译过程中会产生不完整的蛋白质。</p>
+<p>在分子遗传学中，ORFeome是指基因组中完整的开放阅读框（ORF）集。 该术语也可用于描述一组克隆的ORF。ORF对应于基因的蛋白质编码序列protein coding sequences（CDS）。 可以通过计算机程序（如GENSCAN）在基因组序列中发现ORF，然后通过PCR进行扩增。 尽管这在细菌中相对来说是寻找ORF是很trivial的事情，但在真核生物中由于存在内含子和外显子以及剪接变体，内含子可能包含终止密码子也许会引起阅读框之间的移位，因此在真核生物基因组中ORF finding并不简单。</p>
+<h3 id="intron"><a href="#intron" class="headerlink" title="intron"></a>intron</h3><p>内含子intron是最终产生成熟RNA产物时被RNA剪接除去的核苷酸序列。或说内含子是RNA转录本或编码它的DNA的非编码区noncoding regions，在翻译前通过剪接splicing被消除。</p>
+<h3 id="exon"><a href="#exon" class="headerlink" title="exon"></a>exon</h3><p>外显子exon是通过RNA剪接除去内含子后编码产生最终成熟RNA的一部分的那部分对应的基因。 术语外显子既指基因中的DNA序列，又指RNA转录物中的相应序列。 在RNA剪接中，内含子被去除，外显子彼此共价连接，作为生成成熟信使RNA mature messenger RNA 的一部分。 就像一个物种species的整个基因gene的集合构成了基因组genome一样，整个外显子exon的集合也构成了外显子组exome。</p>
+<h3 id="CDS"><a href="#CDS" class="headerlink" title="CDS"></a>CDS</h3><p>基因的编码区，也称为CDS（from coding sequence），是基因的DNA或RNA中编码蛋白质的部分，EXON中可以翻译成蛋白质的部分。与不同物种和时间段的非编码区相比，研究编码区的长度，组成，调控regulation，剪接splicing，结构和功能可以提供大量有关原核生物prokaryotes和真核生物eukaryotes的基因组织和进化的重要信息。</p>
+<p><img src="0313-3.png" alt></p>
+<h3 id="UTR"><a href="#UTR" class="headerlink" title="UTR"></a>UTR</h3><p>非翻译区untranslated region（UTR）位于mRNA链上编码序列的两侧。 如果在5’侧，则称为5’UTR（或前导序列leader sequence），或者在3’侧，则称为3’UTR（或尾部序列trailer sequence）。 mRNA将信息从DNA传递到核糖体（细胞内蛋白质合成（翻译）的位点）。 首先从相应的DNA序列转录mRNA，然后翻译成蛋白质。 但是，mRNA的有些区域通常不翻译为蛋白质，包括5’和3’UTR。</p>
+<h3 id="cDNA"><a href="#cDNA" class="headerlink" title="cDNA"></a>cDNA</h3><p>在遗传学中，complementary DNA（cDNA）是以单链RNA（例如信使RNA（mRNA）或microRNA（miRNA））为模板经逆转录酶催化合成的DNA。 它仅包含外显子（包含5’UTR，3’UTR），不含内含子。</p>
+<p>cDNA通常用于在原核生物中克隆真核基因。 当科学家想要在通常不表达该蛋白的细胞中表达特定蛋白（即异源表达heterologous expression）时，他们会将编码该蛋白的cDNA转移至受体细胞。 cDNA还可以由逆转录病毒（例如HIV-1，HIV-2，猿猴免疫缺陷病毒等）自然产生，然后整合到宿主基因组中，从而产生前病毒。</p>
+<p>cDNA通常在生物信息学中也用于表示mRNA转录物的序列，表示为DNA碱基（GCAT）而不是RNA碱基（GCAU）。</p>
+<h3 id="EST"><a href="#EST" class="headerlink" title="EST"></a>EST</h3><p>表达的序列标签expressed sequence tag（EST）是cDNA序列的短子序列。 EST可以用于鉴定基因转录本，并在基因发现和基因序列确定中发挥作用。</p>
+<h3 id="RBS"><a href="#RBS" class="headerlink" title="RBS"></a>RBS</h3><p>核糖体结合位点ribosome binding site（RBS）是mRNA转录物起始密码子start codon上游upstream的核苷酸序列，负责在蛋白质翻译过程中募集核糖体。 尽管已经在感染真核生物的真核细胞或病毒的mRNA中描述了内部核糖体进入位点internal ribosome entry sites（IRES），但RBS通常是指细菌序列。 真核生物中的核糖体募集通常由真核mRNA上存在的5’帽介导。</p>
+<h2 id="GTF-GFF-file"><a href="#GTF-GFF-file" class="headerlink" title="GTF/GFF file"></a>GTF/GFF file</h2><p>基因转移格式Gene transfer format （GTF）是一种文件格式，用于保存有关基因结构的信息。 它是基于一般特征格式general feature format （GFF）的制表符分隔tab-delimited的文本格式，但包含一些特定于基因信息的附加约定。</p>
+<p>例如在ensembl下载基因转录本cDNA的序列：<br><a href="https://asia.ensembl.org/info/data/ftp/index.html" target="_blank" rel="noopener">https://asia.ensembl.org/info/data/ftp/index.html</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://ftp.ensembl.org/pub/release-95/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz</span><br><span class="line">wget ftp://ftp.ensembl.org/pub/release-95/gtf/homo_sapiens/Homo_sapiens.GRCh38.95.chr.gtf.gz</span><br><span class="line">zless -S Homo_sapiens.GRCh38.95.chr.gtf.gz</span><br></pre></td></tr></table></figure>
+
+<p><img src="0313-4.png" alt></p>
+<h3 id="GFF-general-structure"><a href="#GFF-general-structure" class="headerlink" title="GFF general structure"></a>GFF general structure</h3><p>所有GFF格式（GFF2，GFF3和GTF）均由制表符分隔，每行9个字段。 它们的前7个字段都具有相同的结构，但是<em>第九个字段</em>的内容和格式不同。 总体结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>序列</td>
+<td>序列名</td>
+</tr>
+<tr>
+<td>2</td>
+<td>来源</td>
+<td>标明feature来源的关键词，例如一个项目或组织</td>
+</tr>
+<tr>
+<td>3</td>
+<td>feature</td>
+<td>feature类型名，例如“gene”，“exon”， 在结构良好的GFF文件中，所有子级特征始终在单个块中跟随其父级（因此，一个转录本的所有外显子都放在其父级“transcript”要素行之后，并在任何其他父级转录本之前）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>起始位置</td>
+<td>该功能的基因组起点，”1-base offset”。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>结束位置</td>
+<td>该功能的基因组终点，”1-base offset”。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>得分</td>
+<td>通常表示来源在带注释的要素中的置信度。 值为“.” （点）用于定义空值。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>strand</td>
+<td>代表它在哪条链上，“ +”（正链，5’-&gt; 3’），“-”（负链，3’-&gt; 5’），“.”（未确定）。</td>
+</tr>
+<tr>
+<td>8</td>
+<td>phase</td>
+<td>phase of CDS features; 0, 1, 2 (for CDS features) or “.” (for everything else).</td>
+</tr>
+<tr>
+<td>9</td>
+<td>属性</td>
+<td>与该功能有关的所有其他信息。 这一列的的格式、结构和内容是三种文件格式之间变化最大的。</td>
+</tr>
+</tbody></table>
+<h2 id="“组-omes-”和“组学-omics-”"><a href="#“组-omes-”和“组学-omics-”" class="headerlink" title="“组(omes)”和“组学(omics)”"></a>“组(omes)”和“组学(omics)”</h2><p>受术语“基因组（genome）和基因组学（genomics）”的启发，其他描述完整生物学数据集的词（通常是源自一种生物的生物分子集）都带有后缀-ome和-omics，中文翻译为xxx组，xxx组学。</p>
+<p>这些术语中的某些以分层方式彼此相关。 例如，基因组包含ORFeome，它产生转录组transcriptome，该转录组transcriptome经翻译产生蛋白质组proteome.</p>
+<p>一位组学家omicist是研究组学omeomics的科学家。omeomics: cataloging all the “omics” subfields.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/生物/" rel="tag"># 生物</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/11/shell/" rel="next" title="shell and shell scripts">
+                <i class="fa fa-chevron-left"></i> shell and shell scripts
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/15/global-alignment-of-protein-sequence/" rel="prev" title="Global Alignment of Protein Sequence">
+                Global Alignment of Protein Sequence <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基因结构gene-structure"><span class="nav-number">1.</span> <span class="nav-text">基因结构gene structure</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ORF-and-ORFeome"><span class="nav-number">1.1.</span> <span class="nav-text">ORF and ORFeome</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#intron"><span class="nav-number">1.2.</span> <span class="nav-text">intron</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exon"><span class="nav-number">1.3.</span> <span class="nav-text">exon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CDS"><span class="nav-number">1.4.</span> <span class="nav-text">CDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UTR"><span class="nav-number">1.5.</span> <span class="nav-text">UTR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cDNA"><span class="nav-number">1.6.</span> <span class="nav-text">cDNA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EST"><span class="nav-number">1.7.</span> <span class="nav-text">EST</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RBS"><span class="nav-number">1.8.</span> <span class="nav-text">RBS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GTF-GFF-file"><span class="nav-number">2.</span> <span class="nav-text">GTF/GFF file</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GFF-general-structure"><span class="nav-number">2.1.</span> <span class="nav-text">GFF general structure</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#“组-omes-”和“组学-omics-”"><span class="nav-number">3.</span> <span class="nav-text">“组(omes)”和“组学(omics)”</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

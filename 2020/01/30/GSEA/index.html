@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="文献阅读,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基因集富集分析 Gene Set Enrichment Analysis（GSEA）通过关注基因集（即具有共同生物学功能，染色体位置或调节作用的基因组）来解释基因表达数据。">
+<meta name="keywords" content="文献阅读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSEA">
+<meta property="og:url" content="http://yoursite.com/2020/01/30/GSEA/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="基因集富集分析 Gene Set Enrichment Analysis（GSEA）通过关注基因集（即具有共同生物学功能，染色体位置或调节作用的基因组）来解释基因表达数据。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2020/01/30/GSEA/0130.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/30/GSEA/0130-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/30/GSEA/0130-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/30/GSEA/0130-4.png">
+<meta property="og:updated_time" content="2020-01-30T15:21:40.601Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GSEA">
+<meta name="twitter:description" content="基因集富集分析 Gene Set Enrichment Analysis（GSEA）通过关注基因集（即具有共同生物学功能，染色体位置或调节作用的基因组）来解释基因表达数据。">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/30/GSEA/0130.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/30/GSEA/">
+
+
+
+
+
+  <title>GSEA | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/30/GSEA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GSEA</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-30T23:15:32+08:00">
+                2020-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>基因集富集分析 Gene Set Enrichment Analysis（GSEA）</strong>通过关注基因集（即具有共同生物学功能，染色体位置或调节作用的基因组）来解释基因表达数据。 </p>
+<a id="more"></a>
+
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>DNA芯片的全基因组表达分析已成为基因组学研究的主要内容，根据基因在两种类别之间（比如癌组织和癌旁组织）的差异表达，可以将这些基因按差异表达进行排序形成列表L。我们希望从该列表中提取含义。</p>
+<p>一种常见的方法涉及着眼于L顶部和底部的少数基因（即那些显示最大差异的基因），以分辨出明显的生物学线索。这种方法有一些主要限制。<br>（i）在校正了多个假设检验之后，没有单个基因可以达到统计学显着性的阈值，因为相关的生物学差异相对于微阵列技术固有的噪声而言是中等的。<br>（ii）或者，可以留下一长串具有统计意义的基因，而没有任何统一的生物学主题。解释可能是艰巨而临时的，具体取决于生物学家的专业领域。<br>（iii）单基因分析可能会错过对途径的重要影响。细胞过程通常会影响协调一致的基因组。编码代谢途径成员的所有基因中20％的增加可能会极大地改变通过该途径的通量，并且可能比单个基因的20倍增加更为重要。<br>（iv）当不同的群体研究相同的生物系统时，两项研究中具有统计意义的重要基因列表可能会显示出极少的重叠。</p>
+<p>为了克服单个基因分析的难题，GSEA采用对基因集进行分析。基于先前的生物学知识（例如，关于先前实验中的生化途径或共表达的公开信息）来定义基因集。GSEA的目标是确定基因集S的成员是否倾向于出现在列表L的顶部（或底部），于是可以分析基因集与表型类别的相关性。</p>
+<p>Broad Institute of Massachusetts Institute of Technology and Harvard 创建了一个名为GSEA-P的软件包和一个初步的基因组清单（分子签名数据库，MSigDB），这两个软件包均可免费获得。<a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp" target="_blank" rel="noopener">https://www.gsea-msigdb.org/gsea/msigdb/index.jsp</a></p>
+<h2 id="GSEA概述"><a href="#GSEA概述" class="headerlink" title="GSEA概述"></a>GSEA概述</h2><ul>
+<li>准备：Ranked gene list &amp; Gene sets </li>
+</ul>
+<p>GSEA考虑了使用属于两个类别（标记为1或2）的样品进行全基因组表达谱实验的方法。通过使用任何合适的度量标准，基于基因表达与类别区别之间的相关性对基因进行排名(A)。</p>
+<p><img src="0130.png" alt></p>
+<p>（A）通过与表型相关性排序的表达数据集，相应的热图，基因标签，即来自排序列表中的集合S的基因的位置（见Gene set S）。 （B）数据集中S的运行总和的图，包括最大富集得分（ES）和前沿子集的位置。</p>
+<p>给定先验定义的基因集S（例如，编码代谢途径中产物，位于相同细胞遗传学带或共有相同GO类别的基因），GSEA的目标是确定S的成员是否随机分布整个L或主要位于顶部或底部。我们期望与表型区别相关的集合将倾向于显示后者的分布。</p>
+<ul>
+<li>GSEA三步</li>
+</ul>
+<p>步骤1：计算富集得分。我们计算了一个富集分数（Enrichment Score, ES），该分数反映了在整个已排序列表L的顶部或底部上集合S被过度代表的程度。该得分是通过沿着列表L向下移动来增加的，计算总和。当我们遇到一个在S中的基因时得分增加，而在遇到一个不在S中的基因时得分减少。递增的幅度取决于基因与表型的相关性。富集得分是随机游走中与零的最大偏差；它对应于加权的类似Kolmogorov-Smirnov统计量。</p>
+<p>步骤2：估算ES的显著性水平。我们通过使用基于经验表型的置换测试程序来估计ES的统计显著性（P值），该程序保留了基因表达数据的复杂相关结构。具体来说，我们置换表型标签，并针对置换后的数据重新计算基因集的ES，这会为ES生成空分布。然后相对于该零分布计算观察到的ES的经验名义P值。重要的是，类别标记的排列保留了基因与基因的相关性，因此，与通过排列基因获得的意义相比，提供了生物学上更合理的重要性评估。</p>
+<p>步骤3：针对多假设检验进行调整。当评估基因组的整个数据库时，我们用多重假设检验调整估计的显著性水平。我们首先将每个基因集的ES标准化以说明集合的大小，从而得出标准化的富集得分（NES）。然后，我们通过计算对应于每个NES的错误发现率（FDR）以控制假阳性的比例。 FDR可估计NES假阳性的概率；它是通过比较NES的观测分布和零分布的尾部计算得出的。</p>
+<hr>
+<ul>
+<li>数学描述</li>
+</ul>
+<p><strong>GSEA的输入</strong></p>
+<ol>
+<li>基因表达数据$D$，$N$个基因，$k$个样品。</li>
+<li>产生基因排序列表$L$。包括相关性（或其他排名度量标准）和感兴趣的表型$C$。我们每个基因仅使用一个探针以防止高估富集统计量。</li>
+<li>指数$p$控制每一步的权重。</li>
+<li>包含了$N_H$个基因的基因集$S$，如通路，细胞遗传带或GO.</li>
+</ol>
+<p><strong>富集分数（Enrichment Score, ES（S））</strong></p>
+<ol>
+<li>根据与表型的相关性给$D$中的$N$个基因排序得到列表$L={g_1,…,g_N}$，相关性$r(g_j)=r_j$，以及表型$C$.</li>
+<li>（这里或许有个随机游走的概念待指正）评估S中的基因比例（“hits”），按其相关性加权；不存在于S中的基因比例（“ misses”），直到L在给定位置i为止。<br>$P_{hit}(S,i)=\sum_{g_j \in S \atop j \leq i} \frac{\left|r_{j}\right|^{p}}{N_{R}}$，其中$N_{R}=\sum_{g_{j} \in S}\left|r_{j}\right|^{p}$<br>$P_{miss}(S, i)=\sum_{g_{j} \notin S \atop j \leq i} \frac{1}{\left(N-N_{H}\right)}$</li>
+</ol>
+<p>ES是$P_{hit}, P_{miss}$从零开始的最大偏差。 对于随机分布的S，ES（S）相对较小，但是如果它集中在列表的顶部或底部，或者以其他方式非随机分布，则ES（S）将相应较高。 当$p=0$时，ES（S）简化为标准的Kolmogorov–Smirnov统计量；当$p=1$时，我们将它们与表型C的相关性作为权重，除以S中所有基因的相关性之和进行归一化。</p>
+<p><strong>显著性估计</strong></p>
+<p>我们通过将观察到的ES与通过随机分配的表型计算的分数$ES_{NULL}$进行比较来评估观察到的ES的重要性。</p>
+<ol>
+<li>将原始表型标签随机分配给样品，重新排序基因并重新计算ES（S）。</li>
+<li>对1,000个排列重复步骤1，并创建对应的富集得分$ES_{NULL}$的直方图。</li>
+<li>通过使用ES（S）的符号相对应的分布的正或负部分，从$ES_{NULL}$估计S的P值。</li>
+</ol>
+<p><strong>多重假设检验</strong></p>
+<ol>
+<li>为集合或数据库中的每个基因集确定ES（S）。</li>
+<li>对于表型标记的每个S和1000个固定排列$\pi$，对L中的基因重新排序并确定ES（S，$\pi$）。</li>
+<li>根据基因集的大小，对ES（S，$\pi$）和观察到的ES（S）进行归一化，通过用ES（S，$\pi$）的平均值分别除以正分和负分，以得出归一化分数NES（S，$\pi$）和NES（ S）。</li>
+<li>计算FDR。控制NES（S，$\pi$）和NES（ S）的阳性中假阳性在总基因集的比例达到相应标准。</li>
+</ol>
+<hr>
+<p>在原始实现中，运行总和统计在每个步骤使用相等的权重，这为聚类在排名列表中间的集合产生了高分， 这些集合不代表与表型的生物学相关性。 我们通过根据每个基因与表型的相关性加权步骤来解决此问题。 我们注意到，在更多的基因与两种表型之一相关的情况下，使用加权步骤可能会导致观察到的ES分数分布不对称。 因此，我们通过分别考虑正面和负面得分的基因集来估计显著性水平。</p>
+<p><img src="0130-2.png" alt></p>
+<p>原始富集得分。 来自C2功能集合的三个基因集在男性/女性淋巴母细胞样细胞系实例的基因列表中的分布，按其与性别的相关性进行排序：S1，一组X染色体失活基因； S2，描述维生素C进入神经元的途径； S3，与T辅助细胞表达的趋化因子受体有关。 显示的是三个基因集的运行总和图：S1如预期的那样在雌性中显着富集，S2随机分布且得分很低，S3不在列表顶部富集，但不是随机的，因此得分很高。 箭头显示最大富集得分的位置以及相关性（信噪比）过零的点。 </p>
+<p><img src="0130-3.png" alt></p>
+<p>表通过使用原始方法和新方法比较了S1，S2和S3的P值。 新方法降低了像S3这样的集合的重要性。</p>
+<p><strong>前沿子集</strong></p>
+<p>可以使用多种方法来定义基因集，但是并非基因集的所有成员通常都会参与生物过程。通常，提取有助于ES的高得分基因集的核心成员非常有用。我们将前沿子集定义为基因集S中出现在排序总和L中的总和从零开始达到其最大偏差的点处的那些基因（图1 B）。前沿子集可以解释为解释富集信号的基因集的核心。</p>
+<p>对前沿亚群的检查可以揭示基因集内生物学上重要的亚群，正如我们在分析癌细胞系中P53状态时所显示的那样。这种方法对于手动策划的基因集尤其有用，它可能代表相互作用过程的融合，可能是关键调控因子。</p>
+<p><img src="0130-4.png" alt></p>
+<p>该图显示了与P53相关的ras，ngf和igf1基因集，并用深蓝色表示的前沿子集进行了聚类。 深色的垂直条纹为三者前沿子集的重叠部分，展现了一个常见的基因亚组，由MAP2K1，PIK3CA，ELK1和RAF1组成，代表MAPK途径的一个子部分。</p>
+<p>高得分的基因集可以根据它们共享的基因的前沿子集进行分组。这样的分组可以揭示那些基因集中的哪个对应于相同的生物学过程，哪些代表不同的过程。</p>
+<p>GSEA-P软件包包括用于检查和聚集前沿子集的工具。</p>
+<p>references:</p>
+<ol>
+<li>Gene set enrichment analysis: A knowledge-based approach for interpreting genome-wide expression profiles <a href="https://www.pnas.org/content/102/43/15545" target="_blank" rel="noopener">https://www.pnas.org/content/102/43/15545</a></li>
+<li><a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp" target="_blank" rel="noopener">https://www.gsea-msigdb.org/gsea/msigdb/index.jsp</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/文献阅读/" rel="tag"># 文献阅读</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/31/2019/" rel="next" title="2019">
+                <i class="fa fa-chevron-left"></i> 2019
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/12/ncov2019/" rel="prev" title="ncov2019模拟">
+                ncov2019模拟 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GSEA概述"><span class="nav-number">2.</span> <span class="nav-text">GSEA概述</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

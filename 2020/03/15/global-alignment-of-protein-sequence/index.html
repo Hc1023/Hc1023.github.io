@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="生信,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这篇文章主要讲述了不同的BLAST方法，为什么要用氨基酸序列进行比对，如何处理gap惩罚，并用动态规划的方法全局比对找到最优解，然后回溯获得比对结果，同时可以应用到半全局比对和局部比对。这其中需要注意的是PAM matrix的一些特点，这个评分矩阵的设计非常有内涵，最后提了一下我们需要通过DNA序列进化来知道如何设计这样的评分系统的是合理的，而DNA进化序列实际上是一条马尔科夫链。">
+<meta name="keywords" content="生信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Global Alignment of Protein Sequence">
+<meta property="og:url" content="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="这篇文章主要讲述了不同的BLAST方法，为什么要用氨基酸序列进行比对，如何处理gap惩罚，并用动态规划的方法全局比对找到最优解，然后回溯获得比对结果，同时可以应用到半全局比对和局部比对。这其中需要注意的是PAM matrix的一些特点，这个评分矩阵的设计非常有内涵，最后提了一下我们需要通过DNA序列进化来知道如何设计这样的评分系统的是合理的，而DNA进化序列实际上是一条马尔科夫链。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/0315-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/0315-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/0315-4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/0315-5.png">
+<meta property="og:updated_time" content="2020-03-17T13:46:45.240Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Global Alignment of Protein Sequence">
+<meta name="twitter:description" content="这篇文章主要讲述了不同的BLAST方法，为什么要用氨基酸序列进行比对，如何处理gap惩罚，并用动态规划的方法全局比对找到最优解，然后回溯获得比对结果，同时可以应用到半全局比对和局部比对。这其中需要注意的是PAM matrix的一些特点，这个评分矩阵的设计非常有内涵，最后提了一下我们需要通过DNA序列进化来知道如何设计这样的评分系统的是合理的，而DNA进化序列实际上是一条马尔科夫链。">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/0315-2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/">
+
+
+
+
+
+  <title>Global Alignment of Protein Sequence | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Global Alignment of Protein Sequence</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-15T17:26:36+08:00">
+                2020-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇文章主要讲述了不同的BLAST方法，为什么要用氨基酸序列进行比对，如何处理gap惩罚，并用动态规划的方法全局比对找到最优解，然后回溯获得比对结果，同时可以应用到半全局比对和局部比对。这其中需要注意的是PAM matrix的一些特点，这个评分矩阵的设计非常有内涵，最后提了一下我们需要通过DNA序列进化来知道如何设计这样的评分系统的是合理的，而DNA进化序列实际上是一条马尔科夫链。</p>
+<a id="more"></a>
+
+<h2 id="不同的BLAST方法"><a href="#不同的BLAST方法" class="headerlink" title="不同的BLAST方法"></a>不同的BLAST方法</h2><p><img src="0315-2.png" alt></p>
+<p>如果惩罚项为-2，那么它不会得到低于2/3的匹配率，因为得分会重置为0，考虑1，1，-2。这会导致一些问题，比如说我们知道密码子具有简并性，那么直接有些情况下考虑密码子对应的氨基酸直接做比对可能会更合适。</p>
+<p>1.假设一些黑猩猩的EST，且没有黑猩猩基因组。 因此将针对人类的基因搜索它们。会怎么做？</p>
+<p>黑猩猩与人类基因组相似度98％，非常高。所以直接进行基因比对或氨基酸比对都能很容易找到相应的位置，BLASTN or BLASTX, either is ok. 但是如果这个序列恰好来自UTR，那只能用BLASTN。</p>
+<p>2.如果它是针对小鼠基因组和人类EST呢？BLASTN，BLASTX， TBLASTX？</p>
+<p>通常在核苷酸水平上，小鼠外显子与人外显子大约80％相同。TBLASTX。 翻译EST，翻译基因组，搜索这些氨基酸。因为发生的许多变异都位于不影响氨基酸的密码子的第三位， 因此，与核苷酸搜索相比，可以通过翻译搜索找到更完整的匹配项。</p>
+<p>BLASTX：对于这个问题而言，可以针对小鼠的蛋白质组进行搜索， 这取决于基因组的注释程度。小鼠有很好的注释， 几乎所有蛋白质都可能是已知的。 但是，如果您正在寻找一些更晦涩的生物，变色龙基因组之类的东西，并且没有对其进行很好的注释，那么可能直接用基因组再翻译成aa能做得更好。</p>
+<h2 id="不同比对方法"><a href="#不同比对方法" class="headerlink" title="不同比对方法"></a>不同比对方法</h2><ul>
+<li>局部比对local alignment，无需尝试对齐整条序列，只需发现高度相似的较小区域。</li>
+<li>全局比对global alignment，两种蛋白质从头到尾进行比对时，假定这两种蛋白质是同源的，并且实际上它们没有序列的主要插入或重排。</li>
+<li>半全局比对semi-global alignment，是全局比对的部分变形。</li>
+</ul>
+<h3 id="gap-惩罚"><a href="#gap-惩罚" class="headerlink" title="gap 惩罚"></a>gap 惩罚</h3><p>Gaps(aka “indels”)</p>
+<ul>
+<li>linear gap penalty</li>
+</ul>
+<p>$\gamma (n)=nA$,<br>$n=$no. of gaps, $A=$gap penalty</p>
+<ul>
+<li>“Affine” gap penalty</li>
+</ul>
+<p>$W_n=G+n\gamma$,<br>$n=$ no. of gaps, $\gamma=$gap extension penalty, and $G=$gap opening penalty</p>
+<h3 id="全局比对"><a href="#全局比对" class="headerlink" title="全局比对"></a>全局比对</h3><p><strong>动态规划</strong>以得到最优全局比对</p>
+<p><img src="0315-3.png" alt></p>
+<p>Global alignments: Needleman-Wunsch-Sellers</p>
+<p>$$<br>S_{ij}= max\ {S_{i-1, j-1}+\sigma(x_i,y_j), S_{i-1, j}-A, S_{i, j-1}-A}<br>$$</p>
+<p>如果是从上到下或从左到右，都代表这里有gap，A表示gap带来的惩罚。</p>
+<table>
+<thead>
+<tr>
+<th>One-letter symbol</th>
+<th>Three-letter symbol</th>
+<th>Amino acid</th>
+<th>中文</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>Ala</td>
+<td>alanine</td>
+<td>丙氨酸</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Asx</td>
+<td>aspartic acid or asparagine</td>
+<td>天冬氨酸或天冬酰胺</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Cys</td>
+<td>cysteine</td>
+<td>半胱胺酸</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Asp</td>
+<td>aspartic acid</td>
+<td>天冬氨酸</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Glu</td>
+<td>glutamic acid</td>
+<td>谷氨酸</td>
+</tr>
+<tr>
+<td>F</td>
+<td>Phe</td>
+<td>phenylalanine</td>
+<td>苯丙氨酸</td>
+</tr>
+<tr>
+<td>G</td>
+<td>Gly</td>
+<td>glycine</td>
+<td>甘氨酸</td>
+</tr>
+<tr>
+<td>H</td>
+<td>His</td>
+<td>histidine</td>
+<td>组胺酸</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Ile</td>
+<td>isoleucine</td>
+<td>异亮氨酸</td>
+</tr>
+<tr>
+<td>K</td>
+<td>Lys</td>
+<td>lysine</td>
+<td>赖胺酸</td>
+</tr>
+<tr>
+<td>L</td>
+<td>Leu</td>
+<td>leucine</td>
+<td>亮氨酸</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Met</td>
+<td>methionine</td>
+<td>甲硫胺酸</td>
+</tr>
+<tr>
+<td>N</td>
+<td>Asn</td>
+<td>asparagine</td>
+<td>天冬酰胺</td>
+</tr>
+<tr>
+<td>P</td>
+<td>Pro</td>
+<td>proline</td>
+<td>脯氨酸</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>Gln</td>
+<td>glutamine</td>
+<td>谷氨酰胺</td>
+</tr>
+<tr>
+<td>R</td>
+<td>Arg</td>
+<td>arginine</td>
+<td>精氨酸</td>
+</tr>
+<tr>
+<td>S</td>
+<td>Ser</td>
+<td>serine</td>
+<td>丝氨酸</td>
+</tr>
+<tr>
+<td>T</td>
+<td>Thr</td>
+<td>threonine</td>
+<td>苏氨酸</td>
+</tr>
+<tr>
+<td>U*</td>
+<td>Sec</td>
+<td>selenocysteine</td>
+<td>硒代半胱氨酸</td>
+</tr>
+<tr>
+<td>V</td>
+<td>Val</td>
+<td>valine</td>
+<td>缬氨酸</td>
+</tr>
+<tr>
+<td>W</td>
+<td>Trp</td>
+<td>tryptophan</td>
+<td>色氨酸</td>
+</tr>
+<tr>
+<td>X**</td>
+<td>Xaa</td>
+<td>unknown or ‘other’ amino acid</td>
+<td>未知氨基酸</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>Tyr</td>
+<td>tyrosine</td>
+<td>酪氨酸</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>Glx</td>
+<td>glutamic acid or glutamine</td>
+<td>谷氨酸或谷氨酰胺</td>
+</tr>
+</tbody></table>
+<p>对于(Percent Accepted Mutations) PAM250 scoring matrix</p>
+<p><img src="0315-4.png" alt></p>
+<ul>
+<li>这是一个对称矩阵</li>
+</ul>
+<p>例如，缬氨酸valine与亮氨酸leucine匹配，它与亮氨酸与缬氨酸匹配相同，评分对称。</p>
+<ul>
+<li>对角线上不一样，2-17</li>
+</ul>
+<p>例如，色氨酸W评分17，半胱氨酸C评分12，而丝氨酸S评分2。色氨酸具有与其他侧链交互的能力，半胱氨酸对蛋白质的三维结构非常非常重要。所以不会偶然将色氨酸和半胱氨酸放入蛋白质中，或者只在需要它们时，才有足够的空间放入它们。</p>
+<ul>
+<li>非对角线元素也可能是正的得分</li>
+</ul>
+<p>残基通过侧链的相似化学进行了分组。碱性残基，组氨酸histidine，精氨酸arginine和赖氨酸lysine，表格中HRK。酸性残基，天冬氨酸aspartate和谷氨酸glutamate，以及天冬酰胺asparagine和谷氨酰胺glutamine，表格中DENQ。<br>比如说注意D到E为具有正分数3，几乎与D到D或E到E加4分一样好，这是基于在进化中通常用天冬氨酸D替代谷氨酸E的认识。所以它在某种程度上是化学成分相似度的得分。</p>
+<p><img src="0315-5.png" alt></p>
+<p>然后用动态规划的方法，并记录得到最高评分的路线，找到最高评分进行回溯即可。</p>
+<blockquote>
+<p>“Life must be lived forwards and understood backwards.”<br> – Søren Kierkegaard </p>
+</blockquote>
+<h3 id="半全局比对和局部比对"><a href="#半全局比对和局部比对" class="headerlink" title="半全局比对和局部比对"></a>半全局比对和局部比对</h3><p>允许序列在任何一端悬垂而不会受到惩罚，通常可以更好地比对长度不同的同源序列，与以前相同的算法，除了</p>
+<ul>
+<li>将矩阵$S_{i,0}$和$S_{0,j}$的边初始化为$0$</li>
+<li>不要求追溯始于$S_{m,n}$，而是允许它从最高分开始于底行或最右列</li>
+</ul>
+<p>Smith-Waterman Local Alignment</p>
+<p>用动态规划的方法解决局部比对并允许有gap，同样的方法除了</p>
+<ul>
+<li>相似度矩阵必须包含不匹配的负值</li>
+<li>当为得分矩阵中的位置计算的值是负数，该值设置为零，这将终止对齐或理解为重新开始比对。</li>
+</ul>
+<p>总体来讲，计分系统应支持匹配相同或相关氨基酸，并对匹配不良和缺口进行处罚。<br>这需要知道在相关蛋白质中发现特定氨基酸对的频率与偶然发生的频率比，还需要在相关蛋白质中发现缺口（插入/缺失）相对于不同氨基酸对的频率。</p>
+<h3 id="DNA序列进化"><a href="#DNA序列进化" class="headerlink" title="DNA序列进化"></a>DNA序列进化</h3><p>Markov Model (aka Markov Chain)<br>马尔科夫链</p>
+<p>随机过程Stochastic Process：</p>
+<ul>
+<li>一个随机任意的过程 random process，或</li>
+<li>一个来自随机变量random variables的序列</li>
+</ul>
+<p>A discrete stochastic process $X_1, X_2, X_3, …$, which has the Markov property:</p>
+<p>For all $x_i$, all $j$, all $n$, </p>
+<p>$$P\left(X_{n+1}=j | X_{1}=x_{1}, X_{2}=x_{2}, \ldots X_{n}=x_{n}\right)=P\left(X_{n+1}=j | X_{n}=x_{n}\right)$$</p>
+<p>A random process which has the property that the future (next state) is conditionally independent of the past given the present (current state).</p>
+<p>就是当前时刻的状态只与前一时刻的状态有关。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/生信/" rel="tag"># 生信</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/13/gene-related-conception/" rel="next" title="基因结构">
+                <i class="fa fa-chevron-left"></i> 基因结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/16/comparative-genomic-analysis/" rel="prev" title="Comparative Genomic Analysis">
+                Comparative Genomic Analysis <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#不同的BLAST方法"><span class="nav-number">1.</span> <span class="nav-text">不同的BLAST方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同比对方法"><span class="nav-number">2.</span> <span class="nav-text">不同比对方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gap-惩罚"><span class="nav-number">2.1.</span> <span class="nav-text">gap 惩罚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局比对"><span class="nav-number">2.2.</span> <span class="nav-text">全局比对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半全局比对和局部比对"><span class="nav-number">2.3.</span> <span class="nav-text">半全局比对和局部比对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNA序列进化"><span class="nav-number">2.4.</span> <span class="nav-text">DNA序列进化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

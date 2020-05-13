@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="文献阅读,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="种群分层Population stratification（由于系统的血统差异systematic ancestry differences而导致cases与controls之间的等位基因频率差异allele frequency differences）可能导致疾病研究中的虚假关联。此文介绍了一种方法，可以在全基因组范围内显式检测和校正群体分层。使用主成分分析（PCA）来显式地建模cases与co">
+<meta name="keywords" content="文献阅读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PCA corrects for stratification in GWAS">
+<meta property="og:url" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="种群分层Population stratification（由于系统的血统差异systematic ancestry differences而导致cases与controls之间的等位基因频率差异allele frequency differences）可能导致疾病研究中的虚假关联。此文介绍了一种方法，可以在全基因组范围内显式检测和校正群体分层。使用主成分分析（PCA）来显式地建模cases与co">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/F1.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/T1-1.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/sF1.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/T1-2.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/T1-3.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/F2.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/T2.png">
+<meta property="og:updated_time" content="2019-12-30T13:33:39.213Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PCA corrects for stratification in GWAS">
+<meta name="twitter:description" content="种群分层Population stratification（由于系统的血统差异systematic ancestry differences而导致cases与controls之间的等位基因频率差异allele frequency differences）可能导致疾病研究中的虚假关联。此文介绍了一种方法，可以在全基因组范围内显式检测和校正群体分层。使用主成分分析（PCA）来显式地建模cases与co">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/F1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/">
+
+
+
+
+
+  <title>PCA corrects for stratification in GWAS | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/26/PCA-corrects-for-stratification-in-GWAS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PCA corrects for stratification in GWAS</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-26T21:24:58+08:00">
+                2019-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>种群分层Population stratification（由于系统的血统差异systematic ancestry differences而导致cases与controls之间的等位基因频率差异allele frequency differences）可能导致疾病研究中的虚假关联。<br>此文介绍了一种方法，可以在全基因组范围内显式检测和校正群体分层。使用<strong>主成分分析（PCA）</strong>来显式地建模cases与controls之间的祖先差异。 所得的校正特定于候选标记candidate marker在整个祖先群体中的频率变化，从而最大程度地减少了虚假关联minimizing spurious associations，同时使检测真正关联的能力最大化maximizing power to detect true associations。</p>
+<a id="more"></a>
+
+<h2 id="New-method-EIGENSTRAT"><a href="#New-method-EIGENSTRAT" class="headerlink" title="New method EIGENSTRAT"></a>New method EIGENSTRAT</h2><ul>
+<li>genomic control &amp; structured association</li>
+</ul>
+<p>分层效应与样本数量成正比，因此分层将成为未来大规模关联研究中一个日益严重的问题。处理分层的两种主要方法是<strong>基因组控制genomic control</strong>和<strong>结构化关联structured association</strong>。</p>
+<p>1.基因组控制通过调整每个标记处的关联统计数据以统一的总体膨胀因子inflation factor来校正分层。<br>通过基因组控制施加的统一调节可能在祖先群体中具有异常强的分化的标志物上是不够的，而在没有这种分化的标志物上可能是多余的，从而导致能力丧失。<br>2.结构化关联使用诸如STRUCTURE之类的程序将样本分配给离散的亚群，然后在每个集群中汇总关联的证据。<br>在大型数据集上的计算成本很高，个体对集群的分配对集群的数量高度敏感。</p>
+<ul>
+<li>EIGENSTRAT</li>
+</ul>
+<p>eigenvector, stratification<br>Step1: 主成分分析应用于基因型数据，以推断遗传变异的连续轴continuous axes 。变化轴将数据缩减为少量维，从而描述了尽可能多的变化，它们被定义为样本协方差矩阵的最大特征向量。<br>在样本之间存在先祖差异的数据集中，变化轴通常具有地理解释：例如，描述欧洲西北偏东南部的轴的值将逐渐从西北欧的正值到中部的接近零欧洲，东南欧为负数。<br>Step2: 计算线性回归的残差，通过沿每个轴的祖先数量连续调整基因型和表型。removing all correlations to ancestry.（这一步是怎么做的我还不太清楚，因为之前接触过的主成分分析是用来降维的，但这里是把一个主成分给抽掉的样子，就是把主成分的那个方向对基因型作预测，然后用回归系数把那部分拉掉）<br>Step3:  使用祖先调整ancestry-adjusted的基因型和表型来计算关联统计量。</p>
+<p><img src="F1.png" alt></p>
+<p>（a）将主成分分析应用于基因型数据，以推断遗传变异的连续轴； 此处显示了一个变化轴。<br>（b）候选SNP的基因型和表型通过沿每个轴的祖先数量进行连续调整，从而消除了与祖先的所有相关性。<br>（c）血统调整后，候选SNP的基因型与表型之间的关联统计显示无显着关联。</p>
+<h2 id="Results-Simulated-disease-studies-amp-European-America-data-sets"><a href="#Results-Simulated-disease-studies-amp-European-America-data-sets" class="headerlink" title="Results: Simulated disease studies &amp; European America data sets"></a>Results: Simulated disease studies &amp; European America data sets</h2><h3 id="Simulated-disease-studies"><a href="#Simulated-disease-studies" class="headerlink" title="Simulated disease studies"></a>Simulated disease studies</h3><p>模拟疾病研究比较结构化关联方法和基因组控制方法。</p>
+<h4 id="moderate-ancestry-differences"><a href="#moderate-ancestry-differences" class="headerlink" title="moderate ancestry differences"></a>moderate ancestry differences</h4><p>Discrete subpopulations with moderate ancestry differences between cases and controls.<br>500个病例和500个对照的100,000个随机SNP生成了数据，其中60％的病例和40％的对照是从种群1采样的，其余病例和对照是从种群2采样的。</p>
+<p>使用主成分分析来推断100,000个随机SNP的十个独立数据集中的每一个的连续变化的正交轴）。由于数据仅包含总体结构的一个附加维度，因此希望仅关注变化的top axis。但是，为了测试EIGENSTRAT对使用的变化轴数的敏感性，实际上推断出变化的前十个轴。检查了变异的top axis是否准确地跟踪了种群1与种群2的隶属关系，发现沿top axis的坐标与样本中的种群隶属关系相关，为99.9％；其余的轴是采样的假象。</p>
+<p>文章模拟了三种候选SNP，以比较不同分层校正方法的有效性。<br>第一类（与疾病无关联的随机SNP）<br>第二类（分化的SNP，无关联）<br>该类别是由以前对乳糖酶（LCT）基因中SNP的研究所激发的，这表明由于分层，与欧美裔美国人的身高表型存在虚假联系。<br>第三类（因果单核苷酸多态性 causal SNPs）<br>使用FST = 0.01的Balding-Nichols模型和因果等位基因相对风险为1.5的乘性疾病风险模型。</p>
+<p>对于100,000个随机SNP的十个数据集的每一个，文章在三个类别中的每个类别中模拟了1,000,000个候选SNP，并使用以下三种方法计算了关联统计量：<br>（i）无分层校正的Armitage trend $\chi^2$；<br>（ii）Genetic control使用随机SNP来推断inflation factor；<br>（iii）EIGENSTRAT使用随机SNP来推断十个变化轴。</p>
+<p>P值&lt;0.0001统计显著</p>
+<p>模拟结果表明，相对于基因组控制，EIGENSTRAT通过对病例和对照的祖先进行显式建模，可以达到同等或更低的假阳性关联率，并能够以更高的灵敏度检测出真实的关联。</p>
+<p>1.对于随机候选SNP，对于P &lt;0.0001的临界值，两种方法都将误报率降低到期望值。<br>2.对于高度分化的候选SNP，基因组控制可能会产生假阳性，而EIGENSTRAT仍能完美地校正分层。<br>3.因果疾病SNP，EIGENSTRAT具有更高的功效（几乎等同于未经分层的统计数据）：49％比基因组对照的30％.</p>
+<p>再次证实，基因组控制的统一调节在显示祖先群体间异常强的分化的标记物上是不足的，而在没有这种分化的标记物上是多余的。</p>
+<p><img src="T1-1.png" alt></p>
+<p>EIGENSTRAT模拟的一个可能问题沿变化的前十个轴调整了血统。由于此数据集仅包含一个额外的人口结构维度，因此希望仅关注变化的top axis。<br>在每个SNP类别中，对于K = 1、2、5或10，结果实际上是相同的。这意味着，只要有足够的轴数，EIGENSTRAT的结果对使用的变化轴数并不敏感。因为轴是正交的。更为严格的方法是将K设置为具有统计意义的有效变化轴数。</p>
+<p><img src="sF1.png" alt></p>
+<h4 id="more-extreme-ancestry-differences"><a href="#more-extreme-ancestry-differences" class="headerlink" title="more extreme ancestry differences"></a>more extreme ancestry differences</h4><p>Discrete subpopulations with more extreme ancestry differences between cases and controls.<br>从种群1抽样了50％的cases和0％的control，其余cases和control抽样自种群2。也就是说种群1没有对照。</p>
+<p>1.对于随机候选SNP，分层比以前更严重，但仍可以通过基因组控制和EIGENSTRAT进行完美校正。<br>2.对于高度分化的SNP，现在可以保证分层产生假阳性关联，而基因组控制无法纠正这种错误关联，而EIGENSTRAT可以再次实现完美的分层校正。<br>3.对于因果SNP，基因组控制几乎失去所有能力，而EIGENSTRAT则损失部分能力。</p>
+<p><img src="T1-2.png" alt></p>
+<p>再一次证实基因组控制的上述缺陷：异常强的分化的标记上是不够的，而在没有这种分化的标记上是多余的。</p>
+<p>进一步检查了EIGENSTRAT所获得的功效，并确定其与仅使用人口250例病例和500个对照来计算未经校正的χ2统计量所获得的功效相同。直观地，EIGENSTRAT的血统调整有效地从种群中移除了250例病例。但是请注意！这并没有消除在设计疾病研究时仔细匹配病例和对照的必要性：在当前示例中，一组更紧密匹配的500例病例和500个对照将具有更好的检测真实关联的能力。</p>
+<h4 id="Admixed-population"><a href="#Admixed-population" class="headerlink" title="Admixed population"></a>Admixed population</h4><p>Admixed population with ancestry differences between cases and controls based on ancestry risk $r$</p>
+<p>抽样个体，种群1中的祖先比例为$a$且种群2中的祖先比例为$1− a$，$a\sim U[0,1]$ ；病例/对照状态疾病风险比$r^a$，based on ancestry risk $r$.</p>
+<p>r = 2和r = 3的结果记录在表。 EIGENSTRAT再次比基因组控制更有效地校正了高度分化的SNP的分层，并在因果SNP上获得了更高的功效。</p>
+<p><img src="T1-3.png" alt></p>
+<p>但是，即使EIGENSTRAT也会在因果SNP上产生轻微能力损失：因为其祖先推论非常精确，top axis与$r$的任何一个值的真实祖先都相关为99.8％，作者猜测测这种能力缺陷可能是由于不完美的cases和controls的匹配，类似于前一种情况。</p>
+<h4 id="variables-of-interest"><a href="#variables-of-interest" class="headerlink" title="variables of interest"></a>variables of interest</h4><ul>
+<li>样本数（N）</li>
+</ul>
+<p>尝试更改样本N的数量，N分别为100、200、500和1000时进行模拟，each yielded a top axis of variation that is 99.9% correlated to population membership across samples.<br>有效的分层校正对样本数量不敏感。</p>
+<ul>
+<li>随机SNP数量（M）</li>
+</ul>
+<p>将注意力集中在高度分化的候选SNP上，它们极有可能产生假阳性关联。发现当M &lt;5000时，EIGENSTRAT很难推断出完全准确的变化轴，从而导致分层校正不完全。另一方面，即使变异轴的推断略有误差，随机候选SNP的分层校正对于M≥200也有效。</p>
+<ul>
+<li>FST值&lt;0.01</li>
+</ul>
+<p>高度分化的SNP进行完全分层校正：FST = 0.005，20,000 SNP； FST=0.002，50,000 SNP；FST=0.001，100,000 SNP. 因此，即使在高度分化的SNP的情况下，对具有数十万个SNP的美籍美国人进行基因组扫描也将能够检测并校正在紧密相关的欧洲人群中的分层。</p>
+<p>由于计算量大，无法将结构化关联方法structured association method包括在上述比较中。因此，作者通过复制数据量小得多的模拟比较了EIGENSTRAT，基因组控制和结构化关联。这三种方法在校正随机候选SNP的分层方面均取得了相似的成功，而EIGENSTRAT在检测因果SNP的真实关联时，具有优于基因组控制或结构化关联的强大能力。</p>
+<h3 id="European-America-data-sets"><a href="#European-America-data-sets" class="headerlink" title="European America data sets"></a>European America data sets</h3><p>作为正在进行的疾病研究的一部分，作者将该方法应用于在Affymetrix平台上进行基因分型的488个美国人的数据集，该平台包含116,204个SNP。主成分分析表明存在十个具有统计意义的轴（每个轴P &lt;0.01）。图中显示了前两个轴（每个轴P &lt;10^-12）。有趣的是，观察到了连续和离散的遗传效应。 基于其与乳糖酶持久性的相关性，假设第一个轴反映了西北欧洲和东南欧洲之间的遗传变异，第二个轴将两个东南亚亚群分开。</p>
+<p><img src="F2.png" alt></p>
+<p>作者对乳糖酶持久性表型进行了关联研究。之所以选择这种表型，是因为它与欧洲内部血统相关联，并且可以从数据中推断出来，因为它与LCT基因的基因型100％相关。<br>尽管与该表型完美相关的SNP不是基因分型的116,204个SNP中的一个，但附近的SNP rs3769005已被分型，并且与HapMap31的欧洲样本中的完美相关SNP有90％的相关性。因此，可以从该SNP处的基因型以合理的准确性推断出乳糖酶持久性表型。如预期的那样，第2号染色体上的大量SNP显示出高度显著的关联，反映了发生在LCT基因上的强选择性扫描strong selective sweep。因此，将随后的分析仅限于2号染色体外的SNP。4个SNP显示出显著的相关性，这可能是由于分层。</p>
+<p><img src="T2.png" alt></p>
+<p>首先尝试使用genomic control校正分层。将未经校正的$\chi^2$统计量除以全基因组膨胀因子为λ= 1.43，最上面的SNP仍然显著关联。然后运行EIGENSTRAT，均未报告显著关联。<br>值得注意的是，EIGENSTRAT推断的变异的上轴与四个最初相关的SNP和乳糖酶持久性表型都密切相关，大概是因为西北欧洲和东南欧之间的乳糖酶持久性不同。 因此，沿该轴进行校正可解决虚假关联。</p>
+<p>在上面的分析中，EIGENSTRAT用于推断变异轴的SNP集包括感兴趣的候选SNP。这就提出了一个问题，即是否可以通过包含这些SNP来使变异轴偏倚。通过排除候选SNP研究，结果基本上没有变化。表明在推断大型数据集的变化轴时，该方法对于包含或排除候选SNP具有鲁棒性。</p>
+<p>测试需要多少个随机SNP才能有效地进行分层校正。所需的SNP数量大于在FST = 0.01的模拟中确定的数量。猜测由于欧美人是混合人群，因此有效FST可能小于0.01。</p>
+<h2 id="Conclusion-amp-Discussion"><a href="#Conclusion-amp-Discussion" class="headerlink" title="Conclusion &amp; Discussion"></a>Conclusion &amp; Discussion</h2><p>EIGENSTRAT通过主成分分析，沿连续的变化轴显式建模cases和control之间的祖先差异。在模拟和真实数据集上的表现优于主流方法，并且可以轻松地用于具有成千上万个标记的疾病研究。</p>
+<p>尽管EIGENSTRAT是纠正分层的一种强大而强大的方法，但它不是万能药，研究人员应遵循精心进行实验设计的原则，在最大程度上匹配cases和control的祖先和实验室治疗。如果违反这些原则导致cases和control之间存在strong bias，则EIGENSTRAT可能会发现这种bias，但势必能力下降。</p>
+<p>虽然此文研究重点是祖先效应，但最近的一项研究表明，样本之间实验室处理的差异是一个普遍存在的问题，通常会超过人口分层的影响。确实，在此处描述的欧美数据集中，变化的前两个轴描述了祖先效应，但是在第三个轴中检测到了样品之间实验室处理差异的细微证据。 EIGENSTRAT明确解决这种细微影响的能力令人鼓舞。</p>
+<p>reference: Principal components analysis corrects for stratification in genome-wide association studies <a href="https://www.nature.com/articles/ng1847" target="_blank" rel="noopener">https://www.nature.com/articles/ng1847</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/文献阅读/" rel="tag"># 文献阅读</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/25/Factor-analysis/" rel="next" title="因子分析">
+                <i class="fa fa-chevron-left"></i> 因子分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/31/Hashing/" rel="prev" title="Hashing">
+                Hashing <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#New-method-EIGENSTRAT"><span class="nav-number">1.</span> <span class="nav-text">New method EIGENSTRAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results-Simulated-disease-studies-amp-European-America-data-sets"><span class="nav-number">2.</span> <span class="nav-text">Results: Simulated disease studies &amp; European America data sets</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simulated-disease-studies"><span class="nav-number">2.1.</span> <span class="nav-text">Simulated disease studies</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#moderate-ancestry-differences"><span class="nav-number">2.1.1.</span> <span class="nav-text">moderate ancestry differences</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#more-extreme-ancestry-differences"><span class="nav-number">2.1.2.</span> <span class="nav-text">more extreme ancestry differences</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Admixed-population"><span class="nav-number">2.1.3.</span> <span class="nav-text">Admixed population</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#variables-of-interest"><span class="nav-number">2.1.4.</span> <span class="nav-text">variables of interest</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#European-America-data-sets"><span class="nav-number">2.2.</span> <span class="nav-text">European America data sets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion-amp-Discussion"><span class="nav-number">3.</span> <span class="nav-text">Conclusion &amp; Discussion</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="生信,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="出发点：1.对原序列一段区域感兴趣，将这一小段序列取出来保存为fasta文件作为reference2.fastq文件align到reference，大部分是map不上的，只要map上的3.比对结果可视化">
+<meta name="keywords" content="生信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Align Followed by Samtools">
+<meta property="og:url" content="http://yoursite.com/2020/03/08/align-followed-by-samtools/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="出发点：1.对原序列一段区域感兴趣，将这一小段序列取出来保存为fasta文件作为reference2.fastq文件align到reference，大部分是map不上的，只要map上的3.比对结果可视化">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2020/03/08/align-followed-by-samtools/0308-4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/08/align-followed-by-samtools/0308-2.png">
+<meta property="og:updated_time" content="2020-03-19T14:08:44.363Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Align Followed by Samtools">
+<meta name="twitter:description" content="出发点：1.对原序列一段区域感兴趣，将这一小段序列取出来保存为fasta文件作为reference2.fastq文件align到reference，大部分是map不上的，只要map上的3.比对结果可视化">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/08/align-followed-by-samtools/0308-4.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/08/align-followed-by-samtools/">
+
+
+
+
+
+  <title>Align Followed by Samtools | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/08/align-followed-by-samtools/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Align Followed by Samtools</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-08T22:48:41+08:00">
+                2020-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>出发点：<br>1.对原序列一段区域感兴趣，将这一小段序列取出来保存为fasta文件作为reference<br>2.fastq文件align到reference，大部分是map不上的，只要map上的<br>3.比对结果可视化</p>
+<a id="more"></a>
+
+<h2 id="用bowtie2进行align，用samtools去掉比对不上的"><a href="#用bowtie2进行align，用samtools去掉比对不上的" class="headerlink" title="用bowtie2进行align，用samtools去掉比对不上的"></a>用bowtie2进行align，用samtools去掉比对不上的</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bowtie2-build test2.fasta index</span><br><span class="line">bowtie2 -p 8 -x index -1 H11_01_1.fastq -2 H11_01_2.fastq -S out.sam</span><br><span class="line"><span class="comment"># 用samtools将sam文件转为bam文件（二进制）</span></span><br><span class="line">samtools view -bS out.sam &gt;tmp.bam</span><br><span class="line"><span class="comment"># 用samtools去掉比对不上的</span></span><br><span class="line">samtools view -F 0x04 -b tmp.bam &gt; outtmp.bam</span><br><span class="line"><span class="comment"># sort，按位置排序，且能进一步压缩存储</span></span><br><span class="line">samtools sort outtmp.bam &gt; tmp.sort.bam</span><br></pre></td></tr></table></figure>
+
+<p>主要是因为，我感兴趣的序列是原来assembly出来的fasta文件的很小一部分，所以比对上的比例是很小的，Bowtie2会把所有的reads都输出包括那些unmapped and redundant data，根据我的文件这些冗余数据占了99.97%. 而我想看的只是0.03%比对上的部分。</p>
+<p>这个地方还可以有其它方法，在比对输出的时候就输出比对上的reads，可以看<code>bbmap</code>.</p>
+<ul>
+<li>关于samtools</li>
+</ul>
+<p>SAM(Sequence Alignment/Map) 格式是用于存储大核苷酸序列比对large nucleotide sequence alignments的通用格式。 </p>
+<ul>
+<li>具有足够的灵活性来存储由各种alignment programs生成的所有alignment信息；</li>
+<li>足够简单，可以由alignment programs轻松生成或从现有alignment format转换而来；</li>
+<li>文件尺寸紧凑；</li>
+<li>大多数操作都可以 work on a stream ，而无需将整个文件加载到内存中；</li>
+<li>允许通过基因组位置对文件进行索引，以有效地检索与位点对齐的所有读取。</li>
+</ul>
+<p>SAM Tools提供了各种实用程序，用于处理SAM格式的比对，包括按位置格式排序，合并，建立索引和生成alignments in a per-position format.</p>
+<h2 id="比对结果-可视化"><a href="#比对结果-可视化" class="headerlink" title="比对结果+可视化"></a>比对结果+可视化</h2><h3 id="vcf文件"><a href="#vcf文件" class="headerlink" title="vcf文件"></a>vcf文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bcf-&gt;vcf</span></span><br><span class="line">samtools mpileup -gSDf test2.fasta tmp.sort.bam &gt; var.raw.bcf</span><br><span class="line">bcftools view var.raw.bcf|less -S</span><br><span class="line">bcftools view var.raw.bcf &gt; var.raw.vcf</span><br><span class="line">less -SN var.raw.vcf</span><br></pre></td></tr></table></figure>
+
+<p>在上面的命令行中，samtools收集输入的BAM中的摘要信息，计算给定每种可能基因型的数据的可能性，并以BCF格式存储可能性。It does not call variants.</p>
+<p>Bcftools applies the prior and does the actual calling. 它还可以连接BCF文件，为快速随机访问索引BCF，并将BCF转换为VCF。 此外，bcftools可以在某些VCF上运行（例如，从带有GL标签的VCF调用SNP），但不能在所有VCF上使用； VCF到BCF的转换目前也不起作用。</p>
+<p>更多见<br><a href="http://samtools.sourceforge.net/mpileup.shtml" target="_blank" rel="noopener">http://samtools.sourceforge.net/mpileup.shtml</a></p>
+<h3 id="pileup文件"><a href="#pileup文件" class="headerlink" title="pileup文件"></a>pileup文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pileup格式文件</span></span><br><span class="line">samtools mpileup -f test2.fasta -Q 15 -q 20 tmp.sort.bam -o tmp.pileup</span><br><span class="line">less -S tmp.pileup</span><br></pre></td></tr></table></figure>
+
+<p>关于参数<code>-Q</code>和<code>-q</code>，在<code>mpileup</code>里<code>-Q</code>控制碱基的质量,<code>-q</code>控制比对的质量。也就是看到的pileup文件实际上是经过筛选的文件。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">samtools depth |&amp; grep quality</span><br><span class="line">   -q &lt;int&gt;            base quality threshold [0]</span><br><span class="line">   -Q &lt;int&gt;            mapping quality threshold [0]</span><br><span class="line"></span><br><span class="line">samtools mpileup |&amp; grep smaller</span><br><span class="line">  -q, --min-MQ INT        skip alignments with mapQ smaller than INT [0]</span><br><span class="line">  -Q, --min-BQ INT        skip bases with baseQ/BAQ smaller than INT [13]</span><br><span class="line"></span><br><span class="line">samtools view | grep qua</span><br><span class="line">  -q INT   only include reads with mapping quality &gt;= INT [0]</span><br></pre></td></tr></table></figure>
+
+<p>The pileup format有多种变体。 SAMtools的默认输出如下所示：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">seq1 272 T 24  ,.$.....,,.,.,...,,,.,..^+. &lt;&lt;&lt;+;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;=&lt;;&lt;;7&lt;&amp;</span><br><span class="line">seq1 273 T 23  ,.....,,.,.,...,,,.,..A &lt;&lt;&lt;;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;3&lt;=&lt;&lt;&lt;;&lt;&lt;+</span><br><span class="line">seq1 274 T 23  ,.$....,,.,.,...,,,.,...    7&lt;7;&lt;;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;=&lt;;&lt;;&lt;&lt;6</span><br><span class="line">seq1 275 A 23  ,$....,,.,.,...,,,.,...^l.  &lt;+;9*&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;=&lt;&lt;:;&lt;&lt;&lt;&lt;</span><br><span class="line">seq1 276 G 22  ...T,,.,.,...,,,.,....  33;+&lt;&lt;7=7&lt;&lt;7&lt;&amp;&lt;&lt;1;&lt;&lt;6&lt;</span><br><span class="line">seq1 277 T 22  ....,,.,.,.C.,,,.,..G.  +7&lt;;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&amp;&lt;=&lt;&lt;:;&lt;&lt;&amp;&lt;</span><br><span class="line">seq1 278 G 23  ....,,.,.,...,,,.,....^k.   %38*&lt;&lt;;&lt;7&lt;&lt;7&lt;=&lt;&lt;&lt;;&lt;&lt;&lt;&lt;&lt;</span><br><span class="line">seq1 279 C 23  A..T,,.,.,...,,,.,..... ;75&amp;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;=&lt;&lt;&lt;9&lt;&lt;:&lt;&lt;</span><br></pre></td></tr></table></figure>
+
+<p>其中每行由染色体chromosome，碱基坐标1-based coordinate，参考碱基reference base，覆盖该位点的reads数the number of reads covering the site，read碱基read bases和碱基质量base qualities组成。 在read碱基列上，点代表与正向链上的参考碱基匹配，逗号代表反向链上的匹配，<code>ACGTN</code>代表正向链上的mismatch，而<code>acgtn</code>代表与正链上的mismatch. 模式“ \ + [0-9] + [ACGTNacgtn] +”表示此参考位置和下一个参考位置之间有插入。 插入的长度由模式中的整数给出，后跟插入的序列。</p>
+<p>更多见<br><a href="http://samtools.sourceforge.net/pileup.shtml" target="_blank" rel="noopener">http://samtools.sourceforge.net/pileup.shtml</a></p>
+<h3 id="IGV可视化"><a href="#IGV可视化" class="headerlink" title="IGV可视化"></a>IGV可视化</h3><p>为bam文件建立索引，生成一个<code>.bai</code>文件，两者放入同一文件夹下，它根据文件名自动和.bam关联。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools index tmp.sort.bam</span><br></pre></td></tr></table></figure>
+
+<p>打开IGV，<code>File-&gt;load from file</code>将bam导入IGV中；<code>Genomes-&gt;load from genome</code>导入参考序列fasta文件。</p>
+<p><img src="0308-4.png" alt></p>
+<h3 id="samtools-tview可视化"><a href="#samtools-tview可视化" class="headerlink" title="samtools tview可视化"></a>samtools tview可视化</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools tview tmp.sort.bam test2.fasta</span><br></pre></td></tr></table></figure>
+
+<p><code>.</code>表示和参考序列一致，<code>,</code>表示比对到参考序列互补链，字母代表mismatch。颜色标注比对质量或碱基质量，30-40白色，20-30黄色，10-20绿色，0-10蓝色。<br>按<code>?</code>显示帮助菜单。</p>
+<ul>
+<li><code>H</code>(左）<code>J</code>（上）<code>K</code>（下）<code>L</code>（右）移动显示界面。大写字母移动快，小写字母移动慢。或者上下左右键。</li>
+<li>点号<code>.</code>切换显示碱基和点号，<code>r</code>切换显示read name.</li>
+<li><code>g</code>快速定位，如我们定位到<code>NODE_10_length_213724_cov_21.069325:100</code>位置，按下<code>enter</code>就可以到达该位置。</li>
+<li><code>q</code>退出。</li>
+</ul>
+<p><img src="0308-2.png" alt></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/生信/" rel="tag"># 生信</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/08/bowtie2/" rel="next" title="Bowtie2(alignment)">
+                <i class="fa fa-chevron-left"></i> Bowtie2(alignment)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/11/shell/" rel="prev" title="shell and shell scripts">
+                shell and shell scripts <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#用bowtie2进行align，用samtools去掉比对不上的"><span class="nav-number">1.</span> <span class="nav-text">用bowtie2进行align，用samtools去掉比对不上的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比对结果-可视化"><span class="nav-number">2.</span> <span class="nav-text">比对结果+可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vcf文件"><span class="nav-number">2.1.</span> <span class="nav-text">vcf文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pileup文件"><span class="nav-number">2.2.</span> <span class="nav-text">pileup文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IGV可视化"><span class="nav-number">2.3.</span> <span class="nav-text">IGV可视化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#samtools-tview可视化"><span class="nav-number">2.4.</span> <span class="nav-text">samtools tview可视化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="统计,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="聚类分析（1）现有16种饮料的热量、咖啡因含量、钠含量和价格的数据，根据这4个变量对16种饮料进行聚类 系统聚类这里展示的是离差平方和法（WARD）进行系统聚类。它基于方差分析的思想，同类样品之间的离差平方和应当较小，不同类之间的离差平方和应当较大$G_t$中样品的离差平方和为$$W_t=\Sigma_{i=1}^{n_t}(X_{(i)}^{(t)}-\bar{X}^{(t)})’ (X_{(i">
+<meta name="keywords" content="统计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聚类分析和主成分分析">
+<meta property="og:url" content="http://yoursite.com/2019/12/13/cluster-PCA/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="聚类分析（1）现有16种饮料的热量、咖啡因含量、钠含量和价格的数据，根据这4个变量对16种饮料进行聚类 系统聚类这里展示的是离差平方和法（WARD）进行系统聚类。它基于方差分析的思想，同类样品之间的离差平方和应当较小，不同类之间的离差平方和应当较大$G_t$中样品的离差平方和为$$W_t=\Sigma_{i=1}^{n_t}(X_{(i)}^{(t)}-\bar{X}^{(t)})’ (X_{(i">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213-2.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213-4.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213-1.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213_2.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213_2-2.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213_2-3.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/heatmap.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/cluster.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/pca1.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/pca_red.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213_3-1.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/scree.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/varpca.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/cor.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/bar.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/13/cluster-PCA/varpca_grad.png">
+<meta property="og:updated_time" content="2019-12-19T08:42:21.617Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聚类分析和主成分分析">
+<meta name="twitter:description" content="聚类分析（1）现有16种饮料的热量、咖啡因含量、钠含量和价格的数据，根据这4个变量对16种饮料进行聚类 系统聚类这里展示的是离差平方和法（WARD）进行系统聚类。它基于方差分析的思想，同类样品之间的离差平方和应当较小，不同类之间的离差平方和应当较大$G_t$中样品的离差平方和为$$W_t=\Sigma_{i=1}^{n_t}(X_{(i)}^{(t)}-\bar{X}^{(t)})’ (X_{(i">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/13/cluster-PCA/1213-2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/13/cluster-PCA/">
+
+
+
+
+
+  <title>聚类分析和主成分分析 | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/13/cluster-PCA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">聚类分析和主成分分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-13T22:05:58+08:00">
+                2019-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="聚类分析"><a href="#聚类分析" class="headerlink" title="聚类分析"></a>聚类分析</h2><p>（1）现有16种饮料的热量、咖啡因含量、钠含量和价格的数据，根据这4个变量对16种饮料进行聚类</p>
+<h3 id="系统聚类"><a href="#系统聚类" class="headerlink" title="系统聚类"></a>系统聚类</h3><p>这里展示的是离差平方和法（WARD）进行系统聚类。它基于方差分析的思想，同类样品之间的离差平方和应当较小，不同类之间的离差平方和应当较大<br>$G_t$中样品的离差平方和为<br>$$W_t=\Sigma_{i=1}^{n_t}(X_{(i)}^{(t)}-\bar{X}^{(t)})’ (X_{(i)}^{(t)}-\bar{X}^{(t)})$$<br>$k$个类的总组内离差平方和为<br>$$W=\Sigma_{t=1}^k W_t$$<br>我们需要当$k$固定时要选择使W达到极小的分类</p>
+<a id="more"></a>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; head(mydata)</span><br><span class="line">  热量x1 咖啡因含量x2 钠含量x3 价格x4</span><br><span class="line"><span class="number">1</span>  <span class="number">207.2</span>          <span class="number">3.3</span>     <span class="number">15.5</span>    <span class="number">2.8</span></span><br><span class="line"><span class="number">2</span>   <span class="number">36.8</span>          <span class="number">5.9</span>     <span class="number">12.9</span>    <span class="number">3.3</span></span><br><span class="line"><span class="number">3</span>   <span class="number">72.2</span>          <span class="number">7.3</span>      <span class="number">8.2</span>    <span class="number">2.4</span></span><br><span class="line"><span class="number">4</span>   <span class="number">36.7</span>          <span class="number">0.4</span>     <span class="number">10.5</span>    <span class="number">4.0</span></span><br><span class="line"><span class="number">5</span>  <span class="number">121.7</span>          <span class="number">4.1</span>      <span class="number">9.2</span>    <span class="number">3.5</span></span><br><span class="line"><span class="number">6</span>   <span class="number">89.1</span>          <span class="number">4.0</span>     <span class="number">10.2</span>    <span class="number">3.3</span></span><br></pre></td></tr></table></figure>
+
+<p>代码一（比较丑）：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(cluster)</span><br><span class="line"><span class="comment"># Compute with agnes (make sure you have the package cluster)</span></span><br><span class="line">hc1 &lt;- agnes(mydata, method = <span class="string">"ward"</span>)</span><br><span class="line">pltree(hc1, cex = <span class="number">0.6</span>, hang = -<span class="number">1</span>, main = <span class="string">"Dendrogram of agnes"</span>)</span><br><span class="line">rect.hclust(hc1, k = <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="1213-2.png" alt></p>
+<p>代码二：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用欧式距离代表样本之间两两相似性</span></span><br><span class="line">result &lt;- dist(mydata, method = <span class="string">"euclidean"</span>)</span><br><span class="line">result_hc &lt;- hclust(d = result, method = <span class="string">"ward.D2"</span>)</span><br><span class="line">fviz_dend(result_hc, k = <span class="number">3</span>, </span><br><span class="line">          cex = <span class="number">0.5</span>, </span><br><span class="line">          k_colors = c(<span class="string">"#2E9FDF"</span>, <span class="string">"#E7B800"</span>, <span class="string">"#FC4E07"</span>),</span><br><span class="line">          color_labels_by_k = <span class="literal">TRUE</span>, </span><br><span class="line">          rect = <span class="literal">TRUE</span>          </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><img src="1213-4.png" alt></p>
+<p>与之前代码的结果是一致的，但是图比较好看嘿嘿嘿</p>
+<p>经WARD系统聚类法，我们得到了聚类结果的谱系图，从中我们可以看到饮料分为三类的结果是{12,14,2,4,13,3,8,11},{1,10},{7,6,9,16,5,15}.</p>
+<h3 id="动态聚类"><a href="#动态聚类" class="headerlink" title="动态聚类"></a>动态聚类</h3><p>这里采用K-means聚类方法展示动态聚类法。<br>Step1 规定样品间的距离人为定出三个数：$K$（分类数），$C$（类间距离最小值）和$R$（类内距离最大值）；取前K个样品为<strong>凝聚点</strong><br>Step2 计算这$K$个凝聚点两两之间的距离，小于$C$则合并这两个凝聚点，用这两个点的重心作为新的凝聚点重复Step2至所有凝聚点之间的距离$\geq C$.<br>Step3 剩下$n-K$个样品逐个归类，若与凝聚点距离$&gt;R$则作为新的凝聚点否则归入距离最近的凝聚点所在的类。重新计算每类重心作为新凝聚点。重复Step2。<br>Step4 所有样品重复Step3且分类不一致是要重新计算重心。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(factoextra) </span><br><span class="line">b&lt;-scale(mydata) </span><br><span class="line">set.seed(<span class="number">123</span>)  </span><br><span class="line">fviz_nbclust(b,kmeans,method=<span class="string">"wss"</span>)+geom_vline(xintercept=<span class="number">3</span>,linetype=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用组内平方误差和确定最佳聚类个数，预判分为三类或四类，这里分为三类效果较好（可看后面的聚类图）。</p>
+<p><img src="1213-1.png" alt></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res&lt;-kmeans(b,<span class="number">3</span>)</span><br><span class="line">res1&lt;-cbind(mydata,res$cluster)</span><br><span class="line">fviz_cluster(res,data=mydata[,<span class="number">1</span>:ncol(mydata)-<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p><img src="1213.png" alt></p>
+<p>使用K-means动态聚类方法与Ward系统聚类法的聚类结果并不相同，K-means动态聚类方法将饮料分为三类的结果是{1,8,12,14},{4,9,10,16},{3,5,6,7,11,12,13,15}</p>
+<p>（2）中国31个城市2011年的空气质量数据，根据这个数据对31个城市进行聚类分析。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt; head(mydata)</span><br><span class="line">         可吸入颗粒物.PM10. 二氧化硫.SO2. 二氧化氮.NO2.</span><br><span class="line">北京             <span class="number">0.11329589</span>    <span class="number">0.02810959</span>    <span class="number">0.05582740</span></span><br><span class="line">天津             <span class="number">0.09287671</span>    <span class="number">0.04203562</span>    <span class="number">0.03830685</span></span><br><span class="line">石家庄           <span class="number">0.09887397</span>    <span class="number">0.05225205</span>    <span class="number">0.04118356</span></span><br><span class="line">太原             <span class="number">0.08433151</span>    <span class="number">0.06391233</span>    <span class="number">0.02293151</span></span><br><span class="line">呼和浩特         <span class="number">0.07576164</span>    <span class="number">0.05413973</span>    <span class="number">0.03944110</span></span><br><span class="line">沈阳             <span class="number">0.09648219</span>    <span class="number">0.05859452</span>    <span class="number">0.03272329</span></span><br><span class="line">         空气质量达到及好于二级的天数.天.</span><br><span class="line">北京                                  <span class="number">286</span></span><br><span class="line">天津                                  <span class="number">320</span></span><br><span class="line">石家庄                                <span class="number">320</span></span><br><span class="line">太原                                  <span class="number">308</span></span><br><span class="line">呼和浩特                              <span class="number">347</span></span><br><span class="line">沈阳                                  <span class="number">332</span></span><br><span class="line">         空气质量达到二级以上天数占全年比重<span class="keyword">...</span></span><br><span class="line">北京                                  <span class="number">78.35616</span></span><br><span class="line">天津                                  <span class="number">87.67123</span></span><br><span class="line">石家庄                                <span class="number">87.67123</span></span><br><span class="line">太原                                  <span class="number">84.38356</span></span><br><span class="line">呼和浩特                              <span class="number">95.06849</span></span><br><span class="line">沈阳                                  <span class="number">90.95890</span></span><br></pre></td></tr></table></figure>
+
+<p>这次先进行K-means动态聚类法。<br>首先我根据动态聚类法判定类别数，$k=5$时出现拐点，分成五类合适。</p>
+<p><img src="1213_2.png" alt></p>
+<p>绘制动态聚类结果</p>
+<p><img src="1213_2-2.png" alt></p>
+<p>根据可吸入颗粒物(PM10)、二氧化硫(SO2)、二氧化氮(NO2)、空气质量达到及好于二级的天数(天)、空气质量达到二级以上天数占全年比重(%)这几个变量，用K-means动态聚类法将城市分成五类，结果如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; rownames(res1)[res1$`res$cluster`==<span class="string">"1"</span>]</span><br><span class="line"> [<span class="number">1</span>] <span class="string">"天津"</span>     <span class="string">"石家庄"</span>   <span class="string">"太原"</span>     <span class="string">"呼和浩特"</span> <span class="string">"沈阳"</span>     <span class="string">"南昌"</span>    </span><br><span class="line"> [<span class="number">7</span>] <span class="string">"济南"</span>     <span class="string">"重庆"</span>     <span class="string">"贵阳"</span>     <span class="string">"西宁"</span>     <span class="string">"银川"</span></span><br><span class="line">&gt; rownames(res1)[res1$`res$cluster`==<span class="string">"2"</span>]</span><br><span class="line">[<span class="number">1</span>] <span class="string">"长春"</span> <span class="string">"上海"</span> <span class="string">"杭州"</span> <span class="string">"长沙"</span> <span class="string">"广州"</span> <span class="string">"南宁"</span> <span class="string">"昆明"</span></span><br><span class="line">&gt; rownames(res1)[res1$`res$cluster`==<span class="string">"3"</span>]</span><br><span class="line">[<span class="number">1</span>] <span class="string">"福州"</span> <span class="string">"海口"</span> <span class="string">"拉萨"</span></span><br><span class="line">&gt; rownames(res1)[res1$`res$cluster`==<span class="string">"4"</span>]</span><br><span class="line">[<span class="number">1</span>] <span class="string">"兰州"</span>     <span class="string">"乌鲁木齐"</span></span><br><span class="line">&gt; rownames(res1)[res1$`res$cluster`==<span class="string">"5"</span>]</span><br><span class="line">[<span class="number">1</span>] <span class="string">"北京"</span>   <span class="string">"哈尔滨"</span> <span class="string">"南京"</span>   <span class="string">"合肥"</span>   <span class="string">"郑州"</span>   <span class="string">"武汉"</span>   <span class="string">"成都"</span>  </span><br><span class="line">[<span class="number">8</span>] <span class="string">"西安"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>WARD系统聚类法</li>
+</ul>
+<p><img src="1213_2-3.png" alt></p>
+<blockquote>
+<p>我精挑细选的配色，绘图的关键在配色（√）</p>
+</blockquote>
+<p>使用WARD系统聚类法的聚类结果为<br>第一类：{“福州” “广州” “拉萨” “海口” “昆明”}<br>第二类：{“南宁” “贵阳” “长春” “呼和浩特” “南昌” “沈阳” “杭州”  “上海”  “长沙”}<br>第三类：{“太原” “合肥” “武汉” “西安” “西宁” “郑州” “哈尔滨” “南京” “天津” “石家庄” “济南” “重庆” “成都”}<br>第四类：{“兰州”}<br>第五类：{“北京” “乌鲁木齐”}</p>
+<p>下面我们通过<strong>热图</strong>的方法发现类并确定类的个数。<br>用result表示两两样本间的欧式距离矩阵，距离越近相关性越高。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result &lt;- dist(mydata, method = <span class="string">"euclidean"</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="通过热图发现类"><a href="#通过热图发现类" class="headerlink" title="通过热图发现类"></a>通过热图发现类</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">heatmap(as.matrix(result), labRow = <span class="literal">F</span>, labCol = <span class="literal">F</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在图中可以看出颜色越深，距离越近。通过观察感觉分成五类或六类OK，分成两类也似有道理但总觉得两类太少了点。</p>
+<p><img src="heatmap.png" alt></p>
+<p>确定类的个数为五类</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result_hc &lt;- hclust(d = result, method = <span class="string">"ward.D2"</span>)</span><br><span class="line">re &lt;- cutree(result_hc, k = <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>采用多维标定，用第一和第二主成分，表示原本分类。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mds = cmdscale(result, k = <span class="number">2</span>, eig = <span class="literal">T</span>)</span><br><span class="line">X &lt;- mds$points[, <span class="number">1</span>]</span><br><span class="line">Y &lt;- mds$points[, <span class="number">2</span>]</span><br><span class="line">p = ggplot(data.frame(X, Y ), aes(X, Y ))</span><br><span class="line"><span class="keyword">library</span>(ggplot2)</span><br><span class="line">p + geom_point(size = <span class="number">3</span>, alpha = <span class="number">0.8</span>, aes(colour =factor(re)))</span><br></pre></td></tr></table></figure>
+
+<p><img src="cluster.png" alt></p>
+<h3 id="系统聚类法和动态聚类法的优缺点"><a href="#系统聚类法和动态聚类法的优缺点" class="headerlink" title="系统聚类法和动态聚类法的优缺点"></a>系统聚类法和动态聚类法的优缺点</h3><p>系统聚类法：<br>优点：可解释性好，可以考虑先取K比较大的K-means后，合并阶段用系统聚类也许能产生更高质量的聚类。<br>缺点：时间复杂度高。</p>
+<p>动态聚类法：<br>优点：适用于大样本的Q型聚类分析。大型数据一般较集中，异常值影响较弱。且算法简单高效，时间复杂度低。<br>缺点：依赖初始$K$个点的选取或说依赖于初始划分，容易落入局部最优。对噪声和离群值敏感。</p>
+<p>动态聚类法的改进方法：为了检验聚类的稳定性，可用一个新的初始分类重新检验整个聚类算法。如最终分类与原来一样，则不必再进行计算；否则，须另行考虑聚类算法。</p>
+<h2 id="主成分分析"><a href="#主成分分析" class="headerlink" title="主成分分析"></a>主成分分析</h2><ul>
+<li>由于变量个数太多，且彼此有相关性，从而数据信息重叠。</li>
+<li>当变量较多，在高维空间研究样本分布规律较复杂</li>
+</ul>
+<p>于是我们希望，用较少的综合变量代替原来较多变量，又能尽可能多地反映原来数据的信息，并且彼此之间互不相关。</p>
+<p>叮！这就孕育了<strong>主成分分析</strong>！</p>
+<p>设$X=(X_1,X_2,…,X_p)’$为$p$维随机向量。称$Z_i=a_i’X$为$X$的第$i$主成分$(i=1,2,…,p)$，如果：</p>
+<ul>
+<li>$a_i’a_i=1\ (i=1,2,…,p)$;</li>
+<li>when $i&gt;1$, $a_i’\Sigma a_j=0\ (j=1,….,i-1)$;</li>
+<li>$Var(Z_i)=max_{a_i’a_i=1,a_i’\Sigma a_j=0\ (j=1,….,i-1)}Var(\alpha’ X)$</li>
+</ul>
+<p>易见，$Var(Z_i)$越大表明$Z_i$蕴含信息越多，此时可见$a_i$需要有限制否则方差可以趋于无穷，常用限制为$a_i’a_i=1$. 而我们不想信息重复，于是又有$Cov(Z_i,Z_j)=a_i’\Sigma a_j=0\ (j\neq i)$. 这时我们不难理解上述对主成分的定义了。</p>
+<p>一般地，求$X$的第$i$主成分可通过求$\Sigma$的第$i$大特征值所对应的特征向量得到。</p>
+<p><em>Thm</em> 设$X=(X_1,X_2,…,X_p)’$是$p$维随机向量，且$D(X)=\Sigma$，$\Sigma$的特征值为$\lambda_1\geq\lambda_2\geq…\geq\lambda_p\geq 0$，$a_1,a_2,…,a_p$为相应的单位正交特征向量，则$X$的第$i$主成分为<br>$$Z_i=a_i’X\ (i=1,2,…,p)$$</p>
+<p>下面这张图就形象地展现了如何利用主成分分析将二维降至一维。<br><img src="pca1.png" alt></p>
+<p>注意，当数据集中的变量高度相关时，PCA方法特别有用。 相关性表明数据中存在冗余。 由于这种冗余，PCA可用于将原始变量减少为较少数量的新变量（=主成分），从而解释了原始变量中的大多数方差。</p>
+<p><img src="pca_red.png" alt></p>
+<p>以下解释贡献率的概念，贡献率的大小又能说是解释了总体方差的多少。<br>我们称$\lambda_k / \Sigma_{i=1}^{p}\lambda_i$为主成分$Z_k$的<strong>贡献率</strong>；又称$\Sigma_{k=1}^{m}\lambda_k / \Sigma_{i=1}^{p}\lambda_i$为主成分$Z_1,…,Z_m(m&lt;p)$的<strong>累计贡献率</strong>。<br>（3’）我国2010你那各地区城镇居民家庭平均每人全年消费数据，这些数据指标分别从食品（x1）,衣着，居住，医疗，交通，通信，教育，家政和耐用消费品来描述消费。试对该数据进行主成分分析。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; head(data)</span><br><span class="line">          食品    衣着    居住    医疗 交通通讯   教育 家庭服务 耐用消费品</span><br><span class="line">北京   <span class="number">5561.54</span> <span class="number">1571.74</span> <span class="number">1286.32</span> <span class="number">1563.10</span>  <span class="number">2293.23</span> <span class="number">809.25</span>    <span class="number">84.71</span>     <span class="number">548.55</span></span><br><span class="line">天津   <span class="number">5005.09</span> <span class="number">1153.66</span> <span class="number">1528.28</span> <span class="number">1220.92</span>  <span class="number">1567.87</span> <span class="number">715.24</span>    <span class="number">45.50</span>     <span class="number">467.75</span></span><br><span class="line">河北   <span class="number">3155.40</span> <span class="number">1137.22</span> <span class="number">1097.41</span>  <span class="number">808.88</span>  <span class="number">1062.31</span> <span class="number">386.60</span>    <span class="number">28.84</span>     <span class="number">305.70</span></span><br><span class="line">山西   <span class="number">2974.76</span> <span class="number">1137.71</span> <span class="number">1250.87</span>  <span class="number">769.79</span>   <span class="number">931.33</span> <span class="number">570.79</span>    <span class="number">35.38</span>     <span class="number">259.05</span></span><br><span class="line">内蒙古 <span class="number">3553.48</span> <span class="number">1616.56</span> <span class="number">1028.19</span>  <span class="number">869.71</span>  <span class="number">1191.70</span> <span class="number">568.35</span>    <span class="number">30.49</span>     <span class="number">307.92</span></span><br><span class="line">辽宁   <span class="number">4378.14</span> <span class="number">1187.41</span> <span class="number">1270.95</span>  <span class="number">913.13</span>  <span class="number">1295.70</span> <span class="number">670.13</span>    <span class="number">30.40</span>     <span class="number">235.46</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pr&lt;-princomp(data,cor=<span class="literal">TRUE</span>)</span><br><span class="line">screeplot(pr,type=<span class="string">"lines"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="1213_3-1.png" alt></p>
+<p>根据<strong>碎石图</strong>转折点在2个主成分或3个主成分</p>
+<p>主成分分析结果：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&gt; summary(pr,loadings=<span class="literal">TRUE</span>)</span><br><span class="line">Importance of components:</span><br><span class="line">                          Comp.1    Comp.2     Comp.3    Comp.4     Comp.5</span><br><span class="line">Standard deviation     <span class="number">2.3213318</span> <span class="number">1.1100881</span> <span class="number">0.72943408</span> <span class="number">0.5464987</span> <span class="number">0.47643779</span></span><br><span class="line">Proportion of Variance <span class="number">0.6735727</span> <span class="number">0.1540369</span> <span class="number">0.06650926</span> <span class="number">0.0373326</span> <span class="number">0.02837412</span></span><br><span class="line">Cumulative Proportion  <span class="number">0.6735727</span> <span class="number">0.8276096</span> <span class="number">0.89411886</span> <span class="number">0.9314515</span> <span class="number">0.95982558</span></span><br><span class="line">                          Comp.6     Comp.7      Comp.8</span><br><span class="line">Standard deviation     <span class="number">0.4351019</span> <span class="number">0.28334611</span> <span class="number">0.227588880</span></span><br><span class="line">Proportion of Variance <span class="number">0.0236642</span> <span class="number">0.01003563</span> <span class="number">0.006474587</span></span><br><span class="line">Cumulative Proportion  <span class="number">0.9834898</span> <span class="number">0.99352541</span> <span class="number">1.000000000</span></span><br><span class="line"></span><br><span class="line">Loadings:</span><br><span class="line">           Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6 Comp.7 Comp.8</span><br><span class="line">食品        <span class="number">0.358</span>  <span class="number">0.396</span>  <span class="number">0.158</span>  <span class="number">0.288</span>  <span class="number">0.503</span>         <span class="number">0.282</span>  <span class="number">0.522</span></span><br><span class="line">衣着        <span class="number">0.257</span> -<span class="number">0.536</span>  <span class="number">0.703</span>        -<span class="number">0.130</span> -<span class="number">0.336</span>         <span class="number">0.135</span></span><br><span class="line">居住        <span class="number">0.374</span>        -<span class="number">0.412</span> -<span class="number">0.570</span> -<span class="number">0.112</span> -<span class="number">0.512</span>  <span class="number">0.224</span>  <span class="number">0.198</span></span><br><span class="line">医疗        <span class="number">0.275</span> -<span class="number">0.599</span> -<span class="number">0.336</span>         <span class="number">0.600</span>  <span class="number">0.148</span> -<span class="number">0.248</span>       </span><br><span class="line">交通通讯    <span class="number">0.393</span>  <span class="number">0.292</span>  <span class="number">0.137</span>  <span class="number">0.120</span>  <span class="number">0.166</span> -<span class="number">0.233</span>  <span class="number">0.114</span> -<span class="number">0.795</span></span><br><span class="line">教育        <span class="number">0.386</span>         <span class="number">0.195</span> -<span class="number">0.466</span> -<span class="number">0.178</span>  <span class="number">0.729</span>  <span class="number">0.168</span>       </span><br><span class="line">家庭服务    <span class="number">0.396</span>  <span class="number">0.264</span>               -<span class="number">0.211</span>        -<span class="number">0.837</span>  <span class="number">0.152</span></span><br><span class="line">耐用消费品  <span class="number">0.361</span> -<span class="number">0.205</span> -<span class="number">0.373</span>  <span class="number">0.599</span> -<span class="number">0.503</span>  <span class="number">0.114</span>  <span class="number">0.251</span></span><br></pre></td></tr></table></figure>
+
+<p>可以发现当选用前三个主成分时，已经解释了接近90%的方差，所以我认为选取三个主成分进行降维是合理的。</p>
+<h3 id="FactoMineR"><a href="#FactoMineR" class="headerlink" title="FactoMineR"></a>FactoMineR</h3><p>下面我们用FactoMineR包来对同样的数据作PCA，它的展示效果更好。</p>
+<ul>
+<li>计算变量的主成分</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res.pca &lt;- PCA(data, graph = <span class="literal">FALSE</span>)</span><br><span class="line">eig.val &lt;- get_eigenvalue(res.pca)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>观察特征值，它代表了每个主成分的方差</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; eig.val</span><br><span class="line">      eigenvalue variance.percent cumulative.variance.percent</span><br><span class="line">Dim.1 5.38858121       67.3572651                    67.35727</span><br><span class="line">Dim.2 1.23229559       15.4036948                    82.76096</span><br><span class="line">Dim.3 0.53207408        6.6509260                    89.41189</span><br><span class="line">Dim.4 0.29866081        3.7332601                    93.14515</span><br><span class="line">Dim.5 0.22699297        2.8374121                    95.98256</span><br><span class="line">Dim.6 0.18931363        2.3664203                    98.34898</span><br><span class="line">Dim.7 0.08028502        1.0035627                    99.35254</span><br><span class="line">Dim.8 0.05179670        0.6474587                   100.00000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>观察碎石图</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fviz_eig(res.pca, addlabels = <span class="literal">TRUE</span>, ylim = c(<span class="number">0</span>, <span class="number">50</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="scree.png" alt></p>
+<p>从PCA输出中提取变量结果的一种简单方法是使用函数get_pca_var（）[factoextra package]。 该函数提供了一个矩阵列表，其中包含活动变量的所有结果（坐标，变量与轴之间的相关性，余弦平方和贡献）</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; var &lt;- get_pca_var(res.pca)</span><br><span class="line">&gt; var</span><br><span class="line">Principal Component Analysis Results <span class="keyword">for</span> variables</span><br><span class="line"> ===================================================</span><br><span class="line">  Name       Description                                    </span><br><span class="line"><span class="number">1</span> <span class="string">"$coord"</span>   <span class="string">"Coordinates for the variables"</span>                </span><br><span class="line"><span class="number">2</span> <span class="string">"$cor"</span>     <span class="string">"Correlations between variables and dimensions"</span></span><br><span class="line"><span class="number">3</span> <span class="string">"$cos2"</span>    <span class="string">"Cos2 for the variables"</span>                       </span><br><span class="line"><span class="number">4</span> <span class="string">"$contrib"</span> <span class="string">"contributions of the variables"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment"># Coordinates</span></span><br><span class="line">&gt; head(var$coord)</span><br><span class="line">             Dim.1        Dim.2      Dim.3        Dim.4       Dim.5</span><br><span class="line">食品     <span class="number">0.8309549</span> -<span class="number">0.439440979</span>  <span class="number">0.1151560</span>  <span class="number">0.157267242</span>  <span class="number">0.23942030</span></span><br><span class="line">衣着     <span class="number">0.5968496</span>  <span class="number">0.594904015</span>  <span class="number">0.5130757</span>  <span class="number">0.013283797</span> -<span class="number">0.06211260</span></span><br><span class="line">居住     <span class="number">0.8674876</span> -<span class="number">0.038553622</span> -<span class="number">0.3007570</span> -<span class="number">0.311292972</span> -<span class="number">0.05351647</span></span><br><span class="line">医疗     <span class="number">0.6377140</span>  <span class="number">0.664657743</span> -<span class="number">0.2453518</span>  <span class="number">0.002703152</span>  <span class="number">0.28597319</span></span><br><span class="line">交通通讯 <span class="number">0.9113413</span> -<span class="number">0.323711002</span>  <span class="number">0.1000397</span>  <span class="number">0.065838532</span>  <span class="number">0.07908669</span></span><br><span class="line">教育     <span class="number">0.8970832</span> -<span class="number">0.007529241</span>  <span class="number">0.1420381</span> -<span class="number">0.254423709</span> -<span class="number">0.08501927</span></span><br><span class="line">&gt; <span class="comment"># Cos2: quality on the factore map</span></span><br><span class="line">&gt; head(var$cos2)</span><br><span class="line">             Dim.1        Dim.2      Dim.3        Dim.4       Dim.5</span><br><span class="line">食品     <span class="number">0.6904861</span> <span class="number">1.931084e-01</span> <span class="number">0.01326091</span> <span class="number">2.473299e-02</span> <span class="number">0.057322080</span></span><br><span class="line">衣着     <span class="number">0.3562295</span> <span class="number">3.539108e-01</span> <span class="number">0.26324670</span> <span class="number">1.764593e-04</span> <span class="number">0.003857975</span></span><br><span class="line">居住     <span class="number">0.7525348</span> <span class="number">1.486382e-03</span> <span class="number">0.09045477</span> <span class="number">9.690331e-02</span> <span class="number">0.002864013</span></span><br><span class="line">医疗     <span class="number">0.4066792</span> <span class="number">4.417699e-01</span> <span class="number">0.06019753</span> <span class="number">7.307029e-06</span> <span class="number">0.081780663</span></span><br><span class="line">交通通讯 <span class="number">0.8305430</span> <span class="number">1.047888e-01</span> <span class="number">0.01000794</span> <span class="number">4.334712e-03</span> <span class="number">0.006254705</span></span><br><span class="line">教育     <span class="number">0.8047584</span> <span class="number">5.668948e-05</span> <span class="number">0.02017483</span> <span class="number">6.473142e-02</span> <span class="number">0.007228276</span></span><br><span class="line">&gt; <span class="comment"># Contributions to the principal components</span></span><br><span class="line">&gt; head(var$contrib)</span><br><span class="line">             Dim.1        Dim.2     Dim.3        Dim.4     Dim.5</span><br><span class="line">食品     <span class="number">12.813875</span> <span class="number">15.670621251</span>  <span class="number">2.492305</span>  <span class="number">8.281295869</span> <span class="number">25.252800</span></span><br><span class="line">衣着      <span class="number">6.610821</span> <span class="number">28.719634446</span> <span class="number">49.475573</span>  <span class="number">0.059083501</span>  <span class="number">1.699601</span></span><br><span class="line">居住     <span class="number">13.965361</span>  <span class="number">0.120618931</span> <span class="number">17.000408</span> <span class="number">32.445942285</span>  <span class="number">1.261719</span></span><br><span class="line">医疗      <span class="number">7.547054</span> <span class="number">35.849346573</span> <span class="number">11.313750</span>  <span class="number">0.002446598</span> <span class="number">36.027840</span></span><br><span class="line">交通通讯 <span class="number">15.413018</span>  <span class="number">8.503545275</span>  <span class="number">1.880930</span>  <span class="number">1.451383010</span>  <span class="number">2.755462</span></span><br><span class="line">教育     <span class="number">14.934513</span>  <span class="number">0.004600315</span>  <span class="number">3.791734</span> <span class="number">21.673892623</span>  <span class="number">3.184361</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看出在第一主成分中，食品、居住、交通通讯和教育贡献率较大，而在第二主成分中医疗贡献率较大，在第三主成分中衣着贡献率较大。</p>
+<ul>
+<li>Correlation circle</li>
+</ul>
+<p>The correlation between a variable and a principal component (PC) is used as the coordinates of the variable on the PC i.e. variables are represented by their correlations.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fviz_pca_var(res.pca, col.var = <span class="string">"black"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="varpca.png" alt></p>
+<ul>
+<li>Quality of representation</li>
+</ul>
+<p>The quality of representation of the variables on factor map is called cos2 (square cosine, squared coordinates) . </p>
+<p>其实吧……我觉得它的第一主成分就包含了足够多的信息哈哈，把它直接降至一维就很不错。</p>
+<p><img src="cor.png" alt></p>
+<p>It’s also possible to create a bar plot of variables cos2 using the function fviz_cos2()[in factoextra]</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Total cos2 of variables on Dim.1 and Dim.2</span></span><br><span class="line">fviz_cos2(res.pca, choice = <span class="string">"var"</span>, axes = <span class="number">1</span>:<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="bar.png" alt></p>
+<ul>
+<li><p>A high cos2 indicates a good representation of the variable on the principal component. In this case the variable is positioned close to the circumference of the correlation circle.</p>
+</li>
+<li><p>A low cos2 indicates that the variable is not perfectly represented by the PCs. In this case the variable is close to the center of the circle.</p>
+</li>
+</ul>
+<p>而我们发现大部分的变量的cos2均较高，这与这些变量在之前的相关圆中接近圆周是一致的。这也表明用两个主成分能很好地反应这些变量的信息。</p>
+<p>下用颜色代表不同的gradient重新绘制 color variables by their cos2 values</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Color by cos2 values: quality on the factor map</span></span><br><span class="line">fviz_pca_var(res.pca, col.var = <span class="string">"cos2"</span>,</span><br><span class="line">             gradient.cols = c(<span class="string">"#00AFBB"</span>, <span class="string">"#E7B800"</span>, <span class="string">"#FC4E07"</span>), </span><br><span class="line">             repel = <span class="literal">TRUE</span> <span class="comment"># Avoid text overlapping</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><img src="varpca_grad.png" alt></p>
+<p>那就写到这里吧，更多关于PCA分析绘图可以看ref链接XD</p>
+<p>reference: <a href="http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/112-pca-principal-component-analysis-essentials" target="_blank" rel="noopener">http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/112-pca-principal-component-analysis-essentials</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/统计/" rel="tag"># 统计</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/08/GWAS-process/" rel="next" title="Human GWAS">
+                <i class="fa fa-chevron-left"></i> Human GWAS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/18/Microbial-GWAS/" rel="prev" title="Microbial GWAS">
+                Microbial GWAS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#聚类分析"><span class="nav-number">1.</span> <span class="nav-text">聚类分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统聚类"><span class="nav-number">1.1.</span> <span class="nav-text">系统聚类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态聚类"><span class="nav-number">1.2.</span> <span class="nav-text">动态聚类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过热图发现类"><span class="nav-number">1.3.</span> <span class="nav-text">通过热图发现类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统聚类法和动态聚类法的优缺点"><span class="nav-number">1.4.</span> <span class="nav-text">系统聚类法和动态聚类法的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主成分分析"><span class="nav-number">2.</span> <span class="nav-text">主成分分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FactoMineR"><span class="nav-number">2.1.</span> <span class="nav-text">FactoMineR</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
