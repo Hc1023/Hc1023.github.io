@@ -1,15 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>换电脑重配置博客</title>
-    <url>/2020/05/13/blog-deploy/</url>
-    <content><![CDATA[<p>Yes, I have done it elegantly and efficiently.<br>题外话：我愿意相信matlab就是个漏洞百出、兼容性极差的server！浪费我青春。在此分享网页版 <a href="https://matlab.mathworks.com/" target="_blank" rel="noopener">https://matlab.mathworks.com/</a></p>
+    <title>reading--SNP calling from HTS</title>
+    <url>/2020/05/13/reading-SNP-calling-from-HTS/</url>
+    <content><![CDATA[<h2 id="A-beginner-guide-to-SNP-calling-from-high-throughput-DNA-sequencing-data"><a href="#A-beginner-guide-to-SNP-calling-from-high-throughput-DNA-sequencing-data" class="headerlink" title="A beginner guide to SNP calling from high-throughput DNA-sequencing data"></a>A beginner guide to SNP calling from high-throughput DNA-sequencing data</h2><p><em>2012, Human Genetics</em></p>
+<ul>
+<li>the objective is to identify genetic variants such as single nucleotide polymorphism (SNP) from high-throughput DNA sequencing (HTS) data.</li>
+<li>pipeline: 1. quality control 2. mapping of short reads to the reference genome 3. visualization and post-processing of the alignment including base quality recalibration 4. SNP calling procedure along with filtering of SNP candidates</li>
+</ul>
 <a id="more"></a>
 
+<h2 id="workflow-of-the-SNP-calling-pipeline"><a href="#workflow-of-the-SNP-calling-pipeline" class="headerlink" title="workflow of the SNP calling pipeline"></a>workflow of the SNP calling pipeline</h2><h3 id="Step1-Base-Calling"><a href="#Step1-Base-Calling" class="headerlink" title="Step1: Base Calling"></a>Step1: Base Calling</h3><p>Input: Images from Sequencer<br>Tools: International HTS System Software<br>Output: Base- or Color- Sequence and Quality Scores -&gt; e.g. fastq</p>
+<h3 id="Step2-Quality-Control"><a href="#Step2-Quality-Control" class="headerlink" title="Step2: Quality Control"></a>Step2: Quality Control</h3><p>Input: Read Data -&gt; e.g. fastq<br>Tools: SolexaQA, FastQC, PRINSEQ<br>Output: Quality Report and Filtered Reads -&gt; e.g. fastq</p>
+<h3 id="Step3-Alignmnet-Mapping"><a href="#Step3-Alignmnet-Mapping" class="headerlink" title="Step3: Alignmnet/Mapping"></a>Step3: Alignmnet/Mapping</h3><p>Input: Filtered Read Data -&gt; e.g. fastq<br>Tools: BWA, MAQ, Stampy, Bowtie, SHRiMP2, bfast<br>Output: SAM, BAM and Mapping Statistics</p>
+<h3 id="Step4-Alignment-Post-Processing"><a href="#Step4-Alignment-Post-Processing" class="headerlink" title="Step4: Alignment Post-Processing"></a>Step4: Alignment Post-Processing</h3><p>Input: SAM/BAM<br>Tools: samtools, Picard, SMRA, GATK<br>Output: SAM/BAM</p>
+<h3 id="Step5-Quality-Score-Recalibration"><a href="#Step5-Quality-Score-Recalibration" class="headerlink" title="Step5: Quality Score Recalibration"></a>Step5: Quality Score Recalibration</h3><p>Input: SAM/BAM<br>Tools: SOAPsnp, GATK<br>Output: SAM/BAM</p>
+<h3 id="Step6-Variant-and-Genotype-Calling"><a href="#Step6-Variant-and-Genotype-Calling" class="headerlink" title="Step6: Variant and Genotype Calling"></a>Step6: Variant and Genotype Calling</h3><p>Input: SAM/BAM<br>Tools: SOAPsnp, MAQ, samtools, GATK, Beagle<br>Output: vcf</p>
+<h3 id="Step7-Filtering-SNP-Candidates"><a href="#Step7-Filtering-SNP-Candidates" class="headerlink" title="Step7: Filtering SNP Candidates"></a>Step7: Filtering SNP Candidates</h3><p>Input: vcf<br>Tools: GATK, samtools, VCF tool<br>Output: vcf</p>
+<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><ul>
+<li>Compared to Sanger sequencing, HTS produces much more sequences, but of shorter length and inferior quality.</li>
+<li>The limitation of short read length can be circumvented using protocols that allow the generation of read pairs with a known distance between these pairs ( insert length), and a known orientation to the reference sequence. -&gt; paired-end sequencing or mate-pairs.</li>
+<li>Tool for HTS so as to: <ul>
+<li>determine the nucleotide sequence of a target region and identify SNP</li>
+<li>paired reads facilitate the investigation of larger structural variants such as inversions, deletions, and insertions</li>
+<li>convert mRNA to cDNA, identify novel transcripts, splice variants, and to quantify expression levels of even lowly expressed genes</li>
+</ul>
+</li>
+<li>The error probability increases with increasing read length -&gt; Read trimming applied to increase the number of mappable reads by removing bases at the end of the read that are likely to contain sequencing errors.</li>
+<li>Two algorithms in alignment/mapping: <ul>
+<li>Burrows-Wheeler transform (BWT) for efficient data compression</li>
+<li>hashing: quick access to the information on the location of subsequences in the reference sequence</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>reading</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>换电脑重配置博客</title>
+    <url>/2020/05/13/blog-deploy/</url>
+    <content><![CDATA[<p>Yes, I have done it elegantly and efficiently. </p>
 <h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><ul>
 <li>安装 <a href="https://gitforwindows.org/" target="_blank" rel="noopener">git</a></li>
 <li>安装 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a></li>
 </ul>
+<a id="more"></a>
+
 <h2 id="配置git-ssh-key"><a href="#配置git-ssh-key" class="headerlink" title="配置git+ssh key"></a>配置git+ssh key</h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">"username"</span></span><br><span class="line">git config --global user.email <span class="string">"xxx@xxx"</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"xxx@xxx"</span></span><br></pre></td></tr></table></figure>
@@ -1632,7 +1670,7 @@
 </ol>
 ]]></content>
       <tags>
-        <tag>文献阅读</tag>
+        <tag>reading</tag>
       </tags>
   </entry>
   <entry>
@@ -1821,7 +1859,7 @@
 <p>reference: Principal components analysis corrects for stratification in genome-wide association studies <a href="https://www.nature.com/articles/ng1847" target="_blank" rel="noopener">https://www.nature.com/articles/ng1847</a></p>
 ]]></content>
       <tags>
-        <tag>文献阅读</tag>
+        <tag>reading</tag>
       </tags>
   </entry>
   <entry>
@@ -2185,16 +2223,16 @@
 <p>这是后期做的一点补充。</p>
 <p>关于lineage effects，我暂时理解的是相对于SNPs or k‑mers更宏观的一个整体效应，以下原文</p>
 <blockquote>
-<p>In this case, entire lineages, such as viral<br>subtypes, might differ in phenotype. Thus, the lineage<br>or subtype of the microorganism might be the genetic<br>unit of interest, either alone or in addition to the<br>effects of individual SNPs or k‑mers.</p>
+<p>In this case, entire lineages, such as viral subtypes, might differ in phenotype. Thus, the lineage or subtype of the microorganism might be the genetic unit of interest, either alone or in addition to the<br>effects of individual SNPs or k‑mers.</p>
 </blockquote>
 <p>关于 non-discrete SNP calling和frequency，应该就是说SNP的频率不代表存在缺失，反映等位基因的存在频率。目测就是多等位基因的意思吧…以下原文</p>
 <blockquote>
-<p>Withinhost diversity will lead to non-discrete SNP calling,<br>where the frequency of an allele reflects its frequency<br>on microbial sequences within the host, rather than the<br>presence or absence of an allele.</p>
+<p>Withinhost diversity will lead to non-discrete SNP calling, where the frequency of an allele reflects its frequency on microbial sequences within the host, rather than the presence or absence of an allele.</p>
 </blockquote>
 <p>references:<br>1.Microbial genome-wide association studies: lessons from human GWAS <a href="https://www.ncbi.nlm.nih.gov/pubmed/27840430" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/pubmed/27840430</a></p>
 ]]></content>
       <tags>
-        <tag>文献阅读</tag>
+        <tag>reading</tag>
       </tags>
   </entry>
   <entry>
