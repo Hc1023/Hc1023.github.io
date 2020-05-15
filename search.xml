@@ -1,6 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Slurm Workload Manager</title>
+    <url>/2020/05/15/Slurm-Workload-Manager/</url>
+    <content><![CDATA[<h2 id="SLURM-Simple-Linux-Utility-for-Resource-Management"><a href="#SLURM-Simple-Linux-Utility-for-Resource-Management" class="headerlink" title="SLURM: Simple Linux Utility for Resource Management"></a>SLURM: Simple Linux Utility for Resource Management</h2><p>a free and open-source job schedular for Linux and Unix-like kernels, use by many of the world’s supercomputers and computer clusters.</p>
+<p>Key functions:</p>
+<ul>
+<li>allocating exclusive and/or non-exclusive access to resources (computer nodes)</li>
+<li>providing a framework for starting, executing, and monitoring work on a set of allocated nodes.</li>
+<li>arbitrating contention for resources by managing a queue of pending jobs</li>
+</ul>
+<a id="more"></a>
+
+<p><strong>slurmctld</strong>: centralized manager, monitor resources and work.<br><strong>slurmd</strong>: compared to a remote shell – it waits for work, executes that work, return status, and waits for more work.<br><strong>slurmdbd</strong>: Slurm DataBase Daemon, record accounting information for multiple Slurm-managed clusters in a single database.</p>
+<p><img src="0515.png" alt></p>
+<ul>
+<li>sbatch – Submit script for later execution (batch mode)</li>
+<li>salloc – Create job allocaton and start a shell to use it (interactive mode)</li>
+<li>srun – Create a job allocation (if needed) and launch a job step (typically an MPI job)</li>
+<li>sattach – Connect stdin/out/err for an existing job or job step</li>
+</ul>
+<h2 id="contents-of-a-batch-script"><a href="#contents-of-a-batch-script" class="headerlink" title="contents of a batch script"></a>contents of a batch script</h2><ol>
+<li>SBATCH directives</li>
+<li>Environment setup</li>
+<li>Cpy data to scratch (for heavy IO loads)</li>
+<li>Run your job (MPI if need be)</li>
+<li>Copy data from scratch</li>
+<li>Remove  temporary files and scratch data</li>
+</ol>
+<p>For e.g. myjob.slurm</p>
+<ul>
+<li>SBATCH directives</li>
+</ul>
+<p>first line: tell how to run the script</p>
+<p><a href="https://slurm.schedmd.com/sbatch.html" target="_blank" rel="noopener">https://slurm.schedmd.com/sbatch.html</a></p>
+<p>–time: time running<br>-N –nodes: number of nodes<br>-n –ntasks: number of tasks<br>-p –partition: request a specfic partition for the resource allocation.<br>-o –output: connect the batch script;s standard output to the file.<br>-e -error: connect the batch script’s standard eroor directly to the file.<br>–mem: specify the real memory required per node.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH -p defq</span></span><br><span class="line"><span class="comment">#SBATCH -n 4</span></span><br><span class="line"><span class="comment">#SBATCH --time=48:00:00</span></span><br><span class="line"><span class="comment">#SBATCH -o masterout.txt</span></span><br><span class="line"><span class="comment">#SBATCH -e mastererr.txt</span></span><br><span class="line"><span class="comment">#SBATCH --mem=40000</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Environment setup</li>
+</ul>
+<p>add modules</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">module add c3ddb/bamtools/2.4.0</span><br><span class="line">module add c3ddb/bcftools/1.2</span><br><span class="line">module add c3ddb/bowtie2/2.2.6</span><br><span class="line">module add c3ddb/htslib/1.2.1</span><br><span class="line">module add c3ddb/samtools/1.2</span><br><span class="line">module add c3ddb/sickle/1.33</span><br><span class="line">module add c3ddb/samtools/1.2</span><br><span class="line">module add mit/matlab/2015b</span><br><span class="line">module add c3ddb/dindel-tgi</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Run job</li>
+</ul>
+<p>the following is a matlab script</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">matlab -r build_experiment_directories</span><br></pre></td></tr></table></figure>
+
+<p>Tips: attach job id: <code>%j</code>, <code>$SLURM_JOB_ID</code>, e.g.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#SBATCH -o qe-%j</span></span><br><span class="line">NAME=...</span><br><span class="line">DATADIR=...</span><br><span class="line">SCRATCH=...</span><br><span class="line">mkdir -p <span class="variable">$SCATCH</span></span><br><span class="line"><span class="comment"># mkdir -p, make sure the directory exists, including the parent directory</span></span><br><span class="line">mpirun -np <span class="variable">$SLURM_NTASKS</span> pw.x -inp <span class="variable">$DATADIR</span>/<span class="variable">$NAME</span>.<span class="keyword">in</span> &gt; <span class="variable">$DATADIR</span>/<span class="variable">$NAME</span>.<span class="variable">$SLURM_JOB_ID</span>.out</span><br></pre></td></tr></table></figure>
+
+<h2 id="submit-the-job"><a href="#submit-the-job" class="headerlink" title="submit the job"></a>submit the job</h2><p>So, in shell, run the commad: <code>sbatch myjob.slurm</code>. Submit the job and see the job state.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">squeue -u username</span><br></pre></td></tr></table></figure>
+
+<p>PD: pending<br>R: running</p>
+<p>You don’t immediately see the output files because there is slight delay between the filesystems being written to and then updating on the client.</p>
+]]></content>
+      <tags>
+        <tag>learning_notes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>reading--SNP calling from HTS</title>
     <url>/2020/05/13/reading-SNP-calling-from-HTS/</url>
     <content><![CDATA[<h2 id="A-beginner-guide-to-SNP-calling-from-high-throughput-DNA-sequencing-data"><a href="#A-beginner-guide-to-SNP-calling-from-high-throughput-DNA-sequencing-data" class="headerlink" title="A beginner guide to SNP calling from high-throughput DNA-sequencing data"></a>A beginner guide to SNP calling from high-throughput DNA-sequencing data</h2><p><em>2012, Human Genetics</em></p>
