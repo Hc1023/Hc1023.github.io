@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="R is a free software environment for statistical computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS. To download R, please choose your preferred CRAN">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-29T09:33:19.550Z">
+<meta property="og:updated_time" content="2020-05-19T14:57:33.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="R初步接触">
 <meta name="twitter:description" content="R is a free software environment for statistical computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS. To download R, please choose your preferred CRAN">
@@ -369,11 +369,11 @@
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install.packages(<span class="string">'WGCNA'</span>)</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>CRAN：install.packages()</p>
+<li><p>CRAN：<code>install.packages()</code></p>
 </li>
-<li><p>Biocductor: BiocManager::install()</p>
+<li><p>Biocductor: <code>BiocManager::install()</code></p>
 </li>
-<li><p>Github:devools::install_github()</p>
+<li><p>Github: <code>devools::install_github()</code></p>
 </li>
 <li><p>library()<br>包安装目录</p>
 </li>
@@ -407,20 +407,25 @@
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sort() <span class="comment">#排序</span></span><br><span class="line">length() <span class="comment">#长度</span></span><br><span class="line">unique() <span class="comment">#去重复</span></span><br><span class="line">table() <span class="comment">#重复值统计</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p><strong>practice1</strong> 判断数据类型</p>
+<li><strong>practice1</strong> 判断数据类型</li>
+</ul>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class(<span class="string">"a"</span>)</span><br><span class="line">class(<span class="literal">TRUE</span>)</span><br><span class="line">class(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>循环输出变量类型</p>
+
+<ul>
+<li>循环输出变量类型</li>
+</ul>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Lst&lt;-list(<span class="string">"a"</span>, <span class="literal">TRUE</span>, <span class="number">3</span>, c(<span class="number">4</span>,<span class="number">7</span>,<span class="number">9</span>));</span><br><span class="line"><span class="keyword">for</span> (index <span class="keyword">in</span> (<span class="number">1</span>:length(Lst)))&#123;</span><br><span class="line">  print(class(Lst[[index]])) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>practice2</strong> 向量生成</p>
+
+<ul>
+<li><strong>practice2</strong> 向量生成</li>
+</ul>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">c(<span class="string">"a"</span>, <span class="literal">TRUE</span>, <span class="number">3</span>, c(<span class="number">4</span>,<span class="number">7</span>,<span class="number">9</span>))</span><br><span class="line">seq(from = <span class="number">4</span>,to = <span class="number">30</span>,by = <span class="number">4</span>)</span><br><span class="line">paste0(rep(<span class="string">"sample"</span>,times=<span class="number">7</span>),seq(from = <span class="number">4</span>,to = <span class="number">30</span>,by = <span class="number">4</span>))</span><br><span class="line"><span class="comment"># time = length(seq(from = 4,to = 30,by = 4))</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>practice3</strong> 向量取子集</p>
+
+<ul>
+<li><strong>practice3</strong> 向量取子集</li>
+</ul>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.将基因名"ACTR3B","ANLN","BAG1","BCL2","BIRC5","RAB","ABCT","ANF","BAD","BCF","BARC7","BALV"组成一个向量,赋值给x</span></span><br><span class="line">x=c(<span class="string">"ACTR3B"</span>,<span class="string">"ANLN"</span>,<span class="string">"BAG1"</span>,<span class="string">"BCL2"</span>,<span class="string">"BIRC5"</span>,<span class="string">"RAB"</span>,<span class="string">"ABCT"</span>,<span class="string">"ANF"</span>,<span class="string">"BAD"</span>,<span class="string">"BCF"</span>,<span class="string">"BARC7"</span>,<span class="string">"BALV"</span>)</span><br><span class="line"><span class="comment"># 2.用函数计算向量长度</span></span><br><span class="line">length(x)</span><br><span class="line"><span class="comment"># 3.用向量取子集的方法,选出第1,3,5,7,9,11个基因名。</span></span><br><span class="line">x[seq(<span class="number">1</span>, <span class="number">11</span>, <span class="number">2</span>)]</span><br><span class="line"><span class="comment"># 4.用向量取子集的方法,选出除倒数第2个以外所有的基因名。</span></span><br><span class="line">x[-(length(x)-<span class="number">1</span>)]</span><br><span class="line"><span class="comment"># 5.用向量取子集的方法,选出出在c("ANLN", "BCL2","TP53")中有的基因名。</span></span><br><span class="line"><span class="comment"># 提示：%in%</span></span><br><span class="line"><span class="comment"># (x %in% c("ANLN", "BCL2","TP53")) | (x %in% c("BIRC5"))</span></span><br><span class="line">x[x %<span class="keyword">in</span>% c(<span class="string">"ANLN"</span>, <span class="string">"BCL2"</span>,<span class="string">"TP53"</span>)]</span><br><span class="line"><span class="comment"># 6.修改第6个基因名为"a"并查看是否成功</span></span><br><span class="line">x[<span class="number">6</span>]=<span class="string">"a"</span> </span><br><span class="line">x</span><br><span class="line"><span class="comment">#7.生成100个随机数: rnorm(n=100,mean=0,sd=18)</span></span><br><span class="line">rnum=rnorm(n=<span class="number">100</span>, mean=<span class="number">0</span>, sd=<span class="number">18</span>)</span><br><span class="line"><span class="comment">#将小于-2的统一改为-2,将大于2的统一改为2</span></span><br><span class="line">rnum[rnum&lt;(-<span class="number">2</span>)]=-<span class="number">2</span></span><br><span class="line">rnum[rnum&gt;<span class="number">2</span>]=<span class="number">2</span></span><br><span class="line">rnum</span><br></pre></td></tr></table></figure>
 
-</li>
-</ul>
 <p>Q:’&lt;-‘与’=’有什么区别</p>
 <blockquote>
 <p>The operators &lt;- and = assign into the environment in which they are evaluated. The operator &lt;- can be used anywhere, whereas the operator = is only allowed at the top level (e.g., in the complete expression typed at the command prompt) or as one of the subexpressions in a braced list of expressions.</p>
@@ -436,7 +441,7 @@
 
 <p><a href="https://www.jianshu.com/p/09a22a1cdcd1" target="_blank" rel="noopener">数据框重排</a></p>
 <p>ctrl+l 清空控制台<br>点扫把 或 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">清空变量 </span><br><span class="line"></span><br><span class="line">### 数据读取</span><br><span class="line"></span><br><span class="line">read.csv () –通常读取CSV格式</span><br><span class="line">read.table() –通常用于读取txt格式</span><br><span class="line"></span><br><span class="line">sep：分隔符：逗号，\t，空格</span><br><span class="line">header：表头（是否设置第一行为列名）</span><br><span class="line">row.names ：第一列作为行名</span><br><span class="line"></span><br><span class="line">R特有的数据格式：Rdata</span><br><span class="line"></span><br><span class="line">是R语言特有的数据存储格式，无法用其他软件打开；保存的是变量，不是表格文件；save（）保存—load（）加载</span><br><span class="line"></span><br><span class="line">- **practice5** 数据读取</span><br><span class="line"></span><br><span class="line">```R</span><br><span class="line">#1.读取complete_set.txt（已保存在工作目录）</span><br><span class="line">ex &lt;- read.table(&apos;complete_set.txt&apos;, header = T)</span><br><span class="line"># 2.查看有多少行、多少列</span><br><span class="line">dim(ex)</span><br><span class="line"># 3.获取行名和列名</span><br><span class="line">colnames(ex)</span><br><span class="line">rownames(ex)</span><br><span class="line"># 4.导出为csv格式,再读取它</span><br><span class="line">write.csv(ex,file = &quot;ex.csv&quot;, row.names = F)</span><br><span class="line">ex1 &lt;- read.csv(&apos;ex.csv&apos;)</span><br><span class="line"># 5.保存为Rdata，再加载它</span><br><span class="line">save(ex1,file = &quot;ex1.Rdata&quot;)</span><br><span class="line">rm(ex1)</span><br><span class="line">load(file =&apos;ex1.Rdata&apos;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">rm(list = ls())</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">清空变量 </span><br><span class="line"></span><br><span class="line">### 数据读取</span><br><span class="line"></span><br><span class="line">read.csv () –通常读取CSV格式</span><br><span class="line">read.table() –通常用于读取txt格式</span><br><span class="line"></span><br><span class="line">sep：分隔符：逗号，\t，空格</span><br><span class="line">header：表头（是否设置第一行为列名）</span><br><span class="line">row.names ：第一列作为行名</span><br><span class="line"></span><br><span class="line">R特有的数据格式：Rdata</span><br><span class="line"></span><br><span class="line">是R语言特有的数据存储格式，无法用其他软件打开；保存的是变量，不是表格文件；save（）保存—load（）加载</span><br><span class="line"></span><br><span class="line">- **practice5** 数据读取</span><br><span class="line"></span><br><span class="line">```R</span><br><span class="line"><span class="comment">#1.读取complete_set.txt（已保存在工作目录）</span></span><br><span class="line">ex &lt;- read.table(<span class="string">'complete_set.txt'</span>, header = <span class="literal">T</span>)</span><br><span class="line"><span class="comment"># 2.查看有多少行、多少列</span></span><br><span class="line">dim(ex)</span><br><span class="line"><span class="comment"># 3.获取行名和列名</span></span><br><span class="line">colnames(ex)</span><br><span class="line">rownames(ex)</span><br><span class="line"><span class="comment"># 4.导出为csv格式,再读取它</span></span><br><span class="line">write.csv(ex,file = <span class="string">"ex.csv"</span>, row.names = <span class="literal">F</span>)</span><br><span class="line">ex1 &lt;- read.csv(<span class="string">'ex.csv'</span>)</span><br><span class="line"><span class="comment"># 5.保存为Rdata，再加载它</span></span><br><span class="line">save(ex1,file = <span class="string">"ex1.Rdata"</span>)</span><br><span class="line">rm(ex1)</span><br><span class="line">load(file =<span class="string">'ex1.Rdata'</span>)</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://www.jianshu.com/p/4ea320c0dcc6" target="_blank" rel="noopener">高阶数据读取指南</a></p>
 
@@ -560,7 +565,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -573,7 +578,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
