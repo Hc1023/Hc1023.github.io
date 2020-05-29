@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="learning_notes,">
+  <meta name="keywords" content="数学,">
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="想来想去还是喜欢Windows系统，换Mac太贵了又没什么很好的性价比，直接装Linux系统作为主系统也不合适，Win还是有其优越之处，再说本地上用Linux命令也不会去跑很大的程序，简单点就好了不必作为电脑主系统。原先是用虚拟机，但有一个问题，文件同步太不方便。现在试了WSL，windows下的Linux子系统，至少初体验不错。 Tips: shift+右键就可以在当前目录进入Linux终端，超">
-<meta name="keywords" content="learning_notes">
+<meta name="description" content="Weyl代数：$$k \langle x,y \rangle/ \langle yx-xy-1 \rangle$$q-Weyl代数：$$k \langle x,x^{-1},y,y^{-1} \rangle/\langle yx-qxy,xx^{-1}-1,yy^{-1}-1,x^{-1}x-1,y^{-1}y-1 \rangle$$ 命题：Weyl代数$A$的基为$\lbrace x^i y^j">
+<meta name="keywords" content="数学">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Windows Subsystem for Linux">
-<meta property="og:url" content="http://yoursite.com/2020/04/17/wsl/index.html">
+<meta property="og:title" content="Algebra notes 05.29.20">
+<meta property="og:url" content="http://yoursite.com/2020/05/29/Algebra-notes-05-29-20/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="想来想去还是喜欢Windows系统，换Mac太贵了又没什么很好的性价比，直接装Linux系统作为主系统也不合适，Win还是有其优越之处，再说本地上用Linux命令也不会去跑很大的程序，简单点就好了不必作为电脑主系统。原先是用虚拟机，但有一个问题，文件同步太不方便。现在试了WSL，windows下的Linux子系统，至少初体验不错。 Tips: shift+右键就可以在当前目录进入Linux终端，超">
+<meta property="og:description" content="Weyl代数：$$k \langle x,y \rangle/ \langle yx-xy-1 \rangle$$q-Weyl代数：$$k \langle x,x^{-1},y,y^{-1} \rangle/\langle yx-qxy,xx^{-1}-1,yy^{-1}-1,x^{-1}x-1,y^{-1}y-1 \rangle$$ 命题：Weyl代数$A$的基为$\lbrace x^i y^j">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2020/04/17/wsl/0401.png">
-<meta property="og:updated_time" content="2020-04-17T01:28:07.332Z">
+<meta property="og:updated_time" content="2020-05-29T15:44:51.849Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Windows Subsystem for Linux">
-<meta name="twitter:description" content="想来想去还是喜欢Windows系统，换Mac太贵了又没什么很好的性价比，直接装Linux系统作为主系统也不合适，Win还是有其优越之处，再说本地上用Linux命令也不会去跑很大的程序，简单点就好了不必作为电脑主系统。原先是用虚拟机，但有一个问题，文件同步太不方便。现在试了WSL，windows下的Linux子系统，至少初体验不错。 Tips: shift+右键就可以在当前目录进入Linux终端，超">
-<meta name="twitter:image" content="http://yoursite.com/2020/04/17/wsl/0401.png">
+<meta name="twitter:title" content="Algebra notes 05.29.20">
+<meta name="twitter:description" content="Weyl代数：$$k \langle x,y \rangle/ \langle yx-xy-1 \rangle$$q-Weyl代数：$$k \langle x,x^{-1},y,y^{-1} \rangle/\langle yx-qxy,xx^{-1}-1,yy^{-1}-1,x^{-1}x-1,y^{-1}y-1 \rangle$$ 命题：Weyl代数$A$的基为$\lbrace x^i y^j">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/04/17/wsl/">
+  <link rel="canonical" href="http://yoursite.com/2020/05/29/Algebra-notes-05-29-20/">
 
 
 
 
 
-  <title>Windows Subsystem for Linux | Hc's Blog</title>
+  <title>Algebra notes 05.29.20 | Hc's Blog</title>
   
 
 
@@ -287,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/17/wsl/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/29/Algebra-notes-05-29-20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -304,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Windows Subsystem for Linux</h1>
+          <h1 class="post-title" itemprop="name headline">Algebra notes 05.29.20</h1>
         
 
         <div class="post-meta">
@@ -316,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-17T09:22:05+08:00">
-                2020-04-17
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-29T23:38:40+08:00">
+                2020-05-29
               </time>
             
 
@@ -354,60 +352,11 @@
       
 
       
-        <p>想来想去还是喜欢Windows系统，换Mac太贵了又没什么很好的性价比，直接装Linux系统作为主系统也不合适，Win还是有其优越之处，再说本地上用Linux命令也不会去跑很大的程序，简单点就好了不必作为电脑主系统。<br>原先是用虚拟机，但有一个问题，文件同步太不方便。现在试了WSL，windows下的Linux子系统，至少初体验不错。</p>
-<p>Tips: shift+右键就可以在当前目录进入Linux终端，超棒的哎！</p>
-<a id="more"></a>
-
-<p>WSL是使本机Linux ELF64二进制文件能够在Windows上运行的组件的集合。 它包含用户模式和内核模式组件。 它主要包括：</p>
-<ul>
-<li>处理Linux实例生命周期的用户模式会话管理器服务</li>
-<li>通过翻译Linux系统调用来模拟Linux内核的Pico提供程序驱动程序（lxss.sys，lxcore.sys）</li>
-<li>托管未修改的用户模式Linux的Pico进程（例如/ bin / bash）</li>
-</ul>
-<p>用户模式Linux二进制文件和Windows内核组件之间的空间就是神奇的地方。 通过在Pico进程中放置未修改的Linux二进制文件，我们使Linux系统调用可以定向到Windows内核。 lxss.sys和lxcore.sys驱动程序将Linux系统调用转换为NT API并模拟Linux内核。</p>
-<h2 id="安装WSL"><a href="#安装WSL" class="headerlink" title="安装WSL"></a>安装WSL</h2><p>Win+R打开powershell，以管理员身份运行</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Start-Process powershell -Verb runAs</span><br></pre></td></tr></table></figure>
-
-<p>运行命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</span><br></pre></td></tr></table></figure>
-
-<p>重启，打开windows应用商店，下载需要的Linux系统。</p>
-<p>注册unix account，我的Ubuntu默认目录在这里<br>C:\Users\lenovo\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home</p>
-<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><ul>
-<li>将默认国外的源更改为阿里云的源，提高运行速度</li>
-</ul>
-<p>备份</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br></pre></td></tr></table></figure>
-
-<p>编辑源文件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
-
-<p>添加源</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
-
-<p>更新升级</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在当前目录打开PowerShell或者WSL终端</li>
-</ul>
-<p>在资源管理器的目标目录的空白位置，Shift+鼠标右键，在菜单栏中点击相应终端，启动后的路径即为当前目录。</p>
-<ul>
-<li><p>Win10自带的PowerShell也是可以启动WSL，输入bash</p>
-</li>
-<li><p>所有的Win分区都在mnt文件夹下</p>
-</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /mnt</span><br></pre></td></tr></table></figure>
-
-<p>从此以后，可以ssh进入服务器啦yeah！超开心！</p>
-<p><img src="0401.png" alt></p>
-<p>emmm发现一个bug，chmod可能不支持分区文件，后来我把key放到根目录了……可能是因为</p>
-<blockquote>
-<p>ntfs分区不支持linux权限系统，挂载后默认是777权限</p>
-</blockquote>
-<p>Anyway, cheers！</p>
-<p>后来发现还不太稳定，不过依旧有这个需求哈哈哈</p>
+        <p>Weyl代数：<br>$$k \langle x,y \rangle/ \langle yx-xy-1 \rangle$$<br>q-Weyl代数：<br>$$k \langle x,x^{-1},y,y^{-1} \rangle/\langle yx-qxy,xx^{-1}-1,yy^{-1}-1,x^{-1}x-1,y^{-1}y-1 \rangle$$</p>
+<p><strong>命题：Weyl代数$A$的基为$\lbrace x^i y^j,i,j\geq 0 \rbrace$</strong></p>
+<p>证：首先证明$x^iy^j$可以张成$A$。注意到由关系$yx=xy+1$，任意单词可以重排为$x$在$y$的左侧的单词的组合，i.e.，任意单词可以被表示为$x^iy^j$的线性组合。<br>下证$x^iy^j$线性无关（基于表示论进行证明）。$a$是一个变元，令$E=t^ak[a][t,t^{-1}]$（这里$t^a$只是一个形式符号，因为根据后面的作用我们总能提出$t^a$写成这样的形式，所以可以说实际上$E=k[a][t,t^{-1}]$）。如下定义$A$在$E$上的作用，$$xf=tf,\ yf=\frac{df}{dt},$$可以验证这个作用满足$yx=xy+1$所以是良定义的，且注意经作用后的像依旧落于$E$中。现假设有非平凡线性关系式$\Sigma c_{ij}x^i y^j = 0$，那么即有算子$$L=\Sigma c_{ij}t^i (\frac{d}{dt})^j$$在$E$上的作用为0。$L$可以写为$$L=\Sigma_{j=0}^r Q_j(t) (\frac{d}{dt})^j,$$其中$Q_r\neq 0$。于是<br>$$Lt^a = \Sigma_{j=0}^r Q_j(t) a(a-1)\dots (a-j+1)t^{a-j}=0$$由于$a$为未定元，则$$Q_r(t)t^{-r}a^r=0\Rightarrow Q_r(t)=0$$矛盾。Q.E.D</p>
+<p><strong>命题：q-Weyl代数$A_q$的基为$\lbrace x^i y^j,i,j\in \mathbb Z \rbrace$</strong></p>
+<p>证：首先证明$x^iy^j$可以张成$A_q$。有关系式容易有$yx=qxy$和$y^{-1}x^{-1}qx^{-1}y^{-1}$，于是任意单词可以通过这两个关系式化作$x^iy^j,i,j\in \mathbb Z $的线性组合。下证其线性无关。<br>构造表示为$E=k[a,a^{-1}][t,t^{-1}]$，作用为$$xf=tf,\ yf(t)=af(qt),\ x^{-1}f = t^{-1} f,\ y^{-1}f(t) = a^{-1}f(q^{-1}t)$$则有$$yxf(t)=ytf(t)=aqtf(qt)=qxaf(qt)=qxyf(t)$$且易验证剩余几个关系式，所以这个作用是良定义的。设有非平凡线性组合$\Sigma c_{ij}x^i y^j = 0$，并令$$L=\Sigma c_{ij}x^i y^j = \Sigma_{s}^r Q_j[t,t^{-1}]y^j$$其中$Q_r\neq 0$，则$$La = \Sigma_{s}^r Q_j[t,t^{-1}]a^{j+1} $$而同样有$a$作为未定元，考察它的最高次项必须有$Q_r[t,t^{-1}]=0$，矛盾。Q.E.D</p>
 
       
     </div>
@@ -425,7 +374,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/learning-notes/" rel="tag"># learning_notes</a>
+            <a href="/tags/数学/" rel="tag"># 数学</a>
           
         </div>
       
@@ -438,8 +387,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/21/trivial0321/" rel="next" title="trivial0321">
-                <i class="fa fa-chevron-left"></i> trivial0321
+              <a href="/2020/05/28/Algebra-notes-05-28-20/" rel="next" title="Algebra notes 05.28.20">
+                <i class="fa fa-chevron-left"></i> Algebra notes 05.28.20
               </a>
             
           </div>
@@ -447,10 +396,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/19/calculus-lecture/" rel="prev" title="calculus_lecture">
-                calculus_lecture <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -502,17 +447,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -565,22 +501,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装WSL"><span class="nav-number">1.</span> <span class="nav-text">安装WSL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">2.</span> <span class="nav-text">优化</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

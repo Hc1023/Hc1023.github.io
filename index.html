@@ -356,6 +356,9 @@
       
         
           <p>朋友你好，你现在访问的是Sisi Huang简单温馨的个人博客。<br>我会在空时写一些个人习得，便于个人提升以及知识的交流与传播。</p>
+<blockquote>
+<p>缺乏智力深度的庸常生活难以忍受，对深刻抽象的理论产生了由衷的神往。</p>
+</blockquote>
 <p>Hello, welcome to <strong>Hc’s Blog</strong>. </p>
 <p>My name is Sisi Huang, senior student from <a href="http://www.math.zju.edu.cn/mathen/" target="_blank" rel="noopener">School of Mathematical Sciences</a> and <a href="http://ckc.zju.edu.cn/english/" target="_blank" rel="noopener">Chu Kochen Honors College</a> at Zhejiang University. Here is my <a href="https://huangsisihome.files.wordpress.com/2020/05/cv.pdf" target="_blank" rel="noopener"><strong>CV</strong></a>.</p>
           <!--noindex-->
@@ -365,6 +368,130 @@
             </a>
           </div>
           <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/29/Algebra-notes-05-29-20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/29/Algebra-notes-05-29-20/" itemprop="url">Algebra notes 05.29.20</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-29T23:38:40+08:00">
+                2020-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Weyl代数：<br>$$k \langle x,y \rangle/ \langle yx-xy-1 \rangle$$<br>q-Weyl代数：<br>$$k \langle x,x^{-1},y,y^{-1} \rangle/\langle yx-qxy,xx^{-1}-1,yy^{-1}-1,x^{-1}x-1,y^{-1}y-1 \rangle$$</p>
+<p><strong>命题：Weyl代数$A$的基为$\lbrace x^i y^j,i,j\geq 0 \rbrace$</strong></p>
+<p>证：首先证明$x^iy^j$可以张成$A$。注意到由关系$yx=xy+1$，任意单词可以重排为$x$在$y$的左侧的单词的组合，i.e.，任意单词可以被表示为$x^iy^j$的线性组合。<br>下证$x^iy^j$线性无关（基于表示论进行证明）。$a$是一个变元，令$E=t^ak[a][t,t^{-1}]$（这里$t^a$只是一个形式符号，因为根据后面的作用我们总能提出$t^a$写成这样的形式，所以可以说实际上$E=k[a][t,t^{-1}]$）。如下定义$A$在$E$上的作用，$$xf=tf,\ yf=\frac{df}{dt},$$可以验证这个作用满足$yx=xy+1$所以是良定义的，且注意经作用后的像依旧落于$E$中。现假设有非平凡线性关系式$\Sigma c_{ij}x^i y^j = 0$，那么即有算子$$L=\Sigma c_{ij}t^i (\frac{d}{dt})^j$$在$E$上的作用为0。$L$可以写为$$L=\Sigma_{j=0}^r Q_j(t) (\frac{d}{dt})^j,$$其中$Q_r\neq 0$。于是<br>$$Lt^a = \Sigma_{j=0}^r Q_j(t) a(a-1)\dots (a-j+1)t^{a-j}=0$$由于$a$为未定元，则$$Q_r(t)t^{-r}a^r=0\Rightarrow Q_r(t)=0$$矛盾。Q.E.D</p>
+<p><strong>命题：q-Weyl代数$A_q$的基为$\lbrace x^i y^j,i,j\in \mathbb Z \rbrace$</strong></p>
+<p>证：首先证明$x^iy^j$可以张成$A_q$。有关系式容易有$yx=qxy$和$y^{-1}x^{-1}qx^{-1}y^{-1}$，于是任意单词可以通过这两个关系式化作$x^iy^j,i,j\in \mathbb Z $的线性组合。下证其线性无关。<br>构造表示为$E=k[a,a^{-1}][t,t^{-1}]$，作用为$$xf=tf,\ yf(t)=af(qt),\ x^{-1}f = t^{-1} f,\ y^{-1}f(t) = a^{-1}f(q^{-1}t)$$则有$$yxf(t)=ytf(t)=aqtf(qt)=qxaf(qt)=qxyf(t)$$且易验证剩余几个关系式，所以这个作用是良定义的。设有非平凡线性组合$\Sigma c_{ij}x^i y^j = 0$，并令$$L=\Sigma c_{ij}x^i y^j = \Sigma_{s}^r Q_j[t,t^{-1}]y^j$$其中$Q_r\neq 0$，则$$La = \Sigma_{s}^r Q_j[t,t^{-1}]a^{j+1} $$而同样有$a$作为未定元，考察它的最高次项必须有$Q_r[t,t^{-1}]=0$，矛盾。Q.E.D</p>
+
+          
         
       
     </div>
@@ -482,12 +609,7 @@
       
         
           
-            <p>痛定思痛，感觉自己不能再这么颓废了，就算写些简单短小的notes也是好的！<br>当然颓废不代表我没事做，但那些事只是在消磨我的热情。</p>
-<blockquote>
-<p>缺乏智力深度的庸常生活难以忍受，对深刻抽象的理论产生了由衷的神往。</p>
-</blockquote>
-<hr>
-<p>对于代数$A$的一个非零表示$V$，若它的唯一子表示为$0$和$V$本身，则称其<strong>不可约</strong>；若它不能被写作两个非零子表示的直和，则称其<strong>不可分</strong>。显然有不可约蕴含不可分，反之不成立。</p>
+            <p>对于代数$A$的一个非零表示$V$，若它的唯一子表示为$0$和$V$本身，则称其<strong>不可约</strong>；若它不能被写作两个非零子表示的直和，则称其<strong>不可分</strong>。显然有不可约蕴含不可分，反之不成立。</p>
 <p><strong>令$V$是代数$A$的非零有限维表示，证明它有不可约子表示。但这对无限维表示不一定成立，请举例说明。</strong></p>
 <p>证：若$V$不可约取$V$本身即为它的不可约子表示。否则$V$可约，取$W\subset V$为其非零的真子表示，于是$1\leq dim\ W &lt; dim\ V &lt; \infty$。后对$W$重复上述讨论，并反复往下可得到一串非零真子表示链，且表示的维数严格递减。则又由于维数为$1$的表示不可约，所以总能找到一个不可约的子表示。<br>反例可以考虑$A=k[x]$多项式上的正则表示$V=_A A$，$A$无限维所以$V$无限维，取$V$的任意子表示$_AM$。但$\forall m\in M,\ m\neq 0 \Rightarrow 0\neq Axm \subsetneq AM \subset M$，其中的真包含关系考虑它们的degree便可知，所以$Axm$是$M$的真子表示，即它的任意子表示可约。Rmk: 事实上，$A$的任意非零元在$A$模作用下生成的表示都与$A$同构。</p>
 
@@ -1411,136 +1533,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/17/wsl/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/17/wsl/" itemprop="url">Windows Subsystem for Linux</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-17T09:22:05+08:00">
-                2020-04-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>想来想去还是喜欢Windows系统，换Mac太贵了又没什么很好的性价比，直接装Linux系统作为主系统也不合适，Win还是有其优越之处，再说本地上用Linux命令也不会去跑很大的程序，简单点就好了不必作为电脑主系统。<br>原先是用虚拟机，但有一个问题，文件同步太不方便。现在试了WSL，windows下的Linux子系统，至少初体验不错。</p>
-<p>Tips: shift+右键就可以在当前目录进入Linux终端，超棒的哎！</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/17/wsl/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1588,7 +1585,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
