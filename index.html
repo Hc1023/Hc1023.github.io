@@ -414,6 +414,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/31/Algebra-notes-05-31-20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/31/Algebra-notes-05-31-20/" itemprop="url">Algebra notes 05.31.20</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-31T23:33:46+08:00">
+                2020-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>代数闭域上的Schur引理：令$V$是$A$ over an algebraically closed field $k$的某个有限维不可约表示，且$\phi : V \rightarrow V$是一个intertwining算子。那么$\phi = \lambda \cdot Id$对于某个$\lambda \in k$（一个scaler算子）。</p>
+<p><strong>令$A$是代数闭域$k$上的代数。其中心$Z(A)$为与$A$所有元素均交换的元素组成的集合。</strong></p>
+<p><strong>（a）证明若$V$是$A$的一个不可约有限维表示，那么$\forall z \in Z(A)$在$V$上的作用为乘上一个scaler $\chi _V (z)$，并且$\chi _V : Z(A) \rightarrow k$是一个同态。它被称作$V$的中心特征。</strong></p>
+<p>证：由于中心中的元素$z\in Z(A)$与$A$中所有元素交换，所以是一个intertwing算子，又$V$是一个不可约有限维表示，所以由Schur引理可以立刻得出$z$在$V$上的作用为乘以一个scaler $\chi _V (z)\in k$ 。同时由于作用$\rho (z)$是同态，而$\rho (z) v = \chi _V (z) v$，则$\chi _V : Z(A) \rightarrow k$是一个同态。Q.E.D</p>
+<p>rmk：考虑$\rho(z)$的一个特征向量$\lambda$，它的存在性由$k$是代数闭域保证，它对应的非零特征空间$W\subset V$。由$z\in Z(A)$，$\forall a\in A$有$(\rho(z)-\lambda)\rho(a)w = \rho(a)(\rho(z)-\lambda)w = 0$，则$\rho (a)w\in W$，所以$W$为$V$的非零子表示。（这里说的就是$ker(\rho(z)-\lambda)$是$V$的子表示）由$V$不可约所以$W=V$。（用一个具体的例子串了一下Schur定理和Schur引理的证明思想）</p>
+<p><strong>（b）证明若$V$是$A$的一个不可分有限维表示，那么$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$，且它的值等于$z$在$V$的某个不可约子表示作用的scaler值。因此，$\chi _V : Z(A) \rightarrow k$是一个同态，它同样被称作$V$的中心特征。</strong></p>
+<p>证：因为我们知道$V$可以表示为不同特征值对应的广义特征子空间的直和，由$V$不可分，则$V$由$\forall z\in Z(A)$的一个广义特征子空间构成，i.e.， $\forall v\in V,\ \exists l\in \mathbb N,\ (\rho(z)-\chi_V(z))^l v=0$。这证明了$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$。后续的命题对于$V=0$的情况是平凡的。否则$V$是非零有限维表示，（见<a href="https://hc1023.github.io/2020/05/28/Algebra-notes-05-28-20/" target="_blank" rel="noopener">Algebra notes 05.28.20</a>）知道存在不可约子表示$W\subset U$。于是将作用限制在子表示$W$上，则由（a）知道它在$W$上的作用为乘以一个scaler $\chi_W(z)$，i.e.， $\forall w\in W\subset V,\ (\rho(z)-\chi_W(z)) v=0$，所以$\chi_V (z)=\chi_W (z)$。而$\chi_W: Z(A) \rightarrow k$是同态即得$\chi_V: Z(A) \rightarrow k$为同态。Q.E.D</p>
+<p><strong>（c）命题(b)中的$\rho(z)$是否一定是一个scaler算子？</strong></p>
+<p>不一定。在（b）证明中若$\exists l&gt;1$就不是，i.e.， 考虑大于1阶的约当块。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/29/Algebra-notes-05-29-20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -489,7 +617,7 @@
 <p><strong>命题：Weyl代数$A$的基为$\lbrace x^i y^j,i,j\geq 0 \rbrace$</strong></p>
 <p>证：首先证明$x^iy^j$可以张成$A$。注意到由关系$yx=xy+1$，任意单词可以重排为$x$在$y$的左侧的单词的组合，i.e.，任意单词可以被表示为$x^iy^j$的线性组合。<br>下证$x^iy^j$线性无关（基于表示论进行证明）。$a$是一个变元，令$E=t^ak[a][t,t^{-1}]$（这里$t^a$只是一个形式符号，因为根据后面的作用我们总能提出$t^a$写成这样的形式，所以可以说实际上$E=k[a][t,t^{-1}]$）。如下定义$A$在$E$上的作用，$$xf=tf,\ yf=\frac{df}{dt},$$可以验证这个作用满足$yx=xy+1$所以是良定义的，且注意经作用后的像依旧落于$E$中。现假设有非平凡线性关系式$\Sigma c_{ij}x^i y^j = 0$，那么即有算子$$L=\Sigma c_{ij}t^i (\frac{d}{dt})^j$$在$E$上的作用为0。$L$可以写为$$L=\Sigma_{j=0}^r Q_j(t) (\frac{d}{dt})^j,$$其中$Q_r\neq 0$。于是<br>$$Lt^a = \Sigma_{j=0}^r Q_j(t) a(a-1)\dots (a-j+1)t^{a-j}=0$$由于$a$为未定元，则$$Q_r(t)t^{-r}a^r=0\Rightarrow Q_r(t)=0$$矛盾。Q.E.D</p>
 <p><strong>命题：q-Weyl代数$A_q$的基为$\lbrace x^i y^j,i,j\in \mathbb Z \rbrace$</strong></p>
-<p>证：首先证明$x^iy^j$可以张成$A_q$。有关系式容易有$yx=qxy$和$y^{-1}x^{-1}qx^{-1}y^{-1}$，于是任意单词可以通过这两个关系式化作$x^iy^j,i,j\in \mathbb Z $的线性组合。下证其线性无关。<br>构造表示为$E=k[a,a^{-1}][t,t^{-1}]$，作用为$$xf=tf,\ yf(t)=af(qt),\ x^{-1}f = t^{-1} f,\ y^{-1}f(t) = a^{-1}f(q^{-1}t)$$则有$$yxf(t)=ytf(t)=aqtf(qt)=qxaf(qt)=qxyf(t)$$且易验证剩余几个关系式，所以这个作用是良定义的。设有非平凡线性组合$\Sigma c_{ij}x^i y^j = 0$，并令$$L=\Sigma c_{ij}x^i y^j = \Sigma_{s}^r Q_j[t,t^{-1}]y^j$$其中$Q_r\neq 0$，则$$La = \Sigma_{s}^r Q_j[t,t^{-1}]a^{j+1} $$而同样有$a$作为未定元，考察它的最高次项必须有$Q_r[t,t^{-1}]=0$，矛盾。Q.E.D</p>
+<p>证：首先证明$x^iy^j$可以张成$A_q$。由关系式容易有$yx=qxy$和$y^{-1}x^{-1}=qx^{-1}y^{-1}$，于是任意单词可以通过这两个关系式化作$x^iy^j,i,j\in \mathbb Z $的线性组合。下证其线性无关。<br>构造表示为$E=k[a,a^{-1}][t,t^{-1}]$，作用为$$xf=tf,\ yf(t)=af(qt),\ x^{-1}f = t^{-1} f,\ y^{-1}f(t) = a^{-1}f(q^{-1}t)$$则有$$yxf(t)=ytf(t)=aqtf(qt)=qxaf(qt)=qxyf(t)$$且易验证剩余几个关系式，所以这个作用是良定义的。设有非平凡线性组合$\Sigma c_{ij}x^i y^j = 0$，并令$$L=\Sigma c_{ij}x^i y^j = \Sigma_{s}^r Q_j[t,t^{-1}]y^j$$为$0$算子，其中$Q_r\neq 0$，则$$La = \Sigma_{s}^r Q_j[t,t^{-1}]a^{j+1}=0 $$而同样有$a$作为未定元，考察它的最高次项必须有$Q_r[t,t^{-1}]=0$，矛盾。Q.E.D</p>
 
           
         
@@ -1412,127 +1540,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/19/calculus-lecture/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/19/calculus-lecture/" itemprop="url">calculus_lecture</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-19T11:01:57+08:00">
-                2020-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>下面是这次微积分辅学的讲义，关于个人的一点分享以及偏导数、泰勒展开的一些例题和notes，参考的是谢惠民的《数学分析习题讲义》。</p>
-<p><a href="https://huangsisihome.files.wordpress.com/2020/04/e8aeb2e4b9890419.pdf" target="_blank" rel="noopener">微积分讲义0419</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1585,7 +1592,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
