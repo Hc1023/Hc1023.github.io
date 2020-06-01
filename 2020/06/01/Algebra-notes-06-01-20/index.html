@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="reading,">
+  <meta name="keywords" content="数学,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Review of alignment and SNP calling algorithms for next-generation sequencing data2015, J Appl Genetics  Bioinformatic tools for next-generation sequencing (NGS) data processing. Two of most significa">
-<meta name="keywords" content="reading">
+<meta name="description" content="$A,\ B,\ C,\ D$四个代数，令$V$是一个$(B,A)$-双模，$W$是一个$(C,B)$-双模，$X$是一个$(C,D)$-双模。证明$Hom_B(V,Hom_C(W,X))$与$ Hom_C(W \otimes_B V,X)$为$(A,D)$-双模同构。 证：令$\phi: Hom_B(V,Hom_C(W,X)) \rightarrow Hom_C(W \otimes_B V,X)">
+<meta name="keywords" content="数学">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Reading--alignment and SNP calling algorithms">
-<meta property="og:url" content="http://yoursite.com/2020/05/19/reading-alignment-and-SNP-calling-algorithms/index.html">
+<meta property="og:title" content="Algebra notes 06.01.20">
+<meta property="og:url" content="http://yoursite.com/2020/06/01/Algebra-notes-06-01-20/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="Review of alignment and SNP calling algorithms for next-generation sequencing data2015, J Appl Genetics  Bioinformatic tools for next-generation sequencing (NGS) data processing. Two of most significa">
+<meta property="og:description" content="$A,\ B,\ C,\ D$四个代数，令$V$是一个$(B,A)$-双模，$W$是一个$(C,B)$-双模，$X$是一个$(C,D)$-双模。证明$Hom_B(V,Hom_C(W,X))$与$ Hom_C(W \otimes_B V,X)$为$(A,D)$-双模同构。 证：令$\phi: Hom_B(V,Hom_C(W,X)) \rightarrow Hom_C(W \otimes_B V,X)">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-22T01:45:57.773Z">
+<meta property="og:updated_time" content="2020-06-01T16:18:55.561Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Reading--alignment and SNP calling algorithms">
-<meta name="twitter:description" content="Review of alignment and SNP calling algorithms for next-generation sequencing data2015, J Appl Genetics  Bioinformatic tools for next-generation sequencing (NGS) data processing. Two of most significa">
+<meta name="twitter:title" content="Algebra notes 06.01.20">
+<meta name="twitter:description" content="$A,\ B,\ C,\ D$四个代数，令$V$是一个$(B,A)$-双模，$W$是一个$(C,B)$-双模，$X$是一个$(C,D)$-双模。证明$Hom_B(V,Hom_C(W,X))$与$ Hom_C(W \otimes_B V,X)$为$(A,D)$-双模同构。 证：令$\phi: Hom_B(V,Hom_C(W,X)) \rightarrow Hom_C(W \otimes_B V,X)">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/05/19/reading-alignment-and-SNP-calling-algorithms/">
+  <link rel="canonical" href="http://yoursite.com/2020/06/01/Algebra-notes-06-01-20/">
 
 
 
 
 
-  <title>Reading--alignment and SNP calling algorithms | Hc's Blog</title>
+  <title>Algebra notes 06.01.20 | Hc's Blog</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/reading-alignment-and-SNP-calling-algorithms/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/01/Algebra-notes-06-01-20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Reading--alignment and SNP calling algorithms</h1>
+          <h1 class="post-title" itemprop="name headline">Algebra notes 06.01.20</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-19T08:56:15+08:00">
-                2020-05-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-01T23:40:22+08:00">
+                2020-06-01
               </time>
             
 
@@ -352,110 +352,8 @@
       
 
       
-        <h2 id="Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data"><a href="#Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data" class="headerlink" title="Review of alignment and SNP calling algorithms for next-generation sequencing data"></a>Review of alignment and SNP calling algorithms for next-generation sequencing data</h2><p><em>2015, J Appl Genetics</em></p>
-<ul>
-<li>Bioinformatic tools for next-generation sequencing (NGS) data processing.</li>
-<li>Two of most significant tasks: <ul>
-<li><strong>alignment to a reference genome -&gt; suffix tries and hash tables.</strong> Suffix array-based aligners are memory efficient and work faster than hash-based aligners, but they are less accurate. Hash table algorithms tend to be slower but more sensitive.</li>
-<li><strong>detection of single nucleotide polymorphisms (SNPs) -&gt; heuristic and probabilistic methods.</strong> Due to the computational demands of heuristic methods, probabilistic methods are more commonly used.</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="Introduciton"><a href="#Introduciton" class="headerlink" title="Introduciton"></a>Introduciton</h2><p>Existing NGS technologies provide us with a throughput that is at least 100 times larger than that obtained by Sanger sequencing, and the technologies are still improving. It led to a tremendous increase of sequencing speed and thus obtaining complete data of any species within a short period.<br>A major advantage of whole genome sequencing (WGS) stems from the potential to detect genetic variants which mark individual diviations from the reference genome. These are not only SNPs, but also small insertions/deletions (InDels), as well as large structual variants (SV), e.g. copy number variations (CNVs).<br>DIFFICULTIES: NGS represents a throuput technology, so it is highly sensitive to technological errors, consequently making the process of utilising NGS data for research highly dependent on reliable bioinformatics tools. Two major steps: alignment and detection of SNPs.</p>
-<h2 id="Alignment-to-the-reference-genome"><a href="#Alignment-to-the-reference-genome" class="headerlink" title="Alignment to the reference genome"></a>Alignment to the reference genome</h2><p>First computaional step in NGS analysis: alignment of short reads to the existing reference genome or, alternatively, a de novo assembly without a reference.</p>
-<p><strong>Indexing before alignment</strong>: most aligners construct indices for the reference sequence and/or for the short sequenced read data set. Indexing the reference genome is most common because it is andvantageous in terms of computational time.<br>Two main <strong>indexing algorithms</strong>: suffix/prefix tries or hash tables incoporated in vast majority of software tools, but exceptions exist, e.g. Slider sofware adopts merge-sorting.</p>
-<h3 id="Suffix-prefix-tries"><a href="#Suffix-prefix-tries" class="headerlink" title="Suffix/prefix tries"></a>Suffix/prefix tries</h3><ul>
-<li>suffix/prefix trie</li>
-</ul>
-<p>A data structure representing the set of suffixes of a given string of characters, enabling fast match of the string, which in our case represents a sequence read to the reference genome. However, it is not efficient enough, resulting in a very long computing time for very large NGS data sets.</p>
-<ul>
-<li>enhanced suffix array</li>
-</ul>
-<p>More efficient and enables storing large genomes in computer memory. It is composed of a suffix array and some auxiliary arrays.</p>
-<ul>
-<li>FM-index</li>
-</ul>
-<p>About BWT and FM-index, see <a href="https://hc1023.github.io/2020/03/17/Short-Read-Alignment/" target="_blank" rel="noopener">Hc’s Blog: Short Read Alignment</a>.</p>
-<p>Combine the Burrows-Wheeler transform (BWT) algorithm with auxiliary data structures. A suffix array created from BWT altered sequences is significantly more efficient than that from primary sequence. The most popular software tools implementing the FM-index algorithm with BWT are BWA, Bowtie, Bowtie2, SOAP3 and SOAP3-dp (2-BWT, with some modification).</p>
-<h3 id="Hash-tables"><a href="#Hash-tables" class="headerlink" title="Hash tables"></a>Hash tables</h3><p>About basic conception of Hashing, see <a href="https://hc1023.github.io/2019/12/31/Hashing/" target="_blank" rel="noopener">Hc’s Blog: Hashing</a>.</p>
-<p>Seed-and-extend method: divide a query sequence into words called k-mers and the position of each k-mer is kept in the hash table. k-mers are sought in another sequence and their exact matches are termed seeds. Afterwards, seeds are extended and joined without gaps and then their alignment is refined using the Smith-Waterman alignment algorithm.</p>
-<ul>
-<li>spaced seed</li>
-<li>q-gram filter and multiple seed hits</li>
-<li>seed extension</li>
-</ul>
-<p>First two rely on the fast lookup in a hash table, while the seed extension algorithm is based on accelerating the standard Smith-Waterman alignment algorithm.</p>
-<h3 id="Alignment"><a href="#Alignment" class="headerlink" title="Alignment"></a>Alignment</h3><p>Regardless of the indexing method, the actual alignment is performed using either the Smith-Waterman or the Needle-Wunsch algorithms.<br>Alignment gaps usually result from small-scale genome rearrangements, such as InDels. Thus, allowing for gaps in the alignment is preferred.<br>And currently, all of the commonly use alignment programs support a paired-end alignment mode, in which reads sequenced in both the forward and reverse orders are considered simultaneously as a pair, providing a longer piece of sequence to be aligned and, thus, significantly inproving the quality of alignment. See <a href="https://hc1023.github.io/2020/03/08/paired-end-sequencing/" target="_blank" rel="noopener">Hc’s Blog: Illumina Sequencing (paired-end)</a>.</p>
-<h3 id="Post-alignment-processing"><a href="#Post-alignment-processing" class="headerlink" title="Post-alignment processing"></a>Post-alignment processing</h3><ul>
-<li>output file format converting</li>
-</ul>
-<p>Reduction of output data set size and guaranteen downstream compatibility with variant callers.</p>
-<ul>
-<li>create reports from the alignment process</li>
-</ul>
-<p>A simple summary including the total number of aligned reads, the number of properly aligned read pairs of reads or the number of reads aligned exactly once.</p>
-<ul>
-<li>remove polymerase chain reaction (PCR) artefacts</li>
-</ul>
-<p>The same read pairs occuring many times in the raw data and changing the estimate of the true coverage of the reference genome. (samtools rmdup tool is an example)</p>
-<h2 id="SNP-calling"><a href="#SNP-calling" class="headerlink" title="SNP calling"></a>SNP calling</h2><p>Pre-variant calling process involve alignment artefact correction and sequence quality score recalibration. And for a reliable variant detection, a high depth of coverage is a prerequisite, since a high number of reads aligned to each base is used to differentiate between sequencing errors and true polymorphisms.<br>SNP calling may be defined as the process of identifying sites differing from a reference sequence, while genotype calling refers to the estimation of genotypes. They are based on either heuristic or probabilistic methods.</p>
-<h3 id="Heuristic-methods"><a href="#Heuristic-methods" class="headerlink" title="Heuristic methods"></a>Heuristic methods</h3><ul>
-<li>Based on multiple information sources associated with the structure and quality of data. </li>
-<li>High computational demands -&gt; less commonly used.</li>
-<li>For variant detection, a heuristic algorithm determineds the genotype based on the thresholds for coverage (minimum 33),  base quality (minimum 20) and variant allele frequency (minimum 0.08).</li>
-<li>Followed by statistical test. Fisher’s exact test of read counts supporting each allele is applied compared to the expected distribution based on sequencing error alone.</li>
-</ul>
-<h3 id="Probabilistic-methods"><a href="#Probabilistic-methods" class="headerlink" title="Probabilistic methods"></a>Probabilistic methods</h3><ul>
-<li>Based on genotype likelihood calculations and adopts Bayes’ theorem.</li>
-<li>Provide measures of statistical uncertainty for called genotypes, making it possible to monitor the accuracy of genotype calling.</li>
-<li>Additional information concerning allele frequencies and linkage disequilibrium patterns may be included in the analysis.</li>
-</ul>
-<p>In the Bayesian framework, the computed likelihood is combined with a prior genotype probability, which leads to a posterior probability of a genotype. As a result, the genotype with the highest posterior probability is chosen. The ratio between the highest and the second highest probabilities may be used as a measure of confidence.<br>A uniform prior probability may be selected as equal for all genotypes; alternatively, a non-uniform prior can be pre-imposed based on additional information, such as dbSNP (SNP database) entries, the reference sequence structures or features provided by the analysed sample.</p>
-<h3 id="Single-vd-multi-sample-SNP-calling"><a href="#Single-vd-multi-sample-SNP-calling" class="headerlink" title="Single- vd. multi-sample SNP calling"></a>Single- vd. multi-sample SNP calling</h3><ul>
-<li>Single</li>
-</ul>
-<p>Advantage: fast.<br>Disadvange: difficult to draw inferences on a population-wide level and requires custom written programs.</p>
-<ul>
-<li>Multi </li>
-</ul>
-<p>Advantage: priors may be improved based on the information on allele frequency and on verification of whether the obtained genotypes follow Hardy-Weinberg equilibrium; the latter is only useful if unrelated individuals are considered.<br>Disadvantage: much more CPU time- and resource- consuming than individual variant calling.</p>
-<h2 id="Technical-issues"><a href="#Technical-issues" class="headerlink" title="Technical issues"></a>Technical issues</h2><h3 id="Data-formats"><a href="#Data-formats" class="headerlink" title="Data formats"></a>Data formats</h3><table>
-<thead>
-<tr>
-<th>Format</th>
-<th>Data</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>FASTQ</td>
-<td>short sequence reads</td>
-</tr>
-<tr>
-<td>FASTA</td>
-<td>reference genomes</td>
-</tr>
-<tr>
-<td>SAM</td>
-<td>output of alignment</td>
-</tr>
-<tr>
-<td>BAM</td>
-<td>binaray file of SAM</td>
-</tr>
-<tr>
-<td>VCF</td>
-<td>output of variant calling</td>
-</tr>
-</tbody></table>
-<h3 id="Computing-platforms-and-operating-systems"><a href="#Computing-platforms-and-operating-systems" class="headerlink" title="Computing platforms and operating systems"></a>Computing platforms and operating systems</h3><p>With the decrease in sequencing costs, data processing costs are rising, while storing and processing very large amounts of data become a challenge.</p>
-<ul>
-<li>large data sets -&gt; memory requirements.</li>
-<li>computationally demanding -&gt; supercomputing infrastructure involving many CPUs.</li>
-<li>accelerate NGS processing -&gt; multi-threaded mode.</li>
-</ul>
-<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><p>For less experienced users, SAMtools’ mpileup and bcftools are recommended because their ease of use. On the other hand, GATK, which is provided with a detailed user manual, is robust towards data artifacts. Nevertheless, both programs are frequently updated, provide detailed log files describing the process of SNP calling and the agreement between their outputs is high.</p>
+        <p><strong>$A,\ B,\ C,\ D$四个代数，令$V$是一个$(B,A)$-双模，$W$是一个$(C,B)$-双模，$X$是一个$(C,D)$-双模。证明$Hom_B(V,Hom_C(W,X))$与$ Hom_C(W \otimes_B V,X)$为$(A,D)$-双模同构。</strong></p>
+<p>证：令$\phi: Hom_B(V,Hom_C(W,X)) \rightarrow Hom_C(W \otimes_B V,X)$满足$f \mapsto (w \otimes_B v \mapsto f(v)(w))$。<br>$_CW_B,\ _CX_D\Rightarrow Hom_C(W,X)$是$(B,D)$-双模，又$V$是$(B,A)$-双模，所以$Hom_B(V,Hom_C(W,X))$是$(A,D)$-双模。<br>$_CW_B,\ _BV_A\Rightarrow W \otimes_B V$是$(C,A)$-双模，又$_CX_D\Rightarrow Hom_C(W \otimes_B V,X)$为$(A,D)$-双模。<br>下证$\phi$保持模同态。<br>$\phi (af)(w\otimes v) = (af)(v)(w)=f(va)(w)$<br>$(a\phi(f))(w\otimes v) = \phi(f)(w\otimes va) =\phi(w\otimes (va)) = f(va)(w)$<br>所以$\phi (af) = a\phi(f)$<br>$\phi(fd)(w\otimes v) = (fd)(v)(w)=(f(v)d)(w)=f(v)(w)d$<br>$(\phi(f)d)(w\otimes v) =\phi(f)(w\otimes v)d = f(v)(w)d$<br>所以$\phi (fd) = \phi(f)d$<br>最后只要证其为双射。<br>若$\phi(f)=0$则$f(v)(w)=0,\ \forall w\in W,v \in V\Rightarrow f(v) = 0, \ \forall v \in V$，所以$f=0$，为单射。<br>$\forall g\in Hom_C(W \otimes_B V,X),\ g(w\otimes v) = x$，令$f(v)(w) = g(w\otimes v)$，为满射。<br>Q.E.D</p>
 
       
     </div>
@@ -473,7 +371,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/reading/" rel="tag"># reading</a>
+            <a href="/tags/数学/" rel="tag"># 数学</a>
           
         </div>
       
@@ -486,8 +384,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/05/16/tex-spell-check/" rel="next" title="Tex语法检查">
-                <i class="fa fa-chevron-left"></i> Tex语法检查
+              <a href="/2020/05/31/Algebra-notes-05-31-20/" rel="next" title="Algebra notes 05.31.20">
+                <i class="fa fa-chevron-left"></i> Algebra notes 05.31.20
               </a>
             
           </div>
@@ -495,10 +393,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/05/28/Algebra-notes-05-28-20/" rel="prev" title="Algebra notes 05.28.20">
-                Algebra notes 05.28.20 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -550,17 +444,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -613,22 +498,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data"><span class="nav-number">1.</span> <span class="nav-text">Review of alignment and SNP calling algorithms for next-generation sequencing data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduciton"><span class="nav-number">2.</span> <span class="nav-text">Introduciton</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alignment-to-the-reference-genome"><span class="nav-number">3.</span> <span class="nav-text">Alignment to the reference genome</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Suffix-prefix-tries"><span class="nav-number">3.1.</span> <span class="nav-text">Suffix/prefix tries</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash-tables"><span class="nav-number">3.2.</span> <span class="nav-text">Hash tables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alignment"><span class="nav-number">3.3.</span> <span class="nav-text">Alignment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Post-alignment-processing"><span class="nav-number">3.4.</span> <span class="nav-text">Post-alignment processing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNP-calling"><span class="nav-number">4.</span> <span class="nav-text">SNP calling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Heuristic-methods"><span class="nav-number">4.1.</span> <span class="nav-text">Heuristic methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Probabilistic-methods"><span class="nav-number">4.2.</span> <span class="nav-text">Probabilistic methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Single-vd-multi-sample-SNP-calling"><span class="nav-number">4.3.</span> <span class="nav-text">Single- vd. multi-sample SNP calling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Technical-issues"><span class="nav-number">5.</span> <span class="nav-text">Technical issues</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-formats"><span class="nav-number">5.1.</span> <span class="nav-text">Data formats</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Computing-platforms-and-operating-systems"><span class="nav-number">5.2.</span> <span class="nav-text">Computing platforms and operating systems</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Notes"><span class="nav-number">6.</span> <span class="nav-text">Notes</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

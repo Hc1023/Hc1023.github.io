@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Algebra notes 06.01.20</title>
+    <url>/2020/06/01/Algebra-notes-06-01-20/</url>
+    <content><![CDATA[<p><strong>$A,\ B,\ C,\ D$四个代数，令$V$是一个$(B,A)$-双模，$W$是一个$(C,B)$-双模，$X$是一个$(C,D)$-双模。证明$Hom_B(V,Hom_C(W,X))$与$ Hom_C(W \otimes_B V,X)$为$(A,D)$-双模同构。</strong></p>
+<p>证：令$\phi: Hom_B(V,Hom_C(W,X)) \rightarrow Hom_C(W \otimes_B V,X)$满足$f \mapsto (w \otimes_B v \mapsto f(v)(w))$。<br>$_CW_B,\ _CX_D\Rightarrow Hom_C(W,X)$是$(B,D)$-双模，又$V$是$(B,A)$-双模，所以$Hom_B(V,Hom_C(W,X))$是$(A,D)$-双模。<br>$_CW_B,\ _BV_A\Rightarrow W \otimes_B V$是$(C,A)$-双模，又$_CX_D\Rightarrow Hom_C(W \otimes_B V,X)$为$(A,D)$-双模。<br>下证$\phi$保持模同态。<br>$\phi (af)(w\otimes v) = (af)(v)(w)=f(va)(w)$<br>$(a\phi(f))(w\otimes v) = \phi(f)(w\otimes va) =\phi(w\otimes (va)) = f(va)(w)$<br>所以$\phi (af) = a\phi(f)$<br>$\phi(fd)(w\otimes v) = (fd)(v)(w)=(f(v)d)(w)=f(v)(w)d$<br>$(\phi(f)d)(w\otimes v) =\phi(f)(w\otimes v)d = f(v)(w)d$<br>所以$\phi (fd) = \phi(f)d$<br>最后只要证其为双射。<br>若$\phi(f)=0$则$f(v)(w)=0,\ \forall w\in W,v \in V\Rightarrow f(v) = 0, \ \forall v \in V$，所以$f=0$，为单射。<br>$\forall g\in Hom_C(W \otimes_B V,X),\ g(w\otimes v) = x$，令$f(v)(w) = g(w\otimes v)$，为满射。<br>Q.E.D</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Algebra notes 05.31.20</title>
     <url>/2020/05/31/Algebra-notes-05-31-20/</url>
     <content><![CDATA[<p>代数闭域上的Schur引理：令$V$是$A$ over an algebraically closed field $k$的某个有限维不可约表示，且$\phi : V \rightarrow V$是一个intertwining算子。那么$\phi = \lambda \cdot Id$对于某个$\lambda \in k$（一个scaler算子）。</p>
@@ -9,7 +19,7 @@
 <p>证：由于中心中的元素$z\in Z(A)$与$A$中所有元素交换，所以是一个intertwing算子，又$V$是一个不可约有限维表示，所以由Schur引理可以立刻得出$z$在$V$上的作用为乘以一个scaler $\chi _V (z)\in k$ 。同时由于作用$\rho (z)$是同态，而$\rho (z) v = \chi _V (z) v$，则$\chi _V : Z(A) \rightarrow k$是一个同态。Q.E.D</p>
 <p>rmk：考虑$\rho(z)$的一个特征向量$\lambda$，它的存在性由$k$是代数闭域保证，它对应的非零特征空间$W\subset V$。由$z\in Z(A)$，$\forall a\in A$有$(\rho(z)-\lambda)\rho(a)w = \rho(a)(\rho(z)-\lambda)w = 0$，则$\rho (a)w\in W$，所以$W$为$V$的非零子表示。（这里说的就是$ker(\rho(z)-\lambda)$是$V$的子表示）由$V$不可约所以$W=V$。（用一个具体的例子串了一下Schur定理和Schur引理的证明思想）</p>
 <p><strong>（b）证明若$V$是$A$的一个不可分有限维表示，那么$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$，且它的值等于$z$在$V$的某个不可约子表示作用的scaler值。因此，$\chi _V : Z(A) \rightarrow k$是一个同态，它同样被称作$V$的中心特征。</strong></p>
-<p>证：因为我们知道$V$可以表示为不同特征值对应的广义特征子空间的直和，由$V$不可分，则$V$由$\forall z\in Z(A)$的一个广义特征子空间构成，i.e.， $\forall v\in V,\ \exists l\in \mathbb N,\ (\rho(z)-\chi_V(z))^l v=0$。这证明了$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$。后续的命题对于$V=0$的情况是平凡的。否则$V$是非零有限维表示，（见<a href="https://hc1023.github.io/2020/05/28/Algebra-notes-05-28-20/" target="_blank" rel="noopener">Algebra notes 05.28.20</a>）知道存在不可约子表示$W\subset U$。于是将作用限制在子表示$W$上，则由（a）知道它在$W$上的作用为乘以一个scaler $\chi_W(z)$，i.e.， $\forall w\in W\subset V,\ (\rho(z)-\chi_W(z)) v=0$，所以$\chi_V (z)=\chi_W (z)$。而$\chi_W: Z(A) \rightarrow k$是同态即得$\chi_V: Z(A) \rightarrow k$为同态。Q.E.D</p>
+<p>证：因为我们知道$V$可以表示为不同特征值对应的广义特征子空间的直和，由$V$不可分，则$V$由$\forall z\in Z(A)$的一个广义特征子空间构成，i.e.， $\forall v\in V,\ \exists l\in \mathbb N,\ (\rho(z)-\chi_V(z))^l v=0$。这证明了$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$。后续的命题对于$V=0$的情况是平凡的。否则$V$是非零有限维表示，（见<a href="https://hc1023.github.io/2020/05/28/Algebra-notes-05-28-20/" target="_blank" rel="noopener">Algebra notes 05.28.20</a>）知道存在不可约子表示$W\subset U$。于是将作用限制在子表示$W$上，则由（a）知道它在$W$上的作用为乘以一个scaler $\chi_W(z)$，i.e.， $\forall w\in W\subset V,\ (\rho(z)-\chi_W(z)) v=0$，不同特征值的特征空间是正交的所以$\chi_V (z)=\chi_W (z)$。而$\chi_W: Z(A) \rightarrow k$是同态即得$\chi_V: Z(A) \rightarrow k$为同态。Q.E.D</p>
 <p><strong>（c）命题(b)中的$\rho(z)$是否一定是一个scaler算子？</strong></p>
 <p>不一定。在（b）证明中若$\exists l&gt;1$就不是，i.e.， 考虑大于1阶的约当块。</p>
 ]]></content>
@@ -4099,7 +4109,7 @@
 <p>缺乏智力深度的庸常生活难以忍受，对深刻抽象的理论产生了由衷的神往。</p>
 </blockquote>
 <p>Hello, welcome to <strong>Hc’s Blog</strong>. </p>
-<p>My name is Sisi Huang, senior student from <a href="http://www.math.zju.edu.cn/mathen/" target="_blank" rel="noopener">School of Mathematical Sciences</a> and <a href="http://ckc.zju.edu.cn/english/" target="_blank" rel="noopener">Chu Kochen Honors College</a> at Zhejiang University. Here is my <a href="https://huangsisihome.files.wordpress.com/2020/05/cv.pdf" target="_blank" rel="noopener"><strong>CV</strong></a>.</p>
+<p>My name is Sisi Huang, a junior student from <a href="http://www.math.zju.edu.cn/mathen/" target="_blank" rel="noopener">School of Mathematical Sciences</a> and <a href="http://ckc.zju.edu.cn/english/" target="_blank" rel="noopener">Chu Kochen Honors College</a> at Zhejiang University. Here is my <a href="https://huangsisihome.files.wordpress.com/2020/05/cv.pdf" target="_blank" rel="noopener"><strong>CV</strong></a>.</p>
 <a id="more"></a>
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我使用Hexo+github搭建了我的博客，希望自己有空也能写写东西，整理思绪。</p>
