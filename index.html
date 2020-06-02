@@ -414,6 +414,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/02/Algebra-notes-06-02-20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/02/Algebra-notes-06-02-20/" itemprop="url">Algebra notes 06.02.20</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-02T22:36:01+08:00">
+                2020-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>令$g$是域$k$上的向量空间，并令$[\ ,\ ]: g \times g\rightarrow g$为一个反对称双线性映射。（等价于$[a,a]=0$且$[a,b] = -[b,a]$）</p>
+<p>$(g,[\ ,\ ])$是一个李代数如果$[\ ,\ ]$满足雅可比恒等式$$[[a,b],c]+[[b,c],a]+[[c,a],b] = 0$$</p>
+<p>几个李代数的例子：<br>1.$g$ with $[\ ,\ ]=0$ （阿贝尔李代数）<br>2.结合代数$A$ with $[a,b] = ab-ba$<br>3.结合代数$A$的子空间$U$满足$[a,b]\in U$对于所有的$a,b \in U$<br>4.代数$A$的导子空间$Der(A)$，i.e.，线性映射$D:A\rightarrow A$满足莱布尼兹法则$$D(ab) = D(a)b+aD(b)$$</p>
+<p><strong>证明对任意结合代数$A$，其导子集$\mathcal D = \lbrace D:A\rightarrow A\ \rbrace$，其中$D$满足莱布尼兹法则，关于$[D_1,D_2] = D_1D_2-D_2D_1\ (\forall D_i\in \mathcal D,\ i=1,2)$必为一个李代数。</strong></p>
+<p>证：容易验证下述三条成立<br>1.$[D_1,D_1] = 0$<br>2.$[D_1,D_2] = -[D_2,D_1]$<br>3.雅可比恒等式<br>下只需验证$\mathcal D$在李括号下是封闭的，也$[D_1, D_2] (ab) = [D_1, D_2] (a) b+a[D_1, D_2] (b)$成立，这个把李括号打开算一下就好，是成立的。Q.E.D</p>
+<p>Rmk：对于一个结合代数来讲，上面定义的李括号的封闭性是自然成立的，但是$(\mathcal D,\cdot)$<strong>非结合代数</strong>，$\cdot$对应的就是自然的复合运算$(D_1\cdot D_2)(a) = D_1(D_2(a))$。这是因为$$(D_1D_2)(ab) = D_1(D_2(ab)) = D_1 (D_2(a)b+aD_2(b)) = (D_1D_2)(a)b+D_2(a)D_1(b)+D_1(a)D_2(b)+a(D_1D_2)(b)$$而若$D_1D_2\in \mathcal D$表明$$(D_1D_2)(ab) = (D_1D_2)(a)b + a(D_1D_2)(b) $$所以两者相等意味着必有$$D_2(a)D_1(b)+D_1(a)D_2(b)=0$$但这并不一定成立，矛盾。</p>
+<p>所以一个代数非结合代数，但却可以关于李括号成立李代数。而对于一个李代数来讲，我们可以取它的泛包络代数使其“延拓”为一个结合代数。我们直接用张量积的方式定义这个泛包络代数。</p>
+<p>首先定义张量代数。给定一个向量空间$V$，定义域$k$上的张量代数$TV:=\oplus_{n\geq 0} V^{\otimes n}$，乘法运算$a\cdot b:=a\otimes b,\ a\in V^{\otimes n},\ b\in V^{\otimes m}$。观察到$V$的一组基$x_1,…,x_N\in V$可以定义一个自由代数$k\langle x_1,…,x_n\rangle$（一个非交换多项式环）为$TV$的一个同构。</p>
+<p>下面定义这个泛包络代数。若$V$是一个李代数，其泛包络代数$U(V)$为$TV$商掉由$v\otimes w-w\otimes v-[v,w],\ v,w\in V$生成的理想。这个泛包络代数是一个结合代数。<br>并且我们还可以知道的一件事是，李代数$V$和泛包络代数$U(V)$的表示是一样的。$U(V)$的作用可以用$V$中的元素生成，$\rho(x_1…x_s) = \rho(x_1)…\rho(x_s)$。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/01/Algebra-notes-06-01-20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -609,7 +737,7 @@
             <p>代数闭域上的Schur引理：令$V$是$A$ over an algebraically closed field $k$的某个有限维不可约表示，且$\phi : V \rightarrow V$是一个intertwining算子。那么$\phi = \lambda \cdot Id$对于某个$\lambda \in k$（一个scaler算子）。</p>
 <p><strong>令$A$是代数闭域$k$上的代数。其中心$Z(A)$为与$A$所有元素均交换的元素组成的集合。</strong></p>
 <p><strong>（a）证明若$V$是$A$的一个不可约有限维表示，那么$\forall z \in Z(A)$在$V$上的作用为乘上一个scaler $\chi _V (z)$，并且$\chi _V : Z(A) \rightarrow k$是一个同态。它被称作$V$的中心特征。</strong></p>
-<p>证：由于中心中的元素$z\in Z(A)$与$A$中所有元素交换，所以是一个intertwing算子，又$V$是一个不可约有限维表示，所以由Schur引理可以立刻得出$z$在$V$上的作用为乘以一个scaler $\chi _V (z)\in k$ 。同时由于作用$\rho (z)$是同态，而$\rho (z) v = \chi _V (z) v$，则$\chi _V : Z(A) \rightarrow k$是一个同态。Q.E.D</p>
+<p>证：由于中心中的元素$z\in Z(A)$与$A$中所有元素交换，所以是一个intertwining算子，又$V$是一个不可约有限维表示，所以由Schur引理可以立刻得出$z$在$V$上的作用为乘以一个scaler $\chi _V (z)\in k$ 。同时由于作用$\rho (z)$是同态，而$\rho (z) v = \chi _V (z) v$，则$\chi _V : Z(A) \rightarrow k$是一个同态。Q.E.D</p>
 <p>rmk：考虑$\rho(z)$的一个特征向量$\lambda$，它的存在性由$k$是代数闭域保证，它对应的非零特征空间$W\subset V$。由$z\in Z(A)$，$\forall a\in A$有$(\rho(z)-\lambda)\rho(a)w = \rho(a)(\rho(z)-\lambda)w = 0$，则$\rho (a)w\in W$，所以$W$为$V$的非零子表示。（这里说的就是$ker(\rho(z)-\lambda)$是$V$的子表示）由$V$不可约所以$W=V$。（用一个具体的例子串了一下Schur定理和Schur引理的证明思想）</p>
 <p><strong>（b）证明若$V$是$A$的一个不可分有限维表示，那么$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$，且它的值等于$z$在$V$的某个不可约子表示作用的scaler值。因此，$\chi _V : Z(A) \rightarrow k$是一个同态，它同样被称作$V$的中心特征。</strong></p>
 <p>证：因为我们知道$V$可以表示为不同特征值对应的广义特征子空间的直和，由$V$不可分，则$V$由$\forall z\in Z(A)$的一个广义特征子空间构成，i.e.， $\forall v\in V,\ \exists l\in \mathbb N,\ (\rho(z)-\chi_V(z))^l v=0$。这证明了$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$。后续的命题对于$V=0$的情况是平凡的。否则$V$是非零有限维表示，（见<a href="https://hc1023.github.io/2020/05/28/Algebra-notes-05-28-20/" target="_blank" rel="noopener">Algebra notes 05.28.20</a>）知道存在不可约子表示$W\subset U$。于是将作用限制在子表示$W$上，则由（a）知道它在$W$上的作用为乘以一个scaler $\chi_W(z)$，i.e.， $\forall w\in W\subset V,\ (\rho(z)-\chi_W(z)) v=0$，不同特征值的特征空间是正交的所以$\chi_V (z)=\chi_W (z)$。而$\chi_W: Z(A) \rightarrow k$是同态即得$\chi_V: Z(A) \rightarrow k$为同态。Q.E.D</p>
@@ -1410,134 +1538,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/13/blog-deploy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/13/blog-deploy/" itemprop="url">换电脑重配置博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-13T11:22:36+08:00">
-                2020-05-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Yes, I have done it elegantly and efficiently. </p>
-<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><ul>
-<li>安装 <a href="https://gitforwindows.org/" target="_blank" rel="noopener">git</a></li>
-<li>安装 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a></li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/13/blog-deploy/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1590,7 +1590,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
