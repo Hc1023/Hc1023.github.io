@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="机器学习,">
 
 
 
@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="no boundaries, no restrictions">
-<meta name="keywords" content="黄思思的博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hc&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/数学/index.html">
+<meta name="description" content="嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。 给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$ 当样本特征很多，而样">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LASSO（L1 正则化）">
+<meta property="og:url" content="http://yoursite.com/2020/07/03/LASSO/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="no boundaries, no restrictions">
+<meta property="og:description" content="嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。 给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$ 当样本特征很多，而样">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/17587926-a86b18aa48354529.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2020-07-03T15:23:41.702Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hc&#39;s Blog">
-<meta name="twitter:description" content="no boundaries, no restrictions">
+<meta name="twitter:title" content="LASSO（L1 正则化）">
+<meta name="twitter:description" content="嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。 给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$ 当样本特征很多，而样">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/17587926-a86b18aa48354529.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/数学/">
+  <link rel="canonical" href="http://yoursite.com/2020/07/03/LASSO/">
 
 
 
 
 
-  <title>Tag: 数学 | Hc's Blog</title>
+  <title>LASSO（L1 正则化） | Hc's Blog</title>
   
 
 
@@ -144,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -270,208 +273,170 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>数学<small>Tag</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/03/LASSO/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2020/06/03/Algebra-notes-06-03-20/" itemprop="url">
-              
-                <span itemprop="name">Algebra notes 06.03.20</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">LASSO（L1 正则化）</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-06-03T22:28:01+08:00" content="2020-06-03">
-          06-03
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-03T23:22:17+08:00">
+                2020-07-03
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/06/02/Algebra-notes-06-02-20/" itemprop="url">
-              
-                <span itemprop="name">Algebra notes 06.02.20</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-06-02T22:36:01+08:00" content="2020-06-02">
-          06-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
+        <p>嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。</p>
+<p>给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$<br>简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$</p>
+<p>当样本特征很多，而样本数较少，容易过拟合，为缓解此问题，引入正则化项，正则化参数$\lambda &gt; 0$。</p>
+<ul>
+<li><p>$L_1$范数正则化，LASSO（Least Absolute Shrinkage and Selection Operator）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_1$</p>
+</li>
+<li><p>$L_2$范数正则化，岭回归（ridge regression）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_2^2$</p>
+</li>
+</ul>
+<p>$L_1$范数和$L_2$范数正则化都有助于降低过拟合风险，<strong>前者比后者更容易获得稀疏解</strong>，求得$w$有更少的非零分量。</p>
+<a id="more"></a>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<p><img src="https://upload-images.jianshu.io/upload_images/17587926-a86b18aa48354529.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="0703.jpg"></p>
+<p>从图中可以看出，采用$L_1$范数时平方误差项等值线与正则化项等值线的交点常出现在坐标轴上，而采用$L_2$交点落于某一象限中。</p>
+<h2 id="L-1-正则化求解"><a href="#L-1-正则化求解" class="headerlink" title="$L_1$正则化求解"></a>$L_1$正则化求解</h2><p>$L_1$正则化求解采用近端梯度下降（Proximal Gradient Descent, PGD）</p>
+<p>令$\nabla$表示微分算子，对优化目标$min_x f(x) + \lambda ||x||_1$</p>
+<p>若$f(x)$可导，且$\nabla f$满足$L$-Lipschitz条件，则在$x_k$附近</p>
+<p>$$\hat f(x) \simeq f(x_k) + \langle \nabla f(x_k),x-x_k \rangle + \frac L 2||x-x_k||^2$$ $$ = \frac L 2 ||x-(x_k - \frac 1 L \nabla f(x_k))||_2^2 + const$$</p>
+<p>再考虑正则化项，于是进一步的梯度下降迭代为</p>
+<p>$$x_{k+1} = argmin_x \frac L 2||x-(x_k - \frac 1 L \nabla f(x_k))||_2^2 + \lambda ||x||_1$$</p>
+<h2 id="Python-code"><a href="#Python-code" class="headerlink" title="Python code"></a>Python code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.linear_model import LassoCV</span><br><span class="line">from sklearn.datasets import make_regression</span><br><span class="line">X, y = make_regression(noise=4, random_state=0)</span><br><span class="line">reg = LassoCV(cv=5, random_state=0).fit(X, y)</span><br><span class="line">reg.score(X, y)</span><br><span class="line"></span><br><span class="line">reg.predict(X[:1,])</span><br></pre></td></tr></table></figure>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/06/01/Algebra-notes-06-01-20/" itemprop="url">
-              
-                <span itemprop="name">Algebra notes 06.01.20</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-06-01T23:40:22+08:00" content="2020-06-01">
-          06-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/31/Algebra-notes-05-31-20/" itemprop="url">
-              
-                <span itemprop="name">Algebra notes 05.31.20</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-05-31T23:33:46+08:00" content="2020-05-31">
-          05-31
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/29/Algebra-notes-05-29-20/" itemprop="url">
-              
-                <span itemprop="name">Algebra notes 05.29.20</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-05-29T23:38:40+08:00" content="2020-05-29">
-          05-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/28/Algebra-notes-05-28-20/" itemprop="url">
-              
-                <span itemprop="name">Algebra notes 05.28.20</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-05-28T23:45:08+08:00" content="2020-05-28">
-          05-28
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/11/05/integral-operators/" itemprop="url">
-              
-                <span itemprop="name">一个紧自伴的积分算子</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-11-05T09:35:08+08:00" content="2019-11-05">
-          11-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+<p><a href="https://scikit-learn.org/stable/modules/linear_model.html#lasso" target="_blank" rel="noopener">https://scikit-learn.org/stable/modules/linear_model.html#lasso</a></p>
+<p><a href="https://scikit-learn.org/stable/auto_examples/ensemble/plot_stack_predictors.html#sphx-glr-auto-examples-ensemble-plot-stack-predictors-py" target="_blank" rel="noopener">https://scikit-learn.org/stable/auto_examples/ensemble/plot_stack_predictors.html#sphx-glr-auto-examples-ensemble-plot-stack-predictors-py</a></p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/30/MWAS-fine-mining-the-micriobiome/" rel="next" title="MWAS fine-mining the microbiome">
+                <i class="fa fa-chevron-left"></i> MWAS fine-mining the microbiome
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -479,6 +444,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -499,8 +468,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -553,6 +531,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#L-1-正则化求解"><span class="nav-number">1.</span> <span class="nav-text">$L_1$正则化求解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-code"><span class="nav-number">2.</span> <span class="nav-text">Python code</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -694,6 +688,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

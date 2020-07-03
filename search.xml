@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>LASSO（L1 正则化）</title>
+    <url>/2020/07/03/LASSO/</url>
+    <content><![CDATA[<p>嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。</p>
+<p>给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$<br>简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$</p>
+<p>当样本特征很多，而样本数较少，容易过拟合，为缓解此问题，引入正则化项，正则化参数$\lambda &gt; 0$。</p>
+<ul>
+<li><p>$L_1$范数正则化，LASSO（Least Absolute Shrinkage and Selection Operator）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_1$</p>
+</li>
+<li><p>$L_2$范数正则化，岭回归（ridge regression）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_2^2$</p>
+</li>
+</ul>
+<p>$L_1$范数和$L_2$范数正则化都有助于降低过拟合风险，<strong>前者比后者更容易获得稀疏解</strong>，求得$w$有更少的非零分量。</p>
+<a id="more"></a>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/17587926-a86b18aa48354529.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="0703.jpg"></p>
+<p>从图中可以看出，采用$L_1$范数时平方误差项等值线与正则化项等值线的交点常出现在坐标轴上，而采用$L_2$交点落于某一象限中。</p>
+<h2 id="L-1-正则化求解"><a href="#L-1-正则化求解" class="headerlink" title="$L_1$正则化求解"></a>$L_1$正则化求解</h2><p>$L_1$正则化求解采用近端梯度下降（Proximal Gradient Descent, PGD）</p>
+<p>令$\nabla$表示微分算子，对优化目标$min_x f(x) + \lambda ||x||_1$</p>
+<p>若$f(x)$可导，且$\nabla f$满足$L$-Lipschitz条件，则在$x_k$附近</p>
+<p>$$\hat f(x) \simeq f(x_k) + \langle \nabla f(x_k),x-x_k \rangle + \frac L 2||x-x_k||^2$$ $$ = \frac L 2 ||x-(x_k - \frac 1 L \nabla f(x_k))||_2^2 + const$$</p>
+<p>再考虑正则化项，于是进一步的梯度下降迭代为</p>
+<p>$$x_{k+1} = argmin_x \frac L 2||x-(x_k - \frac 1 L \nabla f(x_k))||_2^2 + \lambda ||x||_1$$</p>
+<h2 id="Python-code"><a href="#Python-code" class="headerlink" title="Python code"></a>Python code</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from sklearn.linear_model import LassoCV</span><br><span class="line">from sklearn.datasets import make_regression</span><br><span class="line">X, y = make_regression(noise=4, random_state=0)</span><br><span class="line">reg = LassoCV(cv=5, random_state=0).fit(X, y)</span><br><span class="line">reg.score(X, y)</span><br><span class="line"></span><br><span class="line">reg.predict(X[:1,])</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://scikit-learn.org/stable/modules/linear_model.html#lasso" target="_blank" rel="noopener">https://scikit-learn.org/stable/modules/linear_model.html#lasso</a></p>
+<p><a href="https://scikit-learn.org/stable/auto_examples/ensemble/plot_stack_predictors.html#sphx-glr-auto-examples-ensemble-plot-stack-predictors-py" target="_blank" rel="noopener">https://scikit-learn.org/stable/auto_examples/ensemble/plot_stack_predictors.html#sphx-glr-auto-examples-ensemble-plot-stack-predictors-py</a></p>
+]]></content>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MWAS fine-mining the microbiome</title>
     <url>/2020/06/30/MWAS-fine-mining-the-micriobiome/</url>
     <content><![CDATA[<p>Metagenome-wide association studies (MWAS) have enabled the <strong>high-resolution</strong> investigation of associations between the human microbiome and several complex diseases, including <em>type 2 diabetes, obesity, liver cirrhosis, colorectal cancer and rheumatoid arthritis</em>.</p>
