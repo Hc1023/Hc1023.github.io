@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="机器学习,">
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="no boundaries, no restrictions">
-<meta name="keywords" content="黄思思的博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hc&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/机器学习/index.html">
+<meta name="description" content="决策树（DT）是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。 基本流程遵循简单直观的分而治之（divide and conquer）策略：选择最优属性，划分，递归进行。">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="decision tree">
+<meta property="og:url" content="http://yoursite.com/2020/07/05/decision-tree/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="no boundaries, no restrictions">
+<meta property="og:description" content="决策树（DT）是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。 基本流程遵循简单直观的分而治之（divide and conquer）策略：选择最优属性，划分，递归进行。">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-07-05T08:49:01.755Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hc&#39;s Blog">
-<meta name="twitter:description" content="no boundaries, no restrictions">
+<meta name="twitter:title" content="decision tree">
+<meta name="twitter:description" content="决策树（DT）是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。 基本流程遵循简单直观的分而治之（divide and conquer）策略：选择最优属性，划分，递归进行。">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/机器学习/">
+  <link rel="canonical" href="http://yoursite.com/2020/07/05/decision-tree/">
 
 
 
 
 
-  <title>Tag: 机器学习 | Hc's Blog</title>
+  <title>decision tree | Hc's Blog</title>
   
 
 
@@ -144,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -270,78 +271,179 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>机器学习<small>Tag</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/05/decision-tree/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2020/07/05/decision-tree/" itemprop="url">
-              
-                <span itemprop="name">decision tree</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">decision tree</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-07-05T16:42:01+08:00" content="2020-07-05">
-          07-05
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-05T16:42:01+08:00">
+                2020-07-05
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p><strong>决策树（DT）</strong>是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。</p>
+<p>基本流程遵循简单直观的<strong>分而治之（divide and conquer）</strong>策略：选择最优属性，划分，递归进行。</p>
+<a id="more"></a>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/07/03/LASSO/" itemprop="url">
-              
-                <span itemprop="name">LASSO（L1 正则化）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-07-03T23:22:17+08:00" content="2020-07-03">
-          07-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+<hr>
+<p>休息一下：</p>
+<p>“分而治之”（divide and conquer）这词语总是看到，第一次是在sort algorithm那里，计算复杂度$n\ log_2n$，但印象中并不是最快的（？）……最近一次是在甜甜圈们的典范表示，啊不，基本群的典范表示：$\pi_1(S)$ is $\left\langle a_{1}, b_{1}, \cdots, a_{g}, b_{g} \mid \Pi_{i=1}^{g}\left[a_{i}, b_{i}\right]\right\rangle$ for a surface $S = \oplus_{i=1}^{g} T^{2}$</p>
+<hr>
+<p>三种情况递归返回：<br>（1）当前结点包含样本全属于同一类别，无需划分<br>（2）当前属性集为空，或是所有样本在所有属性上取值相同，无法划分<br>（3）当前结点包含的样本集合为空，不能划分</p>
+<p>情形（2）是在利用当前结点的后验分布，情形（3）是把父结点的样本分布作为当前结点的先验分布。</p>
+<p>我们希望决策树的分支结点所包含样本尽可能属于同一类别，<strong>信息熵（information entropy）</strong>是度量样本集合纯度最常用的指标，样本集合$D$中第$k$类样本所占的比例为$p_k\ (k=1,2,…,|Y|)$，则$D$的信息熵定义为$$Ent(D) = - \Sigma_{k=1}^{|Y|} p_k\ log_2 p_k$$ 显然$Ent(D)\in [0,log_2 Y]$ </p>
+<p>用属性$a$划分有$V$个可能取值$\lbrace a^1,a^2,…,a^V \rbrace$，取值为$a^v$的样本为$D^v$，用属性$a$对样本集$D$进行划分所获得的<strong>信息增益（information gain）</strong>为$$Gain(D,a) = Ent(D) - \Sigma_{v=1}^V \frac{|D^v|}{|D|} Ent(D^v)$$ 选择最优划分属性$a_* = argmax_{a\in A} \ Gain(D,a)$。著名的<strong>ID3决策树</strong>学习算法就是以信息增益为准则来划分最优属性的。</p>
+<p>但信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，著名的<strong>C4.5决策树</strong>算法使用<strong>增益率（gain ratio）</strong>$$Gain_ratio(D,a) = \frac{Gain(D,a)}{IV(a)}$$ 其中$IV(a) = - \Sigma_{v=1}^V\frac{|D^v|}{|D|}log_2 \frac{|D^v|}{|D|}$称为属性$a$的固有值（intrinsic value）。属性$a$可能取值越多，固有值通常越大。</p>
+<p>增益率对可能值数目较少的属性有所偏好，使用启发式算法：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
+<p><strong>CART决策树</strong>使用<strong>基尼指数（Gini index</strong>）来选择划分属性。$$Gini(D) = \Sigma_{k=1}^{|Y|}\Sigma_{k’\neq k} p_kp_{k’} = 1-\Sigma_{k=1}^{|Y|}p_k^2$$ 反映了从数据集$D$中随机抽取两个样本，其类别标记不一样的概率。$Gini(D)$越小，则数据集$D$的纯度越高。属性$a$的基尼指数为$$Gini_index(D,a) = \Sigma_{v=1}^V\frac{|D^v|}{|D|}Gini(D^v)$$选取划分后基尼指数最小的属性作为最优划分属性，即$argmin_{a\in A} Gini_index(D,a)$</p>
+<h2 id="剪枝处理"><a href="#剪枝处理" class="headerlink" title="剪枝处理"></a>剪枝处理</h2><p><strong>剪枝（pruning）</strong>是决策树学习算法对付过拟合的主要手段，基本策略有<strong>预剪枝（prepruning）</strong>和<strong>后剪枝（post-pruning）</strong>。</p>
+<p>预剪枝是在决策树生成过程中，对每个结点在划分前先进行估计，若划分不能使泛化性能得到提升，则停止划分并将当前结点标记为叶结点；后剪枝则是先从训练集生成一棵完整的决策树，然后自底向上对非叶结点进行考察，若子树换位叶结点提升泛化性能则替换。</p>
+<ul>
+<li>验证集，训练集</li>
+<li>若不进行划分，类被标记为训练样例数最多的类别</li>
+<li>预剪枝基于贪心本质禁止这些分支展开，给预剪枝决策树带来欠拟合风险</li>
+<li>后剪枝决策树通常比预剪枝决策树保留更多分支，欠拟合性能小，泛化性能更优，但是训练时间开销大</li>
+</ul>
+<h2 id="连续和缺失值"><a href="#连续和缺失值" class="headerlink" title="连续和缺失值"></a>连续和缺失值</h2><p>对连续属性$a$，考虑$$T_a = \lbrace \frac{a^i+a^{i+1}}{2} | 1\leq i \leq n-1 \rbrace$$选取最优的划分点进行集合划分。</p>
+<p>与离散属性不同，若当前结点划分属性为连续属性，该属性可作为其后代结点的划分属性。</p>
+<p>对于缺失值：</p>
+<p>（1）如何在属性值缺失的情况下进行划分属性选择？</p>
+<p>令$\tilde D$为$D$在属性$a$上没有缺失值的样本子集，根据$\tilde D$来判断属性$a$的优劣。</p>
+<p>（2）给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？</p>
+<p>为每个样本$x$赋予权重$w_x$，在根结点权重均初始化为$1$，定义$\tilde r_v = \frac{\Sigma_{x\in \tilde D^v }w_x}{\Sigma_{x\in \tilde D }w_x}$</p>
+<p>若样本属性值未知，同时划入所有子结点，并将样本权值在属性值$a^v$对应的子结点中调整为$\tilde r_v \cdot w_x$</p>
+<h2 id="多变量决策树"><a href="#多变量决策树" class="headerlink" title="多变量决策树"></a>多变量决策树</h2><p>决策树形成边界直观特点是分类边界由若干个与坐标轴平行的分段组成。多变量决策树可以由属性的线性组合构成，可以用斜边划分边界。</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://scikit-learn.org/stable/modules/tree.html" target="_blank" rel="noopener">https://scikit-learn.org/stable/modules/tree.html</a></p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/03/LASSO/" rel="next" title="LASSO（L1 正则化）">
+                <i class="fa fa-chevron-left"></i> LASSO（L1 正则化）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -349,6 +451,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -369,8 +475,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -423,6 +538,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#剪枝处理"><span class="nav-number">1.</span> <span class="nav-text">剪枝处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连续和缺失值"><span class="nav-number">2.</span> <span class="nav-text">连续和缺失值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多变量决策树"><span class="nav-number">3.</span> <span class="nav-text">多变量决策树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code"><span class="nav-number">4.</span> <span class="nav-text">code</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -564,6 +695,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
