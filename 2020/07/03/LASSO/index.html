@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。 给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$ 当样本特征很多，而样">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2020/07/03/LASSO/0703.jpg">
-<meta property="og:updated_time" content="2020-07-05T08:41:09.914Z">
+<meta property="og:image" content="http://yoursite.com/2020/07/03/LASSO/0703.png">
+<meta property="og:updated_time" content="2020-07-05T10:38:41.373Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LASSO（L1 正则化）">
 <meta name="twitter:description" content="嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。 给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$ 当样本特征很多，而样">
-<meta name="twitter:image" content="http://yoursite.com/2020/07/03/LASSO/0703.jpg">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/03/LASSO/0703.png">
 
 
 
@@ -366,7 +366,7 @@
 <p>$L_1$范数和$L_2$范数正则化都有助于降低过拟合风险，<strong>前者比后者更容易获得稀疏解</strong>，求得$w$有更少的非零分量。</p>
 <a id="more"></a>
 
-<p><img src="0703.jpg" alt></p>
+<p><img src="0703.png" alt></p>
 <p>从图中可以看出，采用$L_1$范数时平方误差项等值线与正则化项等值线的交点常出现在坐标轴上，而采用$L_2$交点落于某一象限中。</p>
 <h2 id="L-1-正则化求解"><a href="#L-1-正则化求解" class="headerlink" title="$L_1$正则化求解"></a>$L_1$正则化求解</h2><p>$L_1$正则化求解采用近端梯度下降（Proximal Gradient Descent, PGD）</p>
 <p>令$\nabla$表示微分算子，对优化目标$min_x f(x) + \lambda ||x||_1$</p>
