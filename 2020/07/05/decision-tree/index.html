@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="决策树（DT）是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。 基本流程遵循简单直观的分而治之（divide and conquer）策略：选择最优属性，划分，递归进行。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-07-05T08:49:01.755Z">
+<meta property="og:updated_time" content="2020-07-05T11:52:26.705Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="decision tree">
 <meta name="twitter:description" content="决策树（DT）是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。 基本流程遵循简单直观的分而治之（divide and conquer）策略：选择最优属性，划分，递归进行。">
@@ -381,7 +381,7 @@
 <p>（1）如何在属性值缺失的情况下进行划分属性选择？</p>
 <p>令$\tilde D$为$D$在属性$a$上没有缺失值的样本子集，根据$\tilde D$来判断属性$a$的优劣。</p>
 <p>（2）给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？</p>
-<p>为每个样本$x$赋予权重$w_x$，在根结点权重均初始化为$1$，定义$\tilde r_v = \frac{\Sigma_{x\in \tilde D^v }w_x}{\Sigma_{x\in \tilde D }w_x}$</p>
+<p>为每个样本$x$赋予权重$w_x$，在根结点权重均初始化为$1$，定义$\tilde r_v = \frac{\Sigma_{x\in \tilde D^v }\ w_x}{\Sigma_{x\in \tilde D }\ w_x}$</p>
 <p>若样本属性值未知，同时划入所有子结点，并将样本权值在属性值$a^v$对应的子结点中调整为$\tilde r_v \cdot w_x$</p>
 <h2 id="多变量决策树"><a href="#多变量决策树" class="headerlink" title="多变量决策树"></a>多变量决策树</h2><p>决策树形成边界直观特点是分类边界由若干个与坐标轴平行的分段组成。多变量决策树可以由属性的线性组合构成，可以用斜边划分边界。</p>
 <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://scikit-learn.org/stable/modules/tree.html" target="_blank" rel="noopener">https://scikit-learn.org/stable/modules/tree.html</a></p>
@@ -424,6 +424,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/14/an-interpretation-to-A-D-test/" rel="prev" title="an interpretation of A-D test">
+                an interpretation of A-D test <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -502,7 +506,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
