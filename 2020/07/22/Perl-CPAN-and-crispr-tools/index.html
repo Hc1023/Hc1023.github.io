@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="登入lab AWS服务器的第一天，我就把他们根目录下的.bashrc文件修改了……但我现在觉得（自认为）应该是改进了他们的conda管理，加一个initialize通过修改路径进行default conda的修改，当然这其中我求助了几位朋友。但愿他们这个白天使用服务器一切正常。 不管怎样，还在前辈的建议下加了comment，万一有什么问题，lab的伙伴们也方便处理。">
+<meta name="description" content="虽然实地去不成mit了，幸运的是mit的博后仍然愿意带着我继续做课题，科研实习继续中……收到了延后将近一年的invitation letter from mit，但还是不想gap吧，其实更主要的原因是如果gap了疫情反复又出不去，那我就真的失学+失业了。我回邮寄说9月再给决定，主动（或说无奈地被迫主动）reject的感觉有点难受啊。Anyway，我会认真做好手头的课题的！ 希望大家在忙碌中都能有所">
 <meta name="keywords" content="learning_notes">
 <meta property="og:type" content="article">
-<meta property="og:title" content="登入lab服务器的第一天（搞事情）">
-<meta property="og:url" content="http://yoursite.com/2020/02/28/firstdayin-AWS/index.html">
+<meta property="og:title" content="Perl, CPAN and crispr tools">
+<meta property="og:url" content="http://yoursite.com/2020/07/22/Perl-CPAN-and-crispr-tools/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="登入lab AWS服务器的第一天，我就把他们根目录下的.bashrc文件修改了……但我现在觉得（自认为）应该是改进了他们的conda管理，加一个initialize通过修改路径进行default conda的修改，当然这其中我求助了几位朋友。但愿他们这个白天使用服务器一切正常。 不管怎样，还在前辈的建议下加了comment，万一有什么问题，lab的伙伴们也方便处理。">
+<meta property="og:description" content="虽然实地去不成mit了，幸运的是mit的博后仍然愿意带着我继续做课题，科研实习继续中……收到了延后将近一年的invitation letter from mit，但还是不想gap吧，其实更主要的原因是如果gap了疫情反复又出不去，那我就真的失学+失业了。我回邮寄说9月再给决定，主动（或说无奈地被迫主动）reject的感觉有点难受啊。Anyway，我会认真做好手头的课题的！ 希望大家在忙碌中都能有所">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-28T16:03:21.335Z">
+<meta property="og:updated_time" content="2020-07-22T09:28:15.971Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="登入lab服务器的第一天（搞事情）">
-<meta name="twitter:description" content="登入lab AWS服务器的第一天，我就把他们根目录下的.bashrc文件修改了……但我现在觉得（自认为）应该是改进了他们的conda管理，加一个initialize通过修改路径进行default conda的修改，当然这其中我求助了几位朋友。但愿他们这个白天使用服务器一切正常。 不管怎样，还在前辈的建议下加了comment，万一有什么问题，lab的伙伴们也方便处理。">
+<meta name="twitter:title" content="Perl, CPAN and crispr tools">
+<meta name="twitter:description" content="虽然实地去不成mit了，幸运的是mit的博后仍然愿意带着我继续做课题，科研实习继续中……收到了延后将近一年的invitation letter from mit，但还是不想gap吧，其实更主要的原因是如果gap了疫情反复又出不去，那我就真的失学+失业了。我回邮寄说9月再给决定，主动（或说无奈地被迫主动）reject的感觉有点难受啊。Anyway，我会认真做好手头的课题的！ 希望大家在忙碌中都能有所">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/02/28/firstdayin-AWS/">
+  <link rel="canonical" href="http://yoursite.com/2020/07/22/Perl-CPAN-and-crispr-tools/">
 
 
 
 
 
-  <title>登入lab服务器的第一天（搞事情） | Hc's Blog</title>
+  <title>Perl, CPAN and crispr tools | Hc's Blog</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/28/firstdayin-AWS/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/22/Perl-CPAN-and-crispr-tools/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">登入lab服务器的第一天（搞事情）</h1>
+          <h1 class="post-title" itemprop="name headline">Perl, CPAN and crispr tools</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-28T23:51:40+08:00">
-                2020-02-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-22T17:17:01+08:00">
+                2020-07-22
               </time>
             
 
@@ -352,32 +352,61 @@
       
 
       
-        <p>登入lab AWS服务器的第一天，我就把他们根目录下的.bashrc文件修改了……但我现在觉得（自认为）应该是改进了他们的conda管理，加一个initialize通过修改路径进行default conda的修改，当然这其中我求助了几位朋友。但愿他们这个白天使用服务器一切正常。</p>
-<p>不管怎样，还在前辈的建议下加了comment，万一有什么问题，lab的伙伴们也方便处理。</p>
+        <p>虽然实地去不成mit了，幸运的是mit的博后仍然愿意带着我继续做课题，科研实习继续中……<br>收到了延后将近一年的invitation letter from mit，但还是不想gap吧，其实更主要的原因是如果gap了疫情反复又出不去，那我就真的失学+失业了。我回邮寄说9月再给决定，主动（或说无奈地被迫主动）reject的感觉有点难受啊。<br>Anyway，我会认真做好手头的课题的！</p>
+<p>希望大家在忙碌中都能有所思考，有所收获，最关键的是，心情要好。</p>
+<hr>
+<p>发现生物信息学上很多软件似乎还是用<code>Perl</code>写的，此外当然还有<code>C/C++</code>。试图成为生信算法工程师从入门到放弃.jpg</p>
+<blockquote>
+<p>Perl像C一样强大，像awk、sed等脚本描述语言一样方便，被Perl语言爱好者称之为“一种拥有各种语言功能的梦幻脚本语言”、“Unix中的王牌工具”。</p>
+</blockquote>
+<p>仿佛有被吓到.jpg 其实没有害</p>
 <a id="more"></a>
 
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># !! this has been revised by sisih 02.28.20: </span></span><br><span class="line"><span class="comment"># I installed Miniconda2 that modified .bashrc and it changed conda setup path, </span></span><br><span class="line"><span class="comment"># but now I have changed it back to anaconda2 and left this note</span></span><br><span class="line"><span class="comment"># comment by sisi: with conda initialize, we can modify the path below to set default conda</span></span><br><span class="line"><span class="comment"># one thing to notice is that maybe you need to hit 'enter' first if nothing happens(no 'user@host') after you ssh(log in)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt;&gt;&gt; conda initialize &gt;&gt;&gt;</span></span><br><span class="line"><span class="comment"># !! Contents within this block are managed by 'conda init' !!</span></span><br><span class="line">__conda_setup=<span class="string">"<span class="variable">$('/home/ubuntu/anaconda2/bin/conda' 'shell.bash' 'hook' 2&gt; /dev/null)</span>"</span></span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">eval</span> <span class="string">"<span class="variable">$__conda_setup</span>"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"/home/ubuntu/anaconda2/etc/profile.d/conda.sh"</span> ]; <span class="keyword">then</span></span><br><span class="line">        . <span class="string">"/home/ubuntu/anaconda2/etc/profile.d/conda.sh"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">export</span> PATH=<span class="string">"/home/ubuntu/anaconda2/bin:<span class="variable">$PATH</span>"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">unset</span> __conda_setup</span><br><span class="line"><span class="comment"># &lt;&lt;&lt; conda initialize &lt;&lt;&lt;</span></span><br></pre></td></tr></table></figure>
+<p>然后<code>Perl</code>有一个很厉害的开源社区叫<code>CPAN</code> (Comprehensive Perl Archive Network )，没错R语言人民熟知的CRAN就是模仿其命名的，里面有非常多<code>Perl</code>语言编写的软件模块。</p>
+<p>有两个寻找CRISPR序列的工具就是用Perl写的。目前我使用的服务器转到了集群，这意味着虽然作为一个使用者账户，权限上有了更多的限制，然而计算资源+++。我之前写的循环被老师认作<strong>粗暴</strong>，他认为我应该同时作业，确实，<code>SBATCH</code>努力学习中。下面介绍两个找crispr的工具，就目前来讲，寻找crispr还是有很多困难，直接用工具寻找容易遗漏，如何提高其敏感度有待探索。</p>
+<p>当拿到新开的账号，就可以直接local装好miniconda或者anaconda了，不多说。</p>
+<h2 id="Tool1-CRISPRDetect"><a href="#Tool1-CRISPRDetect" class="headerlink" title="Tool1: CRISPRDetect"></a>Tool1: CRISPRDetect</h2><p>装好它的第三方依赖(3rd party dependency)</p>
+<p>The only CPAN perl package ‘Parallel’ is provided in the ‘lib’ folder and should work. If not, then </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpan Parallel::ForkManager</span><br></pre></td></tr></table></figure>
 
-<h2 id="前传"><a href="#前传" class="headerlink" title="前传"></a>前传</h2><p>事情的起因是，我一上来就装起了miniconda，装完以后发现emmm他们已经装了anaconda2和anaconda3，而且查看一下他们的环境</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda info -e</span><br></pre></td></tr></table></figure>
+<p>然后是下面几个包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">clustalw 	Download from ftp://ftp.ebi.ac.uk/pub/software/clustalw2/2.1/ </span><br><span class="line">water 		Comes with EMBOSS:6.3.1+ tools : 	Download from ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz</span><br><span class="line">seqret 		Comes with EMBOSS:6.3.1+ tools : 	Download from ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz</span><br><span class="line">RNAfold 	Comes with Vienna RNA package  :	Download the correct version specific for your operating system from http://www.tbi.univie.ac.at/RNA/#download</span><br><span class="line">cd-hit-est 	Comes with cdhit package  	   :	Download from http://weizhongli-lab.org/cd-hit/download.php  	</span><br><span class="line">blastn 		Comes with ncbi-blast+ package :	Download from ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/</span><br></pre></td></tr></table></figure>
 
-<p>惊，原来他们的环境都在anaconda2下面，但是我装完miniconda后把base改到了miniconda下面。内心：糟了，他们到时候醒了登录服务器，自己的环境都没法activate了……</p>
-<p>然后我就开始了试图修改.bashrc文件的历程。</p>
-<p>事实上，中途我还把.bashrc删除了，但是里面内容保存到了我的本机上。这份文件还不能从外面上传的样子，后面是这样恢复的。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp  /etc/skel/.bashrc   ~/</span><br></pre></td></tr></table></figure>
+<p><code>clustalw</code>是一个做alignment的工具，一般有<code>sudo</code>权限的话，只需要这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update -y</span><br><span class="line">sudo apt-get install -y clustalw</span><br></pre></td></tr></table></figure>
 
-<p>然后用原来的内容覆盖掉……</p>
-<h2 id="花絮"><a href="#花絮" class="headerlink" title="花絮"></a>花絮</h2><ul>
-<li><p>曾经写过<a href="https://hc1023.github.io/2019/09/07/conda/" target="_blank" rel="noopener">conda环境搭建</a></p>
-</li>
-<li><p>指导我的博后待我挺好的，不怎么盯着我，我问什么问题，他会先问我是怎么想的。</p>
-</li>
-</ul>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>自然后面就顺了，我在anaconda2下面建了自己的环境</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conda create -n sisih0228 python=2</span><br><span class="line">conda activate sisih0228</span><br><span class="line"><span class="comment"># spades for assembly</span></span><br><span class="line">conda install -y spades=3.12.0</span><br></pre></td></tr></table></figure>
+<p>但是显然我并没有这个权限，the incident has been reported。。。</p>
+<p>于是按照给的网站，找到Linux安装包的链接，然后直接下载下来吧。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://ftp.ebi.ac.uk/pub/software/clustalw2/2.1/clustalw-2.1-linux-x86_64-libcppstatic.tar.gz ./</span><br><span class="line">tar xvzf xxx.tar.gz</span><br></pre></td></tr></table></figure>
 
-<p>…</p>
-<p>好啦，他们的白天到来了，我的黑夜到来了，一切平安！</p>
+<p>这里mark一下<code>aspera</code>：Aspera - High-speed file transfer software.</p>
+<p>注意一下这里面是clustalw2，我们需要<code>clustalw</code>命令可执行，所以改个名。然后加一下路径，添加到<code>~/.bashrc</code>的末尾。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/my/new/path</span><br></pre></td></tr></table></figure>
+
+<p>Tips: <code>vi</code>编辑的时候<code>dd</code>可以删除整行，</p>
+<p>后面几个用<code>conda install</code>对应的package就好了，为了避免未来的<code>base</code>环境被自己折腾得一塌糊涂，建议<code>conda create</code>一个环境。</p>
+<p>然后把github上的仓库clone到自己的目录下，就可以运行了。中间有一些细节，略。<a href="https://github.com/ambarishbiswas/CRISPRDetect_2.2" target="_blank" rel="noopener">https://github.com/ambarishbiswas/CRISPRDetect_2.2</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tod=<span class="string">"/public/home/huangsisi/bin/CRISPRDetect_2.4/"</span></span><br><span class="line">perl <span class="variable">$&#123;tod&#125;</span>CRISPRDetect.pl -f H39_03.fasta -o H39_03.CRISPR -check_direction 0 -array_quality_score_cutoff 3 -T 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="Tool2-casc"><a href="#Tool2-casc" class="headerlink" title="Tool2: casc"></a>Tool2: casc</h2><p>而<code>casc</code>似乎是已经在CPAN上的一个module.<br><a href="https://github.com/dnasko/CASC" target="_blank" rel="noopener">https://github.com/dnasko/CASC</a></p>
+<p>安装十分方便</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/dnasko/CASC.git</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">perl Makefile.PL</span><br><span class="line">make</span><br><span class="line">make <span class="built_in">test</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>注意有可能会发生的报错，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Only one of PREFIX or INSTALL_BASE can be given. Not both.</span><br></pre></td></tr></table></figure>
+
+<p>这大概是因为per安装在local-lib（ which uses the INSTALL_BASE paradigm）的缘故，那就不要再给PREFIX赋新的目录了。<br>如果已经进行了赋值的话，在<code>cpan</code> shell里面，修改一下，不要specify PREFIX</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">o conf makepl_arg <span class="string">''</span></span><br><span class="line">o conf mbuildpl_arg <span class="string">''</span></span><br><span class="line">o conf commit</span><br></pre></td></tr></table></figure>
+
+<p>并且</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">o conf make_arg <span class="string">''</span></span><br><span class="line">o conf commit</span><br></pre></td></tr></table></figure>
+
+<p>Anyway，顺利的话已经安装好了<code>casc</code>，那么同样试一下。其中<code>-n 1</code>是用1块cpu的意思。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">casc -i H39_03.fasta -o ./ -n 1</span><br></pre></td></tr></table></figure>
+
+<p>比较一下两个工具的结果还是有点意思……略</p>
 
       
     </div>
@@ -408,8 +437,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/02/28/ssh/" rel="next" title="SSH远程连接服务器">
-                <i class="fa fa-chevron-left"></i> SSH远程连接服务器
+              <a href="/2020/07/14/an-interpretation-to-A-D-test/" rel="next" title="an interpretation of A-D test">
+                <i class="fa fa-chevron-left"></i> an interpretation of A-D test
               </a>
             
           </div>
@@ -417,10 +446,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/02/29/Local-Alignment-BLAST-and-Statistics/" rel="prev" title="Local Alignment (BLAST) and Statistics">
-                Local Alignment (BLAST) and Statistics <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -545,7 +570,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前传"><span class="nav-number">1.</span> <span class="nav-text">前传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#花絮"><span class="nav-number">2.</span> <span class="nav-text">花絮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">3.</span> <span class="nav-text">后记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tool1-CRISPRDetect"><span class="nav-number">1.</span> <span class="nav-text">Tool1: CRISPRDetect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tool2-casc"><span class="nav-number">2.</span> <span class="nav-text">Tool2: casc</span></a></li></ol></div>
             
 
           </div>

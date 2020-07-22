@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/09/07/conda/0907.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/07/conda/0907-1.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/07/conda/0907-2.png">
-<meta property="og:updated_time" content="2019-11-03T08:06:26.914Z">
+<meta property="og:updated_time" content="2020-07-17T06:28:51.762Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Conda环境搭建">
 <meta name="twitter:description" content="什么是Conda Conda is an open source package management system and environment management system that runs on Windows, macOS and Linux. Conda quickly installs, runs and updates packages and their dependen">
@@ -381,8 +381,9 @@
 <ul>
 <li>服务器上装<code>miniconda</code></li>
 </ul>
-<p>进入<a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/（镜像网站，只是快些）寻找想要的版本，自然也可以直接conda官网miniconda" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/（镜像网站，只是快些）寻找想要的版本，自然也可以直接conda官网miniconda</a> <a href="https://conda.io/miniconda.html" target="_blank" rel="noopener">https://conda.io/miniconda.html</a></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda2-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment"># ls *sh</span></span><br><span class="line">bash Miniconda2-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment"># cat /trainee2/hz04/.bashrc</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line">conda --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+<p>可以进入镜像网站寻找想要的版本：<a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/</a></p>
+<p>自然也可以直接conda官网miniconda：<a href="https://conda.io/miniconda.html" target="_blank" rel="noopener">https://conda.io/miniconda.html</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda2-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment"># ls *sh</span></span><br><span class="line">bash Miniconda2-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment"># Type Enter or yes</span></span><br><span class="line"><span class="comment"># cat /trainee2/hz04/.bashrc</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line">conda --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>添加源+创建环境+安装包</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#添加bioconda软件源和国内软件源</span></span><br><span class="line">conda config --add channels r</span><br><span class="line">conda config --add channels conda-forge</span><br><span class="line">conda config --add channels bioconda</span><br><span class="line">cat  ~/.condarc</span><br><span class="line">conda create -n rna python=2</span><br></pre></td></tr></table></figure>
@@ -406,7 +407,7 @@
 </ul>
 <p><img src="0907.png" alt></p>
 <p><img src="0907-1.png" alt></p>
-<p><img src="0907-2.png" alt></p>
+<p><img src="0907-2.png" alt>s</p>
 
       
     </div>
@@ -528,7 +529,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

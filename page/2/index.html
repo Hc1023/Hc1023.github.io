@@ -285,6 +285,130 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/29/Algebra-notes-05-29-20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/29/Algebra-notes-05-29-20/" itemprop="url">Algebra notes 05.29.20</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-29T23:38:40+08:00">
+                2020-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Weyl代数：<br>$$k \langle x,y \rangle/ \langle yx-xy-1 \rangle$$<br>q-Weyl代数：<br>$$k \langle x,x^{-1},y,y^{-1} \rangle/\langle yx-qxy,xx^{-1}-1,yy^{-1}-1,x^{-1}x-1,y^{-1}y-1 \rangle$$</p>
+<p><strong>命题：Weyl代数$A$的基为$\lbrace x^i y^j,i,j\geq 0 \rbrace$</strong></p>
+<p>证：首先证明$x^iy^j$可以张成$A$。注意到由关系$yx=xy+1$，任意单词可以重排为$x$在$y$的左侧的单词的组合，i.e.，任意单词可以被表示为$x^iy^j$的线性组合。<br>下证$x^iy^j$线性无关（基于表示论进行证明）。$a$是一个变元，令$E=t^ak[a][t,t^{-1}]$（这里$t^a$只是一个形式符号，因为根据后面的作用我们总能提出$t^a$写成这样的形式，所以可以说实际上$E=k[a][t,t^{-1}]$）。如下定义$A$在$E$上的作用，$$xf=tf,\ yf=\frac{df}{dt},$$可以验证这个作用满足$yx=xy+1$所以是良定义的，且注意经作用后的像依旧落于$E$中。现假设有非平凡线性关系式$\Sigma c_{ij}x^i y^j = 0$，那么即有算子$$L=\Sigma c_{ij}t^i (\frac{d}{dt})^j$$在$E$上的作用为0。$L$可以写为$$L=\Sigma_{j=0}^r Q_j(t) (\frac{d}{dt})^j,$$其中$Q_r\neq 0$。于是<br>$$Lt^a = \Sigma_{j=0}^r Q_j(t) a(a-1)\dots (a-j+1)t^{a-j}=0$$由于$a$为未定元，则$$Q_r(t)t^{-r}a^r=0\Rightarrow Q_r(t)=0$$矛盾。Q.E.D</p>
+<p><strong>命题：q-Weyl代数$A_q$的基为$\lbrace x^i y^j,i,j\in \mathbb Z \rbrace$</strong></p>
+<p>证：首先证明$x^iy^j$可以张成$A_q$。由关系式容易有$yx=qxy$和$y^{-1}x^{-1}=qx^{-1}y^{-1}$，于是任意单词可以通过这两个关系式化作$x^iy^j,i,j\in \mathbb Z $的线性组合。下证其线性无关。<br>构造表示为$E=k[a,a^{-1}][t,t^{-1}]$，作用为$$xf=tf,\ yf(t)=af(qt),\ x^{-1}f = t^{-1} f,\ y^{-1}f(t) = a^{-1}f(q^{-1}t)$$则有$$yxf(t)=ytf(t)=aqtf(qt)=qxaf(qt)=qxyf(t)$$且易验证剩余几个关系式，所以这个作用是良定义的。设有非平凡线性组合$\Sigma c_{ij}x^i y^j = 0$，并令$$L=\Sigma c_{ij}x^i y^j = \Sigma_{s}^r Q_j[t,t^{-1}]y^j$$为$0$算子，其中$Q_r\neq 0$，则$$La = \Sigma_{s}^r Q_j[t,t^{-1}]a^{j+1}=0 $$而同样有$a$作为未定元，考察它的最高次项必须有$Q_r[t,t^{-1}]=0$，矛盾。Q.E.D</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/Algebra-notes-05-28-20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1405,130 +1529,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/trivial0321/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/21/trivial0321/" itemprop="url">trivial0321</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-21T17:15:52+08:00">
-                2020-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>进大学快三年，个人的一些分享也许会对大家尤其是大学生群体哈有点帮助吧哈哈。当然个人的想法不一定对所有人适用。<br>有些是别人分享给我的，有些是自己的习惯。我觉得分享的内容都挺亲民的，没什么高大上的，轻松扫一眼说不准有收获呗。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/03/21/trivial0321/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1581,7 +1581,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

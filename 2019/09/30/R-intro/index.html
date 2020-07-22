@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="R is a free software environment for statistical computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS. To download R, please choose your preferred CRAN">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-07-07T01:14:01.278Z">
+<meta property="og:updated_time" content="2020-07-16T03:27:18.306Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="R初步接触">
 <meta name="twitter:description" content="R is a free software environment for statistical computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS. To download R, please choose your preferred CRAN">
@@ -428,9 +428,9 @@
 
 <p>Q:’&lt;-‘与’=’有什么区别</p>
 <blockquote>
-<p>The operators &lt;- and = assign into the environment in which they are evaluated. The operator &lt;- can be used anywhere, whereas the operator = is only allowed at the top level (e.g., in the complete expression typed at the command prompt) or as one of the subexpressions in a braced list of expressions.</p>
+<p>The operators <code>&lt;-</code> and = assign into the environment in which they are evaluated. The operator <code>&lt;-</code> can be used anywhere, whereas the operator <code>=</code> is only allowed at the top level (e.g., in the complete expression typed at the command prompt) or as one of the subexpressions in a braced list of expressions.</p>
+<p>In a function call you can’t assign an object with <code>=</code> because <code>=</code> means assigning arguments there.</p>
 </blockquote>
-<p><code>&lt;-</code>比<code>=</code>应用范围小，但正规</p>
 <p>Q:如何多条件选取<br>加‘|’ ：</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(x %<span class="keyword">in</span>% c(<span class="string">"ANLN"</span>, <span class="string">"BCL2"</span>,<span class="string">"TP53"</span>)) | (x %<span class="keyword">in</span>% c(<span class="string">"BIRC5"</span>))</span><br></pre></td></tr></table></figure>
 
@@ -572,7 +572,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
