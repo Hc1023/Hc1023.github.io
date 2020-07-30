@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="算法,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,22 +79,17 @@
 
 
 
-<meta name="description" content="Hashing is an important Data Structure which is designed to use a special function called the Hash function which is used to map a given value with a particular key for faster access of elements. The">
-<meta name="keywords" content="算法">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Hashing">
-<meta property="og:url" content="http://yoursite.com/2019/12/31/Hashing/index.html">
+<meta name="description" content="no boundaries, no restrictions">
+<meta name="keywords" content="黄思思的博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hc&#39;s Blog">
+<meta property="og:url" content="http://yoursite.com/page/7/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="Hashing is an important Data Structure which is designed to use a special function called the Hash function which is used to map a given value with a particular key for faster access of elements. The">
+<meta property="og:description" content="no boundaries, no restrictions">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/12/31/Hashing/hashtable.png">
-<meta property="og:image" content="http://yoursite.com/2019/12/31/Hashing/hash.png">
-<meta property="og:image" content="http://yoursite.com/2019/12/31/Hashing/1231.png">
-<meta property="og:updated_time" content="2020-05-18T16:17:36.758Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hashing">
-<meta name="twitter:description" content="Hashing is an important Data Structure which is designed to use a special function called the Hash function which is used to map a given value with a particular key for faster access of elements. The">
-<meta name="twitter:image" content="http://yoursite.com/2019/12/31/Hashing/hashtable.png">
+<meta name="twitter:title" content="Hc&#39;s Blog">
+<meta name="twitter:description" content="no boundaries, no restrictions">
 
 
 
@@ -124,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/31/Hashing/">
+  <link rel="canonical" href="http://yoursite.com/page/7/">
 
 
 
 
 
-  <title>Hashing | Hc's Blog</title>
+  <title>Hc's Blog</title>
   
 
 
@@ -149,7 +144,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -274,9 +270,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -289,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/31/Hashing/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/07/CNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -306,7 +302,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hashing</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/07/CNN/" itemprop="url">卷积神经网络CNN</a></h1>
         
 
         <div class="post-meta">
@@ -318,8 +316,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-31T22:45:46+08:00">
-                2019-12-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-07T22:36:29+08:00">
+                2019-08-07
               </time>
             
 
@@ -356,101 +354,16 @@
       
 
       
-        <blockquote>
-<p>Hashing is an important Data Structure which is designed to use a special function called the Hash function which is used to map a given value with a particular key for faster access of elements. The efficiency of mapping depends of the efficiency of the hash function used.</p>
-</blockquote>
-<a id="more"></a>
-
-<h2 id="Hash-function"><a href="#Hash-function" class="headerlink" title="Hash function"></a>Hash function</h2><p>对于每个标识符x，我们定义一个哈希函数:  f（x）= x在ht []中的位置</p>
-<p><img src="hashtable.png" alt></p>
-<p>T :: = x的不同可能值的总数<br>n :: = ht []中的标识符总数<br>n / T :: = 标识符密度<br>n /(sb) :: = 装载密度$\lambda$</p>
-<p>A <strong>collision</strong> occurs when we hash two nonidentical identifiers into the same bucket, i.e. $ f (i_1) = f (i_2)$ when $i_1\neq i_2$.<br>An <strong>overflow</strong> occurs when we hash a new identifier into a full bucket.<br>Collision and overflow happen simultaneously if s = 1.</p>
-<p>f ( x ) must be easy to compute and minimizes the number of collisions.<br>f ( x ) should be unbiased.  That is, for any x and any i, we have that Probability( f ( x ) = i ) = 1 / b.  Such kind of a hash function is called a uniform hash function.</p>
-<ul>
-<li>For numeric keys, divide the key by the number of available addresses, n, and take the remainder.</li>
-</ul>
-<blockquote>
-<p>f ( x ) = x % TableSize ;   /* if x is an integer */</p>
-</blockquote>
-<p>TableSize = prime number,  good for random integer keys</p>
-<p><img src="hash.png" alt></p>
-<ul>
-<li>For alphanumeric keys, divide the sum of ASCII codes in a key by the number of available addresses, n, and take the remainder.</li>
-</ul>
-<blockquote>
-<p>f ( x ) = ($\Sigma_i$ x[i]) % TableSize ;   /* if x is a string */<br>f ( x ) = (x[0]+ x[1]*27 + x[2]*27^2) % TableSize ;</p>
-</blockquote>
-<p>但是以上两种方法都会造成较大的空间浪费，可以采用位运算的想法，向左移五位相当于* 2^5，来得到hash值</p>
-<blockquote>
-<p>f ( x ) = ($\Sigma$ x[N - i - 1] * 32^i ) % TableSize ;</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Index <span class="title">Hash3</span><span class="params">( <span class="keyword">const</span> <span class="keyword">char</span> *x, <span class="keyword">int</span> TableSize )</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	<span class="keyword">unsigned</span>  <span class="keyword">int</span>  HashVal = <span class="number">0</span>; </span><br><span class="line"><span class="comment">/* 1*/</span> 	<span class="keyword">while</span>( *x != <span class="string">'\0'</span> ) </span><br><span class="line"><span class="comment">/* 2*/</span> 	     HashVal = ( HashVal &lt;&lt; <span class="number">5</span> ) + *x++; </span><br><span class="line"><span class="comment">/* 3*/</span> 	<span class="keyword">return</span> HashVal % TableSize; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>If x is too long (e.g. street address), the early characters will be left-shifted out of place. 这时候可以选取代表字符串，比如子串。</p>
-<ul>
-<li>Folding method divides the key into equal parts then adds the parts together.</li>
-</ul>
-<h2 id="Collision-Resolution"><a href="#Collision-Resolution" class="headerlink" title="Collision Resolution"></a>Collision Resolution</h2><ul>
-<li>Closed addressing</li>
-</ul>
-<p>Separate Chaining: keep a list of all keys that hash to the same value</p>
-<p><img src="1231.png" alt></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Position  <span class="title">Find</span> <span class="params">( ElementType Key, HashTable H )</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    Position P; </span><br><span class="line">    List L; </span><br><span class="line"></span><br><span class="line">    L = H-&gt;TheLists[ Hash( Key, H-&gt;TableSize ) ]; </span><br><span class="line"></span><br><span class="line">    P = L-&gt;Next; </span><br><span class="line">    <span class="keyword">while</span>( P != <span class="literal">NULL</span> &amp;&amp; P-&gt;Element != Key )  <span class="comment">/* Probably need strcmp */</span> </span><br><span class="line">	P = P-&gt;Next; </span><br><span class="line">    <span class="keyword">return</span> P; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>insertions are generally quicker than deletions in separate chaining method. 这是因为insertion是O（1），计算相应的hash value然后挂在第一个就可以了。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">L = H-&gt;TheLists[ Hash( Key, H-&gt;TableSize ) ]; </span><br><span class="line">NewCell-&gt;Next = L-&gt;Next; </span><br><span class="line">NewCell-&gt;Element = Key; <span class="comment">/* Probably need strcpy! */</span> </span><br><span class="line">L-&gt;Next = NewCell;</span><br></pre></td></tr></table></figure>
-
-<p>Tip: Make the TableSize about as large as the number of keys expected (i.e. to make the loading density factor $\lambda \approx$ 1).</p>
-<ul>
-<li>Open addressing </li>
-</ul>
-<p>find another empty cell to solve collision (avoiding pointers)</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> ( collision at index ) &#123;</span><br><span class="line">    index = ( hash(key) + f(i) ) % TableSize;</span><br><span class="line">    <span class="keyword">if</span> ( table is full )    <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">else</span>    i++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>f(i) is collision resolving function. f(0) = 0.</p>
-<p>Tip: Generally $\lambda$ &lt; 0.5.</p>
-<p><strong>Linear probing</strong></p>
-<blockquote>
-<p>f ( i ) = i ;   /* a linear function */</p>
-</blockquote>
-<p> <strong>Quadratic probing (failed attempts)^2</strong></p>
-<blockquote>
-<p>f ( i ) = i^2 ;   /* a quadratic function */</p>
-</blockquote>
-<p>【Theorem】If quadratic probing is used, and the table size is prime, then a new element can always be inserted if the table is at least half empty.</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Position  <span class="title">Find</span> <span class="params">( ElementType Key, HashTable H )</span> </span></span><br><span class="line"><span class="function"></span>&#123;   Position  CurrentPos; </span><br><span class="line">    <span class="keyword">int</span>  CollisionNum; </span><br><span class="line">    CollisionNum = <span class="number">0</span>; </span><br><span class="line">    CurrentPos = Hash( Key, H-&gt;TableSize ); </span><br><span class="line">    <span class="keyword">while</span>( H-&gt;TheCells[ CurrentPos ].Info != Empty &amp;&amp; </span><br><span class="line">	H-&gt;TheCells[ CurrentPos ].Element != Key ) &#123; </span><br><span class="line">	CurrentPos += <span class="number">2</span> * ++CollisionNum <span class="number">-1</span>; </span><br><span class="line">	<span class="keyword">if</span> ( CurrentPos &gt;= H-&gt;TableSize )  CurrentPos -= H-&gt;TableSize; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> CurrentPos; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>条件中先判断.Info是否empty，如果是empty，则key没有定义。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CurrentPos += <span class="number">2</span> * ++CollisionNum <span class="number">-1</span>;</span><br></pre></td></tr></table></figure>
-
-<p>$p=h(x)+i^2$<br>$p_i=p_0+(i-1+1)^2=p_0+(i-1)^2+2i-1=p_{i-1}+2*(i-1+1)-1$</p>
-<p><strong>Double hashing</strong></p>
-<blockquote>
-<p>f ( i ) = i * hash2( x );   /* hash2( x ) is the 2nd hash function */</p>
-</blockquote>
-<p>If double hashing is correctly implemented, simulations imply that the expected number of probes is almost the same as for a random collision resolution strategy.<br>Quadratic probing does not require the use of a second hash function and is thus likely to be <strong>simpler and faster</strong> in practical.</p>
-<ul>
-<li>Rehashing</li>
-</ul>
-<p>Quadratic probing might fail when $\lambda&gt;0.5$.</p>
-<p>Build another table that is about twice as big;<br>Scan down the entire original hash table for non-deleted elements;<br>Use a new function to hash those elements into the new table.</p>
-<p>When to rehash?<br>As soon as the table is half full<br>When an insertion fails<br>When the table reaches a certain load factor</p>
-<h2 id="Applications"><a href="#Applications" class="headerlink" title="Applications"></a>Applications</h2><p>Hashing provides constant time search, insert and delete operations on average. This is why hashing is one of the most used data structure, example problems are, distinct elements, counting frequencies of items, finding duplicates, etc.</p>
-<p>There are many other applications of hashing, including modern day cryptography hash functions. Some of these applications are listed below:</p>
-<ul>
-<li>Message Digest</li>
-<li>Password Verification</li>
-<li>Data Structures(Programming Languages)</li>
-<li>Compiler Operation</li>
-<li>Rabin-Karp Algortithm</li>
-<li>Linking File name and path together</li>
-</ul>
-<p>references:</p>
-<ol>
-<li>ppt made by 陈越姥姥</li>
-<li><a href="https://www.geeksforgeeks.org/applications-of-hashing/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/applications-of-hashing/</a></li>
-</ol>
-
+        
+          <p>关于大二暑假零基础学习机器学习的一点笔记<br>量子速读，卷肌训练，速成机器学习不是梦（捂脸）</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/08/07/CNN/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
       
     </div>
     
@@ -465,40 +378,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/算法/" rel="tag"># 算法</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/12/26/PCA-corrects-for-stratification-in-GWAS/" rel="next" title="PCA corrects for stratification in GWAS">
-                <i class="fa fa-chevron-left"></i> PCA corrects for stratification in GWAS
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/12/31/2019/" rel="prev" title="2019">
-                2019 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -508,11 +395,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span>
+  </nav>
+
 
 
           </div>
@@ -520,10 +410,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -544,17 +430,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -607,22 +484,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hash-function"><span class="nav-number">1.</span> <span class="nav-text">Hash function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Collision-Resolution"><span class="nav-number">2.</span> <span class="nav-text">Collision Resolution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Applications"><span class="nav-number">3.</span> <span class="nav-text">Applications</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -764,10 +625,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 

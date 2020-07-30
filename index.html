@@ -414,6 +414,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/30/aspera-dowload-NCBI-database/" itemprop="url">aspera下载NCBI数据</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-30T17:04:33+08:00">
+                2020-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>用<code>aspera</code>下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了<code>aspera</code>…<code>.aspera</code>文件夹在根目录下</p>
+<p>确认<code>ascp</code>已经添加至环境变量（可在我的博客里搜索export），它在这里</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.aspera/connect/bin/ascp</span><br></pre></td></tr></table></figure>
+
+<h2 id="ascp语法"><a href="#ascp语法" class="headerlink" title="ascp语法"></a><code>ascp</code>语法</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ascp -i &lt;asperaweb_id_dsa.openssh with path&gt; -k1 -Tr –l100m </span><br><span class="line">anonftp@ftp.ncbi.nlm.nih.gov:/&lt;files to transfer&gt; &lt;<span class="built_in">local</span> destination&gt;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/30/aspera-dowload-NCBI-database/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/22/Perl-CPAN-and-crispr-tools/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1415,139 +1543,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/31/Algebra-notes-05-31-20/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/31/Algebra-notes-05-31-20/" itemprop="url">Algebra notes 05.31.20</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-31T23:33:46+08:00">
-                2020-05-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>代数闭域上的Schur引理：令$V$是$A$ over an algebraically closed field $k$的某个有限维不可约表示，且$\phi : V \rightarrow V$是一个intertwining算子。那么$\phi = \lambda \cdot Id$对于某个$\lambda \in k$（一个scaler算子）。</p>
-<p><strong>令$A$是代数闭域$k$上的代数。其中心$Z(A)$为与$A$所有元素均交换的元素组成的集合。</strong></p>
-<p><strong>（a）证明若$V$是$A$的一个不可约有限维表示，那么$\forall z \in Z(A)$在$V$上的作用为乘上一个scaler $\chi _V (z)$，并且$\chi _V : Z(A) \rightarrow k$是一个同态。它被称作$V$的中心特征。</strong></p>
-<p>证：由于中心中的元素$z\in Z(A)$与$A$中所有元素交换，所以是一个intertwining算子，又$V$是一个不可约有限维表示，所以由Schur引理可以立刻得出$z$在$V$上的作用为乘以一个scaler $\chi _V (z)\in k$ 。同时由于作用$\rho (z)$是同态，而$\rho (z) v = \chi _V (z) v$，则$\chi _V : Z(A) \rightarrow k$是一个同态。Q.E.D</p>
-<p>rmk：考虑$\rho(z)$的一个特征向量$\lambda$，它的存在性由$k$是代数闭域保证，它对应的非零特征空间$W\subset V$。由$z\in Z(A)$，$\forall a\in A$有$(\rho(z)-\lambda)\rho(a)w = \rho(a)(\rho(z)-\lambda)w = 0$，则$\rho (a)w\in W$，所以$W$为$V$的非零子表示。（这里说的就是$ker(\rho(z)-\lambda)$是$V$的子表示）由$V$不可约所以$W=V$。（用一个具体的例子串了一下Schur定理和Schur引理的证明思想）</p>
-<p><strong>（b）证明若$V$是$A$的一个不可分有限维表示，那么$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$，且它的值等于$z$在$V$的某个不可约子表示作用的scaler值。因此，$\chi _V : Z(A) \rightarrow k$是一个同态，它同样被称作$V$的中心特征。</strong></p>
-<p>证：因为我们知道$V$可以表示为不同特征值对应的广义特征子空间的直和，由$V$不可分，则$V$由$\forall z\in Z(A)$的一个广义特征子空间构成，i.e.， $\forall v\in V,\ \exists l\in \mathbb N,\ (\rho(z)-\chi_V(z))^l v=0$。这证明了$\forall z \in Z(A)$在$V$上的作用只有唯一的特征值$\chi _V (z)$。后续的命题对于$V=0$的情况是平凡的。否则$V$是非零有限维表示，（见<a href="https://hc1023.github.io/2020/05/28/Algebra-notes-05-28-20/" target="_blank" rel="noopener">Algebra notes 05.28.20</a>）知道存在不可约子表示$W\subset U$。于是将作用限制在子表示$W$上，则由（a）知道它在$W$上的作用为乘以一个scaler $\chi_W(z)$，i.e.， $\forall w\in W\subset V,\ (\rho(z)-\chi_W(z)) v=0$，不同特征值的特征空间是正交的所以$\chi_V (z)=\chi_W (z)$。而$\chi_W: Z(A) \rightarrow k$是同态即得$\chi_V: Z(A) \rightarrow k$为同态。Q.E.D</p>
-<p><strong>（c）命题(b)中的$\rho(z)$是否一定是一个scaler算子？</strong></p>
-<p>不一定。在（b）证明中若$\exists l&gt;1$就不是，i.e.， 考虑大于1阶的约当块。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1595,7 +1595,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -88,7 +88,7 @@
 <meta property="og:description" content="SLURM: Simple Linux Utility for Resource Managementa free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters. Key functions">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2020/05/15/Slurm-Workload-Manager/0515.png">
-<meta property="og:updated_time" content="2020-05-16T01:44:11.440Z">
+<meta property="og:updated_time" content="2020-07-24T08:50:09.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Slurm Workload Manager">
 <meta name="twitter:description" content="SLURM: Simple Linux Utility for Resource Managementa free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters. Key functions">
@@ -385,6 +385,16 @@
 </ul>
 <p>first line: tell how to run the script</p>
 <p><a href="https://slurm.schedmd.com/sbatch.html" target="_blank" rel="noopener">https://slurm.schedmd.com/sbatch.html</a></p>
+<ul>
+<li>nodes partition</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sinfo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>what jobs are running</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squeue</span><br></pre></td></tr></table></figure>
+
 <p>–time: time running<br>-N –nodes: number of nodes<br>-n –ntasks: number of tasks<br>-p –partition: request a specfic partition for the resource allocation.<br>-o –output: connect the batch script;s standard output to the file.<br>-e -error: connect the batch script’s standard eroor directly to the file.<br>–mem: specify the real memory required per node.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH -p defq</span></span><br><span class="line"><span class="comment">#SBATCH -n 4</span></span><br><span class="line"><span class="comment">#SBATCH --time=48:00:00</span></span><br><span class="line"><span class="comment">#SBATCH -o masterout.txt</span></span><br><span class="line"><span class="comment">#SBATCH -e mastererr.txt</span></span><br><span class="line"><span class="comment">#SBATCH --mem=40000</span></span><br></pre></td></tr></table></figure>
 
@@ -394,6 +404,7 @@
 <p>add modules</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module add c3ddb/bamtools/2.4.0</span><br><span class="line">module add c3ddb/bcftools/1.2</span><br><span class="line">module add c3ddb/bowtie2/2.2.6</span><br><span class="line">module add c3ddb/htslib/1.2.1</span><br><span class="line">module add c3ddb/samtools/1.2</span><br><span class="line">module add c3ddb/sickle/1.33</span><br><span class="line">module add c3ddb/samtools/1.2</span><br><span class="line">module add mit/matlab/2015b</span><br><span class="line">module add c3ddb/dindel-tgi</span><br></pre></td></tr></table></figure>
 
+<p>Also we can <code>source activate $env</code>.</p>
 <ul>
 <li>Run job</li>
 </ul>
@@ -401,13 +412,24 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">matlab -r build_experiment_directories</span><br></pre></td></tr></table></figure>
 
 <p>Tips: attach job id: <code>%j</code>, <code>$SLURM_JOB_ID</code>, e.g.</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#SBATCH -o qe-%j</span></span><br><span class="line">NAME=...</span><br><span class="line">DATADIR=...</span><br><span class="line">SCRATCH=...</span><br><span class="line">mkdir -p <span class="variable">$SCATCH</span></span><br><span class="line"><span class="comment"># mkdir -p, make sure the directory exists, including the parent directory</span></span><br><span class="line">mpirun -np <span class="variable">$SLURM_NTASKS</span> pw.x -inp <span class="variable">$DATADIR</span>/<span class="variable">$NAME</span>.<span class="keyword">in</span> &gt; <span class="variable">$DATADIR</span>/<span class="variable">$NAME</span>.<span class="variable">$SLURM_JOB_ID</span>.out</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#SBATCH -o qe-%j</span></span><br><span class="line">NAME=...</span><br><span class="line">DATADIR=...</span><br><span class="line">SCRATCH=...</span><br><span class="line">mkdir -p <span class="variable">$SCRATCH</span></span><br><span class="line"><span class="comment"># mkdir -p, make sure the directory exists, including the parent directory</span></span><br><span class="line">mpirun -np <span class="variable">$SLURM_NTASKS</span> pw.x -inp <span class="variable">$DATADIR</span>/<span class="variable">$NAME</span>.<span class="keyword">in</span> &gt; <span class="variable">$DATADIR</span>/<span class="variable">$NAME</span>.<span class="variable">$SLURM_JOB_ID</span>.out</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Use array to submit and manage collections of similar jobs quickly and easily</li>
+</ul>
+<p><code>SLURM_ARRAY_TASK_ID</code> will be set to the job array index value. <code>SLURM_ARRAY_TASK_COUNT</code> will be set to the number of tasks in the job array.</p>
+<p>E.g.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#SBATCH --array=1-50</span></span><br><span class="line"></span><br><span class="line">sample=$(sed -n <span class="variable">$&#123;SLURM_ARRAY_TASK_ID&#125;</span>p <span class="variable">$&#123;lsDir&#125;</span>)</span><br></pre></td></tr></table></figure>
 
 <h2 id="submit-the-job"><a href="#submit-the-job" class="headerlink" title="submit the job"></a>submit the job</h2><p>So, in shell, run the commad: <code>sbatch myjob.slurm</code>. Submit the job and see the job state.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squeue -u username</span><br></pre></td></tr></table></figure>
 
-<p>PD: pending<br>R: running</p>
+<ul>
+<li>Job state codes</li>
+</ul>
+<p>PD: pending. Job is awaiting resource allocation.<br>R: running. Job currently has an allocation.<br>CG: Job is in the process of completing. Some processes on some nodes may still be active.</p>
 <p>You don’t immediately see the output files because there is slight delay between the file systems being written to and then updating on the client.</p>
+<p><a href="https://slurm.schedmd.com/" target="_blank" rel="noopener">https://slurm.schedmd.com/</a></p>
 
       
     </div>
@@ -529,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
