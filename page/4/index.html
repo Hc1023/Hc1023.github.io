@@ -285,6 +285,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/08/spades/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/08/spades/" itemprop="url">SPAdes(assembly)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-08T21:11:24+08:00">
+                2020-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>SPAdes的原理部分之前已经写过了，见<a href="https://hc1023.github.io/2020/02/25/de-Bruijn-graph/" target="_blank" rel="noopener">de Bruijn graph</a>。</p>
+<p>SPAdes takes as input paired-end reads, mate-pairs and single (unpaired) reads in FASTA and FASTQ. 进行assembly后输出fastq文件，推荐scaffold作为结果文件。</p>
+<p>SPAdes 有以下几个模块：</p>
+<ul>
+<li>BayesHammer – 矫正Illumina reads的读取错误，该工具在single cell和标准数据集上均能很好地工作。</li>
+<li>IonHammer – 矫正IonTorrent data的读取错误，同样在两种数据集上良好工作。</li>
+<li>SPAdes – iterative short-read genome assembly module 迭代短读基因组组装模块； 根据读取的长度和数据集类型自动选择K的值。</li>
+<li>MismatchCorrector – 改善contigs和scaffolds的错配mismatch和短插入缺失indel率；这个模块使用BWA工具。MismatchCorrector默认关闭，我们可以开启它（建议）。</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/08/spades/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/08/paired-end-sequencing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1413,160 +1545,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/ncov2019/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/12/ncov2019/" itemprop="url">ncov2019模拟</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-12T15:58:43+08:00">
-                2020-02-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>巫师养成中，看看我是否适合做<strong>占卜</strong>……</p>
-<ul>
-<li>建立新型冠状病毒肺炎预警模型，对温州市和浙江省的确诊人数进行了模拟</li>
-<li>相关报告已经在<strong>2月10日</strong>递交</li>
-<li>数据最后更新：<strong>2020年2月17日</strong></li>
-<li><strong>请用电脑打开以下链接，点击右上角右数第二个按钮<code>compare data on hover</code>以方便观看模拟数据</strong></li>
-<li>不保证准确性</li>
-<li>个人作图水平还在提高中……枯</li>
-</ul>
-<p>新版链接（链接地址会更新，所以请从本网页获取最新链接QVQ）</p>
-<p><a href="https://plot.ly/~Hc1023/35.embed" target="_blank" rel="noopener">ncov温州市模拟</a></p>
-<p><a href="https://plot.ly/~Hc1023/37.embed" target="_blank" rel="noopener">ncov浙江省模拟</a></p>
-<p><strong>日志</strong></p>
-<ul>
-<li>2月9日：确立模型并模拟</li>
-<li>2月10日：上交模型报告（10页）</li>
-<li>2月16日：矫正参数<br>浙江省和温州市的趋势均明显变缓，尤其是浙江省。尽量保守估计，调整参数使预测曲线尽量在“上面贴近”实际曲线</li>
-<li>2月17日：上报了一段话……其实就接下来的新增人数来讲，更倾向于这是一个<strong>随机数</strong>了，模型已经不再适用。</li>
-</ul>
-<blockquote>
-<p> 近日，浙江省和温州市的趋势均明显变缓，尤其是浙江省。我们对此进行了参数调整，但采取尽量保守估计的方式，使预测曲线尽量在“上面贴近”实际曲线。<br> …给出链接<br>以上是最新的模拟结果，根据保守估计，温州市和浙江省将在2月底达到平稳，并估计上限分别不超过540人和1230人。</p>
-</blockquote>
-<ul>
-<li><p>2月19日：<strong>我的任务已经结束了</strong>。浙江省近两日各一例，分别来自温州和嘉兴。个人认为<strong>强隔离政策</strong>在其中发挥了巨大的作用，以至于可以在模型后期阶段增加人数骤减，这是模型没有考虑到的地方。当然这本身也难以光从数据上做出预测，但是可以在数据发生变化时及时判断这一点的来临。</p>
-<p>强隔离政策是以损失经济为代价的，是否有采取强隔离的必要以及何时开始采取强隔离政策是值得思考的问题。另一方面，强隔离政策其实也有不人性的一面，这一点我是从自己到社区做防疫志愿者的时候体会到的，一些老父老母在医院里需要子女照看送饭，却被强制两天出一次门；一些在此期间工作的人晚上10点后没回到社区就只能在外过夜等等。当然也许这和奋战在一线的人来说都谈不上什么，但是家家都有本难念的经，愿这样的疫情不再发生，愿人类与自然和谐共处。</p>
-<p><strong>接下来浙江省开始复工，强隔离解除，人员流动增加，因此相应政策的跟进和个人的警惕和防范是必不可少的。</strong>希望浙江省的疫情能顺利结束。</p>
-</li>
-</ul>
-<hr>
-<p>下面简单地轻松地说一下我的方法……</p>
-<p>我主要是用<strong>微分方程组</strong>进行了建模，然后通过<strong>计算机模拟</strong>的方法进行模拟和预测，我将我的模型命名为<strong>SICRLD模型</strong>。以温州市作为浙江省典型代表，对模型进行了训（调）练（参），做了一个温州市（我的家乡太了不起太不容易了，为家乡点赞）预警模型然后直接放到浙江省进行模拟，最后做了一个治愈情况的模（估）拟（计）。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/02/12/ncov2019/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1619,7 +1597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

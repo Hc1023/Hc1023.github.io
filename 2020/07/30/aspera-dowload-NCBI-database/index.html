@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera….aspera文件夹在根目录下 确认ascp已经添加至环境变量（可在我的博客里搜索export），它在这里 1~/.aspera/connect/bin/ascp  ascp语法12ascp -i &amp;lt;asperaweb_id_dsa.openssh with path&amp;gt; -k1 -Tr –">
+<meta name="description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera…我把.aspera文件夹在根目录下 如果没安装的话，可以用conda，ascp属于工具包aspera-cli，顺带提一下prefetch的安装工具包sra-tools，但在国内基本就不考虑prefetch了。 123conda install -y -c hcc aspera-cliconda ins">
 <meta name="keywords" content="生信">
 <meta property="og:type" content="article">
 <meta property="og:title" content="aspera下载NCBI数据">
 <meta property="og:url" content="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera….aspera文件夹在根目录下 确认ascp已经添加至环境变量（可在我的博客里搜索export），它在这里 1~/.aspera/connect/bin/ascp  ascp语法12ascp -i &amp;lt;asperaweb_id_dsa.openssh with path&amp;gt; -k1 -Tr –">
+<meta property="og:description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera…我把.aspera文件夹在根目录下 如果没安装的话，可以用conda，ascp属于工具包aspera-cli，顺带提一下prefetch的安装工具包sra-tools，但在国内基本就不考虑prefetch了。 123conda install -y -c hcc aspera-cliconda ins">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/0730.png">
-<meta property="og:updated_time" content="2020-07-30T09:10:45.869Z">
+<meta property="og:updated_time" content="2020-08-08T10:07:33.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="aspera下载NCBI数据">
-<meta name="twitter:description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera….aspera文件夹在根目录下 确认ascp已经添加至环境变量（可在我的博客里搜索export），它在这里 1~/.aspera/connect/bin/ascp  ascp语法12ascp -i &amp;lt;asperaweb_id_dsa.openssh with path&amp;gt; -k1 -Tr –">
+<meta name="twitter:description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera…我把.aspera文件夹在根目录下 如果没安装的话，可以用conda，ascp属于工具包aspera-cli，顺带提一下prefetch的安装工具包sra-tools，但在国内基本就不考虑prefetch了。 123conda install -y -c hcc aspera-cliconda ins">
 <meta name="twitter:image" content="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/0730.png">
 
 
@@ -354,7 +354,10 @@
       
 
       
-        <p>用<code>aspera</code>下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了<code>aspera</code>…<code>.aspera</code>文件夹在根目录下</p>
+        <p>用<code>aspera</code>下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了<code>aspera</code>…我把<code>.aspera</code>文件夹在根目录下</p>
+<p>如果没安装的话，可以用conda，<code>ascp</code>属于工具包<code>aspera-cli</code>，顺带提一下<code>prefetch</code>的安装工具包<code>sra-tools</code>，但在国内基本就不考虑<code>prefetch</code>了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda install -y -c hcc aspera-cli</span><br><span class="line">conda install -y -c bioconda sra-tools</span><br><span class="line">which ascp</span><br></pre></td></tr></table></figure>
+
 <p>确认<code>ascp</code>已经添加至环境变量（可在我的博客里搜索export），它在这里</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.aspera/connect/bin/ascp</span><br></pre></td></tr></table></figure>
 
@@ -440,6 +443,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2020/08/15/become-rich/" rel="prev" title="become rich">
+                become rich <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -517,7 +524,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

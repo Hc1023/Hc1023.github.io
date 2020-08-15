@@ -88,7 +88,7 @@
 <meta property="og:description" content="SLURM: Simple Linux Utility for Resource Managementa free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters. Key functions">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2020/05/15/Slurm-Workload-Manager/0515.png">
-<meta property="og:updated_time" content="2020-07-24T08:50:09.817Z">
+<meta property="og:updated_time" content="2020-08-14T08:09:21.258Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Slurm Workload Manager">
 <meta name="twitter:description" content="SLURM: Simple Linux Utility for Resource Managementa free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters. Key functions">
@@ -429,6 +429,9 @@
 </ul>
 <p>PD: pending. Job is awaiting resource allocation.<br>R: running. Job currently has an allocation.<br>CG: Job is in the process of completing. Some processes on some nodes may still be active.</p>
 <p>You don’t immediately see the output files because there is slight delay between the file systems being written to and then updating on the client.</p>
+<h2 id="cancel-job"><a href="#cancel-job" class="headerlink" title="cancel job"></a>cancel job</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scancel jobid</span><br></pre></td></tr></table></figure>
+
+<p>If not in slurm, just <code>kill jobid</code>.</p>
 <p><a href="https://slurm.schedmd.com/" target="_blank" rel="noopener">https://slurm.schedmd.com/</a></p>
 
       
@@ -551,7 +554,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -597,7 +600,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SLURM-Simple-Linux-Utility-for-Resource-Management"><span class="nav-number">1.</span> <span class="nav-text">SLURM: Simple Linux Utility for Resource Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contents-of-a-batch-script"><span class="nav-number">2.</span> <span class="nav-text">contents of a batch script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#submit-the-job"><span class="nav-number">3.</span> <span class="nav-text">submit the job</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SLURM-Simple-Linux-Utility-for-Resource-Management"><span class="nav-number">1.</span> <span class="nav-text">SLURM: Simple Linux Utility for Resource Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contents-of-a-batch-script"><span class="nav-number">2.</span> <span class="nav-text">contents of a batch script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#submit-the-job"><span class="nav-number">3.</span> <span class="nav-text">submit the job</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cancel-job"><span class="nav-number">4.</span> <span class="nav-text">cancel job</span></a></li></ol></div>
             
 
           </div>
