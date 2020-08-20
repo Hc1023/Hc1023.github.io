@@ -414,6 +414,139 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/" itemprop="url">CPU, core and threads in HPC --SBATCH setup</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-20T21:27:45+08:00">
+                2020-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>使用的集群会有计算结点和登录结点。以lab的集群为例</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo</span><br><span class="line">PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST</span><br><span class="line">sugon*       up   infinite      1   idle node1</span><br><span class="line">low          up   infinite      1   idle node1</span><br><span class="line">download     up   infinite      1   idle tc6000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-N</code> node oriented</li>
+<li><code>-l</code> 提供更多的信息：number of CPUs, memory, temporary disk (also called scratch space), node weight (an internal parameter specifying preferences in nodes for allocations when there are multiple possibilities), features of the nodes (such as processor type for instance) and the reason, if any, for which a node is down.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo -Nl</span><br><span class="line">Sun Aug 16 10:38:15 2020</span><br><span class="line">NODELIST   NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON</span><br><span class="line">node1          1    sugon*        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">node1          1       low        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">tc6000         1  download        idle   12   1:12:1  63889        0      1   (null) none</span><br></pre></td></tr></table></figure>
+
+<p>node1是计算结点（不连网），tc6000是登录结点（连网），sbatch递交作业后slurm是在计算结点进行工作调度。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/become-rich/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -502,7 +635,7 @@
 <td>不计入比例，方便支付宝</td>
 </tr>
 <tr>
-<td>余额宝</td>
+<td>零钱通</td>
 <td>1.5270</td>
 <td>——</td>
 <td>不计入比例，方便微信</td>
@@ -1463,134 +1596,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/02/Algebra-notes-06-02-20/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/02/Algebra-notes-06-02-20/" itemprop="url">Algebra notes 06.02.20</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-02T22:36:01+08:00">
-                2020-06-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>令$g$是域$k$上的向量空间，并令$[\ ,\ ]: g \times g\rightarrow g$为一个反对称双线性映射。（等价于$[a,a]=0$且$[a,b] = -[b,a]$）</p>
-<p>$(g,[\ ,\ ])$是一个李代数如果$[\ ,\ ]$满足雅可比恒等式$$[[a,b],c]+[[b,c],a]+[[c,a],b] = 0$$</p>
-<p>几个李代数的例子：<br>1.$g$ with $[\ ,\ ]=0$ （阿贝尔李代数）<br>2.结合代数$A$ with $[a,b] = ab-ba$<br>3.结合代数$A$的子空间$U$满足$[a,b]\in U$对于所有的$a,b \in U$<br>4.代数$A$的导子空间$Der(A)$，i.e.，线性映射$D:A\rightarrow A$满足莱布尼兹法则$$D(ab) = D(a)b+aD(b)$$</p>
-<p><strong>证明对任意结合代数$A$，其导子集$\mathcal D = \lbrace D:A\rightarrow A\ \rbrace$，其中$D$满足莱布尼兹法则，关于$[D_1,D_2] = D_1D_2-D_2D_1\ (\forall D_i\in \mathcal D,\ i=1,2)$必为一个李代数。</strong></p>
-<p>证：容易验证下述三条成立<br>1.$[D_1,D_1] = 0$<br>2.$[D_1,D_2] = -[D_2,D_1]$<br>3.雅可比恒等式<br>下只需验证$\mathcal D$在李括号下是封闭的，也$[D_1, D_2] (ab) = [D_1, D_2] (a) b+a[D_1, D_2] (b)$成立，这个把李括号打开算一下就好，是成立的。Q.E.D</p>
-<p>Rmk：对于一个结合代数来讲，上面定义的李括号的封闭性是自然成立的，但是$(\mathcal D,\cdot)$<strong>非结合代数</strong>，$\cdot$对应的就是自然的复合运算$(D_1\cdot D_2)(a) = D_1(D_2(a))$。这是因为$$(D_1D_2)(ab) = D_1(D_2(ab)) = D_1 (D_2(a)b+aD_2(b)) = (D_1D_2)(a)b+D_2(a)D_1(b)+D_1(a)D_2(b)+a(D_1D_2)(b)$$而若$D_1D_2\in \mathcal D$则$$(D_1D_2)(ab) = (D_1D_2)(a)b + a(D_1D_2)(b) $$所以两者相等意味着必有$$D_2(a)D_1(b)+D_1(a)D_2(b)=0$$但这并不一定成立，矛盾。</p>
-<p>所以一个代数非结合代数，但却可以关于李括号成立李代数。而对于一个李代数来讲，我们可以取它的泛包络代数使其“延拓”为一个结合代数。我们直接用张量积的方式定义这个泛包络代数。</p>
-<p>首先定义张量代数。给定一个向量空间$V$，定义域$k$上的张量代数$TV:=\oplus_{n\geq 0} V^{\otimes n}$，乘法运算$a\cdot b:=a\otimes b,\ a\in V^{\otimes n},\ b\in V^{\otimes m}$。观察到$V$的一组基$x_1,…,x_N\in V$可以定义一个自由代数$k\langle x_1,…,x_n\rangle$（一个非交换多项式环）为$TV$的一个同构。</p>
-<p>下面定义这个泛包络代数。若$V$是一个李代数，其泛包络代数$U(V)$为$TV$商掉由$v\otimes w-w\otimes v-[v,w],\ v,w\in V$生成的理想。这个泛包络代数是一个结合代数。<br>并且我们还可以知道的一件事是，李代数$V$和泛包络代数$U(V)$的表示是一样的。$U(V)$的作用可以用$V$中的元素生成，$\rho(x_1…x_s) = \rho(x_1)…\rho(x_s)$。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1643,7 +1648,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

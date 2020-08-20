@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="决策树（DT）是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。 基本流程遵循简单直观的分而治之（divide and conquer）策略：选择最优属性，划分，递归进行。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-07-05T11:52:26.705Z">
+<meta property="og:updated_time" content="2020-08-19T11:24:06.057Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="decision tree">
 <meta name="twitter:description" content="决策树（DT）是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。 基本流程遵循简单直观的分而治之（divide and conquer）策略：选择最优属性，划分，递归进行。">
@@ -364,9 +364,9 @@
 <p>情形（2）是在利用当前结点的后验分布，情形（3）是把父结点的样本分布作为当前结点的先验分布。</p>
 <p>我们希望决策树的分支结点所包含样本尽可能属于同一类别，<strong>信息熵（information entropy）</strong>是度量样本集合纯度最常用的指标，样本集合$D$中第$k$类样本所占的比例为$p_k\ (k=1,2,…,|Y|)$，则$D$的信息熵定义为$$Ent(D) = - \Sigma_{k=1}^{|Y|} p_k\ log_2 p_k$$ 显然$Ent(D)\in [0,log_2 Y]$ </p>
 <p>用属性$a$划分有$V$个可能取值$\lbrace a^1,a^2,…,a^V \rbrace$，取值为$a^v$的样本为$D^v$，用属性$a$对样本集$D$进行划分所获得的<strong>信息增益（information gain）</strong>为$$Gain(D,a) = Ent(D) - \Sigma_{v=1}^V \frac{|D^v|}{|D|} Ent(D^v)$$ 选择最优划分属性$a_* = argmax_{a\in A} \ Gain(D,a)$。著名的<strong>ID3决策树</strong>学习算法就是以信息增益为准则来划分最优属性的。</p>
-<p>但信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，著名的<strong>C4.5决策树</strong>算法使用<strong>增益率（gain ratio）</strong>$$Gain_ratio(D,a) = \frac{Gain(D,a)}{IV(a)}$$ 其中$IV(a) = - \Sigma_{v=1}^V\frac{|D^v|}{|D|}log_2 \frac{|D^v|}{|D|}$称为属性$a$的固有值（intrinsic value）。属性$a$可能取值越多，固有值通常越大。</p>
+<p>但信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，著名的<strong>C4.5决策树</strong>算法使用<strong>增益率（gain ratio）</strong>$$Gain.ratio(D,a) = \frac{Gain(D,a)}{IV(a)}$$ 其中$IV(a) = - \Sigma_{v=1}^V\frac{|D^v|}{|D|}log_2 \frac{|D^v|}{|D|}$称为属性$a$的固有值（intrinsic value）。属性$a$可能取值越多，固有值通常越大。</p>
 <p>增益率对可能值数目较少的属性有所偏好，使用启发式算法：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
-<p><strong>CART决策树</strong>使用<strong>基尼指数（Gini index</strong>）来选择划分属性。$$Gini(D) = \Sigma_{k=1}^{|Y|}\Sigma_{k’\neq k} p_kp_{k’} = 1-\Sigma_{k=1}^{|Y|}p_k^2$$ 反映了从数据集$D$中随机抽取两个样本，其类别标记不一样的概率。$Gini(D)$越小，则数据集$D$的纯度越高。属性$a$的基尼指数为$$Gini_index(D,a) = \Sigma_{v=1}^V\frac{|D^v|}{|D|}Gini(D^v)$$选取划分后基尼指数最小的属性作为最优划分属性，即$argmin_{a\in A} Gini_index(D,a)$</p>
+<p><strong>CART决策树</strong>使用<strong>基尼指数（Gini index</strong>）来选择划分属性。$$Gini(D) = \Sigma_{k=1}^{|Y|}\Sigma_{k’\neq k} p_kp_{k’} = 1-\Sigma_{k=1}^{|Y|}p_k^2$$ 反映了从数据集$D$中随机抽取两个样本，其类别标记不一样的概率。$Gini(D)$越小，则数据集$D$的纯度越高。属性$a$的基尼指数为$$Gini.index(D,a) = \Sigma_{v=1}^V\frac{|D^v|}{|D|}Gini(D^v)$$选取划分后基尼指数最小的属性作为最优划分属性，即$argmin_{a\in A} Gini.index(D,a)$</p>
 <h2 id="剪枝处理"><a href="#剪枝处理" class="headerlink" title="剪枝处理"></a>剪枝处理</h2><p><strong>剪枝（pruning）</strong>是决策树学习算法对付过拟合的主要手段，基本策略有<strong>预剪枝（prepruning）</strong>和<strong>后剪枝（post-pruning）</strong>。</p>
 <p>预剪枝是在决策树生成过程中，对每个结点在划分前先进行估计，若划分不能使泛化性能得到提升，则停止划分并将当前结点标记为叶结点；后剪枝则是先从训练集生成一棵完整的决策树，然后自底向上对非叶结点进行考察，若子树换位叶结点提升泛化性能则替换。</p>
 <ul>
@@ -506,7 +506,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

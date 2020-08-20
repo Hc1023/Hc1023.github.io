@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/08/29/linux-1/0908.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/29/linux-1/0829.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/29/linux-1/0829-2.png">
-<meta property="og:updated_time" content="2020-08-14T08:22:58.934Z">
+<meta property="og:updated_time" content="2020-08-20T13:21:20.824Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux最低要求">
 <meta name="twitter:description" content="基础知识 Tab键 命令、路径、文件匹配，两次Tab寻找文件名 \n 回车 \t tab键，可以用Excel打开 分隔符 (重新定义文本切割分隔符）sep cut 进入路径：cd 上层目录：cd ..  家目录：cd enter or cd ~ 查看当前路径的文件大小 ls –lh (long human) 建立多层路径：mkdir -p  建立文本：touch new.txt功能：确认是否有写入">
@@ -384,40 +384,76 @@
 <h2 id="Linux系统"><a href="#Linux系统" class="headerlink" title="Linux系统"></a>Linux系统</h2><p>是一套免费使用和自由传播的类Unix操作系统，是一个基于POSIX和UNIX的多用户、多任务、支持多线程和多CPU的操作系统。目前市面上较知名的发行版有：Ubuntu、RedHat、CentOS、Debian、Fedora、SuSE、OpenSUSE、Arch Linux、SolusOS 等。</p>
 <p>优势：批量处理任务、处理大文本、运行速度快、登录远程服务器获取数据/文件</p>
 <p>/：根目录，一般根目录下只存放目录，不存放文件<br>/bin：可执行的二进制文件目录,如今天我们要学的<br>命令就可以放在这个目录下<br>/usr：用户目录，存放用户级的文件。<br>/usr/bin：存放应用程序，<br>/usr/share：存放共享数据，<br>/usr/lib：存放不能直接运行但却是许多程序运行所必<br>需的一些函数库文件，<br>/usr/local：存放软件升级包，<br>/usr/share/doc：系统说明文件存放目录，<br>/usr/share/man：存放程序说明文件<br>/local：本地安装软件保存位置<br>/etc：系统配置文件存放的目录<br>/home：系统默认的用户家目录，新增用户账号时，<br>用户的家目录都存放在此目录下<br>/mnt：光盘默认挂载点<br>/sbin：放置系统管理员使用的可执行命令<br>/tmp：一般用户或正在执行的程序临时存放文件的<br>目录<br>/var：放置系统执行过程中经常变化的文件，如随<br>时更改的日志文件<br>/dev：存放linux系统下的设备文件</p>
-<h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><p><code>pwd</code>查看当前目录，<code>top -c</code>查看cpu使用</p>
-<p>修改颜色显示（只是好看些）</p>
+<h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><ul>
+<li><p><code>pwd</code>查看当前目录，<code>top -c</code>查看cpu使用</p>
+</li>
+<li><p>修改颜色显示（只是好看些）</p>
+</li>
+</ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS1=<span class="string">"\[\033]2;\h:\u \w\007\033[33;1m\]\u \033[35;1m\t\033[0m \[\033[36;1m\]\w\[\033[0m\]\n\[\e[32;1m\]$ \[\e[0m\]"</span></span><br></pre></td></tr></table></figure>
 
-<p>寻找文件</p>
+<ul>
+<li>寻找文件</li>
+</ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name <span class="string">'*.fa*.gz'</span> -size +500M</span><br></pre></td></tr></table></figure>
 
-<p>添加环境变量</p>
+<ul>
+<li>添加环境变量</li>
+</ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'export PATH=~/.aspera/connect/bin:$PATH'</span> &gt;&gt; ~/.bashrc</span><br><span class="line">$ <span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
 
 <p>然而第一句话很容易写错，比如等号后面多空格等，于是就要人工<code>vim</code>修改</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/bin/vim ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-<p>查看</p>
+<ul>
+<li>查看</li>
+</ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ less -S -N ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-<p>碱基序列处理</p>
+<ul>
+<li>碱基序列处理</li>
+</ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> ATGCGGCG|tr <span class="string">'G'</span> <span class="string">'#'</span></span><br><span class="line">$ <span class="built_in">echo</span> ATGCGGCG|tr <span class="string">'AG'</span> <span class="string">'CT'</span></span><br><span class="line"> <span class="comment">#tr 行使一一替换</span></span><br><span class="line">$ <span class="built_in">echo</span> ATGCGGGG|tr <span class="string">'AG'</span> <span class="string">'TC'</span>|rev</span><br><span class="line">$ <span class="built_in">echo</span> ATGCGGGG|tr <span class="string">'AGTC'</span> <span class="string">'TCAG'</span>|rev</span><br></pre></td></tr></table></figure>
 
-<p>带有字符的排序</p>
+<ul>
+<li>带有字符的排序</li>
+</ul>
 <p>直接指定按照第一列排序，第一列含有字符r，没法识别为数字，所以指定-n参数实现不了，加上-t参数指定以r为分隔符，然后按照第二列排序就是纯数字了，就可以实现需求</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools view tmp.bam|sort  -t r -k 2 -n|less -S</span><br></pre></td></tr></table></figure>
 
 <p><img src="0908.png" alt></p>
-<p>Linux按照文件时间升序倒序</p>
+<ul>
+<li>Linux按照文件时间升序倒序</li>
+</ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 升序</span></span><br><span class="line">ls -lrt</span><br><span class="line"><span class="comment">#-l     use a long listing format</span></span><br><span class="line"><span class="comment">#-t     sort by modification time</span></span><br><span class="line"><span class="comment">#-r     reverse order while sorting</span></span><br><span class="line"><span class="comment"># 降序</span></span><br><span class="line">ls -lt</span><br></pre></td></tr></table></figure>
 
 <p>一般我习惯</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -lth</span><br><span class="line"><span class="comment"># -h可以把文件大小变可读</span></span><br></pre></td></tr></table></figure>
 
-<p>显示所有文档及目录，包括隐藏<code>.</code>开头文件</p>
+<ul>
+<li>显示所有文档及目录，包括隐藏<code>.</code>开头文件</li>
+</ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -a</span><br></pre></td></tr></table></figure>
 
-<p><code>tac</code> 可以倒叙</p>
+<ul>
+<li><p><code>tac</code> 可以倒叙</p>
+</li>
+<li><p>解压<code>gz</code>文件</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvzf archivename.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>此命令将解压<code>archivename.tar.gz</code>文件到当前目录下，<code>x</code>表示解压目录；<code>v</code>产生详细的进度输出（详细模式），如果在Shell脚本中使用tar，则可能应该忽略它；<code>z</code>使用gzip解压缩存档，这仅适用于已经通过gzip压缩的压缩包，例如，使用z选项创建的压缩包；<code>f</code>文件名是下一个参数。</p>
+<ul>
+<li>解压<code>zip</code>文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip xxx.zip target_archive_dir</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置软链接</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s original_dir link_dir</span><br></pre></td></tr></table></figure>
+
 <h2 id="最低要求"><a href="#最低要求" class="headerlink" title="最低要求"></a>最低要求</h2><p>一、在任意文件夹下面创建形如 1/2/3/4/5/6/7/8/9 格式的文件夹系列。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 19:32:03 ~</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> homework</span></span><br><span class="line">(base) hz04 19:33:09 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir -p 1/2/3/4/5/6/7/8/9</span></span><br></pre></td></tr></table></figure>
 
@@ -624,7 +660,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

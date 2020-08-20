@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="reading,">
+  <meta name="keywords" content="生信,">
 
 
 
@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="Keypoints全基因组关联研究Genome-wide association studies (GWAS) 在人类基因组数据分析中非常成功。微生物全基因组可用性的提高为微生物GWAS提供了机会。最初的微生物GWAS已成功识别出一系列细菌，病毒和原生动物在强烈选择下的性状变异，例如耐药性。微生物GWAS存在一些挑战，这些挑战可能会阻碍在适度选择条件下鉴定变体identifying variant">
-<meta name="keywords" content="reading">
+<meta name="description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
+<meta name="keywords" content="生信">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Microbial GWAS">
-<meta property="og:url" content="http://yoursite.com/2019/12/18/Microbial-GWAS/index.html">
+<meta property="og:title" content="CPU, core and threads in HPC --SBATCH setup">
+<meta property="og:url" content="http://yoursite.com/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="Keypoints全基因组关联研究Genome-wide association studies (GWAS) 在人类基因组数据分析中非常成功。微生物全基因组可用性的提高为微生物GWAS提供了机会。最初的微生物GWAS已成功识别出一系列细菌，病毒和原生动物在强烈选择下的性状变异，例如耐药性。微生物GWAS存在一些挑战，这些挑战可能会阻碍在适度选择条件下鉴定变体identifying variant">
+<meta property="og:description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/12/18/Microbial-GWAS/1218.png">
-<meta property="og:image" content="http://yoursite.com/2019/12/18/Microbial-GWAS/1218-2.png">
-<meta property="og:updated_time" content="2020-05-13T15:39:53.568Z">
+<meta property="og:updated_time" content="2020-08-20T13:33:06.514Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Microbial GWAS">
-<meta name="twitter:description" content="Keypoints全基因组关联研究Genome-wide association studies (GWAS) 在人类基因组数据分析中非常成功。微生物全基因组可用性的提高为微生物GWAS提供了机会。最初的微生物GWAS已成功识别出一系列细菌，病毒和原生动物在强烈选择下的性状变异，例如耐药性。微生物GWAS存在一些挑战，这些挑战可能会阻碍在适度选择条件下鉴定变体identifying variant">
-<meta name="twitter:image" content="http://yoursite.com/2019/12/18/Microbial-GWAS/1218.png">
+<meta name="twitter:title" content="CPU, core and threads in HPC --SBATCH setup">
+<meta name="twitter:description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/18/Microbial-GWAS/">
+  <link rel="canonical" href="http://yoursite.com/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/">
 
 
 
 
 
-  <title>Microbial GWAS | Hc's Blog</title>
+  <title>CPU, core and threads in HPC --SBATCH setup | Hc's Blog</title>
   
 
 
@@ -288,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/18/Microbial-GWAS/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -305,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Microbial GWAS</h1>
+          <h1 class="post-title" itemprop="name headline">CPU, core and threads in HPC --SBATCH setup</h1>
         
 
         <div class="post-meta">
@@ -317,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-18T23:09:52+08:00">
-                2019-12-18
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-20T21:27:45+08:00">
+                2020-08-20
               </time>
             
 
@@ -355,95 +352,106 @@
       
 
       
-        <h2 id="Keypoints"><a href="#Keypoints" class="headerlink" title="Keypoints"></a>Keypoints</h2><p>全基因组关联研究Genome-wide association studies (GWAS) 在人类基因组数据分析中非常成功。微生物全基因组可用性的提高为微生物GWAS提供了机会。<br>最初的微生物GWAS已成功识别出一系列细菌，病毒和原生动物在强烈选择下的性状变异，例如耐药性。<br>微生物GWAS存在一些挑战，这些挑战可能会阻碍在适度选择条件下鉴定变体identifying variants。主要挑战是由于选择和复杂的重组模式selection and complex recombination patterns.，导致微生物种群分层population stratification增加。<br>专门针对微生物GWAS的需求量身定制的新型软件将大大加快该领域的发展。特别是，多基因方法polygenic methods的应用尚未在微生物中进行评估。<br>令人兴奋的未来研究领域是在同一样本中生成宿主和微生物基因组数据the generation of host and microbial genomics data within the same samples。这将允许对基因组进行基因组分析genome-to-genome analyses，以测试宿主与微生物之间的相互作用。</p>
+        <p>使用的集群会有计算结点和登录结点。以lab的集群为例</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo</span><br><span class="line">PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST</span><br><span class="line">sugon*       up   infinite      1   idle node1</span><br><span class="line">low          up   infinite      1   idle node1</span><br><span class="line">download     up   infinite      1   idle tc6000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-N</code> node oriented</li>
+<li><code>-l</code> 提供更多的信息：number of CPUs, memory, temporary disk (also called scratch space), node weight (an internal parameter specifying preferences in nodes for allocations when there are multiple possibilities), features of the nodes (such as processor type for instance) and the reason, if any, for which a node is down.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo -Nl</span><br><span class="line">Sun Aug 16 10:38:15 2020</span><br><span class="line">NODELIST   NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON</span><br><span class="line">node1          1    sugon*        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">node1          1       low        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">tc6000         1  download        idle   12   1:12:1  63889        0      1   (null) none</span><br></pre></td></tr></table></figure>
+
+<p>node1是计算结点（不连网），tc6000是登录结点（连网），sbatch递交作业后slurm是在计算结点进行工作调度。</p>
 <a id="more"></a>
 
-<h2 id="Data-and-methodology-of-GWAS"><a href="#Data-and-methodology-of-GWAS" class="headerlink" title="Data and methodology of GWAS"></a>Data and methodology of GWAS</h2><ul>
-<li><p>postulation: many high-frequency but low-effect variants contribute to disease risk</p>
-</li>
-<li><p>Each SNP is analysed, usually through linear or logistic regression, to determine whether one allele is significantly associated with the phenotype</p>
-</li>
+<h2 id="sinfo信息"><a href="#sinfo信息" class="headerlink" title="sinfo信息"></a>sinfo信息</h2><ul>
+<li>CPU, core and threads</li>
 </ul>
-<p>通过回归的方法建立SNP和phenotype的correlation</p>
+<p>CPU的核数是指硬件上存在着几个核心，例如双核就是包括2个相对独立的CPU核心单元组。 线程数是一种逻辑的概念，是模拟出的CPU核心数。</p>
+<p>总核数 = 物理CPU个数 $\times$ 每个物理CPU的核数 (core)<br>总逻辑CPU数 = 物理CPU个数 $\times$ 每个物理CPU的核数 (core) $\times$ 线程数 (thread)</p>
 <ul>
-<li>Owing to the co-inheritance of segments of the genome over generations, correlations (known as linkage disequilibrium (LD)) exist between genetic variants that are in close proximity. </li>
+<li>tc6000</li>
 </ul>
-<p>在紧密接近的遗传变异之间存在相关性（称为连锁不平衡（LD））通过包括单个近端SNP来“标记”局部遗传变异，并根据已知的相关性推算未直接进行基因分型的其他SNP。</p>
+<p>12 logical CPUs = 1 physical CPU $\times$ 12 cores $\times$ 1 thread</p>
 <ul>
-<li>Differences between human GWAS and microbial GWAS</li>
+<li>node1</li>
 </ul>
-<p>主要不同在于the source of the genomic data</p>
-<p>与人类GWAS的数据来自SNP基因分型芯片SNP genotyping chips不同，几乎所有微生物的基因组数据都来自测序sequencing</p>
-<p>这影响了GWAS的多个方面，特别是SNP调用SNP calling，因为在微生物测序数据中检测到的SNP不仅将是双等位基因bi-allelic，而且还将是三等位基因和四等位基因tri-allelic and quad-allelic。这使变体调用variant calling，数据存储和分析变得复杂。在微生物GWAS中，将基因座与参考基因组匹配Matching loci to a reference genome的重要性也越来越高，以确保每个样品在同一位置调用SNP并在研究中进行比较。测序还会影响过滤SNP和单个样品必须采取的质量控制步骤quality control steps 。由于与研究中的样本数量相比，SNP数量众多，因此进行质量控制以优先排除低质量的SNP——去除具有较低次要等位基因频率low minor allele frequency，满足Hardy–Weinberg equilibrium。</p>
-<h2 id="Adapting-GWAS-to-microbial-variants"><a href="#Adapting-GWAS-to-microbial-variants" class="headerlink" title="Adapting GWAS to microbial variants"></a>Adapting GWAS to microbial variants</h2><p>在微生物GWAS中始终不可能仅关注SNP的作用</p>
-<ul>
-<li>微生物GWAS需要测试SNP与基因存在之间的这种差异</li>
-</ul>
-<p>例如，在细菌中，重组可以引入新基因。</p>
-<p><strong>analysis of copy number variants (CNVs)</strong></p>
-<p>CNV是基因组部分的大型重复或缺失。</p>
-<p>变体对该负担的贡献可以通过其预测的功能影响来加权。使用将多个遗传变异的影响合并为一个变量的定量负担，可能会提供用于分析微生物GWAS中基因存在与否以及稀有变异的统计方法。</p>
-<p><strong>analysing k-mers15</strong></p>
-<p>k-mers的好处是它们同时捕获共同的变异和基因存在。</p>
-<ul>
-<li>Within-host diversity will lead to non-discrete SNP calling</li>
-</ul>
-<p>宿主内的多样性将导致非离散SNP调用，等位基因的频率反映宿主细胞内微生物序列上的频率，而不是等位基因的存在与否。尽管测试等位基因频率与表型之间的线性关联具有务实意义，但也存在<strong>非线性效应</strong>的可能性。</p>
-<ul>
-<li>lineage effects谱系效应</li>
-</ul>
-<p>微生物的谱系或亚型可能是感兴趣的遗传单位，既可以是单独的，也可以是单个SNP或k-mers的作用之外的遗传单位。</p>
-<h2 id="Confounding-factors-in-microbial-GWAS"><a href="#Confounding-factors-in-microbial-GWAS" class="headerlink" title="Confounding factors in microbial GWAS"></a>Confounding factors in microbial GWAS</h2><p>main challenge: identifying seemingly causal variants that are in fact false positives due to <strong>population structure &amp; multiple testing</strong></p>
-<p>假阳性的因果变异</p>
-<ul>
-<li>population structure</li>
-</ul>
-<p>人群结构混淆，GWAS将识别出仅能反映祖先而不是疾病生物学信息的预测性SNP。为了避免这个问题，人类GWAS通常将招募活动限制在族裔同质的人群ethnically homogeneous groups中。即使在相对同质的人口中，也会存在一些人口结构。这些人口分层的微妙影响通过主成分分析principal component analysis得以纠正。</p>
-<ul>
-<li>homologous recombination同源重组</li>
-</ul>
-<p>在细菌和病毒中，通过替换短序列区块the replacement of short sequence blocks而不是沿着整个染色体的多次交换multiple crossovers along the whole chromosome。</p>
-<p>这意味着远距离LD在微生物基因组中的分解方式有所不同，即使区域内的短距离LD减少了，长距离LD的变体也会相互保留。 这种长距离LD可能使因果变异的识别成为问题。</p>
-<p>Methods that are designed for analysing historically ethnically mixed, or ‘admixed’, human populations may be helpful in this case, because they make use of recombination patterns to identify associated loci.</p>
-<ul>
-<li>microbial population structure can represent selection on the phenotype of interest</li>
-</ul>
-<p>微生物种群结构可以代表对目标表型的选择，例如抗生素耐药性。考虑到跨微生物重组和选择频率的差异，随之而来的种群结构很可能从纯粹的克隆到近乎泛滥。此外，成功谱系的迅速传播可能会暂时减少它们与其他物种的重组。在选择力强的微生物中，最好在不同时间在单个宿主内使用重复的样品，例如比较预处理和后处理序列。</p>
-<p>但是，这种方法不适用于纵向表型 longitudinal phenotypes，例如发展疾病症状所花费的时间，或在进化速率较低的微生物中。 在这些研究中，使用混合模型说明相关性或谱系效应，或基于系统发育结构识别基因组选择信号的方法，可能比典型的GWAS回归方法更具吸引力。</p>
-<p> In these studies, methods that use mixed models to account for relatedness or lineage effects, or to identify signals of selection across the genome based on phylogenetic structure, may have more traction than typical GWAS regression methods.</p>
-<h2 id="Multiple-testing-and-replication"><a href="#Multiple-testing-and-replication" class="headerlink" title="Multiple testing and replication"></a>Multiple testing and replication</h2><ul>
-<li>testing hundreds of thousands of SNPs leads to tens of thousands of SNPs being significant at P &lt; 0.05 by chance alone.</li>
-</ul>
-<p>被认为具有统计学意义的关联的标准截止值为P = 0.05，这表示随机发生的可能性为5％。但是，测试成千上万的SNP会导致成千上万的SNP仅凭偶然机会在P &lt;0.05时有意义。为了说明测试的数量，SNP必须通过全基因组范围内的显着性临界值才能被认为具有显着性。在人类中，这通常是P &lt;5E-824，这大约等于早期GWAS中分析的SNP数量的Bonferroni校正（多次测试校正）。但是，它继续用于更密集的基因分型和估算研究中。通过更深的基因分型或估算，GWAS中包含的其他SNP与已知的高LD处于较高的LD，因此SNP之间的相关性减少了进行的独立测试的数量。因此，了解SNP之间的LD水平对于计算正确的全基因组意义阈值很重要。即使严格限制了全基因组的重要性，确定关联是否代表假阳性仍然是有问题的。</p>
-<ul>
-<li>replication in an independent cohort</li>
-</ul>
-<p>在独立队列中进行复制。<br>This is both to avoid false positives and to accurately estimate the effect size of the SNP. </p>
-<p>复制期间不存在发现偏差，因此复制队列中的效应大小将更准确地反映真实效应。<br>replication does not require the association of a SNP to reach genome-wide significance in the replication cohort, but to pass a P value threshold based on the number of SNPs brought forward for replication.<br>meta-analysis of the P values of a SNP in both the discovery and the replication cohorts should surpass genome-wide significance in order for a SNP to be considered a true positive.</p>
-<p>However, microbial GWAS may be less reliant on replication than human GWAS given that suspected causal variants can be validated in vitro.<br>One important area of research is the development of methods to identify and correct for epistasis. </p>
-<ul>
-<li>可视化全基因组关联研究（GWAS）的结果</li>
-</ul>
-<p><img src="1218.png" alt></p>
-<p><strong>Manhattan plot</strong>：绘制每个变量的P值与其位置的关系（见图a）</p>
-<p>x轴表示基因组位置。 y轴是-log（P值）。使用对数标度，以使最重要的单核苷酸多态性（SNP）的值高于大多数非重要SNP的值。在y轴上使用参考线来反映全基因组范围的重要性，偶尔使用第二条线代表“建议意义”阈值。由于对连锁不平衡（LD）的期望，通常将单个高度重要的SNP本身解释为基因分型错误。在人类研究中，LD中具有真正因果变异的重要SNP列可见，尽管这种期望取决于生物体的LD。</p>
-<p><strong>quantile-quantile (QQ) plot</strong>：将研究中观察到的-log（P值）的分布（y轴）与零假设（x轴；见图b）下的预期分布进行比较</p>
-<p>Departure of observed SNP P values from the y = x reference line may reflect systematic inflation in the test statistics owing to population stratification. However, departure from this line is also expected for a truly polygenic trait, as many causal SNPs may not yet have reached genome-wide significance owing to a lack of power. This will lead to an excess of low P values across all SNPs. </p>
-<h2 id="Power-polygenicity-and-heritability"><a href="#Power-polygenicity-and-heritability" class="headerlink" title="Power, polygenicity and heritability"></a>Power, polygenicity and heritability</h2><p>The problem of missing heritability persisted, leading to a move away from single SNP analyses and towards polygenic methods.</p>
-<p>PRSs are based on the assumption that many SNPs with small effect sizes will fail the stringent cut-off that is used for genome-wide significance; however, together their cumulative effect could explain a large amount of the variance in risk. </p>
-<p>定义每个SNP的“风险”等位基因和效应大小，而不管P值是否显着。在复制队列中，将单个样本携带的“风险”等位基因的数量相加为一个分数（PRS），每个等位基因均按其效应大小加权。然后计算由PRS预测的病例控制状态的变化。通常使用不同的P值阈值来定义几个PRS，以包含来自发现GWAS的SNP，例如，使用P &lt;0.001，P &lt;0.05，P &lt;0.2和P &lt;0.5的SNP来获得四个分数。随着包含更多的SNP，将更有可能包含所有具有真正作用的SNP。但是，包含更多的SNP也会增加SNP的数量，但没有真正的效果，因此会增加噪声，这会导致解释的变化量达到平稳。与单个SNP的结果相比，PRS最终提供了更强大的预测工具。因此，PRS可能是将微生物GWAS的结果快速转化为临床预测的关键，甚至在不了解各个风险变量的作用之前。</p>
-<p><img src="1218-2.png" alt></p>
-<p>由图可以看出，识别出的SNP数量随样本数量呈指数增加，并且在每个阶段，PRS都比单独使用重要的SNP提供更好的预测。 但是，即使在相当大的GWAS中，“遗传力缺失”的挑战仍在继续，其方差解释仍低于GREML和双胞胎研究得出的遗传力估计值。</p>
-<p>这是后期做的一点补充。</p>
-<p>关于lineage effects，我暂时理解的是相对于SNPs or k‑mers更宏观的一个整体效应，以下原文</p>
+<p>144 logical CPUs = 4 physical CPUs $\times$ 18 cores $\times$ 2 threads</p>
+<p>后续sbatch作业还需要node1的一些信息</p>
+<p>对于memory默认单位是Mb，对于node1，206359Mb相当于201G，啊但事实上我们有2T……大概是没有显示完全。</p>
 <blockquote>
-<p>In this case, entire lineages, such as viral subtypes, might differ in phenotype. Thus, the lineage or subtype of the microorganism might be the genetic unit of interest, either alone or in addition to the<br>effects of individual SNPs or k‑mers.</p>
+<p>顺便写一下单位换算，一般来说如果看文件信息<code>ll</code>，不加<code>-h</code>给的是字节（byte）数。<br>1byte=8bit. 1KB=1024byte. 1MB=1024KB=1,048,576byte. 1GB=1024MB=1,073,741,824byte. 1TB=1024GB=1,099,511,627,776byte</p>
 </blockquote>
-<p>关于 non-discrete SNP calling和frequency，应该就是说SNP的频率不代表存在缺失，反映等位基因的存在频率。目测就是多等位基因的意思吧…以下原文</p>
+<p>我们一共有3个分区，分别是<code>sugon</code>,<code>low</code>,<code>download</code>，是人为自定义的，我们一般把作业递交到<code>sugon</code>（打星号的是默认递交的分区）。</p>
 <blockquote>
-<p>Withinhost diversity will lead to non-discrete SNP calling, where the frequency of an allele reflects its frequency on microbial sequences within the host, rather than the presence or absence of an allele.</p>
+<p>A partition is a set of compute nodes (computers dedicated to … computing,) grouped logically. Typical examples include partitions dedicated to batch processing, debugging, post processing, or visualization.</p>
 </blockquote>
-<p>references:<br>1.Microbial genome-wide association studies: lessons from human GWAS <a href="https://www.ncbi.nlm.nih.gov/pubmed/27840430" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/pubmed/27840430</a></p>
+<p>看一下运行时间限制，由于这个集群只有我们lab使用，所以是infinite，也太舒服了QVQ……</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sinfo --partition sugon</span><br><span class="line">PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST</span><br><span class="line">sugon*       up   infinite      1   idle node1</span><br></pre></td></tr></table></figure>
+
+<h2 id="SBATCH-参数设置"><a href="#SBATCH-参数设置" class="headerlink" title="SBATCH 参数设置"></a>SBATCH 参数设置</h2><p><a href="http://ircc.fiu.edu/download/user-guides/Slurm_Cheat_Sheet.pdf" target="_blank" rel="noopener">Slurm_Cheat_Sheet.pdf</a></p>
+<p>由上面的信息，我们可以更好的设置这些参数</p>
+<ul>
+<li><code>#SBATCH --partition</code> 工作分区，我们用<code>sugon</code> </li>
+<li><code>#SBATCH --nodes</code> 使用nodes数量，我们只有1个 </li>
+<li><code>#SBATCH --ntasks</code> tasks数量，可能分配给不同node</li>
+<li><code>#SBATCH --ntasks-per-node</code> 每个结点的tasks数量，由于我们只有1 node，所以<code>ntasks</code>和<code>ntasks-per-node</code>是相同的</li>
+<li><code>#SBATCH --cpus-per-task</code> 每个task使用的core的数量（默认 1 core per task），同一个task会在同一个node</li>
+<li><code>#SBATCH --mem</code> 这个作业要求的内存 (Specified in MB)</li>
+<li><code>#SBATCH --mem-per-cpu</code> 每个core要求的内存 (Specified in MB)</li>
+</ul>
+<p>在slurm中，一个任务（task）被理解为一个进程（process），一个多进程（multi-process）程序由多个任务组成。相反，多线程（multithreaded）程序只有一个任务，但这个任务使用多个logical CPU。</p>
+<p>更好的理解ntasks，参考<a href="https://stackoverflow.com/questions/39186698/what-does-the-ntasks-or-n-tasks-does-in-slurm#:~:text=sbatch%20does%20not%20launch%20tasks,to%20provide%20for%20sufficient%20resources." target="_blank" rel="noopener">what-does-the-ntasks-or-n-tasks-does-in-slurm</a></p>
+<blockquote>
+<p>The <code>--ntasks</code> parameter is useful if you have commands that you want to run in parallel within the same batch script. This may be two separate commands separated by an <code>&amp;</code> or two commands used in a bash pipe <code>|</code>.</p>
+</blockquote>
+<p>例子1</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#SBATCH --ntasks=1</span></span><br><span class="line"></span><br><span class="line">srun sleep 10 &amp; </span><br><span class="line">srun sleep 12 &amp;</span><br><span class="line"><span class="built_in">wait</span></span><br></pre></td></tr></table></figure>
+
+<p>总共会用时22s，并有警告<em>Job step creation temporarily disabled, retrying*。但是如果</em>#SBATCH –ntasks=1*，两个task会同时进行，总共用时12s。</p>
+<p>例子2</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks=8</span></span><br><span class="line"><span class="comment">## more options</span></span><br><span class="line"><span class="built_in">echo</span> hello</span><br></pre></td></tr></table></figure>
+
+<p>上面这个脚本只会输出1行，但是后面使用<code>srun</code>以后，会输出8行。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks=8</span></span><br><span class="line"><span class="comment">## more options</span></span><br><span class="line">srun <span class="built_in">echo</span> hello</span><br></pre></td></tr></table></figure>
+
+<p>所以说如果我们是想比如说<code>samtools</code>可以使用更多的线程，应该修改的是<code>#SBATCH --cpus-per-task</code>，并且记得在后面修改samtools的线程参数，否则多余的线程就会被占着却不使用。</p>
+<ul>
+<li>多线程实例</li>
+</ul>
+<p>Use <code>${SLURM_CPUS_PER_TASK}</code> variable to pass the number of cores in the job to commands that accept an argument for number of core, cpus or threads.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --job-name=test</span></span><br><span class="line"><span class="comment">#SBATCH -o %x_%A.%a_%N.out</span></span><br><span class="line"><span class="comment">#SBATCH --account=huangsisi</span></span><br><span class="line"><span class="comment">#SBATCH --partition=sugon</span></span><br><span class="line"><span class="comment">#SBATCH --nodes=1</span></span><br><span class="line"><span class="comment">#SBATCH --tasks-per-node=1</span></span><br><span class="line"><span class="comment">#SBATCH --cpus-per-task=16</span></span><br><span class="line"><span class="comment">#SBATCH --mem-per-cpu=2000</span></span><br><span class="line"><span class="comment">#SBATCH --time=400:00:00</span></span><br><span class="line"><span class="comment">#SBATCH --mail-user=sisih@mit.edu</span></span><br><span class="line"><span class="comment">#SBATCH --mail-type=ALL</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> activate rna</span><br><span class="line"></span><br><span class="line">InDir=<span class="string">"/public/home/shared_lab/first11/Fasta_file"</span></span><br><span class="line"></span><br><span class="line">bowtie2-build NC_045512.2.fna index</span><br><span class="line">bowtie2 -p <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/P3-VERO-P3-1-vero_L4_1.fq.gz \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/P3-VERO-P3-1-vero_L4_2.fq.gz -S out.sam</span><br><span class="line"></span><br><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -bS out.sam &gt;tmp.bam</span><br><span class="line">samtools sort -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> tmp.bam &gt; tmp.sort.bam</span><br><span class="line"><span class="comment"># bam to fastq</span></span><br><span class="line"><span class="comment"># samtools fastq has no thread argument</span></span><br><span class="line">samtools fastq -1 r1.fq -2 r2.fq -n tmp.sort.bam</span><br><span class="line"><span class="comment">#  -1 FILE   write paired reads flagged READ1 to FILE</span></span><br><span class="line"><span class="comment">#  -2 FILE   write paired reads flagged READ2 to FILE</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="基于Ubuntu系统的查看信息方式"><a href="#基于Ubuntu系统的查看信息方式" class="headerlink" title="基于Ubuntu系统的查看信息方式"></a>基于Ubuntu系统的查看信息方式</h2><ul>
+<li>cpu全部信息</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less -SN /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看物理CPU个数</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">"physical id"</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">2</span><br><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">"physical id"</span> /proc/cpuinfo| sort -u</span><br><span class="line">physical id     : 0</span><br><span class="line">physical id     : 1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看每个物理CPU中core的个数</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">"cpu cores"</span> /proc/cpuinfo| uniq</span><br><span class="line">cpu cores       : 12</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">'core id'</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看逻辑CPU的个数</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">"processor"</span> /proc/cpuinfo| wc -l</span><br><span class="line">48</span><br></pre></td></tr></table></figure>
+
+<p>？怎么不太一致，看起来是</p>
+<p>48 logical CPUs = 2 physical CPUs $\times$ 12 cores $\times$ 2 threads</p>
+<p>我愿意相信这个信息比sinfo更准……好惊喜呀！</p>
+<p>下面到计算结点看看情况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 登录计算结点</span></span><br><span class="line">[huangsisi@tc6000 ~]$ ssh node1</span><br><span class="line">Last login: Mon Jul 27 15:31:57 2020</span><br><span class="line"><span class="comment"># 查看物理CPU个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">"physical id"</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">4</span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">"physical id"</span> /proc/cpuinfo| sort -u</span><br><span class="line">physical id     : 0</span><br><span class="line">physical id     : 1</span><br><span class="line">physical id     : 2</span><br><span class="line">physical id     : 3</span><br><span class="line"><span class="comment"># 查看每个物理CPU中core的个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">"cpu cores"</span> /proc/cpuinfo| uniq</span><br><span class="line">cpu cores       : 18</span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">'core id'</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">18</span><br><span class="line"><span class="comment"># 查看逻辑CPU的个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">"processor"</span> /proc/cpuinfo| wc -l</span><br><span class="line">144</span><br></pre></td></tr></table></figure>
+
+<p>node1和之前<code>sinfo</code>得到的信息一致。</p>
 
       
     </div>
@@ -461,7 +469,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/reading/" rel="tag"># reading</a>
+            <a href="/tags/生信/" rel="tag"># 生信</a>
           
         </div>
       
@@ -474,8 +482,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/13/cluster-PCA/" rel="next" title="聚类分析和主成分分析">
-                <i class="fa fa-chevron-left"></i> 聚类分析和主成分分析
+              <a href="/2020/08/15/become-rich/" rel="next" title="become rich">
+                <i class="fa fa-chevron-left"></i> become rich
               </a>
             
           </div>
@@ -483,10 +491,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/12/19/multi-Discriminant/" rel="prev" title="判别分析2">
-                判别分析2 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -611,7 +615,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Keypoints"><span class="nav-number">1.</span> <span class="nav-text">Keypoints</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-and-methodology-of-GWAS"><span class="nav-number">2.</span> <span class="nav-text">Data and methodology of GWAS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adapting-GWAS-to-microbial-variants"><span class="nav-number">3.</span> <span class="nav-text">Adapting GWAS to microbial variants</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Confounding-factors-in-microbial-GWAS"><span class="nav-number">4.</span> <span class="nav-text">Confounding factors in microbial GWAS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multiple-testing-and-replication"><span class="nav-number">5.</span> <span class="nav-text">Multiple testing and replication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Power-polygenicity-and-heritability"><span class="nav-number">6.</span> <span class="nav-text">Power, polygenicity and heritability</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sinfo信息"><span class="nav-number">1.</span> <span class="nav-text">sinfo信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SBATCH-参数设置"><span class="nav-number">2.</span> <span class="nav-text">SBATCH 参数设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于Ubuntu系统的查看信息方式"><span class="nav-number">3.</span> <span class="nav-text">基于Ubuntu系统的查看信息方式</span></a></li></ol></div>
             
 
           </div>

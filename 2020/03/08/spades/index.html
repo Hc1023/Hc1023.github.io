@@ -87,10 +87,12 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="SPAdes的原理部分之前已经写过了，见de Bruijn graph。 SPAdes takes as input paired-end reads, mate-pairs and single (unpaired) reads in FASTA and FASTQ. 进行assembly后输出fastq文件，推荐scaffold作为结果文件。 SPAdes 有以下几个模块：  BayesHam">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-08T15:14:31.335Z">
+<meta property="og:image" content="http://yoursite.com/2020/03/08/spades/0815.png">
+<meta property="og:updated_time" content="2020-08-15T09:01:04.668Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SPAdes(assembly)">
 <meta name="twitter:description" content="SPAdes的原理部分之前已经写过了，见de Bruijn graph。 SPAdes takes as input paired-end reads, mate-pairs and single (unpaired) reads in FASTA and FASTQ. 进行assembly后输出fastq文件，推荐scaffold作为结果文件。 SPAdes 有以下几个模块：  BayesHam">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/08/spades/0815.png">
 
 
 
@@ -406,14 +408,26 @@
 
 <h2 id="结果目录"><a href="#结果目录" class="headerlink" title="结果目录"></a>结果目录</h2><p>SPAdes stores all output files in <code>&lt;output_dir&gt;</code>, which is set by the user. </p>
 <ul>
-<li><code>&lt;output_dir&gt;/corrected/</code> directory contains reads corrected by BayesHammer in <code>*.fastq.gz</code> files; if compression is disabled, reads are stored in uncompressed <code>*.fastq</code> files*   <code>&lt;output_dir&gt;/scaffolds.fasta</code> contains resulting scaffolds (recommended for use as resulting sequences)*   <code>&lt;output_dir&gt;/contigs.fasta</code> contains resulting contigs</li>
+<li><code>&lt;output_dir&gt;/corrected/</code> directory contains reads corrected by BayesHammer in <code>*.fastq.gz</code> files; if compression is disabled, reads are stored in uncompressed <code>*.fastq</code> files   </li>
+<li><code>&lt;output_dir&gt;/scaffolds.fasta</code> contains resulting scaffolds (<strong>recommended for use as resulting sequences</strong>) </li>
+<li><code>&lt;output_dir&gt;/contigs.fasta</code> contains resulting contigs</li>
 <li><code>&lt;output_dir&gt;/assembly_graph.gfa</code> contains SPAdes assembly graph and scaffolds paths in GFA 1.0 format</li>
 <li><code>&lt;output_dir&gt;/assembly_graph.fastg</code> contains SPAdes assembly graph in FASTG format</li>
 <li><code>&lt;output_dir&gt;/contigs.paths</code> contains paths in the assembly graph corresponding to contigs.fasta (see details below)</li>
 <li><code>&lt;output_dir&gt;/scaffolds.paths</code> contains paths in the assembly graph corresponding to scaffolds.fasta.</li>
 </ul>
 <p>Contigs/scaffolds names in SPAdes output FASTA files have the following format:<br><code>&gt;NODE_3_length_237403_cov_243.207</code><br>Here <code>3</code> is the number of the contig/scaffold, <code>237403</code> is the sequence length in nucleotides and <code>243.207</code> is the k-mer coverage for the last (largest) k value used. Note that the k-mer coverage is always lower than the read (per-base) coverage.</p>
-<p>references:<br>1.SPAdes manual <a href="http://cab.spbu.ru/files/release3.13.0/manual.html" target="_blank" rel="noopener">http://cab.spbu.ru/files/release3.13.0/manual.html</a><br>2.SPAdes: A New Genome Assembly Algorithm and Its Applications to Single-Cell Sequencing <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/</a></p>
+<blockquote>
+<p>A scaffold is a portion of the genome sequence reconstructed from end-sequenced whole-genome shotgun clones. Scaffolds are composed of contigs and gaps. A contig is a contiguous length of genomic sequence in which the order of bases is known to a high confidence level. Gaps occur where reads from the two sequenced ends of at least one fragment overlap with other reads in two different contigs (as long as the arrangement is otherwise consistent with the contigs being adjacent). Since the lengths of the fragments are roughly known, the number of bases between contigs can be estimated.</p>
+</blockquote>
+<p><img src="0815.png" alt></p>
+<h2 id="一点经验"><a href="#一点经验" class="headerlink" title="一点经验"></a>一点经验</h2><p>scaffolds.fasta和contigs.fasta同时存在时推荐使用scaffolds.fasta，其包括了contigs和gaps（应该会用N代替）。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ less -S contigs.fasta |grep NNN|wc -l</span><br><span class="line">0</span><br><span class="line">$ less -S scaffolds.fasta |grep NNN|wc -l</span><br><span class="line">467</span><br></pre></td></tr></table></figure>
+
+<p>但是scaffolds.fasta并不会每一份结果都有，如果fastq reads pair数目比较少就会没有，观察了一下20000 reads就没有，2000 reads可能contigs也没了。两者再文件大小上差不多，行数上也差不多。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ wc -l contigs.fasta</span><br><span class="line">89450 contigs.fasta</span><br><span class="line">$ wc -l scaffolds.fasta</span><br><span class="line">88872 scaffolds.fasta</span><br><span class="line">$ ls -lh contigs.fasta</span><br><span class="line">-rw-rw-r-- 1 ubuntu ubuntu 5.2M Aug 15 07:54 contigs.fasta</span><br><span class="line">$ ls -lh scaffolds.fasta</span><br><span class="line">-rw-rw-r-- 1 ubuntu ubuntu 5.2M Aug 15 07:55 scaffolds.fasta</span><br></pre></td></tr></table></figure>
+
+<p>references:<br>1.SPAdes manual <a href="http://cab.spbu.ru/files/release3.13.0/manual.html" target="_blank" rel="noopener">http://cab.spbu.ru/files/release3.13.0/manual.html</a><br>2.SPAdes: A New Genome Assembly Algorithm and Its Applications to Single-Cell Sequencing <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/</a><br>3.[Scaffold - JGI Genome Portal](<a href="https://mycocosm.jgi.doe.gov/help/scaffolds.jsf#:~:text=A" target="_blank" rel="noopener">https://mycocosm.jgi.doe.gov/help/scaffolds.jsf#:~:text=A</a> scaffold is a portion,to a high confidence level.)</p>
 
       
     </div>
@@ -535,7 +549,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -581,7 +595,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行"><span class="nav-number">1.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果目录"><span class="nav-number">2.</span> <span class="nav-text">结果目录</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行"><span class="nav-number">1.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果目录"><span class="nav-number">2.</span> <span class="nav-text">结果目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一点经验"><span class="nav-number">3.</span> <span class="nav-text">一点经验</span></a></li></ol></div>
             
 
           </div>
