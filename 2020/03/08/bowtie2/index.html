@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/08/bowtie2/0304-6.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/08/bowtie2/0304-8.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/08/bowtie2/0304-9.png">
-<meta property="og:updated_time" content="2020-03-27T03:35:43.248Z">
+<meta property="og:updated_time" content="2020-08-21T02:23:24.769Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bowtie2(alignment)">
 <meta name="twitter:description" content="Bowtie 2 is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s of characters to relative">
@@ -401,9 +401,8 @@
 <h3 id="sam文件信息"><a href="#sam文件信息" class="headerlink" title="sam文件信息"></a>sam文件信息</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less -S out.sam</span><br></pre></td></tr></table></figure>
 
 <p>开头是序列的注释信息<br>@HD，说明符合标准的版本、对比序列的排列顺序<br>@SQ，参考序列说明</p>
-<p>@SQ 有SN和LN，</p>
 <blockquote>
-<p>SN: Reference sequence name. The SN tags and all individual AN names in all @SQ lines must be<br>distinct. The value of this field is used in the alignment records in RNAME and RNEXT fields.<br>LN: Reference sequence length. Range: [1, 2<br>31 − 1]</p>
+<p>@SQ 有SN和LN。<br>SN: Reference sequence name. The SN tags and all individual AN names in all @SQ lines must be distinct. The value of this field is used in the alignment records in RNAME and RNEXT fields.<br>LN: Reference sequence length. Range: [1, 231 − 1].</p>
 </blockquote>
 <p><img src="0304-5.png" alt></p>
 <p>grep -v ‘^@’ 去掉注释信息，看一看结果</p>
@@ -567,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
