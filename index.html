@@ -414,6 +414,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/04/symbolic-link-solve-libso-error/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/04/symbolic-link-solve-libso-error/" itemprop="url">动态库报错用软链接瞒天过海</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-04T21:41:59+08:00">
+                2020-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以下报错显示缺少<code>libcrypto.so.1.0.0</code>动态库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ samtools</span><br><span class="line">samtools: error while loading shared libraries: libcrypto.so.1.0.0: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>ldd</code>查看<code>samtools</code>依赖库</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">which</span> samtools</span><br><span class="line">~/miniconda2/envs/rna2/bin/samtools</span><br><span class="line">$ ldd ~/miniconda2/envs/rna2/bin/samtools</span><br><span class="line">        linux-vdso.so.1 =&gt;  (0x00007ffcd9138000)</span><br><span class="line">        libz.so.1 =&gt; /public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/libz.so.1 (0x00007f7a9eaaa000)</span><br><span class="line">        libm.so.6 =&gt; /lib64/libm.so.6 (0x00007f7a9e5a2000)</span><br><span class="line">        libbz2.so.1.0 =&gt; /public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/libbz2.so.1.0 (0x00007f7a9ea74000)</span><br><span class="line">        liblzma.so.5 =&gt; /public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/liblzma.so.5 (0x00007f7a9ea4b000)</span><br><span class="line">        libcurl.so.4 =&gt; /public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/libcurl.so.4 (0x00007f7a9e9bb000)</span><br><span class="line">        libcrypto.so.1.0.0 =&gt; not found</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+
+<p>查看已有的动态库</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ls /public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/libcrypto*</span><br><span class="line">/public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/libcrypto.so</span><br><span class="line">/public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/libcrypto.so.1.1</span><br></pre></td></tr></table></figure>
+
+<p>使用软链接瞒天过海的时候到了！<br>在上述的<code>lib</code>目录下面，创建一个链接到已有动态库<code>libcrypto.so.1.1</code>的假的<code>libcrypto.so.1.0.0</code>骗过<code>samtools</code>。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/libcrypto.so.1.1 /public/home/huangsisi/miniconda2/envs/rna2/bin/../lib/libcrypto.so.1.0.0</span><br></pre></td></tr></table></figure>
+
+<p>然后就成功了。/滑稽</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/04/conda-setup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1511,139 +1643,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/03/LASSO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/03/LASSO/" itemprop="url">LASSO（L1 正则化）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-03T23:22:17+08:00">
-                2020-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。</p>
-<p>给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$<br>简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$</p>
-<p>当样本特征很多，而样本数较少，容易过拟合，为缓解此问题，引入正则化项，正则化参数$\lambda &gt; 0$。</p>
-<ul>
-<li><p>$L_1$范数正则化，LASSO（Least Absolute Shrinkage and Selection Operator）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_1$</p>
-</li>
-<li><p>$L_2$范数正则化，岭回归（ridge regression）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_2^2$</p>
-</li>
-</ul>
-<p>$L_1$范数和$L_2$范数正则化都有助于降低过拟合风险，<strong>前者比后者更容易获得稀疏解</strong>，求得$w$有更少的非零分量。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/07/03/LASSO/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1696,7 +1695,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
