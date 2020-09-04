@@ -414,6 +414,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/04/conda-setup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/04/conda-setup/" itemprop="url">服务器conda环境配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-04T14:07:16+08:00">
+                2020-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Brief version for Jiang lab. Original link: <a href="https://hc1023.github.io/2019/09/07/conda/" target="_blank" rel="noopener">https://hc1023.github.io/2019/09/07/conda/</a></p>
+</blockquote>
+<h2 id="Step1：安装miniconda"><a href="#Step1：安装miniconda" class="headerlink" title="Step1：安装miniconda"></a>Step1：安装<code>miniconda</code></h2><p>可以进入镜像网站寻找想要的版本：<a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/</a></p>
+<p>也可以直接conda官网miniconda：<a href="https://conda.io/miniconda.html" target="_blank" rel="noopener">https://conda.io/miniconda.html</a></p>
+<p>或者直接用以下代码安装最新版本。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda2-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment"># ls *sh</span></span><br><span class="line">bash Miniconda2-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment"># Type Enter or yes</span></span><br></pre></td></tr></table></figure>
+
+<p>source bashrc 并检查是否安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br><span class="line">conda --help</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step2：配置"><a href="#Step2：配置" class="headerlink" title="Step2：配置"></a>Step2：配置</h2><ul>
+<li>添加源</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels r</span><br><span class="line">conda config --add channels conda-forge</span><br><span class="line">conda config --add channels bioconda</span><br><span class="line">cat  ~/.condarc</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建环境，比如创建一个叫<code>rna</code>的环境</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n rna python=2</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step3：安装包"><a href="#Step3：安装包" class="headerlink" title="Step3：安装包"></a>Step3：安装包</h2><p>以下代码在<code>rna</code>环境中安装了处理数据时的常用包</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">conda activate rna</span><br><span class="line">conda install -y bowtie2</span><br><span class="line">conda install -y samtools</span><br><span class="line">conda install -y fastqc</span><br><span class="line">conda install -y bwa</span><br><span class="line">conda install r-base</span><br><span class="line">conda install -c r r-ggplot2 <span class="comment"># 安装R包</span></span><br><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+
+<h2 id="conda基础命令操作"><a href="#conda基础命令操作" class="headerlink" title="conda基础命令操作"></a>conda基础命令操作</h2><ul>
+<li>环境创建、激活、退出、删除</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基于python2版本创建一个名字为rna的环境</span></span><br><span class="line">conda create -n rna python=2</span><br><span class="line"><span class="comment"># 激活环境</span></span><br><span class="line"><span class="built_in">source</span> activate rna</span><br><span class="line"><span class="comment"># 或者 </span></span><br><span class="line">conda activate rna</span><br><span class="line"><span class="comment"># 退出环境</span></span><br><span class="line">deactivate rna </span><br><span class="line"><span class="comment"># 删除环境</span></span><br><span class="line">conda remove -n rna --all</span><br><span class="line"><span class="comment"># 或者 </span></span><br><span class="line">conda env remove  -n rna</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看所有创建的环境</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ conda info -e</span><br><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">base                     /public/home/huangsisi/miniconda2</span><br><span class="line">crispr                   /public/home/huangsisi/miniconda2/envs/crispr</span><br><span class="line">rna                   *  /public/home/huangsisi/miniconda2/envs/rna</span><br><span class="line">rna2                     /public/home/huangsisi/miniconda2/envs/rna2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>管理包</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新所有包，一般没必要</span></span><br><span class="line">conda upgrade  --all</span><br><span class="line"><span class="comment"># 安装 bwa </span></span><br><span class="line"><span class="comment"># 加上 -y 是为了在提示yes/no时默认回答yes</span></span><br><span class="line">conda install -y bwa</span><br><span class="line"><span class="comment"># 查看已安装的包</span></span><br><span class="line">conda list </span><br><span class="line"><span class="comment"># 包更新</span></span><br><span class="line">conda update bwa</span><br><span class="line"><span class="comment"># 删除包</span></span><br><span class="line">conda remove bwa</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/01/latex-bib-reference/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1488,135 +1644,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/30/MWAS-fine-mining-the-micriobiome/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/30/MWAS-fine-mining-the-micriobiome/" itemprop="url">MWAS fine-mining the microbiome</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-30T10:26:32+08:00">
-                2020-06-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Metagenome-wide association studies (MWAS) have enabled the <strong>high-resolution</strong> investigation of associations between the human microbiome and several complex diseases, including <em>type 2 diabetes, obesity, liver cirrhosis, colorectal cancer and rheumatoid arthritis</em>.</p>
-<ul>
-<li>the identification of taxa that are more or less abundant, as is the case with taxanomic approaches</li>
-<li>the identification of microbial functions that are enriched or depleted</li>
-</ul>
-<p>goal: inform the prevention, diagnosis and treatment of human disease in the future.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/06/30/MWAS-fine-mining-the-micriobiome/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1669,7 +1696,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

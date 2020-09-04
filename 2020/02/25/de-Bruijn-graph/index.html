@@ -88,7 +88,7 @@
 <meta property="og:description" content="A de Bruijn graph is a compact representation based on short words ($k$-mers) that is ideal for high coverage, very short read (25–50 bp) data sets.">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2020/02/25/de-Bruijn-graph/0225-2.png">
-<meta property="og:updated_time" content="2020-05-23T05:23:03.271Z">
+<meta property="og:updated_time" content="2020-09-03T02:20:00.895Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="de Bruijn graph">
 <meta name="twitter:description" content="A de Bruijn graph is a compact representation based on short words ($k$-mers) that is ideal for high coverage, very short read (25–50 bp) data sets.">
@@ -359,11 +359,11 @@
 
 <p>A critical stage in genome sequencing is the assembly of shotgun reads, or piecing together fragments randomly extracted from the sample, to form a set of contiguous sequences (contigs) representing the DNA in the sample. </p>
 <ul>
-<li>traditional approach: overlap-layout-consensus<blockquote>
+<li>traditional approach: overlap-layout-consensus</li>
+</ul>
+<blockquote>
 <p>overlap-layout-consensus approach (Batzoglou 2005), representing each read as a node and each detected overlap as an arc between the appropriate nodes. </p>
 </blockquote>
-</li>
-</ul>
 <p>Very short reads are not well suited to this traditional approach. Because of their length, they must be produced in large quantities and at greater coverage depths than traditional Sanger sequencing projects. The sheer number of reads makes the overlap graph, with one node per read, extremely large and lengthy to compute.</p>
 <ul>
 <li>de Bruijn graphs</li>
@@ -395,7 +395,7 @@
 </ul>
 <p>Let <em>C</em> be an Eulerian cycle in a multigraph <em>G</em>. The distance between edges <em>a</em> and <em>b</em> in cycle <em>C</em> is defined as the number of edges between Start(<em>a</em>) and Start(<em>b</em>) in the cycle <em>C</em> (Start(<em>e</em>) and End(<em>e</em>) refer to starting and ending vertices of an edge <em>e</em>). We define the distance between a pair of h-paths as the distance between their h-edges. When cycle <em>C</em> (in a de Bruijn graph) corresponds to a genome, the distance between edges corresponds to the genomic distance.</p>
 <p>biread,transformation等等看着太费劲了，暂时放一放<br>简单来讲，用reads的k-mer构建de Bruijn graph，然后找欧拉回路拼接genome </p>
-<p>– SPAdes assembly 理论部分 </p>
+<p>此为SPAdes assembly 理论部分 。</p>
 <p>References:<br>1.SPAdes: A New Genome Assembly Algorithm and Its Applications to Single-Cell Sequencing <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/</a><br>2.Velvet: Algorithms for de novo short read assembly using de Bruijn graphs</p>
 
       
@@ -518,7 +518,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
