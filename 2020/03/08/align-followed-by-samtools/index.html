@@ -89,7 +89,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2020/03/08/align-followed-by-samtools/0308-4.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/08/align-followed-by-samtools/0308-2.png">
-<meta property="og:updated_time" content="2020-03-19T14:08:44.363Z">
+<meta property="og:updated_time" content="2020-09-08T07:31:56.623Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Align Followed by Samtools">
 <meta name="twitter:description" content="出发点：1.对原序列一段区域感兴趣，将这一小段序列取出来保存为fasta文件作为reference2.fastq文件align到reference，大部分是map不上的，只要map上的3.比对结果可视化">
@@ -358,7 +358,7 @@
         <p>出发点：<br>1.对原序列一段区域感兴趣，将这一小段序列取出来保存为fasta文件作为reference<br>2.fastq文件align到reference，大部分是map不上的，只要map上的<br>3.比对结果可视化</p>
 <a id="more"></a>
 
-<h2 id="用bowtie2进行align，用samtools去掉比对不上的"><a href="#用bowtie2进行align，用samtools去掉比对不上的" class="headerlink" title="用bowtie2进行align，用samtools去掉比对不上的"></a>用bowtie2进行align，用samtools去掉比对不上的</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bowtie2-build test2.fasta index</span><br><span class="line">bowtie2 -p 8 -x index -1 H11_01_1.fastq -2 H11_01_2.fastq -S out.sam</span><br><span class="line"><span class="comment"># 用samtools将sam文件转为bam文件（二进制）</span></span><br><span class="line">samtools view -bS out.sam &gt;tmp.bam</span><br><span class="line"><span class="comment"># 用samtools去掉比对不上的</span></span><br><span class="line">samtools view -F 0x04 -b tmp.bam &gt; outtmp.bam</span><br><span class="line"><span class="comment"># sort，按位置排序，且能进一步压缩存储</span></span><br><span class="line">samtools sort outtmp.bam &gt; tmp.sort.bam</span><br></pre></td></tr></table></figure>
+<h2 id="用bowtie2进行align，用samtools去掉比对不上的"><a href="#用bowtie2进行align，用samtools去掉比对不上的" class="headerlink" title="用bowtie2进行align，用samtools去掉比对不上的"></a>用bowtie2进行align，用samtools去掉比对不上的</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bowtie2-build test2.fasta index</span><br><span class="line">bowtie2 -p 8 -x index -1 H11_01_1.fastq -2 H11_01_2.fastq -S out.sam</span><br><span class="line"><span class="comment"># 用samtools将sam文件转为bam文件（二进制）</span></span><br><span class="line">samtools view -bS out.sam &gt; tmp.bam</span><br><span class="line"><span class="comment"># 用samtools去掉比对不上的</span></span><br><span class="line">samtools view -F 0x04 -b tmp.bam &gt; outtmp.bam</span><br><span class="line"><span class="comment"># 以上两个命令可以合并</span></span><br><span class="line">samtools view -bS -F 0x04 out.sam &gt; outtmp.bam</span><br><span class="line"><span class="comment"># sort，按位置排序，且能进一步压缩存储</span></span><br><span class="line">samtools sort outtmp.bam &gt; tmp.sort.bam</span><br></pre></td></tr></table></figure>
 
 <p>主要是因为，我感兴趣的序列是原来assembly出来的fasta文件的很小一部分，所以比对上的比例是很小的，Bowtie2会把所有的reads都输出包括那些unmapped and redundant data，根据我的文件这些冗余数据占了99.97%. 而我想看的只是0.03%比对上的部分。</p>
 <p>这个地方还可以有其它方法，在比对输出的时候就输出比对上的reads，可以看<code>bbmap</code>.</p>
@@ -387,8 +387,56 @@
 <p>The pileup format有多种变体。 SAMtools的默认输出如下所示：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">seq1 272 T 24  ,.$.....,,.,.,...,,,.,..^+. &lt;&lt;&lt;+;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;=&lt;;&lt;;7&lt;&amp;</span><br><span class="line">seq1 273 T 23  ,.....,,.,.,...,,,.,..A &lt;&lt;&lt;;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;3&lt;=&lt;&lt;&lt;;&lt;&lt;+</span><br><span class="line">seq1 274 T 23  ,.$....,,.,.,...,,,.,...    7&lt;7;&lt;;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;=&lt;;&lt;;&lt;&lt;6</span><br><span class="line">seq1 275 A 23  ,$....,,.,.,...,,,.,...^l.  &lt;+;9*&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;=&lt;&lt;:;&lt;&lt;&lt;&lt;</span><br><span class="line">seq1 276 G 22  ...T,,.,.,...,,,.,....  33;+&lt;&lt;7=7&lt;&lt;7&lt;&amp;&lt;&lt;1;&lt;&lt;6&lt;</span><br><span class="line">seq1 277 T 22  ....,,.,.,.C.,,,.,..G.  +7&lt;;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&amp;&lt;=&lt;&lt;:;&lt;&lt;&amp;&lt;</span><br><span class="line">seq1 278 G 23  ....,,.,.,...,,,.,....^k.   %38*&lt;&lt;;&lt;7&lt;&lt;7&lt;=&lt;&lt;&lt;;&lt;&lt;&lt;&lt;&lt;</span><br><span class="line">seq1 279 C 23  A..T,,.,.,...,,,.,..... ;75&amp;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;=&lt;&lt;&lt;9&lt;&lt;:&lt;&lt;</span><br></pre></td></tr></table></figure>
 
-<p>其中每行由染色体chromosome，碱基坐标1-based coordinate，参考碱基reference base，覆盖该位点的reads数the number of reads covering the site，read碱基read bases和碱基质量base qualities组成。 在read碱基列上，点代表与正向链上的参考碱基匹配，逗号代表反向链上的匹配，<code>ACGTN</code>代表正向链上的mismatch，而<code>acgtn</code>代表与正链上的mismatch. 模式“ \ + [0-9] + [ACGTNacgtn] +”表示此参考位置和下一个参考位置之间有插入。 插入的长度由模式中的整数给出，后跟插入的序列。</p>
-<p>更多见<br><a href="http://samtools.sourceforge.net/pileup.shtml" target="_blank" rel="noopener">http://samtools.sourceforge.net/pileup.shtml</a></p>
+<p>默认输出的六列分别代表：</p>
+<ul>
+<li>染色体 chromosome</li>
+<li>碱基坐标 1-based coordinate</li>
+<li>参考碱基 reference base</li>
+<li>覆盖该位点的reads数 the number of reads covering the site</li>
+<li>read碱基 read bases</li>
+<li>碱基质量 base qualities</li>
+</ul>
+<p>对于read碱基列，会按照以下顺序进行标注：</p>
+<ul>
+<li>如果这是read覆盖的起始位点，会用<code>^</code>符号并跟着比对质量</li>
+<li>一个字符表示碱基以及比对上的正反链</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>正链</th>
+<th>反链</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>. dot</td>
+<td>, comma</td>
+<td>碱基比对上参考序列该位点</td>
+</tr>
+<tr>
+<td>ACGTN</td>
+<td>acgtn</td>
+<td>碱基发生突变mismatch</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>&lt;</td>
+<td>Reference skip (due to CIGAR “N”)</td>
+</tr>
+<tr>
+<td>*</td>
+<td>*/#</td>
+<td>Deletion of the reference base (CIGAR “D”)</td>
+</tr>
+</tbody></table>
+<p>删失正反向都会用<code>\*</code>除非使用<code>--reverse-del</code>参数，此时反链比对显示<code>#</code>。</p>
+<ul>
+<li>模式“\ + [0-9] + [ACGTNacgtn*#] +”表示此参考位置和下一个参考位置之间有插入。插入的长度由模式中的整数给出，后跟插入的序列。</li>
+<li>模式“- [0-9] + [ACGTNacgtn*#] +”表示此参考位置和下一个参考位置之间有删失。 </li>
+<li>如果这是read覆盖的终止位点，跟上<code>$</code>符号。</li>
+</ul>
+<p>更多见<br><a href="http://samtools.sourceforge.net/pileup.shtml" target="_blank" rel="noopener">http://samtools.sourceforge.net/pileup.shtml</a><br>and <a href="http://www.htslib.org/doc/samtools-mpileup.html#:~:text=Pileup%20Format,encoded%20as%20individual%20ASCII%20characters" target="_blank" rel="noopener">here</a></p>
 <h3 id="IGV可视化"><a href="#IGV可视化" class="headerlink" title="IGV可视化"></a>IGV可视化</h3><p>为bam文件建立索引，生成一个<code>.bai</code>文件，两者放入同一文件夹下，它根据文件名自动和.bam关联。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools index tmp.sort.bam</span><br></pre></td></tr></table></figure>
 
@@ -525,7 +573,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

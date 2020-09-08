@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera…我把.aspera文件夹在根目录下 如果没安装的话，可以用conda，ascp属于工具包aspera-cli，顺带提一下prefetch的安装工具包sra-tools，但在国内基本就不考虑prefetch了。 123conda install -y -c hcc aspera-cliconda ins">
+<meta name="description" content="方法一：nucmer+ggbio12345conda install -c bioconda mummer4=4.0.0beta2nucmer --mum NC_045512.2.fna spades_output_sc_4000/scaffolds.fasta -p test # 筛选长度为1000以上的delta-filter -l 1000 -q test.delta &amp;gt; test_f">
 <meta name="keywords" content="生信">
 <meta property="og:type" content="article">
-<meta property="og:title" content="aspera下载NCBI数据">
-<meta property="og:url" content="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/index.html">
+<meta property="og:title" content="map contigs to reference genome">
+<meta property="og:url" content="http://yoursite.com/2020/09/08/map-contigs-to-reference-genome/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera…我把.aspera文件夹在根目录下 如果没安装的话，可以用conda，ascp属于工具包aspera-cli，顺带提一下prefetch的安装工具包sra-tools，但在国内基本就不考虑prefetch了。 123conda install -y -c hcc aspera-cliconda ins">
+<meta property="og:description" content="方法一：nucmer+ggbio12345conda install -c bioconda mummer4=4.0.0beta2nucmer --mum NC_045512.2.fna spades_output_sc_4000/scaffolds.fasta -p test # 筛选长度为1000以上的delta-filter -l 1000 -q test.delta &amp;gt; test_f">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/0730.png">
-<meta property="og:updated_time" content="2020-08-08T10:07:33.030Z">
+<meta property="og:updated_time" content="2020-09-08T14:38:23.219Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="aspera下载NCBI数据">
-<meta name="twitter:description" content="用aspera下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了aspera…我把.aspera文件夹在根目录下 如果没安装的话，可以用conda，ascp属于工具包aspera-cli，顺带提一下prefetch的安装工具包sra-tools，但在国内基本就不考虑prefetch了。 123conda install -y -c hcc aspera-cliconda ins">
-<meta name="twitter:image" content="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/0730.png">
+<meta name="twitter:title" content="map contigs to reference genome">
+<meta name="twitter:description" content="方法一：nucmer+ggbio12345conda install -c bioconda mummer4=4.0.0beta2nucmer --mum NC_045512.2.fna spades_output_sc_4000/scaffolds.fasta -p test # 筛选长度为1000以上的delta-filter -l 1000 -q test.delta &amp;gt; test_f">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/">
+  <link rel="canonical" href="http://yoursite.com/2020/09/08/map-contigs-to-reference-genome/">
 
 
 
 
 
-  <title>aspera下载NCBI数据 | Hc's Blog</title>
+  <title>map contigs to reference genome | Hc's Blog</title>
   
 
 
@@ -287,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/30/aspera-dowload-NCBI-database/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/08/map-contigs-to-reference-genome/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -304,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">aspera下载NCBI数据</h1>
+          <h1 class="post-title" itemprop="name headline">map contigs to reference genome</h1>
         
 
         <div class="post-meta">
@@ -316,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-30T17:04:33+08:00">
-                2020-07-30
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-08T22:37:01+08:00">
+                2020-09-08
               </time>
             
 
@@ -354,56 +352,16 @@
       
 
       
-        <p>用<code>aspera</code>下载NCBI数据大概加速一万倍到十万倍emm，好那么我们默认已经装好了<code>aspera</code>…我把<code>.aspera</code>文件夹在根目录下</p>
-<p>如果没安装的话，可以用conda，<code>ascp</code>属于工具包<code>aspera-cli</code>，顺带提一下<code>prefetch</code>的安装工具包<code>sra-tools</code>，但在国内基本就不考虑<code>prefetch</code>了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda install -y -c hcc aspera-cli</span><br><span class="line">conda install -y -c bioconda sra-tools</span><br><span class="line">which ascp</span><br></pre></td></tr></table></figure>
+        <h2 id="方法一：nucmer-ggbio"><a href="#方法一：nucmer-ggbio" class="headerlink" title="方法一：nucmer+ggbio"></a>方法一：nucmer+ggbio</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">conda install -c bioconda mummer4=4.0.0beta2</span><br><span class="line">nucmer --mum NC_045512.2.fna spades_output_sc_4000/scaffolds.fasta -p <span class="built_in">test</span> </span><br><span class="line"><span class="comment"># 筛选长度为1000以上的</span></span><br><span class="line">delta-filter -l 1000 -q test.delta &gt; test_filter.delta</span><br><span class="line">show-coords -c -l -L 1000 -r -T test_filter.delta &gt; test_filter_coords.txt</span><br></pre></td></tr></table></figure>
 
-<p>确认<code>ascp</code>已经添加至环境变量（可在我的博客里搜索export），它在这里</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.aspera/connect/bin/ascp</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools faidx NC_045512.2.fna</span><br></pre></td></tr></table></figure>
 
-<h2 id="ascp语法"><a href="#ascp语法" class="headerlink" title="ascp语法"></a><code>ascp</code>语法</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ascp -i &lt;asperaweb_id_dsa.openssh with path&gt; -k1 -Tr –l100m </span><br><span class="line">anonftp@ftp.ncbi.nlm.nih.gov:/&lt;files to transfer&gt; &lt;<span class="built_in">local</span> destination&gt;</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<ul>
-<li><code>-i</code> &lt;asperaweb_id_dsa.openssh with path&gt; = fully qualified path &amp; file name where</li>
-</ul>
-<p>公共密钥<code>asperaweb_id_dsa.openssh</code>通常在<code>etc</code>子目录下</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.aspera/connect/etc/asperaweb_id_dsa.openssh</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>-T</code> to disable encryption</li>
-<li><code>-k 1</code> enables resume of partial transfers</li>
-<li><code>-r</code> recursive copy</li>
-<li><code>-l</code> (maximum bandwidth of request, try 100M and go up from there)</li>
-</ul>
-<p>带宽可以从100Mbps到400Mbps，选择体验性能最佳的。</p>
-<ul>
-<li>&lt;files(s) to transfer&gt; = names of files to transfer (including path)</li>
-<li><local destination path> = location to store the downloaded data</local></li>
-</ul>
-<h3 id="以bacteria为例"><a href="#以bacteria为例" class="headerlink" title="以bacteria为例"></a>以bacteria为例</h3><p><a href="https://www.ncbi.nlm.nih.gov/public/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/public/</a></p>
-<p><img src="0730.png" alt></p>
-<p>点击跳出链接<br><a href="ftp://ftp.ncbi.nlm.nih.gov/refseq/release/bacteria" target="_blank" rel="noopener">ftp://ftp.ncbi.nlm.nih.gov/refseq/release/bacteria</a>，<br>修改成<code>anonftp@ftp.ncbi.nlm.nih.gov:/refseq/release/bacteria/</code></p>
-<p>（mark blast nt  <code>anonftp@ftp.ncbi.nlm.nih.gov:/blast/db/FASTA/nt.gz</code>）</p>
-<p>计算节点node1未联网，可以在登录节点后台运行  (但比较容易中断，中断重新运行命令即可或用<code>-k1</code> 可以断点续传)</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ascp -i ~/.aspera/connect/etc/asperaweb_id_dsa.openssh -k1 -Tr -l200m anonftp@ftp.ncbi.nlm.nih.gov:/refseq/release/bacteria/ /public/home/shared_lab/refseq_bacteria/bacteria_total &amp;</span><br></pre></td></tr></table></figure>
-
-<h2 id="分组和解压"><a href="#分组和解压" class="headerlink" title="分组和解压"></a>分组和解压</h2><ul>
-<li>分组（刚下载下来都是压缩文件）</li>
-</ul>
-<p>genomic: <code>*.protein.faa.gz</code><br>transcript: <code>*.rna.fna.gz</code>，ribosomal RNA transcript<br>transcript_annotation: <code>*.rna.gbff.gz</code><br>genomic_annotation: <code>*.genomic.gbff.gz</code><br>protein_annotation: <code>*.protein.gpff.gz</code></p>
-<ul>
-<li>解压</li>
-</ul>
-<p>以genomic文件为例</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="keyword">for</span> gz <span class="keyword">in</span> /public/home/shared_lab/refseq/bacteria_total/bacteria_genomic/*.fna.gz; <span class="keyword">do</span></span><br><span class="line">    gunzip -c <span class="variable">$gz</span> &gt; /public/home/shared_lab/refseq/bacteria_total/genomic_fna</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="任务后台运行"><a href="#任务后台运行" class="headerlink" title="任务后台运行"></a>任务后台运行</h2><p>关于登录节点任务放后台，如果一开始没有<code>nohup Command [] &amp;</code>，如下操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ctrl+Z</span><br><span class="line">jobs -l</span><br><span class="line">bg;disown -h %1</span><br><span class="line">1. Ctrl+Z                 # 暂停程序并返回到shell中</span><br><span class="line"></span><br><span class="line">2. bg                     # 将程序放在后端执行</span><br><span class="line"></span><br><span class="line">3. disown -h [job-spec]   # 当终端关闭时，该作业不会被杀死。</span><br><span class="line">                          # [job-spec] 是jobs ID</span><br><span class="line">                          # 通过 jobs 命令找出你的 jobs ID.</span><br><span class="line">                          # %1 是第一个jobs ID.</span><br></pre></td></tr></table></figure>
-
-<p>登录节点直接运行不通过slurm进行工作调度，现在通过<code>sbatch</code>递交作业可能就不存在这些问题了。</p>
-
+<p>需要用到的是<code>test_filter_coords.txt</code>和<code>NC_045512.2.fna.fai</code></p>
+<p>参考<br><a href="https://taylorreiter.github.io/2019-05-11-Visualizing-NUCmer-Output/" target="_blank" rel="noopener">https://taylorreiter.github.io/2019-05-11-Visualizing-NUCmer-Output/</a></p>
+<p>跑链接里这个R代码，但这个R代码需要改进</p>
+<h2 id="方法二：minidot"><a href="#方法二：minidot" class="headerlink" title="方法二：minidot"></a>方法二：minidot</h2><p>下载<code>minidot</code>加入环境变量，这个软件会依赖一些R包，按照报错进行安装。</p>
+<p><code>-S</code>参数可以不要显示自己跟自己比对的结果</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minidot -S -o out.pdf spades_output_sc_4000/scaffolds.fasta NC_045512.2.fna</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -433,8 +391,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/07/22/Perl-CPAN-and-crispr-tools/" rel="next" title="Perl, CPAN and crispr tools">
-                <i class="fa fa-chevron-left"></i> Perl, CPAN and crispr tools
+              <a href="/2020/09/04/symbolic-link-solve-libso-error/" rel="next" title="动态库报错用软链接瞒天过海">
+                <i class="fa fa-chevron-left"></i> 动态库报错用软链接瞒天过海
               </a>
             
           </div>
@@ -442,10 +400,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/08/15/become-rich/" rel="prev" title="become rich">
-                become rich <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -570,7 +524,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ascp语法"><span class="nav-number">1.</span> <span class="nav-text">ascp语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#以bacteria为例"><span class="nav-number">1.1.</span> <span class="nav-text">以bacteria为例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组和解压"><span class="nav-number">2.</span> <span class="nav-text">分组和解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务后台运行"><span class="nav-number">3.</span> <span class="nav-text">任务后台运行</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一：nucmer-ggbio"><span class="nav-number">1.</span> <span class="nav-text">方法一：nucmer+ggbio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二：minidot"><span class="nav-number">2.</span> <span class="nav-text">方法二：minidot</span></a></li></ol></div>
             
 
           </div>
