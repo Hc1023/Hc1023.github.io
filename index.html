@@ -490,11 +490,11 @@
 <h2 id="情况二：保留一个空文件夹"><a href="#情况二：保留一个空文件夹" class="headerlink" title="情况二：保留一个空文件夹"></a>情况二：保留一个空文件夹</h2><p>在这个文件夹下，<code>.gitignore</code>写入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Ignore everything in this directory</span><br><span class="line">*</span><br><span class="line"># Except this file</span><br><span class="line">!.gitignore</span><br></pre></td></tr></table></figure>
 
-<h2 id="情况三：指定文件不上传"><a href="#情况三：指定文件不上传" class="headerlink" title="情况三：指定文件不上传"></a>情况三：指定文件不上传</h2><p>可以直接在仓库根目录的<code>.gitignore</code>写入，比如说</p>
+<h2 id="情况三：指定文件不同步"><a href="#情况三：指定文件不同步" class="headerlink" title="情况三：指定文件不同步"></a>情况三：指定文件不同步</h2><p>可以直接在仓库根目录的<code>.gitignore</code>写入，比如说</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*.rar</span><br><span class="line">*.pdf</span><br></pre></td></tr></table></figure>
 
 <p>它在同步时会忽略<code>rar</code>和<code>pdf</code>后缀的文件。</p>
-<h2 id="情况四：删除缓存的索引文件"><a href="#情况四：删除缓存的索引文件" class="headerlink" title="情况四：删除缓存的索引文件"></a>情况四：删除缓存的索引文件</h2><p>现实会出现的一个问题是，原来同步的文件在后来不希望同步了，于是这个时候要先删除缓存的索引文件</p>
+<h2 id="情况四：删除缓存的索引文件"><a href="#情况四：删除缓存的索引文件" class="headerlink" title="情况四：删除缓存的索引文件"></a>情况四：删除缓存的索引文件</h2><p>会遇到的一个问题是，原来同步的文件在后来不希望同步了，于是这个时候要先删除缓存的索引文件</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm -r --cached .</span><br></pre></td></tr></table></figure>
 
 <p>重新生成，并忽略<code>.gitignore</code>的指定文件</p>

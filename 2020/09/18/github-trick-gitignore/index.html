@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Github加入.gitignore可以使指定的文件不同步。 情况一：文件夹不同步在这个文件夹下，.gitignore写入* 情况二：保留一个空文件夹在这个文件夹下，.gitignore写入 1234# Ignore everything in this directory*# Except this file!.gitignore  情况三：指定文件不上传可以直接在仓库根目录的.gitignor">
+<meta name="description" content="Github加入.gitignore可以使指定的文件不同步。 情况一：文件夹不同步在这个文件夹下，.gitignore写入* 情况二：保留一个空文件夹在这个文件夹下，.gitignore写入 1234# Ignore everything in this directory*# Except this file!.gitignore  情况三：指定文件不同步可以直接在仓库根目录的.gitignor">
 <meta name="keywords" content="learning_notes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="github使用.gitignore指定不同步文件">
 <meta property="og:url" content="http://yoursite.com/2020/09/18/github-trick-gitignore/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="Github加入.gitignore可以使指定的文件不同步。 情况一：文件夹不同步在这个文件夹下，.gitignore写入* 情况二：保留一个空文件夹在这个文件夹下，.gitignore写入 1234# Ignore everything in this directory*# Except this file!.gitignore  情况三：指定文件不上传可以直接在仓库根目录的.gitignor">
+<meta property="og:description" content="Github加入.gitignore可以使指定的文件不同步。 情况一：文件夹不同步在这个文件夹下，.gitignore写入* 情况二：保留一个空文件夹在这个文件夹下，.gitignore写入 1234# Ignore everything in this directory*# Except this file!.gitignore  情况三：指定文件不同步可以直接在仓库根目录的.gitignor">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-09-18T08:10:47.017Z">
+<meta property="og:updated_time" content="2020-09-18T08:15:06.004Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="github使用.gitignore指定不同步文件">
-<meta name="twitter:description" content="Github加入.gitignore可以使指定的文件不同步。 情况一：文件夹不同步在这个文件夹下，.gitignore写入* 情况二：保留一个空文件夹在这个文件夹下，.gitignore写入 1234# Ignore everything in this directory*# Except this file!.gitignore  情况三：指定文件不上传可以直接在仓库根目录的.gitignor">
+<meta name="twitter:description" content="Github加入.gitignore可以使指定的文件不同步。 情况一：文件夹不同步在这个文件夹下，.gitignore写入* 情况二：保留一个空文件夹在这个文件夹下，.gitignore写入 1234# Ignore everything in this directory*# Except this file!.gitignore  情况三：指定文件不同步可以直接在仓库根目录的.gitignor">
 
 
 
@@ -357,11 +357,11 @@
 <h2 id="情况二：保留一个空文件夹"><a href="#情况二：保留一个空文件夹" class="headerlink" title="情况二：保留一个空文件夹"></a>情况二：保留一个空文件夹</h2><p>在这个文件夹下，<code>.gitignore</code>写入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Ignore everything in this directory</span><br><span class="line">*</span><br><span class="line"># Except this file</span><br><span class="line">!.gitignore</span><br></pre></td></tr></table></figure>
 
-<h2 id="情况三：指定文件不上传"><a href="#情况三：指定文件不上传" class="headerlink" title="情况三：指定文件不上传"></a>情况三：指定文件不上传</h2><p>可以直接在仓库根目录的<code>.gitignore</code>写入，比如说</p>
+<h2 id="情况三：指定文件不同步"><a href="#情况三：指定文件不同步" class="headerlink" title="情况三：指定文件不同步"></a>情况三：指定文件不同步</h2><p>可以直接在仓库根目录的<code>.gitignore</code>写入，比如说</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*.rar</span><br><span class="line">*.pdf</span><br></pre></td></tr></table></figure>
 
 <p>它在同步时会忽略<code>rar</code>和<code>pdf</code>后缀的文件。</p>
-<h2 id="情况四：删除缓存的索引文件"><a href="#情况四：删除缓存的索引文件" class="headerlink" title="情况四：删除缓存的索引文件"></a>情况四：删除缓存的索引文件</h2><p>现实会出现的一个问题是，原来同步的文件在后来不希望同步了，于是这个时候要先删除缓存的索引文件</p>
+<h2 id="情况四：删除缓存的索引文件"><a href="#情况四：删除缓存的索引文件" class="headerlink" title="情况四：删除缓存的索引文件"></a>情况四：删除缓存的索引文件</h2><p>会遇到的一个问题是，原来同步的文件在后来不希望同步了，于是这个时候要先删除缓存的索引文件</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm -r --cached .</span><br></pre></td></tr></table></figure>
 
 <p>重新生成，并忽略<code>.gitignore</code>的指定文件</p>
@@ -533,7 +533,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情况一：文件夹不同步"><span class="nav-number">1.</span> <span class="nav-text">情况一：文件夹不同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情况二：保留一个空文件夹"><span class="nav-number">2.</span> <span class="nav-text">情况二：保留一个空文件夹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情况三：指定文件不上传"><span class="nav-number">3.</span> <span class="nav-text">情况三：指定文件不上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情况四：删除缓存的索引文件"><span class="nav-number">4.</span> <span class="nav-text">情况四：删除缓存的索引文件</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情况一：文件夹不同步"><span class="nav-number">1.</span> <span class="nav-text">情况一：文件夹不同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情况二：保留一个空文件夹"><span class="nav-number">2.</span> <span class="nav-text">情况二：保留一个空文件夹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情况三：指定文件不同步"><span class="nav-number">3.</span> <span class="nav-text">情况三：指定文件不同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情况四：删除缓存的索引文件"><span class="nav-number">4.</span> <span class="nav-text">情况四：删除缓存的索引文件</span></a></li></ol></div>
             
 
           </div>
