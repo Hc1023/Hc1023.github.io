@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/09/07/linux-sam-bam/0905-2.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/07/linux-sam-bam/0905-3.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/07/linux-sam-bam/0906.png">
-<meta property="og:updated_time" content="2019-09-27T07:07:30.912Z">
+<meta property="og:updated_time" content="2020-09-10T07:39:48.255Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux --sam和bam格式文件处理">
 <meta name="twitter:description" content="SAM/BAM当测序得到的fastq文件map到基因组之后，用sam（Sequence Alignment/Map）统一格式来表示这种mapping结果，bam是sam的二进制文件(b binary)。sam文件由注释信息和比对结果两部分组成。  注释信息（header section） @HD，说明符合标准的版本、对比序列的排列顺序 @SQ，参考序列说明 @RG，比对上的序列（read）说明 @">
@@ -485,6 +485,7 @@
 <p>从1开始</p>
 <p>7.常见CIGAR 字符串各字母代表的意义</p>
 <p><img src="0905-1.png" alt></p>
+<p>比如说<code>150M</code>代表150个位点都比对上，<code>64M2I84M</code>代表64个位点比对上，2个位点有插入，84个位点比对错误。</p>
 <p>8.比对质量的数字是哪一列？越大比对质量越好还是越小越好？</p>
 <p>第五列，越大越好。</p>
 <p>9.Sam文件的flag是第几列，数字代表什么意义？是怎么计算来的？</p>
@@ -690,7 +691,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
