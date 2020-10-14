@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="reading,">
+  <meta name="keywords" content="生物,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Review of alignment and SNP calling algorithms for next-generation sequencing data2015, J Appl Genetics  Bioinformatic tools for next-generation sequencing (NGS) data processing. Two of most significa">
-<meta name="keywords" content="reading">
+<meta name="description" content="2020年的诺贝尔化学奖颁发给了法国生物化学家埃马纽埃尔·卡彭蒂耶（Emmanuelle Charpentier）、美国生物学家詹妮弗·杜德纳（Jennifer Doudna），以表彰认可她们在新一代基因编辑技术的重要贡献。CRISPR-Cas9基因编辑技术能对DNA进行定点切割，显著提升了基因编辑效率，是生物医学领域最终要的新兴技术之一。本篇文章的理论部分主要参考2016年发表在Annual R">
+<meta name="keywords" content="生物">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Reading--alignment and SNP calling algorithms">
-<meta property="og:url" content="http://yoursite.com/2020/05/19/reading-alignment-and-SNP-calling-algorithms/index.html">
+<meta property="og:title" content="CRISPR-Cas系统及基因编辑技术">
+<meta property="og:url" content="http://yoursite.com/2020/10/14/crispr-cas-and-genome-editing/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="Review of alignment and SNP calling algorithms for next-generation sequencing data2015, J Appl Genetics  Bioinformatic tools for next-generation sequencing (NGS) data processing. Two of most significa">
+<meta property="og:description" content="2020年的诺贝尔化学奖颁发给了法国生物化学家埃马纽埃尔·卡彭蒂耶（Emmanuelle Charpentier）、美国生物学家詹妮弗·杜德纳（Jennifer Doudna），以表彰认可她们在新一代基因编辑技术的重要贡献。CRISPR-Cas9基因编辑技术能对DNA进行定点切割，显著提升了基因编辑效率，是生物医学领域最终要的新兴技术之一。本篇文章的理论部分主要参考2016年发表在Annual R">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-22T01:45:57.773Z">
+<meta property="og:updated_time" content="2020-10-14T15:10:44.063Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Reading--alignment and SNP calling algorithms">
-<meta name="twitter:description" content="Review of alignment and SNP calling algorithms for next-generation sequencing data2015, J Appl Genetics  Bioinformatic tools for next-generation sequencing (NGS) data processing. Two of most significa">
+<meta name="twitter:title" content="CRISPR-Cas系统及基因编辑技术">
+<meta name="twitter:description" content="2020年的诺贝尔化学奖颁发给了法国生物化学家埃马纽埃尔·卡彭蒂耶（Emmanuelle Charpentier）、美国生物学家詹妮弗·杜德纳（Jennifer Doudna），以表彰认可她们在新一代基因编辑技术的重要贡献。CRISPR-Cas9基因编辑技术能对DNA进行定点切割，显著提升了基因编辑效率，是生物医学领域最终要的新兴技术之一。本篇文章的理论部分主要参考2016年发表在Annual R">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/05/19/reading-alignment-and-SNP-calling-algorithms/">
+  <link rel="canonical" href="http://yoursite.com/2020/10/14/crispr-cas-and-genome-editing/">
 
 
 
 
 
-  <title>Reading--alignment and SNP calling algorithms | Hc's Blog</title>
+  <title>CRISPR-Cas系统及基因编辑技术 | Hc's Blog</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/reading-alignment-and-SNP-calling-algorithms/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/14/crispr-cas-and-genome-editing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Reading--alignment and SNP calling algorithms</h1>
+          <h1 class="post-title" itemprop="name headline">CRISPR-Cas系统及基因编辑技术</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-19T08:56:15+08:00">
-                2020-05-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-14T20:50:21+08:00">
+                2020-10-14
               </time>
             
 
@@ -352,110 +352,16 @@
       
 
       
-        <h2 id="Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data"><a href="#Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data" class="headerlink" title="Review of alignment and SNP calling algorithms for next-generation sequencing data"></a>Review of alignment and SNP calling algorithms for next-generation sequencing data</h2><p><em>2015, J Appl Genetics</em></p>
-<ul>
-<li>Bioinformatic tools for next-generation sequencing (NGS) data processing.</li>
-<li>Two of most significant tasks: <ul>
-<li><strong>alignment to a reference genome -&gt; suffix tries and hash tables.</strong> Suffix array-based aligners are memory efficient and work faster than hash-based aligners, but they are less accurate. Hash table algorithms tend to be slower but more sensitive.</li>
-<li><strong>detection of single nucleotide polymorphisms (SNPs) -&gt; heuristic and probabilistic methods.</strong> Due to the computational demands of heuristic methods, probabilistic methods are more commonly used.</li>
-</ul>
-</li>
-</ul>
+        <p>2020年的诺贝尔化学奖颁发给了法国生物化学家埃马纽埃尔·卡彭蒂耶（Emmanuelle Charpentier）、美国生物学家詹妮弗·杜德纳（Jennifer Doudna），以表彰认可她们在新一代基因编辑技术的重要贡献。<strong>CRISPR-Cas9基因编辑技术</strong>能对DNA进行定点切割，显著提升了基因编辑效率，是生物医学领域最终要的新兴技术之一。本篇文章的理论部分主要参考2016年发表在Annual Review of Ecology, Evolution, and Systematics的综述文章Evolution and Ecology of CRISPR介绍CRISPR-Cas系统[1]，并借此希望对基因编辑技术能有更深刻的认识。</p>
 <a id="more"></a>
 
-<h2 id="Introduciton"><a href="#Introduciton" class="headerlink" title="Introduciton"></a>Introduciton</h2><p>Existing NGS technologies provide us with a throughput that is at least 100 times larger than that obtained by Sanger sequencing, and the technologies are still improving. It led to a tremendous increase of sequencing speed and thus obtaining complete data of any species within a short period.<br>A major advantage of whole genome sequencing (WGS) stems from the potential to detect genetic variants which mark individual diviations from the reference genome. These are not only SNPs, but also small insertions/deletions (InDels), as well as large structual variants (SV), e.g. copy number variations (CNVs).<br>DIFFICULTIES: NGS represents a throuput technology, so it is highly sensitive to technological errors, consequently making the process of utilising NGS data for research highly dependent on reliable bioinformatics tools. Two major steps: alignment and detection of SNPs.</p>
-<h2 id="Alignment-to-the-reference-genome"><a href="#Alignment-to-the-reference-genome" class="headerlink" title="Alignment to the reference genome"></a>Alignment to the reference genome</h2><p>First computaional step in NGS analysis: alignment of short reads to the existing reference genome or, alternatively, a de novo assembly without a reference.</p>
-<p><strong>Indexing before alignment</strong>: most aligners construct indices for the reference sequence and/or for the short sequenced read data set. Indexing the reference genome is most common because it is andvantageous in terms of computational time.<br>Two main <strong>indexing algorithms</strong>: suffix/prefix tries or hash tables incoporated in vast majority of software tools, but exceptions exist, e.g. Slider sofware adopts merge-sorting.</p>
-<h3 id="Suffix-prefix-tries"><a href="#Suffix-prefix-tries" class="headerlink" title="Suffix/prefix tries"></a>Suffix/prefix tries</h3><ul>
-<li>suffix/prefix trie</li>
-</ul>
-<p>A data structure representing the set of suffixes of a given string of characters, enabling fast match of the string, which in our case represents a sequence read to the reference genome. However, it is not efficient enough, resulting in a very long computing time for very large NGS data sets.</p>
-<ul>
-<li>enhanced suffix array</li>
-</ul>
-<p>More efficient and enables storing large genomes in computer memory. It is composed of a suffix array and some auxiliary arrays.</p>
-<ul>
-<li>FM-index</li>
-</ul>
-<p>About BWT and FM-index, see <a href="https://hc1023.github.io/2020/03/17/Short-Read-Alignment/" target="_blank" rel="noopener">Hc’s Blog: Short Read Alignment</a>.</p>
-<p>Combine the Burrows-Wheeler transform (BWT) algorithm with auxiliary data structures. A suffix array created from BWT altered sequences is significantly more efficient than that from primary sequence. The most popular software tools implementing the FM-index algorithm with BWT are BWA, Bowtie, Bowtie2, SOAP3 and SOAP3-dp (2-BWT, with some modification).</p>
-<h3 id="Hash-tables"><a href="#Hash-tables" class="headerlink" title="Hash tables"></a>Hash tables</h3><p>About basic conception of Hashing, see <a href="https://hc1023.github.io/2019/12/31/Hashing/" target="_blank" rel="noopener">Hc’s Blog: Hashing</a>.</p>
-<p>Seed-and-extend method: divide a query sequence into words called k-mers and the position of each k-mer is kept in the hash table. k-mers are sought in another sequence and their exact matches are termed seeds. Afterwards, seeds are extended and joined without gaps and then their alignment is refined using the Smith-Waterman alignment algorithm.</p>
-<ul>
-<li>spaced seed</li>
-<li>q-gram filter and multiple seed hits</li>
-<li>seed extension</li>
-</ul>
-<p>First two rely on the fast lookup in a hash table, while the seed extension algorithm is based on accelerating the standard Smith-Waterman alignment algorithm.</p>
-<h3 id="Alignment"><a href="#Alignment" class="headerlink" title="Alignment"></a>Alignment</h3><p>Regardless of the indexing method, the actual alignment is performed using either the Smith-Waterman or the Needle-Wunsch algorithms.<br>Alignment gaps usually result from small-scale genome rearrangements, such as InDels. Thus, allowing for gaps in the alignment is preferred.<br>And currently, all of the commonly use alignment programs support a paired-end alignment mode, in which reads sequenced in both the forward and reverse orders are considered simultaneously as a pair, providing a longer piece of sequence to be aligned and, thus, significantly inproving the quality of alignment. See <a href="https://hc1023.github.io/2020/03/08/paired-end-sequencing/" target="_blank" rel="noopener">Hc’s Blog: Illumina Sequencing (paired-end)</a>.</p>
-<h3 id="Post-alignment-processing"><a href="#Post-alignment-processing" class="headerlink" title="Post-alignment processing"></a>Post-alignment processing</h3><ul>
-<li>output file format converting</li>
-</ul>
-<p>Reduction of output data set size and guaranteen downstream compatibility with variant callers.</p>
-<ul>
-<li>create reports from the alignment process</li>
-</ul>
-<p>A simple summary including the total number of aligned reads, the number of properly aligned read pairs of reads or the number of reads aligned exactly once.</p>
-<ul>
-<li>remove polymerase chain reaction (PCR) artefacts</li>
-</ul>
-<p>The same read pairs occuring many times in the raw data and changing the estimate of the true coverage of the reference genome. (samtools rmdup tool is an example)</p>
-<h2 id="SNP-calling"><a href="#SNP-calling" class="headerlink" title="SNP calling"></a>SNP calling</h2><p>Pre-variant calling process involve alignment artefact correction and sequence quality score recalibration. And for a reliable variant detection, a high depth of coverage is a prerequisite, since a high number of reads aligned to each base is used to differentiate between sequencing errors and true polymorphisms.<br>SNP calling may be defined as the process of identifying sites differing from a reference sequence, while genotype calling refers to the estimation of genotypes. They are based on either heuristic or probabilistic methods.</p>
-<h3 id="Heuristic-methods"><a href="#Heuristic-methods" class="headerlink" title="Heuristic methods"></a>Heuristic methods</h3><ul>
-<li>Based on multiple information sources associated with the structure and quality of data. </li>
-<li>High computational demands -&gt; less commonly used.</li>
-<li>For variant detection, a heuristic algorithm determineds the genotype based on the thresholds for coverage (minimum 33),  base quality (minimum 20) and variant allele frequency (minimum 0.08).</li>
-<li>Followed by statistical test. Fisher’s exact test of read counts supporting each allele is applied compared to the expected distribution based on sequencing error alone.</li>
-</ul>
-<h3 id="Probabilistic-methods"><a href="#Probabilistic-methods" class="headerlink" title="Probabilistic methods"></a>Probabilistic methods</h3><ul>
-<li>Based on genotype likelihood calculations and adopts Bayes’ theorem.</li>
-<li>Provide measures of statistical uncertainty for called genotypes, making it possible to monitor the accuracy of genotype calling.</li>
-<li>Additional information concerning allele frequencies and linkage disequilibrium patterns may be included in the analysis.</li>
-</ul>
-<p>In the Bayesian framework, the computed likelihood is combined with a prior genotype probability, which leads to a posterior probability of a genotype. As a result, the genotype with the highest posterior probability is chosen. The ratio between the highest and the second highest probabilities may be used as a measure of confidence.<br>A uniform prior probability may be selected as equal for all genotypes; alternatively, a non-uniform prior can be pre-imposed based on additional information, such as dbSNP (SNP database) entries, the reference sequence structures or features provided by the analysed sample.</p>
-<h3 id="Single-vd-multi-sample-SNP-calling"><a href="#Single-vd-multi-sample-SNP-calling" class="headerlink" title="Single- vd. multi-sample SNP calling"></a>Single- vd. multi-sample SNP calling</h3><ul>
-<li>Single</li>
-</ul>
-<p>Advantage: fast.<br>Disadvange: difficult to draw inferences on a population-wide level and requires custom written programs.</p>
-<ul>
-<li>Multi </li>
-</ul>
-<p>Advantage: priors may be improved based on the information on allele frequency and on verification of whether the obtained genotypes follow Hardy-Weinberg equilibrium; the latter is only useful if unrelated individuals are considered.<br>Disadvantage: much more CPU time- and resource- consuming than individual variant calling.</p>
-<h2 id="Technical-issues"><a href="#Technical-issues" class="headerlink" title="Technical issues"></a>Technical issues</h2><h3 id="Data-formats"><a href="#Data-formats" class="headerlink" title="Data formats"></a>Data formats</h3><table>
-<thead>
-<tr>
-<th>Format</th>
-<th>Data</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>FASTQ</td>
-<td>short sequence reads</td>
-</tr>
-<tr>
-<td>FASTA</td>
-<td>reference genomes</td>
-</tr>
-<tr>
-<td>SAM</td>
-<td>output of alignment</td>
-</tr>
-<tr>
-<td>BAM</td>
-<td>binaray file of SAM</td>
-</tr>
-<tr>
-<td>VCF</td>
-<td>output of variant calling</td>
-</tr>
-</tbody></table>
-<h3 id="Computing-platforms-and-operating-systems"><a href="#Computing-platforms-and-operating-systems" class="headerlink" title="Computing platforms and operating systems"></a>Computing platforms and operating systems</h3><p>With the decrease in sequencing costs, data processing costs are rising, while storing and processing very large amounts of data become a challenge.</p>
-<ul>
-<li>large data sets -&gt; memory requirements.</li>
-<li>computationally demanding -&gt; supercomputing infrastructure involving many CPUs.</li>
-<li>accelerate NGS processing -&gt; multi-threaded mode.</li>
-</ul>
-<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><p>For less experienced users, SAMtools’ mpileup and bcftools are recommended because their ease of use. On the other hand, GATK, which is provided with a detailed user manual, is robust towards data artifacts. Nevertheless, both programs are frequently updated, provide detailed log files describing the process of SNP calling and the agreement between their outputs is high.</p>
+<p><strong>CRISPR (clustered regularly interspaced short palindromic repeats)-Cas (CRISPR-associated) system是一种原核适应性免疫系统，可针对病毒和质粒等寄生性可移动遗传元件的传染提供一种保护机制。</strong>这个免疫系统其实是编码在原核基因上的一段序列，由<strong>CRISPR序列</strong>和<strong>Cas基因</strong>组成。其中，CRISPR序列构成原核适应性免疫系统的遗传记忆，为一些<strong>重复片段（repeats）</strong>中间插入可变序列<strong>间隔子（spacers）</strong>，这些间隔子对应着病毒等可移动遗传元件的序列。而Cas基因编码Cas蛋白，它们在CRISPR-Cas免疫应答过程中发挥了重要作用。</p>
+<p><strong>CRISPR-Cas免疫应答分为三个阶段：外源DNA俘获（adaption），crDNA合成（expression）和靶向干扰（interference）。</strong>在第一阶段，Cas蛋白俘获外来侵染物如病毒等的DNA序列片段，并将其整合到宿主DNA中成为CRISPR序列中的间隔子。其后第二阶段，当有曾经来侵染过或基因序列片段相近的外源物入侵时，CRISPR基因座可被转录为前体CRISPR RNA（crRNA），该前体crRNA被加工成成熟的crRNA。而在最后一阶段，其对应转录的crRNA-Cas复合物结合外源物相应序列并切割互补核酸，或对其进行标记从而被效应Cas核酸酶破坏。</p>
+<p>CRISPR-Cas系统极为多样，主要根据其组成的cas蛋白种类不同，在2016年的这篇综述中分为2类（class）、6种类型（type）和19种亚型（subtype），但是相信随着近年来大量研究的跟进应该还不止。其多样性的本质可能是由于快速进化和广泛的水平基因转移（HGT）造成的。</p>
+<p>根据以上的阐述，我们可以知道CRISPR-Cas系统本身是原核生物个体中发现的一种适应性免疫系统，然而在这中间，<strong>type 2系统和Cas9蛋白由于它们在基因编辑中的应用受到了人们更多的关注</strong>。对单个Cas效应蛋白而不是多亚基crRNA-Cas复合物的需求，使type 2系统特别适合于基因组编辑技术。<strong>卡彭蒂耶和杜德纳研究组</strong>通过细胞体外试管实验发现负责DNA切割的tracrRNA–crRNA–Cas9效应子复合体，并于2012年在Science发表重要论文A programmable dual-RNA-guided DNA endonuclease in adaptive bacterial immunity[2]。<strong>张锋研究组</strong>亦在2011年开始进行人体细胞的CRISPR基因编辑研究，最终实现基因编辑在人类细胞中的应用，并于2013年在Science发表论文Multiplex Genome Engineering Using CRISPR/Cas Systems。</p>
+<p>基因编辑技术旨在修改活体DNA序列，自1970年开始的基因工程可以将新的遗传信息插入宿主基因，然而缺乏专门靶向针对和修复突变序列的技术上可行的方法[4]。而通过利用CRISPR-Cas系统的定位干扰，可以实现精确靶向基因组特定位点基因的修改、插入、删除或替换。如上所述的免疫应答的第三阶段，<strong>Cas9核酸酶由短RNA指导，在人和小鼠细胞的内源性基因组位点诱导精确切割。Cas9也可以转化为切口酶，以最小的诱变活性促进同源性导向的修复。最后，可以将多个引导序列编码到单个CRISPR序列中作为间隔子，以便能够同时编辑哺乳动物基因组中的多个位点。由此，CRISPR-Cas9基因编辑技术作为一种RNA引导的核酸酶技术，具有易编程性和广泛适用性。</strong>[3]</p>
+<p>通过科学合理地利用新一代基因编辑技术，人类文明将走向一个崭新的台阶。</p>
+<p>参考文献<br>[1] Westra, Edze R., et al. “Evolution and ecology of CRISPR.” Annual Review of Ecology, Evolution, and Systematics 47 (2016): 307-331.<br>[2] Jinek, Martin, et al. “A programmable dual-RNA–guided DNA endonuclease in adaptive bacterial immunity.” science 337.6096 (2012): 816-821.<br>[3] Cong, Le, et al. “Multiplex genome engineering using CRISPR/Cas systems.” Science 339.6121 (2013): 819-823.<br>[4] Woolf, Tod M. “Therapeutic repair of mutated nucleic acid sequences.” Nature biotechnology 16.4 (1998): 341-344.</p>
 
       
     </div>
@@ -473,7 +379,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/reading/" rel="tag"># reading</a>
+            <a href="/tags/生物/" rel="tag"># 生物</a>
           
         </div>
       
@@ -486,8 +392,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/05/16/tex-spell-check/" rel="next" title="Tex语法检查">
-                <i class="fa fa-chevron-left"></i> Tex语法检查
+              <a href="/2020/09/18/github-trick-gitignore/" rel="next" title="github使用.gitignore指定不同步文件">
+                <i class="fa fa-chevron-left"></i> github使用.gitignore指定不同步文件
               </a>
             
           </div>
@@ -495,10 +401,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/05/28/Algebra-notes-05-28-20/" rel="prev" title="Algebra notes 05.28.20">
-                Algebra notes 05.28.20 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -550,17 +452,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -613,22 +506,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data"><span class="nav-number">1.</span> <span class="nav-text">Review of alignment and SNP calling algorithms for next-generation sequencing data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduciton"><span class="nav-number">2.</span> <span class="nav-text">Introduciton</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alignment-to-the-reference-genome"><span class="nav-number">3.</span> <span class="nav-text">Alignment to the reference genome</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Suffix-prefix-tries"><span class="nav-number">3.1.</span> <span class="nav-text">Suffix/prefix tries</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash-tables"><span class="nav-number">3.2.</span> <span class="nav-text">Hash tables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alignment"><span class="nav-number">3.3.</span> <span class="nav-text">Alignment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Post-alignment-processing"><span class="nav-number">3.4.</span> <span class="nav-text">Post-alignment processing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNP-calling"><span class="nav-number">4.</span> <span class="nav-text">SNP calling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Heuristic-methods"><span class="nav-number">4.1.</span> <span class="nav-text">Heuristic methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Probabilistic-methods"><span class="nav-number">4.2.</span> <span class="nav-text">Probabilistic methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Single-vd-multi-sample-SNP-calling"><span class="nav-number">4.3.</span> <span class="nav-text">Single- vd. multi-sample SNP calling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Technical-issues"><span class="nav-number">5.</span> <span class="nav-text">Technical issues</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-formats"><span class="nav-number">5.1.</span> <span class="nav-text">Data formats</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Computing-platforms-and-operating-systems"><span class="nav-number">5.2.</span> <span class="nav-text">Computing platforms and operating systems</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Notes"><span class="nav-number">6.</span> <span class="nav-text">Notes</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
