@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-08-30T02:31:35.314Z">
+<meta property="og:updated_time" content="2020-10-25T05:44:43.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CPU, core and threads in HPC --SBATCH setup">
 <meta name="twitter:description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
@@ -410,7 +410,7 @@
 <p>例子1</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#SBATCH --ntasks=1</span></span><br><span class="line"></span><br><span class="line">srun sleep 10 &amp; </span><br><span class="line">srun sleep 12 &amp;</span><br><span class="line"><span class="built_in">wait</span></span><br></pre></td></tr></table></figure>
 
-<p>总共会用时22s，并有警告<em>Job step creation temporarily disabled, retrying*。但是如果</em>#SBATCH –ntasks=1*，两个task会同时进行，总共用时12s。</p>
+<p>总共会用时22s，并有警告<em>Job step creation temporarily disabled, retrying</em>。但是如果<code>#SBATCH --ntasks=1</code>，两个task会同时进行，总共用时12s。</p>
 <p>例子2</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks=8</span></span><br><span class="line"><span class="comment">## more options</span></span><br><span class="line"><span class="built_in">echo</span> hello</span><br></pre></td></tr></table></figure>
 
@@ -576,7 +576,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
