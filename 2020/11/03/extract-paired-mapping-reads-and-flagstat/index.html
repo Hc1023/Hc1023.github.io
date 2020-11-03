@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="生信,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="bwa和bowtie是常用的用于比对的软件，使用来看bwa mem比对的敏感度比bowtie更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。 提取双端比对序列只需要在用完相应的比对软件后，使用samtools view，-F选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，">
+<meta name="keywords" content="生信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bwa or bowtie提取双端比对序列及flagstat">
+<meta property="og:url" content="http://yoursite.com/2020/11/03/extract-paired-mapping-reads-and-flagstat/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="bwa和bowtie是常用的用于比对的软件，使用来看bwa mem比对的敏感度比bowtie更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。 提取双端比对序列只需要在用完相应的比对软件后，使用samtools view，-F选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-11-03T02:30:18.150Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bwa or bowtie提取双端比对序列及flagstat">
+<meta name="twitter:description" content="bwa和bowtie是常用的用于比对的软件，使用来看bwa mem比对的敏感度比bowtie更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。 提取双端比对序列只需要在用完相应的比对软件后，使用samtools view，-F选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/11/03/extract-paired-mapping-reads-and-flagstat/">
+
+
+
+
+
+  <title>bwa or bowtie提取双端比对序列及flagstat | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/03/extract-paired-mapping-reads-and-flagstat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">bwa or bowtie提取双端比对序列及flagstat</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-11-03T10:22:26+08:00">
+                2020-11-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>bwa和bowtie是常用的用于比对的软件，使用来看<code>bwa mem</code>比对的敏感度比<code>bowtie</code>更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。</p>
+<h2 id="提取双端比对序列"><a href="#提取双端比对序列" class="headerlink" title="提取双端比对序列"></a>提取双端比对序列</h2><p>只需要在用完相应的比对软件后，使用<code>samtools view</code>，<code>-F</code>选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，flag=8（0x8）代表这是单端比对上的read，12=4+8，因此使用<code>-F 12</code>可以保留双端比对上的序列。</p>
+<h3 id="bwa-mem"><a href="#bwa-mem" class="headerlink" title="bwa mem"></a>bwa mem</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bwa index <span class="variable">$ref</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># can map to more than one contig</span></span><br><span class="line">bwa mem -t 8 <span class="variable">$ref</span> <span class="variable">$InDir</span>/<span class="variable">$fq1</span> <span class="variable">$InDir</span>/<span class="variable">$fq2</span> &gt; out.sam</span><br><span class="line"></span><br><span class="line"><span class="comment"># `-q 30` reads mapping quality, `-F 12` paired-end,</span></span><br><span class="line"><span class="comment"># `-b` output bam, `-S` input format auto-detected</span></span><br><span class="line">samtools view -@8 -q 30 -bS out.sam &gt; out.bam</span><br><span class="line">samtools view -@8 -F 12 -b out.bam &gt; out2.bam</span><br></pre></td></tr></table></figure>
+
+<h3 id="bowtie提取双端比对序列"><a href="#bowtie提取双端比对序列" class="headerlink" title="bowtie提取双端比对序列"></a>bowtie提取双端比对序列</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bowtie2-build <span class="variable">$ref</span> index</span><br><span class="line">bowtie2 -p 8 -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/<span class="variable">$fq1</span> \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/<span class="variable">$fq2</span> -S out.sam</span><br><span class="line"></span><br><span class="line">samtools view -@8 -F 12 -bS out.sam &gt; out.bam</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="samtools-flagstat总结比对结果"><a href="#samtools-flagstat总结比对结果" class="headerlink" title="samtools flagstat总结比对结果"></a>samtools flagstat总结比对结果</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools flagstat out.bam</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>secondary：多重比对，有一个初始的比对，有0或多个secondary比对，在flag中表示为0x100</li>
+<li>supplementary：不具有较大重叠的多个比对结果，一个拆成多个，其中一个作为代表性比对，其他作为supplementary，在flag中表示为0x800</li>
+<li>duplicate：已标记的测序重复，一般需要软件进行标记类似于picard’s markDuplicates</li>
+<li>paired in sequencing：标记为pair</li>
+<li>properly paired：标记为pair且比对上</li>
+</ul>
+<p>例如以下两个结果，第一个read1和read2数目相等，而第二个结果read1和read2数目不等。这里都是100%比对上是因为看的是samtools view筛选过后的bam文件，里面的reads全是比对上的。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39584227 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">134327 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39584227 + 0 mapped (100.00% : N/A)</span><br><span class="line">39449900 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724950 + 0 read1</span><br><span class="line">19724950 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (99.67% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<h3 id="bwa-mem敏感度大大高于bowtie"><a href="#bwa-mem敏感度大大高于bowtie" class="headerlink" title="bwa mem敏感度大大高于bowtie"></a>bwa mem敏感度大大高于bowtie</h3><p>如此还可以顺便观察bwa mem和bowtie比对结果的差异，对于两份的病毒测序数据。</p>
+<p>bwa mem比对的结果：第一个样本99.59% 第二个样本69.74%<br>bowtie比对的结果：第一个样本75.63% ，第二个样本48.42%</p>
+<p>更具体的，对于第一个样本，</p>
+<ul>
+<li>使用bwa mem</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bwa mem -t <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> <span class="variable">$ref</span> <span class="variable">$InDir</span>/<span class="variable">$fq1</span> <span class="variable">$InDir</span>/<span class="variable">$fq2</span> &gt; out_bwa.sam</span><br><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out_bwa.sam &gt; out_bwa.bam</span><br></pre></td></tr></table></figure>
+
+<p>flagstat</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"sam file"</span></span><br><span class="line">samtools flagstat out_bwa.sam</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"======================"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"bam file"</span></span><br><span class="line">samtools flagstat out_bwa.bam</span><br></pre></td></tr></table></figure>
+
+<p>结果，筛选前39732983 reads mapped (99.59%)，筛选后39715454 reads mapped。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">sam file</span><br><span class="line">39896565 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">135539 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39732983 + 0 mapped (99.59% : N/A)</span><br><span class="line">39761026 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19880513 + 0 read1</span><br><span class="line">19880513 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (98.89% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">147544 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br><span class="line">======================</span><br><span class="line">bam file</span><br><span class="line">39715454 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">126123 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39715454 + 0 mapped (100.00% : N/A)</span><br><span class="line">39589331 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19866816 + 0 read1</span><br><span class="line">19722515 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.32% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">147301 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用bowtie</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bowtie2-build <span class="variable">$ref</span> index</span><br><span class="line">bowtie2 -p <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/<span class="variable">$fq1</span> \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/<span class="variable">$fq2</span> -S out.sam</span><br></pre></td></tr></table></figure>
+
+<p>flagstat</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools flagstat out.sam</span><br></pre></td></tr></table></figure>
+
+<p>比对结果为30071380 mapped (75.63%)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39761026 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">0 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">30071380 + 0 mapped (75.63% : N/A)</span><br><span class="line">39761026 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19880513 + 0 read1</span><br><span class="line">19880513 + 0 read2</span><br><span class="line">25906438 + 0 properly paired (65.16% : N/A)</span><br><span class="line">29570050 + 0 with itself and mate mapped</span><br><span class="line">501330 + 0 singletons (1.26% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<h3 id="sam-bam文件中的标记在比对完成之后已经固定"><a href="#sam-bam文件中的标记在比对完成之后已经固定" class="headerlink" title="sam/bam文件中的标记在比对完成之后已经固定"></a>sam/bam文件中的标记在比对完成之后已经固定</h3><p>而从后面这个例子我们看到用完比对质量<code>-q 30</code>后，即便加上了pair筛选<code>-F 12</code>，结果read1和read2数目仍然不相等。这是因为sam/bam文件中的标记在比对完成之后就已经固定，不会在后期的筛选中发生变化，所以即便当比对质量筛选后read已经不再成对，其中的flag标记依旧代表着双端比对上。</p>
+<ul>
+<li>只进行双端比对筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -bS out.sam &gt; outF12.bam</span><br><span class="line">samtools flagstat outF12.bam &gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39584227 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">134327 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39584227 + 0 mapped (100.00% : N/A)</span><br><span class="line">39449900 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724950 + 0 read1</span><br><span class="line">19724950 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (99.67% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只进行比对质量筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out.sam &gt; outq30.bam</span><br><span class="line">samtools flagstat outq30.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39715454 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">126123 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39715454 + 0 mapped (100.00% : N/A)</span><br><span class="line">39589331 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19866816 + 0 read1</span><br><span class="line">19722515 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.32% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">147301 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>质量筛选后进行双端比对筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -b outq30.bam &gt; outq30F12.bam</span><br><span class="line">samtools flagstat outq30F12.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>质量筛选后进行双端比对筛选（利用管道无中间输出文件）</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out.sam\</span><br><span class="line">    | samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -b - &gt; outq30F12pipe.bam</span><br><span class="line">samtools flagstat outq30F12pipe.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/生信/" rel="tag"># 生信</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/01/gut-check/" rel="next" title="肠道菌群研究和应用——仍需稳扎稳打（社论）">
+                <i class="fa fa-chevron-left"></i> 肠道菌群研究和应用——仍需稳扎稳打（社论）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#提取双端比对序列"><span class="nav-number">1.</span> <span class="nav-text">提取双端比对序列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bwa-mem"><span class="nav-number">1.1.</span> <span class="nav-text">bwa mem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bowtie提取双端比对序列"><span class="nav-number">1.2.</span> <span class="nav-text">bowtie提取双端比对序列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#samtools-flagstat总结比对结果"><span class="nav-number">2.</span> <span class="nav-text">samtools flagstat总结比对结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bwa-mem敏感度大大高于bowtie"><span class="nav-number">2.1.</span> <span class="nav-text">bwa mem敏感度大大高于bowtie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sam-bam文件中的标记在比对完成之后已经固定"><span class="nav-number">2.2.</span> <span class="nav-text">sam/bam文件中的标记在比对完成之后已经固定</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

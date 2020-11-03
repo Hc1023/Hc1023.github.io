@@ -1,12 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>bwa or bowtie提取双端比对序列及flagstat</title>
+    <url>/2020/11/03/extract-paired-mapping-reads-and-flagstat/</url>
+    <content><![CDATA[<p>bwa和bowtie是常用的用于比对的软件，使用来看<code>bwa mem</code>比对的敏感度比<code>bowtie</code>更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。</p>
+<h2 id="提取双端比对序列"><a href="#提取双端比对序列" class="headerlink" title="提取双端比对序列"></a>提取双端比对序列</h2><p>只需要在用完相应的比对软件后，使用<code>samtools view</code>，<code>-F</code>选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，flag=8（0x8）代表这是单端比对上的read，12=4+8，因此使用<code>-F 12</code>可以保留双端比对上的序列。</p>
+<h3 id="bwa-mem"><a href="#bwa-mem" class="headerlink" title="bwa mem"></a>bwa mem</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">bwa index <span class="variable">$ref</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># can map to more than one contig</span></span><br><span class="line">bwa mem -t 8 <span class="variable">$ref</span> <span class="variable">$InDir</span>/<span class="variable">$fq1</span> <span class="variable">$InDir</span>/<span class="variable">$fq2</span> &gt; out.sam</span><br><span class="line"></span><br><span class="line"><span class="comment"># `-q 30` reads mapping quality, `-F 12` paired-end,</span></span><br><span class="line"><span class="comment"># `-b` output bam, `-S` input format auto-detected</span></span><br><span class="line">samtools view -@8 -q 30 -bS out.sam &gt; out.bam</span><br><span class="line">samtools view -@8 -F 12 -b out.bam &gt; out2.bam</span><br></pre></td></tr></table></figure>
+
+<h3 id="bowtie提取双端比对序列"><a href="#bowtie提取双端比对序列" class="headerlink" title="bowtie提取双端比对序列"></a>bowtie提取双端比对序列</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">bowtie2-build <span class="variable">$ref</span> index</span><br><span class="line">bowtie2 -p 8 -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/<span class="variable">$fq1</span> \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/<span class="variable">$fq2</span> -S out.sam</span><br><span class="line"></span><br><span class="line">samtools view -@8 -F 12 -bS out.sam &gt; out.bam</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="samtools-flagstat总结比对结果"><a href="#samtools-flagstat总结比对结果" class="headerlink" title="samtools flagstat总结比对结果"></a>samtools flagstat总结比对结果</h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools flagstat out.bam</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>secondary：多重比对，有一个初始的比对，有0或多个secondary比对，在flag中表示为0x100</li>
+<li>supplementary：不具有较大重叠的多个比对结果，一个拆成多个，其中一个作为代表性比对，其他作为supplementary，在flag中表示为0x800</li>
+<li>duplicate：已标记的测序重复，一般需要软件进行标记类似于picard’s markDuplicates</li>
+<li>paired in sequencing：标记为pair</li>
+<li>properly paired：标记为pair且比对上</li>
+</ul>
+<p>例如以下两个结果，第一个read1和read2数目相等，而第二个结果read1和read2数目不等。这里都是100%比对上是因为看的是samtools view筛选过后的bam文件，里面的reads全是比对上的。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">39584227 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">134327 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39584227 + 0 mapped (100.00% : N/A)</span><br><span class="line">39449900 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724950 + 0 read1</span><br><span class="line">19724950 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (99.67% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<h3 id="bwa-mem敏感度大大高于bowtie"><a href="#bwa-mem敏感度大大高于bowtie" class="headerlink" title="bwa mem敏感度大大高于bowtie"></a>bwa mem敏感度大大高于bowtie</h3><p>如此还可以顺便观察bwa mem和bowtie比对结果的差异，对于两份的病毒测序数据。</p>
+<p>bwa mem比对的结果：第一个样本99.59% 第二个样本69.74%<br>bowtie比对的结果：第一个样本75.63% ，第二个样本48.42%</p>
+<p>更具体的，对于第一个样本，</p>
+<ul>
+<li>使用bwa mem</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">bwa mem -t <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> <span class="variable">$ref</span> <span class="variable">$InDir</span>/<span class="variable">$fq1</span> <span class="variable">$InDir</span>/<span class="variable">$fq2</span> &gt; out_bwa.sam</span><br><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out_bwa.sam &gt; out_bwa.bam</span><br></pre></td></tr></table></figure>
+
+<p>flagstat</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"sam file"</span></span><br><span class="line">samtools flagstat out_bwa.sam</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"======================"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"bam file"</span></span><br><span class="line">samtools flagstat out_bwa.bam</span><br></pre></td></tr></table></figure>
+
+<p>结果，筛选前39732983 reads mapped (99.59%)，筛选后39715454 reads mapped。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sam file</span><br><span class="line">39896565 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">135539 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39732983 + 0 mapped (99.59% : N/A)</span><br><span class="line">39761026 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19880513 + 0 read1</span><br><span class="line">19880513 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (98.89% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">147544 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br><span class="line">======================</span><br><span class="line">bam file</span><br><span class="line">39715454 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">126123 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39715454 + 0 mapped (100.00% : N/A)</span><br><span class="line">39589331 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19866816 + 0 read1</span><br><span class="line">19722515 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.32% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">147301 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用bowtie</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">bowtie2-build <span class="variable">$ref</span> index</span><br><span class="line">bowtie2 -p <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/<span class="variable">$fq1</span> \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/<span class="variable">$fq2</span> -S out.sam</span><br></pre></td></tr></table></figure>
+
+<p>flagstat</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools flagstat out.sam</span><br></pre></td></tr></table></figure>
+
+<p>比对结果为30071380 mapped (75.63%)</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">39761026 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">0 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">30071380 + 0 mapped (75.63% : N/A)</span><br><span class="line">39761026 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19880513 + 0 read1</span><br><span class="line">19880513 + 0 read2</span><br><span class="line">25906438 + 0 properly paired (65.16% : N/A)</span><br><span class="line">29570050 + 0 with itself and mate mapped</span><br><span class="line">501330 + 0 singletons (1.26% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<h3 id="sam-bam文件中的标记在比对完成之后已经固定"><a href="#sam-bam文件中的标记在比对完成之后已经固定" class="headerlink" title="sam/bam文件中的标记在比对完成之后已经固定"></a>sam/bam文件中的标记在比对完成之后已经固定</h3><p>而从后面这个例子我们看到用完比对质量<code>-q 30</code>后，即便加上了pair筛选<code>-F 12</code>，结果read1和read2数目仍然不相等。这是因为sam/bam文件中的标记在比对完成之后就已经固定，不会在后期的筛选中发生变化，所以即便当比对质量筛选后read已经不再成对，其中的flag标记依旧代表着双端比对上。</p>
+<ul>
+<li>只进行双端比对筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -bS out.sam &gt; outF12.bam</span><br><span class="line">samtools flagstat outF12.bam &gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">39584227 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">134327 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39584227 + 0 mapped (100.00% : N/A)</span><br><span class="line">39449900 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724950 + 0 read1</span><br><span class="line">19724950 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (99.67% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只进行比对质量筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out.sam &gt; outq30.bam</span><br><span class="line">samtools flagstat outq30.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">39715454 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">126123 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39715454 + 0 mapped (100.00% : N/A)</span><br><span class="line">39589331 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19866816 + 0 read1</span><br><span class="line">19722515 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.32% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">147301 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>质量筛选后进行双端比对筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -b outq30.bam &gt; outq30F12.bam</span><br><span class="line">samtools flagstat outq30F12.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>质量筛选后进行双端比对筛选（利用管道无中间输出文件）</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out.sam\</span><br><span class="line">    | samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -b - &gt; outq30F12pipe.bam</span><br><span class="line">samtools flagstat outq30F12pipe.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>生信</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>肠道菌群研究和应用——仍需稳扎稳打（社论）</title>
     <url>/2020/11/01/gut-check/</url>
-    <content><![CDATA[<p>Other, 2020-10-05</p>
-<p>Gut check</p>
-<p>Current Biology, [9.601]</p>
-<p><a href="http://dx.doi.org/10.1016/j.cub.2020.09.003" target="_blank" rel="noopener">10.1016/j.cub.2020.09.003</a></p>
+    <content><![CDATA[<p>Other, 2020-10-05<br>Gut check<br>Current Biology, [9.601]<br><a href="http://dx.doi.org/10.1016/j.cub.2020.09.003" target="_blank" rel="noopener">10.1016/j.cub.2020.09.003</a></p>
 <h2 id="肠道检查"><a href="#肠道检查" class="headerlink" title="肠道检查"></a>肠道检查</h2><ul>
 <li>微生物是我们体内的重要组成部分，但随着微生物组领域愈发热门，研究和医学界、保健品行业以及普通大众都对其效用有了过高的期待；</li>
 <li>许多论断缺乏有力证据：益生菌对肠道微生物组的作用潜力是不确定的，粪菌移植也仅取得了有限的成功，对肠道微生物组研究的设计和解释也受到批评；</li>
@@ -42,10 +123,7 @@
   <entry>
     <title>微生物组不良事件的挑战与机遇（综述）</title>
     <url>/2020/10/22/Engineering-the-Microbiome-to-Prevent-Adverse-Events-Challenges-and-Opportunities/</url>
-    <content><![CDATA[<p>Review, 2020-10-13</p>
-<p>Engineering the Microbiome to Prevent Adverse Events: Challenges and Opportunities</p>
-<p>Annual Review of Pharmacology and Toxicology, [11.25]</p>
-<p><a href="http://dx.doi.org/10.1146/annurev-pharmtox-031620-031509" target="_blank" rel="noopener">10.1146/annurev-pharmtox-031620-031509</a></p>
+    <content><![CDATA[<p>Review, 2020-10-13<br>Engineering the Microbiome to Prevent Adverse Events: Challenges and Opportunities<br>Annual Review of Pharmacology and Toxicology, [11.25]<br><a href="http://dx.doi.org/10.1146/annurev-pharmtox-031620-031509" target="_blank" rel="noopener">10.1146/annurev-pharmtox-031620-031509</a></p>
 <h2 id="挑战与机遇并存：利用微生物组工程预防不良事件"><a href="#挑战与机遇并存：利用微生物组工程预防不良事件" class="headerlink" title="挑战与机遇并存：利用微生物组工程预防不良事件"></a>挑战与机遇并存：利用微生物组工程预防不良事件</h2><ul>
 <li>微生物组不良事件（MAE）充满挑战与机遇：医学干预会改变微生物组，而其治疗效果又受到微生物组的影响；</li>
 <li>通过粪菌移植、服用益生菌或益生元、使用工程化细菌等方法改变肠道菌群或有助于预防和治疗MAE；</li>

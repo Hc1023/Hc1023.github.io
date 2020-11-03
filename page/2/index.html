@@ -285,6 +285,139 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/" itemprop="url">CPU, core and threads in HPC --SBATCH setup</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-20T21:27:45+08:00">
+                2020-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>使用的集群会有计算结点和登录结点。以lab的集群为例</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo</span><br><span class="line">PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST</span><br><span class="line">sugon*       up   infinite      1   idle node1</span><br><span class="line">low          up   infinite      1   idle node1</span><br><span class="line">download     up   infinite      1   idle tc6000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-N</code> node oriented</li>
+<li><code>-l</code> 提供更多的信息：number of CPUs, memory, temporary disk (also called scratch space), node weight (an internal parameter specifying preferences in nodes for allocations when there are multiple possibilities), features of the nodes (such as processor type for instance) and the reason, if any, for which a node is down.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo -Nl</span><br><span class="line">Sun Aug 16 10:38:15 2020</span><br><span class="line">NODELIST   NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON</span><br><span class="line">node1          1    sugon*        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">node1          1       low        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">tc6000         1  download        idle   12   1:12:1  63889        0      1   (null) none</span><br></pre></td></tr></table></figure>
+
+<p>node1是计算结点（不连网），tc6000是登录结点（连网），sbatch递交作业后slurm是在计算结点进行工作调度。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/become-rich/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1462,127 +1595,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/01/Algebra-notes-06-01-20/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/01/Algebra-notes-06-01-20/" itemprop="url">Algebra notes 06.01.20</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-01T23:40:22+08:00">
-                2020-06-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>$A,\ B,\ C,\ D$四个代数，令$V$是一个$(B,A)$-双模，$W$是一个$(C,B)$-双模，$X$是一个$(C,D)$-双模。证明$Hom_B(V,Hom_C(W,X))$与$ Hom_C(W \otimes_B V,X)$为$(A,D)$-双模同构。</strong></p>
-<p>证：令$\phi: Hom_B(V,Hom_C(W,X)) \rightarrow Hom_C(W \otimes_B V,X)$满足$f \mapsto (w \otimes_B v \mapsto f(v)(w))$。<br>$_CW_B,\ _CX_D\Rightarrow Hom_C(W,X)$是$(B,D)$-双模，又$V$是$(B,A)$-双模，所以$Hom_B(V,Hom_C(W,X))$是$(A,D)$-双模。<br>$_CW_B,\ _BV_A\Rightarrow W \otimes_B V$是$(C,A)$-双模，又$_CX_D\Rightarrow Hom_C(W \otimes_B V,X)$为$(A,D)$-双模。<br>下证$\phi$保持模同态。<br>$\phi (af)(w\otimes v) = (af)(v)(w)=f(va)(w)$<br>$(a\phi(f))(w\otimes v) = \phi(f)(w\otimes va) =\phi(w\otimes (va)) = f(va)(w)$<br>所以$\phi (af) = a\phi(f)$<br>$\phi(fd)(w\otimes v) = (fd)(v)(w)=(f(v)d)(w)=f(v)(w)d$<br>$(\phi(f)d)(w\otimes v) =\phi(f)(w\otimes v)d = f(v)(w)d$<br>所以$\phi (fd) = \phi(f)d$<br>最后只要证其为双射。<br>若$\phi(f)=0$则$f(v)(w)=0,\ \forall w\in W,v \in V\Rightarrow f(v) = 0, \ \forall v \in V$，所以$f=0$，为单射。<br>$\forall g\in Hom_C(W \otimes_B V,X),\ g(w\otimes v) = x$，令$f(v)(w) = g(w\otimes v)$，为满射。<br>Q.E.D</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1635,7 +1647,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">72</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
