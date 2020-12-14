@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="bwa和bowtie是常用的用于比对的软件，使用来看bwa mem比对的敏感度比bowtie更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。 提取双端比对序列只需要在用完相应的比对软件后，使用samtools view，-F选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-11-03T02:30:18.150Z">
+<meta property="og:updated_time" content="2020-11-03T02:38:13.612Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bwa or bowtie提取双端比对序列及flagstat">
 <meta name="twitter:description" content="bwa和bowtie是常用的用于比对的软件，使用来看bwa mem比对的敏感度比bowtie更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。 提取双端比对序列只需要在用完相应的比对软件后，使用samtools view，-F选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，">
@@ -375,7 +375,7 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
 
 <h3 id="bwa-mem敏感度大大高于bowtie"><a href="#bwa-mem敏感度大大高于bowtie" class="headerlink" title="bwa mem敏感度大大高于bowtie"></a>bwa mem敏感度大大高于bowtie</h3><p>如此还可以顺便观察bwa mem和bowtie比对结果的差异，对于两份的病毒测序数据。</p>
-<p>bwa mem比对的结果：第一个样本99.59% 第二个样本69.74%<br>bowtie比对的结果：第一个样本75.63% ，第二个样本48.42%</p>
+<p>bwa mem比对的结果：第一个样本99.59% ，第二个样本69.74%<br>bowtie比对的结果：第一个样本75.63% ，第二个样本48.42%</p>
 <p>更具体的，对于第一个样本，</p>
 <ul>
 <li>使用bwa mem</li>
@@ -468,6 +468,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2020/12/14/R-cmu-hw01/" rel="prev" title="基础操作（R code）">
+                基础操作（R code） <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -545,7 +549,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="回归 nls，lm，预测 predicthttps://huangsisihome.files.wordpress.com/2020/12/homework-04.pdf">
+<meta name="keywords" content="R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回归模型（R code）">
+<meta property="og:url" content="http://yoursite.com/2020/12/14/R-cmu-hw04/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="回归 nls，lm，预测 predicthttps://huangsisihome.files.wordpress.com/2020/12/homework-04.pdf">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-12-14T12:08:16.495Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="回归模型（R code）">
+<meta name="twitter:description" content="回归 nls，lm，预测 predicthttps://huangsisihome.files.wordpress.com/2020/12/homework-04.pdf">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/14/R-cmu-hw04/">
+
+
+
+
+
+  <title>回归模型（R code） | Hc's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/14/R-cmu-hw04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">回归模型（R code）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-14T19:02:48+08:00">
+                2020-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>回归 nls，lm，预测 predict<br><a href="https://huangsisihome.files.wordpress.com/2020/12/homework-04.pdf" target="_blank" rel="noopener">https://huangsisihome.files.wordpress.com/2020/12/homework-04.pdf</a></p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">library(tidyverse)</span><br><span class="line">library(DAAG)</span><br><span class="line">library(ggpubr)</span><br></pre></td></tr></table></figure>
+
+<p>We continue examining the diffusion of tetracycline among doctors in Illinois in the early 1950s, building on our work in lab 6.  You will need the data sets <code>ckm_nodes.csv</code> and <code>ckm_network.dat</code> from the labs.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ckm_nodes &lt;- read.csv(&quot;data/ckm_nodes.csv&quot;, header=T, sep = &quot;,&quot;)</span><br><span class="line">ckm_net &lt;- read.table(&quot;./data/ckm_network.dat&quot;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>Clean the data to eliminate doctors for whom we have no adoption-date information, as in the labs.  Only use this cleaned data in the rest of the assignment.</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">idx &lt;- !is.na(ckm_nodes$adoption_date)</span><br><span class="line">ckm_nodes &lt;- ckm_nodes %&gt;% filter(!is.na(adoption_date))</span><br><span class="line">ckm_net &lt;- ckm_net[idx,idx]</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>Create a new data frame which records, for every doctor, for every month, whether that doctor began prescribing tetracycline that month, whether they had adopted tetracycline before that month, the number of their contacts who began prescribing strictly <em>before</em> that month, and the number of their contacts who began prescribing in that month or earlier.  Explain why the dataframe should have 6 columns, and 2125 rows.  Try not to use any loops.</li>
+</ol>
+<ul>
+<li><p>There are 6 variables, so the dataframe has 6 columns.</p>
+</li>
+<li><p>For every doctor, for every month $\Rightarrow$ 125 doctors $\times$ 17 months  = 2125, so the datafram has 2125 rows.</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">df &lt;- data.frame(doctor = rownames(ckm_nodes)) %&gt;% </span><br><span class="line">    slice(rep(1:n(), each = 17)) %&gt;%</span><br><span class="line">    mutate(month = rep(1:17,length.out=n()))</span><br><span class="line">df &lt;- df %&gt;% mutate(prescribe_that_month = as.numeric(ckm_nodes[doctor,2]==month),</span><br><span class="line">                    prescribe_before = as.numeric(ckm_nodes[doctor,2]&lt;month))</span><br><span class="line"></span><br><span class="line"># df &lt;- mutate(df, contacts_before = </span><br><span class="line">#                  sum(ckm_nodes[unlist(ckm_net[as.numeric(doctor),]) == 1, 2] </span><br><span class="line">#                      &lt; as.numeric(month)))</span><br><span class="line"></span><br><span class="line">f &lt;- function(x)&#123;</span><br><span class="line">    return(sum(ckm_nodes[ckm_net[as.numeric(x[1]),] == 1, 2] &lt; as.numeric(x[2])))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">df &lt;- df %&gt;% mutate(contacts_str_before = apply(df, 1, f))</span><br><span class="line"></span><br><span class="line">f &lt;- function(x)&#123;</span><br><span class="line">    return(sum(ckm_nodes[ckm_net[as.numeric(x[1]),] == 1, 2] &lt;= as.numeric(x[2])))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">df &lt;- df %&gt;% mutate(contacts_in_before = apply(df, 1, f))</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>Let<br>[<br>p_k = \Pr(\text{A doctor starts prescribing tetracycline this month} \mid \<br>\text{Number of doctor’s contacts prescribing before this month}=k)<br>]<br>and<br>[<br> q_k = \Pr(\text{A doctor starts prescribing tetracycline this month} \mid \ \text{Number of doctor’s contacts prescribing this month}=k)<br>]<br>We suppose that $p_k$ and $q_k$ are the same for all months.<br> a. Explain why there should be no more than $21$ values of $k$ for which we can estimate $p_k$ and $q_k$ directly from the data.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">max(apply(ckm_net, 1, sum))</span><br></pre></td></tr></table></figure>
+
+<p> Because the maximum of the contacts of a doctor is 20, so the possible values of $k$ are from 0 to 20, the number of which is no more than $21$.</p>
+<p> b. Create a vector of estimated $p_k$ probabilities, using the data frame from (2).  Plot the probabilities against the number of prior-adoptee contacts $k$.</p>
+<p> <strong>Attention</strong>: There can be different understanding as for the expression <em>the number of prior-adoptee contacts $k$</em>. Intuitively, it could just mean $k$ that is from 0 to 20 and I heard many classmates did it like this. But the ambiguity lies in c that says <em>the number of prior-or-contemporary-adoptee contacts $k$</em> while $k$ should just stand for contemporary-adoptee contacts in $q_k$. So another sensible explaination is that we should calculate the number of doctors whose prior-adoptee or prior-or-contemporary-adoptee contacts number equals $k$. From my perspective, I prefer the latter interpretation, and besides this calculation is used in the last problem. Anyway, I plot both of the understandings.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">p.vec &lt;- vector(mode = &quot;numeric&quot;,length = 21)</span><br><span class="line">k.vec &lt;- p.vec</span><br><span class="line">for(k in 0:20)&#123;</span><br><span class="line">    idx &lt;- df$contacts_str_before == k</span><br><span class="line">    k.vec[k+1] &lt;- sum(idx)</span><br><span class="line">    if(k.vec[k+1] == 0)&#123;</span><br><span class="line">        p.vec[k+1] &lt;- NA</span><br><span class="line">        next</span><br><span class="line">    &#125; </span><br><span class="line">    dfk &lt;- df[idx,]</span><br><span class="line">    p1 &lt;- sum(dfk$prescribe_that_month == 1)</span><br><span class="line">    p.vec[k+1] &lt;- p1/k.vec[k+1]</span><br><span class="line">&#125;</span><br><span class="line">k &lt;- c(0:20)</span><br><span class="line">par(mfrow=c(1,2))</span><br><span class="line">plot(k.vec,p.vec, xlab=&quot;num k&quot;, ylab=&quot;p&quot;)</span><br><span class="line">plot(k,p.vec, xlab=&quot;k&quot;, ylab=&quot;p&quot;)</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<pre><code>c. Create a vector of estimated $q_k$ probabilities, using the data frame from (2). Plot the probabilities against the number of prior-or-contemporary-adoptee contacts $k$.
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">p.vec2 &lt;- vector(mode = &quot;numeric&quot;,length = 21)</span><br><span class="line">k.vec2 &lt;- p.vec2</span><br><span class="line">for(k in 0:20)&#123;</span><br><span class="line">    idx &lt;- (df$contacts_in_before - df$contacts_str_before) == k</span><br><span class="line">    k.vec2[k+1] &lt;- sum(idx)</span><br><span class="line">    if(k.vec2[k+1] == 0)&#123;</span><br><span class="line">        p.vec2[k+1] &lt;- NA</span><br><span class="line">        next</span><br><span class="line">    &#125; </span><br><span class="line">    dfk &lt;- df[idx,]</span><br><span class="line">    p1 &lt;- sum(dfk$prescribe_that_month == 1)</span><br><span class="line">    p.vec2[k+1] &lt;- p1/k.vec2[k+1]</span><br><span class="line">&#125;</span><br><span class="line">k &lt;- c(0:20)</span><br><span class="line">par(mfrow=c(1,2))</span><br><span class="line">plot(k.vec2 + k.vec, p.vec2, xlab=&quot;num k&quot;, ylab=&quot;q&quot;)</span><br><span class="line">plot(k, p.vec2, xlab=&quot;k&quot;, ylab=&quot;q&quot;)</span><br></pre></td></tr></table></figure></code></pre><ol start="4">
+<li><p>Because it only conditions on information from the previous month, $p_k$ is a little easier to interpret than $q_k$.  It is the probability per month that a doctor adopts tetracycline, if they have exactly $k$ contacts who had already adopted tetracycline.<br> a. Suppose $p_k = a + bk$.  This would mean that each friend who adopts the new drug increases the probability of adoption by an equal amount.  Estimate this model by least squares, using the values you constructed in (3b).  Report the parameter estimates.</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df.p &lt;- data.frame(k = 0:20, p = p.vec)</span><br><span class="line">m.1 &lt;- lm(p ~ k, data = df.p)</span><br><span class="line">summary(m.1)</span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   Estimate Std. Error t value Pr(&gt;|t|)    </span><br><span class="line">a  0.0569324  0.0090507   6.290 1.45e-05 ***</span><br><span class="line">b -0.0037997  0.0009184  -4.137 0.000877 ***</span><br></pre></td></tr></table></figure>
+
+<p> b. Suppose $p_k = e^{a+bk}/(1+e^{a+bk})$.  Explain, in words, what this model would imply about the impact of adding one more adoptee friend on a given doctor’s probability of adoption.  (You can suppose that $b &gt; 0$, if that makes it easier.)  Estimate the model by least squares, using the values you constructed in (3b).</p>
+<p> It is a logistic curve. Suppose $b&gt;0$. As $k$ grows, the initial stage of growth is approximately exponential (geometric); then, as saturation begins, the growth slows to linear (arithmetic), and at maturity, growth stops.</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># logistic.nls</span><br><span class="line">f &lt;- function(k,a,b)&#123;</span><br><span class="line">    return(exp(a+b*k)/(1+exp(a+b*k)))</span><br><span class="line">&#125;</span><br><span class="line">m.2 &lt;- nls(p ~ f(k, a, b), data = df.p, start = list(a = 0, b = -0.2))</span><br><span class="line"></span><br><span class="line"># logistic.lm --convert to ak+b = f(p)</span><br><span class="line">m.3 &lt;- lm(p.log ~ k, df.p %&gt;%</span><br><span class="line">              mutate(p.log = ifelse(p==0, log(0.0001/(1-0.0001)), log(p/(1-p)))))</span><br><span class="line"># m.4 &lt;- glm(p ~ k, df.p, family = &quot;binomial&quot;) </span><br><span class="line"># maybe type = &apos;response&apos; in prediction could work for glm</span><br><span class="line"></span><br><span class="line">summary(m.2)</span><br></pre></td></tr></table></figure>
+
+<p> c. Plot the values from (3b) along with the estimated curves from (4a) and (4b).  (You should have one plot, with $k$ on the horizontal axis, and probabilities on the vertical axis .)  Which model do you prefer, and why?</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">m1 = predict(m.1, newdata=data.frame(k=c(0:20)))</span><br><span class="line">m2 = predict(m.2, newdata=data.frame(k=c(0:20)))</span><br><span class="line">df.p &lt;- mutate(df.p, linear = m1, logistic = m2)</span><br><span class="line">t = predict(m.3, newdata=data.frame(k=c(0:20)))</span><br><span class="line">m3 = exp(t)/(1+exp(t))</span><br><span class="line">df.p &lt;- mutate(df.p, linear = m1, logistic = m2, logistic.2 = m3)</span><br><span class="line"># na.omit(df.p) %&gt;% ggplot(aes(x = k)) + geom_line(aes(y = p)) + </span><br><span class="line"># geom_line(aes(y = predict.a)) + geom_line(aes(y = predict.b))</span><br><span class="line"></span><br><span class="line">df.tidy &lt;- df.p %&gt;% gather(model, res, -k) %&gt;% na.omit()</span><br><span class="line">df.tidy %&gt;% ggplot() + geom_point(aes(x = k, y = res, color = model), size = 3) +</span><br><span class="line">      geom_line(aes(x = k, y = res, color = model), size = 1) +</span><br><span class="line">      labs(y = &quot;Probability&quot;,</span><br><span class="line">           title = &quot;Prediction of linear and logistic models&quot;)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<p>The linear model is the worst. I use two methods to establish the logistic model and I think green line <code>logistic</code> using function <code>nls()</code> looks better on the whole. Because <code>logistic.2</code> seems a little overfitting in the tail part.</p>
+<p><em>For quibblers, pedants, and idle hands itching for work to do</em>: The $p_k$ values from problem 3 aren’t all equally precise, because they come from different numbers of observations.  Also, if each doctor with $k$ adoptee contacts is independently deciding whether or not to adopt with probability $p_k$, then the variance in the number of adoptees will depend on $p_k$.  Say that the actual proportion who decide to adopt is $\hat{p}_k$.  A little probability (exercise!) shows that in this situation, $\mathbb{E}[\hat{p}_k] = p_k$, but that $\mathrm{Var}[\hat{p}_k] = p_k(1-p_k)/n_k$, where $n_k$ is the number of doctors in that situation.  (We estimate probabilities more precisely when they’re really extreme [close to 0 or 1], and/or we have lots of observations.)  We can estimate that variance as $\hat{V}_k = \hat{p}_k(1-\hat{p}_k)/n_k$.  Find the $\hat{V}_k$, and then re-do the estimation in (4a) and (4b) where the squared error for $p_k$ is divided by $\hat{V}_k$.  How much do the parameter estimates change?  How much do the plotted curves in (4c) change?</p>
+<p><strong>Probability exercise</strong>: Assume there are $n_k$ observations $x_1,x_2,…,x_{n_k}$. And $x_i = 1$ if the doctor adopts in month $k$, while $x_i = 0$ on the other side. So $x_i\in\lbrace 0,1\rbrace$. The distribution is determined by $P(x_i=1)=p_k$ and $P(x_i=0)=1-p_k$. It is exactly a binomial distribution. So $E(x_i) = p_k$ and $Var(x_i) = p_k(1-p_k)$.</p>
+<p>We can see that the proportion $\hat p_k = \displaystyle\frac{x_1+x_2+…+x_{n_k}}{n_k}$. Therefore, $\mathbb E(\hat p) = \displaystyle\frac{n\cdot E(x_i)}{n} = p_k$ and $Var(\hat  p) = \displaystyle\frac{1}{n_k^2}\cdot n_k\cdot Var(x_i) = p_k(1-p_k)/n_k$.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">idx &lt;- !(is.na(p.vec) | p.vec == 0)</span><br><span class="line">wt &lt;- p.vec*(1-p.vec)/k.vec</span><br><span class="line"># We can only take data!=0 because we just can&apos;t get p=0 more precisely</span><br><span class="line"># and thus the variance of that is meaningless.</span><br><span class="line">m.w1 &lt;- lm(p ~ k, data = df.p[idx,], weight = 1/wt[idx])</span><br><span class="line">summary(m.w1)</span><br><span class="line"></span><br><span class="line">m.w2 &lt;- nls(p ~ f(k, a, b), data = df.p[idx,], </span><br><span class="line">            start = list(a = 0, b = -0.2), weight = 1/wt[idx])</span><br><span class="line">summary(m.w2)</span><br></pre></td></tr></table></figure>
+
+<p><strong>The change of parameters</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Linear</th>
+<th>Linear.weight</th>
+<th>Logistic</th>
+<th>Logistic.weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>0.0569324</td>
+<td>0.068669</td>
+<td>-2.56508</td>
+<td>-2.48943</td>
+</tr>
+<tr>
+<td>b</td>
+<td>-0.0037997</td>
+<td>-0.008548</td>
+<td>-0.17051</td>
+<td>-0.23754</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">w1 = predict(m.w1, newdata=data.frame(k=c(0:20)))</span><br><span class="line">w2 = predict(m.w2, newdata=data.frame(k=c(0:20)))</span><br><span class="line"></span><br><span class="line">df.w &lt;- data.frame(k = 0:20, p = p.vec)</span><br><span class="line">df.w &lt;- mutate(df.w, linear = w1, logistic = w2)</span><br><span class="line">dft &lt;- df.w %&gt;% gather(model, res, -k) %&gt;% na.omit()</span><br><span class="line">dft %&gt;% ggplot() + geom_point(aes(x = k, y = res, color = model), size = 3) +</span><br><span class="line">      geom_line(aes(x = k, y = res, color = model), size = 1) +</span><br><span class="line">      labs(y = &quot;Probability&quot;,</span><br><span class="line">           title = &quot;Prediction of linear and logistic models with weight&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>The change of plots</strong>: Both curves are more fitting when $k$ is small and seem to somehow neglect the dots in the middle-top. From my analysis, the reason is that smaller samples cause larger estimated variances, which reduce the weight of these points. And there are more observations when $k$ is small, which adds to the weight.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/14/R-cmu-hw03/" rel="next" title="jackknife估计参数误差（R code）">
+                <i class="fa fa-chevron-left"></i> jackknife估计参数误差（R code）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/14/R-cmu-hw05/" rel="prev" title="参数估计（R code）">
+                参数估计（R code） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/profile.jpg" alt="Sisi Huang">
+            
+              <p class="site-author-name" itemprop="name">Sisi Huang</p>
+              <p class="site-description motion-element" itemprop="description">no boundaries, no restrictions</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sisi Huang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

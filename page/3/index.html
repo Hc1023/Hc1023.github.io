@@ -285,6 +285,643 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/05/decision-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/05/decision-tree/" itemprop="url">decision tree</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-05T16:42:01+08:00">
+                2020-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>决策树（DT）</strong>是一种用于分类和回归的非参数监督学习方法。 包含一个根结点、若干个内部结点和若干叶结点。根结点和内部结点代表用于划分的属性测试，叶结点代表决策结果。每个结点包含的样本集合根据属性测试被划分到子结点中，根结点包含样本全集。</p>
+<p>基本流程遵循简单直观的<strong>分而治之（divide and conquer）</strong>策略：选择最优属性，划分，递归进行。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/05/decision-tree/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/03/LASSO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/03/LASSO/" itemprop="url">LASSO（L1 正则化）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-03T23:22:17+08:00">
+                2020-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。</p>
+<p>给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$<br>简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$</p>
+<p>当样本特征很多，而样本数较少，容易过拟合，为缓解此问题，引入正则化项，正则化参数$\lambda &gt; 0$。</p>
+<ul>
+<li><p>$L_1$范数正则化，LASSO（Least Absolute Shrinkage and Selection Operator）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_1$</p>
+</li>
+<li><p>$L_2$范数正则化，岭回归（ridge regression）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_2^2$</p>
+</li>
+</ul>
+<p>$L_1$范数和$L_2$范数正则化都有助于降低过拟合风险，<strong>前者比后者更容易获得稀疏解</strong>，求得$w$有更少的非零分量。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/03/LASSO/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/30/MWAS-fine-mining-the-micriobiome/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/30/MWAS-fine-mining-the-micriobiome/" itemprop="url">MWAS fine-mining the microbiome</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-30T10:26:32+08:00">
+                2020-06-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Metagenome-wide association studies (MWAS) have enabled the <strong>high-resolution</strong> investigation of associations between the human microbiome and several complex diseases, including <em>type 2 diabetes, obesity, liver cirrhosis, colorectal cancer and rheumatoid arthritis</em>.</p>
+<ul>
+<li>the identification of taxa that are more or less abundant, as is the case with taxanomic approaches</li>
+<li>the identification of microbial functions that are enriched or depleted</li>
+</ul>
+<p>goal: inform the prevention, diagnosis and treatment of human disease in the future.</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/30/MWAS-fine-mining-the-micriobiome/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/03/Algebra-notes-06-03-20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/03/Algebra-notes-06-03-20/" itemprop="url">Algebra notes 06.03.20</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-03T22:28:01+08:00">
+                2020-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>令$V_i,\ 1\leq i\leq m$是代数$A$的不可约有限维且两两互不同构的表示，$W$是$V=\oplus_{i=1}^m     n_i V_i$。那么$W$同构于$\oplus_{i=1}^m r_iV_i,\ r_i\leq n_i$，inclusion $\phi: W\rightarrow V$是inclusions $\phi_i: r_iV_i\rightarrow n_iV_i$的直和，$\phi(v_1,…,v_{r_i}) = (v_1,…,v_{r_i})X_i$，其中$X_i$是$r_i\times n_i$矩阵，行向量线性无关。</p>
+<p><strong>$V$是$A$的不可约有限维表示，$v_1,…,v_n\in V$是任意的线性无关向量。那么对任意$w_1,…,w_n\in V$，存在$a\in A$使得$av_i = w_i$成立。</strong></p>
+<p>证：假设不然。考虑表示$nV$，映射$\pi : A\rightarrow nV$为$a \mapsto (av_1,…,av_n)$不是满射，$Im\ \pi$是$nV$的真子表示，于是它同构于$rV, \exists r&lt;n$，映射$\phi$对应于$X$。取$a=1$，则存在$u_1,…,u_r\in V$使得$(u_1,…,u_r)X = (v_1,…,v_n)$。由于$r&lt;n$，存在非零向量$(q_1,…,q_n)$使得$X(q_1,…q_n)’ = 0$。那么$$\Sigma q_i v_i = (v_1,…,v_n)(q_1,…q_n)’ = (u_1,…,u_r)X(q_1,…q_n)’ = 0$$这与$v_1,…,v_n$的线性无关性矛盾。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/02/Algebra-notes-06-02-20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/02/Algebra-notes-06-02-20/" itemprop="url">Algebra notes 06.02.20</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-02T22:36:01+08:00">
+                2020-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>令$g$是域$k$上的向量空间，并令$[\ ,\ ]: g \times g\rightarrow g$为一个反对称双线性映射。（等价于$[a,a]=0$且$[a,b] = -[b,a]$）</p>
+<p>$(g,[\ ,\ ])$是一个李代数如果$[\ ,\ ]$满足雅可比恒等式$$[[a,b],c]+[[b,c],a]+[[c,a],b] = 0$$</p>
+<p>几个李代数的例子：<br>1.$g$ with $[\ ,\ ]=0$ （阿贝尔李代数）<br>2.结合代数$A$ with $[a,b] = ab-ba$<br>3.结合代数$A$的子空间$U$满足$[a,b]\in U$对于所有的$a,b \in U$<br>4.代数$A$的导子空间$Der(A)$，i.e.，线性映射$D:A\rightarrow A$满足莱布尼兹法则$$D(ab) = D(a)b+aD(b)$$</p>
+<p><strong>证明对任意结合代数$A$，其导子集$\mathcal D = \lbrace D:A\rightarrow A\ \rbrace$，其中$D$满足莱布尼兹法则，关于$[D_1,D_2] = D_1D_2-D_2D_1\ (\forall D_i\in \mathcal D,\ i=1,2)$必为一个李代数。</strong></p>
+<p>证：容易验证下述三条成立<br>1.$[D_1,D_1] = 0$<br>2.$[D_1,D_2] = -[D_2,D_1]$<br>3.雅可比恒等式<br>下只需验证$\mathcal D$在李括号下是封闭的，也$[D_1, D_2] (ab) = [D_1, D_2] (a) b+a[D_1, D_2] (b)$成立，这个把李括号打开算一下就好，是成立的。Q.E.D</p>
+<p>Rmk：对于一个结合代数来讲，上面定义的李括号的封闭性是自然成立的，但是$(\mathcal D,\cdot)$<strong>非结合代数</strong>，$\cdot$对应的就是自然的复合运算$(D_1\cdot D_2)(a) = D_1(D_2(a))$。这是因为$$(D_1D_2)(ab) = D_1(D_2(ab)) = D_1 (D_2(a)b+aD_2(b)) = (D_1D_2)(a)b+D_2(a)D_1(b)+D_1(a)D_2(b)+a(D_1D_2)(b)$$而若$D_1D_2\in \mathcal D$则$$(D_1D_2)(ab) = (D_1D_2)(a)b + a(D_1D_2)(b) $$所以两者相等意味着必有$$D_2(a)D_1(b)+D_1(a)D_2(b)=0$$但这并不一定成立，矛盾。</p>
+<p>所以一个代数非结合代数，但却可以关于李括号成立李代数。而对于一个李代数来讲，我们可以取它的泛包络代数使其“延拓”为一个结合代数。我们直接用张量积的方式定义这个泛包络代数。</p>
+<p>首先定义张量代数。给定一个向量空间$V$，定义域$k$上的张量代数$TV:=\oplus_{n\geq 0} V^{\otimes n}$，乘法运算$a\cdot b:=a\otimes b,\ a\in V^{\otimes n},\ b\in V^{\otimes m}$。观察到$V$的一组基$x_1,…,x_N\in V$可以定义一个自由代数$k\langle x_1,…,x_n\rangle$（一个非交换多项式环）为$TV$的一个同构。</p>
+<p>下面定义这个泛包络代数。若$V$是一个李代数，其泛包络代数$U(V)$为$TV$商掉由$v\otimes w-w\otimes v-[v,w],\ v,w\in V$生成的理想。这个泛包络代数是一个结合代数。<br>并且我们还可以知道的一件事是，李代数$V$和泛包络代数$U(V)$的表示是一样的。$U(V)$的作用可以用$V$中的元素生成，$\rho(x_1…x_s) = \rho(x_1)…\rho(x_s)$。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/01/Algebra-notes-06-01-20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -899,643 +1536,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/16/tex-spell-check/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/16/tex-spell-check/" itemprop="url">Tex语法检查</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-16T16:49:24+08:00">
-                2020-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>两个方法：<br>1.IDE自带的语法检查，但是不同IDE操作不一样，我用的是TeXworks；<br>2.优雅地转为word，然后用word进行语法检查。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/16/tex-spell-check/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/15/Slurm-Workload-Manager/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/15/Slurm-Workload-Manager/" itemprop="url">Slurm Workload Manager</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-15T13:16:46+08:00">
-                2020-05-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="SLURM-Simple-Linux-Utility-for-Resource-Management"><a href="#SLURM-Simple-Linux-Utility-for-Resource-Management" class="headerlink" title="SLURM: Simple Linux Utility for Resource Management"></a>SLURM: Simple Linux Utility for Resource Management</h2><p>a free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters.</p>
-<p>Key functions:</p>
-<ul>
-<li>allocating exclusive and/or non-exclusive access to resources (computer nodes).</li>
-<li>providing a framework for starting, executing, and monitoring work on a set of allocated nodes.</li>
-<li>arbitrating contention for resources by managing a queue of pending jobs.</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/15/Slurm-Workload-Manager/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/13/reading-SNP-calling-from-HTS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/13/reading-SNP-calling-from-HTS/" itemprop="url">Reading--SNP calling from HTS</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-13T23:31:13+08:00">
-                2020-05-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="A-beginner-guide-to-SNP-calling-from-high-throughput-DNA-sequencing-data"><a href="#A-beginner-guide-to-SNP-calling-from-high-throughput-DNA-sequencing-data" class="headerlink" title="A beginner guide to SNP calling from high-throughput DNA-sequencing data"></a>A beginner guide to SNP calling from high-throughput DNA-sequencing data</h2><p><em>2012, Human Genetics</em></p>
-<ul>
-<li>the objective is to identify genetic variants such as single nucleotide polymorphism (SNP) from high-throughput DNA sequencing (HTS) data.</li>
-<li>pipeline: 1. quality control 2. mapping of short reads to the reference genome 3. visualization and post-processing of the alignment including base quality recalibration 4. SNP calling procedure along with filtering of SNP candidates</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/13/reading-SNP-calling-from-HTS/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/13/blog-deploy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/13/blog-deploy/" itemprop="url">换电脑重配置博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-13T11:22:36+08:00">
-                2020-05-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Yes, I have done it elegantly and efficiently. </p>
-<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><ul>
-<li>安装 <a href="https://gitforwindows.org/" target="_blank" rel="noopener">git</a></li>
-<li>安装 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a></li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/13/blog-deploy/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/06/COVID-19-modelling/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/06/COVID-19-modelling/" itemprop="url">COVID-19 pandemic research</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-06T23:12:28+08:00">
-                2020-05-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Suspected-close-contacts-as-the-pilot-indicator-of-the-growth-trend-of-confirmed-population-during-the-COVID-19-pandemic-A-simulation-approach"><a href="#Suspected-close-contacts-as-the-pilot-indicator-of-the-growth-trend-of-confirmed-population-during-the-COVID-19-pandemic-A-simulation-approach" class="headerlink" title="Suspected close contacts as the pilot indicator of the growth trend of confirmed population during the COVID-19 pandemic: A simulation approach"></a>Suspected close contacts as the pilot indicator of the growth trend of confirmed population during the COVID-19 pandemic: A simulation approach</h2><p><strong>Sisi Huang</strong>, Anding Zhu, Yan Wang, Yancong Xu, Lu Li, Dexing Kong</p>
-<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7268865/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7268865/</a></p>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p><strong>Background:</strong><br>Regarding to the actual situation of the new coronavirus disease 2019 epidemic, social factors should be taken into account and the increasing growth trend of confirmed populations needs to be explained. A proper model needs to be established, not only to simulate the epidemic, but also to evaluate the future epidemic situation and find a pilot indicator for the outbreak.</p>
-<p><strong>Methods:</strong><br>The original susceptible-infectious-recover model is modified into the susceptible-infectious-quarantine-confirm-recover combined with social factors (SIDCRL) model, which combines the natural transmission with social factors such as external interventions and isolation. The numerical simulation method is used to imitate the change curve of the cumulative number of the confirmed cases and the number of cured patients. Furthermore, we investigate the relationship between the suspected close contacts (SCC) and the final outcome of the growth trend of confirmed cases with a simulation approach.</p>
-<p><strong>Results:</strong><br>This article selects four representative countries, that is, China, South Korea, Italy, and the United States, and gives separate numerical simulations. The simulation results of the model fit the actual situation of the epidemic development and reasonable predictions are made. In addition, it is analyzed that the increasing number of SCC contributes to the epidemic outbreak and the prediction of the United States based on the population of the SCC highlights the importance of external intervention and active prevention measures.</p>
-<p><strong>Conclusions:</strong><br>The simulation of the model verifies its reliability and stresses that observable variable SCC can be taken as a pilot indicator of the coronavirus disease 2019 pandemic.</p>
-<p>*<em>Keywords: *</em> COVID-19, SIR model, social factors, numerical simulation, suspected close contacts, confirmed case, temporary hospital</p>
-<p>The numerical simulation of SIDCRL model shows it gives an excellent fit of the realistic data. Then it is derived from the simulation result that the increasing number of SCC contributes to the epidemic outbreak, which highlights the importance of external intervention and the active prevention measures in all countries. The paper is well-written and the new model and the corresponding simulation results are interesting both theoretically and practically and present a new direction to investigate the COVID-19 epidemic for the related scientists.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1588,7 +1588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
