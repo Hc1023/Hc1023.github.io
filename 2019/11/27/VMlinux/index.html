@@ -88,7 +88,7 @@
 <meta property="og:description" content="Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/27/VMlinux/1.png">
-<meta property="og:updated_time" content="2019-11-27T14:15:06.947Z">
+<meta property="og:updated_time" content="2021-01-31T11:02:32.610Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows安装虚拟机">
 <meta name="twitter:description" content="Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。">
@@ -358,7 +358,9 @@
 <a id="more"></a>
 
 <h2 id="下载VirtualBox和Linux-ISO"><a href="#下载VirtualBox和Linux-ISO" class="headerlink" title="下载VirtualBox和Linux ISO"></a>下载VirtualBox和Linux ISO</h2><p>首先到官网上下载VirtualBox和Linux ISO（这里选择Ubuntu）<br>VirtualBox,  free and open source virtualization software from Oracle. download <a href="https://www.virtualbox.org/" target="_blank" rel="noopener">https://www.virtualbox.org/</a><br>Ubuntu Linux, ISO file of the Linux distribution. download <a href="https://ubuntu.com/desktop" target="_blank" rel="noopener">https://ubuntu.com/desktop</a></p>
-<p>这里强烈建议到网络好一些的地方</p>
+<p>这里强烈建议到网络好一些的地方，大概科学上网可以快很多。</p>
+<p>先安装virtualbox，各步骤可见 <a href="https://itsfoss.com/install-linux-in-virtualbox/" target="_blank" rel="noopener">https://itsfoss.com/install-linux-in-virtualbox/</a></p>
+<p>大概唯一需要在对话框中操作的步骤是去掉勾选<code>download updates while installing Ubuntu</code></p>
 <h2 id="在虚拟机上安装Linux"><a href="#在虚拟机上安装Linux" class="headerlink" title="在虚拟机上安装Linux"></a>在虚拟机上安装Linux</h2><p>打开VirtualBox，点击<code>New</code>，自己取一个名字，type选<code>Linux</code>，version选<code>Ubuntu(64bit)</code><br>容易发现version选项都只有32bit，这是因为BIOS中virtualization is blocked on your system。在Windows中打开BIOS，一按下开机键立刻按<code>F1</code>/<code>F2</code>/<code>F12</code>，打开BIOS，在<code>configuration</code>中找到<code>Virtualization Technology</code>改为<code>Enabled</code>.</p>
 <ul>
 <li>Allocate RAM to the virtual OS 在我的电脑属性中看到我的电脑内存8G，所以我给它2G</li>
@@ -366,33 +368,36 @@
 <li>VDI file type</li>
 <li>Dynamically allocated</li>
 </ul>
-<p>设置好后<code>Start</code>，选择前面下载的iso文件，启动后点击<code>install Ubuntu</code>，然后看自己的感觉按照提示继续就好了。安装系统的时候会比较耗时吧耐心等待……</p>
+<p>设置好后<code>Start</code>，选择前面下载的iso文件，启动后点击<code>install Ubuntu</code>，然后看自己的感觉按照提示继续就好了。安装系统的时候会比较耗时吧耐心等待……官网上说10-15min，大概在国外 是。。</p>
 <p>安装完成后restart，yeah！Linux系统安装完成，这时可以把之前自己电脑上下载的那个iso文件拖进回收站了…</p>
 <h2 id="Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu"><a href="#Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu" class="headerlink" title="Install &amp; Use VirtualBox Guest Additions on Ubuntu"></a>Install &amp; Use VirtualBox Guest Additions on Ubuntu</h2><p>安装使用 VirtualBox Guest Additions，可以使guest and host systems联系更紧密使用更方便。</p>
 <ul>
 <li>Host &amp; Guest system<br>Host system is your actual operating system installed on your physical system.<br>Guest system is the virtual machine you have installed inside your host operating system.</li>
 </ul>
 <h3 id="几个重要的功能"><a href="#几个重要的功能" class="headerlink" title="几个重要的功能"></a>几个重要的功能</h3><ul>
-<li>Mouse pointer integration: You no longer need to press any key to “free” the cursor from the Guest OS.</li>
-<li>Shared clipboard: With the Guest Additions installed, you can copy-paste between the guest and the host operating systems.</li>
-<li>Drag and drop: You can also drag and drop files between the host and the guest OS.</li>
-<li>Shared folders: My favorite feature; this feature allows you to exchange files between the host and the guest. You can tell VirtualBox to treat a certain host directory as a shared folder, and the program will make it available to the guest operating system as a network share, irrespective of whether guest actually has a network.</li>
-<li>Better video support: The custom video drivers that are installed with the Guest Additions provide you with extra high and non-standard video modes, as well as accelerated video performance. It also allows you to resize the virtual machine’s window. The video resolution in the guest will be automatically adjusted, as if you had manually entered an arbitrary resolution in the guest’s Display settings.</li>
-<li>Seamless windows: The individual windows that are displayed on the desktop of the virtual machine can be mapped on the host’s desktop, as if the underlying application was actually running on the host.</li>
-<li>Generic host/guest communication channels: The Guest Additions enable you to control and monitor guest execution. The “guest properties” provide a generic string-based mechanism to exchange data bits between a guest and a host, some of which have special meanings for controlling and monitoring the guest. Applications can be started in the Guest machine from the Host.</li>
-<li>Time synchronization: The Guest Additions will resynchronize the time with that of the Host machine regularly. The parameters of the time synchronization mechanism can be configured.</li>
-<li>Automated logins: Basically credentials passing, it can be a useful feature.</li>
+<li><strong>鼠标指针集成</strong>: You no longer need to press any key to “free” the cursor from the Guest OS.</li>
+<li><strong>共享剪贴板</strong>: With the Guest Additions installed, you can copy-paste between the guest and the host operating systems.</li>
+<li><strong>拖放文件</strong>: You can also drag and drop files between the host and the guest OS.</li>
+<li><strong>共享文件夹</strong>: My favorite feature; this feature allows you to exchange files between the host and the guest. You can tell VirtualBox to treat a certain host directory as a shared folder, and the program will make it available to the guest operating system as a network share, irrespective of whether guest actually has a network.</li>
+<li><strong>调整虚拟机窗口大小和分辨率</strong></li>
 </ul>
-<p>点击<code>devices</code>，点击<code>Insert Guest Additions CD image…</code>，大概极有可能遇到（因为我遇到了） Could not mount the media/drive……报错。退出系统，打开 <code>settings</code>，in the Storage tab, click the little CD symbol and select ‘remove disk…’ 重新启动重复报错前的操作就可以成功Mount了！</p>
-<p>然后打开<code>terminal</code>，还要安装一些包，能用<code>sudo</code>真实太爽了，我就是管理员，我再也不用去征求什么管理员权限了</p>
+<p>更多可见 <a href="https://itsfoss.com/virtualbox-guest-additions-ubuntu/" target="_blank" rel="noopener">https://itsfoss.com/virtualbox-guest-additions-ubuntu/</a></p>
+<p>点击<code>devices</code>，点击<code>Insert Guest Additions CD image…</code>，大概极有可能遇到（因为我遇到了） Could not mount the media/drive……报错。退出系统，打开 <code>settings</code>，in the Storage tab, click the little CD symbol and select ‘remove disk…’ 重新启动重复报错前的操作就可以成功Mount了！（重启万能</p>
+<p>然后打开<code>terminal</code>，还要安装一些包，能用<code>sudo</code>真实太爽了，我就是管理员，再也不用去征求什么管理员权限了</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install build-essential dkms linux-headers-generic</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rcvboxadd setup</span><br></pre></td></tr></table></figure>
 
-<h3 id="Using-VirtualBox-Guest-Addition-features"><a href="#Using-VirtualBox-Guest-Addition-features" class="headerlink" title="Using VirtualBox Guest Addition features"></a>Using VirtualBox Guest Addition features</h3><ul>
-<li><p>Configure Drag And Drop (any files)<br>top menu -&gt; Devices -&gt;Drag and Drop -&gt; Bidirectional</p>
+<h3 id="Using-VirtualBox-Guest-Addition-features-配置"><a href="#Using-VirtualBox-Guest-Addition-features-配置" class="headerlink" title="Using VirtualBox Guest Addition features 配置"></a>Using VirtualBox Guest Addition features 配置</h3><p><strong>重启后再配置</strong></p>
+<ul>
+<li>配置拖放任何文件<br>top menu -&gt; Devices -&gt;Drag and Drop -&gt; Bidirectional</li>
+</ul>
+<p>这个功能在一些版本的VirtualBox里可能不起作用，解决办法是改成单向host to guest，拖到文件夹里（2020.1.31）</p>
+<ul>
+<li><p>配置共享剪贴板<br>top menu -&gt; Devices -&gt; Shared Clipboard -&gt; Bidirectional</p>
 </li>
-<li><p>Configure Shared Clipboard<br>top menu -&gt; Devices -&gt; Shared Clipboard -&gt; Bidirectional</p>
+<li><p>更改虚拟屏幕分辨率</p>
+<p>top menu -&gt; View -&gt; Virtual Screen 1 -&gt; …</p>
 </li>
 </ul>
 <p>至此接下来就可以开始自由发挥，开始在终端敲命令啦！</p>
@@ -519,7 +524,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -565,7 +570,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载VirtualBox和Linux-ISO"><span class="nav-number">1.</span> <span class="nav-text">下载VirtualBox和Linux ISO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在虚拟机上安装Linux"><span class="nav-number">2.</span> <span class="nav-text">在虚拟机上安装Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu"><span class="nav-number">3.</span> <span class="nav-text">Install &amp; Use VirtualBox Guest Additions on Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#几个重要的功能"><span class="nav-number">3.1.</span> <span class="nav-text">几个重要的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-VirtualBox-Guest-Addition-features"><span class="nav-number">3.2.</span> <span class="nav-text">Using VirtualBox Guest Addition features</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载VirtualBox和Linux-ISO"><span class="nav-number">1.</span> <span class="nav-text">下载VirtualBox和Linux ISO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在虚拟机上安装Linux"><span class="nav-number">2.</span> <span class="nav-text">在虚拟机上安装Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu"><span class="nav-number">3.</span> <span class="nav-text">Install &amp; Use VirtualBox Guest Additions on Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#几个重要的功能"><span class="nav-number">3.1.</span> <span class="nav-text">几个重要的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-VirtualBox-Guest-Addition-features-配置"><span class="nav-number">3.2.</span> <span class="nav-text">Using VirtualBox Guest Addition features 配置</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -585,7 +590,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

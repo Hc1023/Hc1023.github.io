@@ -1,410 +1,360 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>参数估计（R code）</title>
-    <url>/2020/12/14/R-cmu-hw05/</url>
-    <content><![CDATA[<p>格式调整有点麻烦，不想弄了，可以看pdf查阅……<br><a href="https://huangsisihome.files.wordpress.com/2020/12/homework-05.pdf" target="_blank" rel="noopener">https://huangsisihome.files.wordpress.com/2020/12/homework-05.pdf</a></p>
+    <title>Containerising a Pipeline</title>
+    <url>/2021/02/03/Containerising-a-Pipeline/</url>
+    <content><![CDATA[<p>参考 <a href="https://pawseysc.github.io/containers-bioinformatics-workshop/3.pipeline/index.html" target="_blank" rel="noopener">https://pawseysc.github.io/containers-bioinformatics-workshop/3.pipeline/index.html</a></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /data</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/PawseySC/containers-bioinformatics-workshop.git</span><br><span class="line">$ <span class="built_in">cd</span> containers-bioinformatics-workshop</span><br><span class="line">$ <span class="built_in">export</span> WORK=$(<span class="built_in">pwd</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>目标：port a small RNA sequencing pipeline （如图） to containers</strong></p>
 <a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">library(tidyverse)</span><br><span class="line">library(DAAG)</span><br><span class="line">library(ggpubr)</span><br><span class="line">library(latex2exp)</span><br></pre></td></tr></table></figure>
+<p><img src="1612316731334.png" alt></p>
+<ul>
+<li>使用的三个工具<ul>
+<li><code>salmon</code>：从 RNA-seq 数据快速定量转录，<code>salmon quant</code></li>
+<li><code>fastqc</code>：高通量测序数据质控</li>
+<li><code>multiqc</code>：将多个样本的分析结果合并为一个报告</li>
+</ul>
+</li>
+</ul>
+<p><strong>技能</strong></p>
+<ul>
+<li><p>search for container images on web registries</p>
+</li>
+<li><p>download images with <code>singularity pull &lt;IMAGE&gt;</code></p>
+</li>
+<li><p>execute commands in containers through <code>singularity exec &lt;IMAGE&gt; &lt;CMD&gt; &lt;ARGS&gt;</code></p>
+</li>
+<li><p>bind mount additional host containers using either</p>
+<ul>
+<li>execution flag <code>-B/--bind</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity shell -B /opt,/data:/mnt /tmp/Centos7-ompi.img</span><br></pre></td></tr></table></figure>
 
-<p>We continue working with the World Top Incomes Database [<a href="https://wid.world]" target="_blank" rel="noopener">https://wid.world]</a>, and the Pareto distribution, as in the lab.  We also continue to practice working with data frames, manipulating data from one format to another, and writing functions to automate repetitive tasks.</p>
-<p>We saw in the lab that if the upper tail of the income distribution followed a perfect Pareto distribution, then<br>\begin{eqnarray}<br>\label{eqn:1percent-vs-0.1-percent}<br>\left(\frac{P99}{P99.9}\right)^{-a+1}  &amp; = &amp; 10\<br>\left(\frac{P99.5}{P99.9}\right)^{-a+1} &amp; = &amp; 5\<br>\left(\frac{P99}{P99.5}\right)^{-a+1} &amp; = &amp; 2<br>\label{eqn:1percent-vs-0.5-percent}<br>\end{eqnarray}<br>We could estimate the Pareto exponent by solving any one of these equations for $a$; in lab we used<br>\begin{equation}<br>a = 1 - \frac{\log{10}}{\log{(P99/P99.9)}} ~,<br>\label{eqn:exponent-from-quantile-ratio}<br>\end{equation}</p>
-<p>Because of measurement error and sampling noise, we can’t find find one value of $a$ which will work for all three equations \eqref{eqn:1percent-vs-0.1-percent}–\eqref{eqn:1percent-vs-0.5-percent}.  Generally, trying to make all three equations come close to balancing gives a better estimate of $a$ than just solving one of them.  (This is analogous to finding the slope and intercept of a regression line by trying to come close to all the points in a scatterplot, and not just running a line through two of them.)</p>
-<ol>
-<li>We estimate $a$ by minimizing<br>[<br>\left(\left(\frac{P99}{P99.9}\right)^{-a+1} - 10\right)^2 + \left(\left(\frac{P99.5}{P99.9}\right)^{-a+1} - 5\right)^2 +  \left(\left(\frac{P99}{P99.5}\right)^{-a+1} - 2\right)^2<br>]<br>Write a function, <code>percentile_ratio_discrepancies</code>, which takes as inputs <code>P99</code>, <code>P99.5</code>, <code>P99.9</code> and <code>a</code>, and returns the value of the expression above.  Check that when <code>P99=1e6</code>, <code>P99.5=2e6</code>, <code>P99.9=1e7</code> and <code>a=2</code>, your function returns <code>0</code>.</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">percentile_ratio_discrepancies &lt;- function(P99, P99.5, P99.9, a)&#123;</span><br><span class="line">    x1 &lt;- (P99/P99.9)^(-a+1)-10</span><br><span class="line">    x2 &lt;- (P99.5/P99.9)^(-a+1)-5</span><br><span class="line">    x3 &lt;- (P99/P99.5)^(-a+1)-2</span><br><span class="line">    return(x1^2+x2^2+x3^2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">P99=1e6; P99.5=2e6; P99.9=1e7; a=2</span><br><span class="line">percentile_ratio_discrepancies(P99, P99.5, P99.9, a)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>environment variable <code>SINGULARITY_BINDPATH</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">export</span> SINGULARITY_BINDPATH=<span class="string">"/opt,/data:/mnt"</span></span><br><span class="line">$ singularity shell /tmp/Centos7-ompi.img</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>Write a function, <code>exponent.multi_ratios_est</code>, which takes as inputs <code>P99</code>, <code>P99.5</code>, <code>P99.9</code>, and estimates <code>a</code>.  It should minimize your <code>percentile_ratio_discrepancies</code> function.  The starting value for the minimization should come from \eqref{eqn:exponent-from-quantile-ratio}.  Check that when <code>P99=1e6</code>, <code>P99.5=2e6</code> and <code>P99.9=1e7</code>, your function returns an <code>a</code> of 2.</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">exponent.multi_ratios_est &lt;- function(P99, P99.5, P99.9)&#123;</span><br><span class="line">    P99 = as.numeric(P99); P99.5 = as.numeric(P99.5); P99.9 = as.numeric(P99.9)</span><br><span class="line">    a = 1 - log(10)/log(P99/P99.9)</span><br><span class="line">    a.est &lt;- function(a)&#123;</span><br><span class="line">        return(percentile_ratio_discrepancies(P99, P99.5, P99.9, a))</span><br><span class="line">    &#125;</span><br><span class="line">    return(nlm(a.est, a)$estimate)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">exponent.multi_ratios_est(P99, P99.5, P99.9)</span><br></pre></td></tr></table></figure>
+<p>Bind <code>/opt</code> on the host to <code>/opt</code> in the container and <code>/data</code> on the host to <code>/mnt</code> in the container.</p>
+</li>
+</ul>
+<h3 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h3><p>目录 </p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[huangsisi@login01 pipeline]$ tree</span><br><span class="line">.</span><br><span class="line">├── data</span><br><span class="line">│   ├── clean_outputs.sh</span><br><span class="line">│   ├── ggal_gut_1.fq</span><br><span class="line">│   ├── ggal_gut_2.fq</span><br><span class="line">│   ├── images.sh</span><br><span class="line">│   ├── original_pipe.sh</span><br><span class="line">│   ├── solutions</span><br><span class="line">│   │   ├── pipe.1.sh</span><br><span class="line">│   │   ├── pipe.2.sh</span><br><span class="line">│   │   └── pipe.3.sh</span><br><span class="line">│   └── wrappers</span><br><span class="line">│       ├── fastqc</span><br><span class="line">│       ├── multiqc</span><br><span class="line">│       └── salmon</span><br><span class="line">└── reference</span><br><span class="line">    └── ggal_1_48850000_49020000.Ggal71.500bpflank.fa</span><br></pre></td></tr></table></figure>
 
-<ol start="3">
-<li>Write a function which uses  <code>exponent.multi_ratios_est</code> to estimate $a$ for the US for every year from 1913 to 2012.  (There are many ways you could do this, including loops.)  Plot the estimates; make sure the labels of the plot are appropriate.</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wtid &lt;- read.csv(&quot;data/wtid-report.csv&quot;, header=T)</span><br><span class="line">t &lt;- tbl_df(wtid[,c(2,5:7)])</span><br><span class="line">a.hat &lt;- apply(t,1,function(x)&#123;</span><br><span class="line">    P99 &lt;- x[2]; P99.5 &lt;- x[3]; P99.9 &lt;- x[4]</span><br><span class="line">    return(exponent.multi_ratios_est(P99, P99.5, P99.9))</span><br><span class="line"> &#125;)</span><br><span class="line">t &lt;- mutate(t, a.hat)</span><br><span class="line">ggplot(t, aes(x = Year, y = a.hat)) + geom_point(size = 3) + geom_line(size = 1) + </span><br><span class="line">    labs(y = TeX(&apos;$\\hat&#123;a&#125;$&apos;), </span><br><span class="line">         title = TeX(&apos;Estimate $a$ for the US for every year from 1913 to 2012&apos;))</span><br></pre></td></tr></table></figure>
+<h4 id="关键步骤"><a href="#关键步骤" class="headerlink" title="关键步骤"></a>关键步骤</h4><ul>
+<li>step 1: salmon index</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">salmon index -t ggal_1_48850000_49020000.Ggal71.500bpflank.fa -i out_index &amp;&gt;log_index</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><figcaption><span>echo</span></figcaption><table><tr><td class="code"><pre><span class="line"># wtid.a &lt;- t %&gt;% mutate(esta = exponent.multi_ratios_est(P99.income.threshold, </span><br><span class="line">#                                               P99.5.income.threshold, </span><br><span class="line">#                                               P99.9.income.threshold))</span><br><span class="line"># wtid.a &lt;- wtid[1,c(2,5:7)] %&gt;% mutate(esta = exponent.multi_ratios_est(P99.income.threshold, </span><br><span class="line">#                                               P99.5.income.threshold, </span><br><span class="line">#                                               P99.9.income.threshold))</span><br><span class="line"># wtid.a &lt;- wtid[2,c(2,5:7)] %&gt;% mutate(esta = exponent.multi_ratios_est(P99.income.threshold, </span><br><span class="line">#                                               P99.5.income.threshold, </span><br><span class="line">#                                               P99.9.income.threshold))</span><br><span class="line"># wtid.a &lt;- wtid[1:2,c(2,5:7)] %&gt;% mutate(esta = exponent.multi_ratios_est(P99.income.threshold, </span><br><span class="line">#                                               P99.5.income.threshold, </span><br><span class="line">#                                               P99.9.income.threshold))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>step 2: salmon quant</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">salmon quant --libType=U -i ../reference/out_index -1 ggal_gut_1.fq -2 ggal_gut_2.fq -o ggal_gut &amp;&gt;log_quant</span><br></pre></td></tr></table></figure>
 
-<ol start="4">
-<li>Use \eqref{eqn:exponent-from-quantile-ratio} to estimate $a$ for the US for every year.  Make a scatter-plot of these estimates against those from problem 3.  If they are identical or completely independent, something is wrong with at least one part of your code.  Otherwise, can you say anything about how the two estimates compare?</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">t &lt;- mutate(t, estimate2 = 1 - log(10)/log(P99.income.threshold/P99.9.income.threshold))</span><br><span class="line">ggplot(t, aes(x = a.hat, y = estimate2)) + geom_point() +</span><br><span class="line">    labs(x = &quot;estimate_1&quot;, y = &quot;estimate_2&quot;, </span><br><span class="line">         title = &quot;Scatter-plot of the estimates&quot;)</span><br><span class="line">cor(t$a.hat, t$estimate2)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>step 3: fastqc quality control</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">fastqc -o out_fastqc -f fastq -q ggal_gut_1.fq ggal_gut_2.fq &amp;&gt;log_fq</span><br></pre></td></tr></table></figure>
 
-<p>They are highly correlated, which means the start value \eqref{eqn:exponent-from-quantile-ratio} is just around the minimum point.</p>
-]]></content>
+<ul>
+<li>step 4: multiqc multiple quality control（学习一下运用软链接这波操作）</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">mkdir out_multiqc</span><br><span class="line"><span class="built_in">cd</span> out_multiqc</span><br><span class="line">ln -s ../ggal_gut .</span><br><span class="line">ln -s ../out_fastqc .</span><br><span class="line"><span class="comment"># ONLY CHANGE THE NEXT LINE - EXECUTION LINE</span></span><br><span class="line">multiqc -v . &amp;&gt;../log_mq</span><br></pre></td></tr></table></figure>
+
+<h4 id="Packages"><a href="#Packages" class="headerlink" title="Packages"></a>Packages</h4><ul>
+<li>salmon 1.2.1</li>
+<li>fastqc 0.11.9</li>
+<li>multiqc 1.9</li>
+</ul>
+<h3 id="Find-and-pull-Packages"><a href="#Find-and-pull-Packages" class="headerlink" title="Find and pull Packages"></a>Find and pull Packages</h3><ul>
+<li>以<code>salmon</code>为例，Find a container image for Salmon 使用 web registry <strong>Quay</strong>, at <a href="https://quay.io/" target="_blank" rel="noopener">https://quay.io</a>. We could have gone directly at the BioContainers home page, <a href="https://biocontainers.pro/" target="_blank" rel="noopener">https://biocontainers.pro</a>, however its user interface is a bit less friendly right now.<ul>
+<li>右上角 <em>Search</em> <code>salmon</code>，回车</li>
+<li>结果列表中找到 <code>biocontainers/salcom</code> 点击</li>
+<li>点击左侧 <em>Tags</em>，找到最近的版本 1.2.1，为<code>1.2.1--hf69c8f4_0</code></li>
+<li>点击右侧 <em>Fetch</em>，选择 <em>Pull by Tag</em>，复制<code>quay.io/biocontainers/salmon:1.2.1--hf69c8f4_0</code></li>
+</ul>
+</li>
+<li>Pull the container image for Salmon</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity pull docker://quay.io/biocontainers/salmon:1.2.1--hf69c8f4_0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Find and  pull images for FastQC  and MultiQC</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity pull docker://quay.io/biocontainers/fastqc:0.11.9--0</span><br><span class="line">$ singularity pull docker://quay.io/biocontainers/multiqc:1.9--pyh9f0ad1d_0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Current directory, 3 images, with inputs and scripts for the pipeline</li>
+</ul>
+<p><img src="1612321593560.png" alt></p>
+<ul>
+<li>测试下载镜像</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">singularity <span class="built_in">exec</span> ./multiqc_1.9--pyh9f0ad1d_0.sif multiqc --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Containerise-the-pipeline"><a href="#Containerise-the-pipeline" class="headerlink" title="Containerise the pipeline"></a>Containerise the pipeline</h3><h4 id="first-pass"><a href="#first-pass" class="headerlink" title="first pass"></a>first pass</h4><p>对以上关键步骤的四行命令用<code>singularity exec</code>进行改动，注意一下mount bind可能需要绝对路径</p>
+<ul>
+<li>step 1: salmon index</li>
+</ul>
+<p>the current directory <code>reference/</code> is mounted by default in the container</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">singularity <span class="built_in">exec</span> \</span><br><span class="line">  ../data/salmon_1.2.1--hf69c8f4_0.sif \</span><br><span class="line">  salmon index -t ggal_1_48850000_49020000.Ggal71.500bpflank.fa -i out_index &amp;&gt;log_index</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>step 2: salmon quant</li>
+</ul>
+<p>bind mount other directory <code>../reference</code></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">singularity <span class="built_in">exec</span> \</span><br><span class="line">  -B /share/home/jianglab/huangsisi/usr/singularity/data/containers-bioinformatics-workshop/exercises/pipeline/reference \</span><br><span class="line">  ./salmon_1.2.1--hf69c8f4_0.sif \</span><br><span class="line">  salmon quant --libType=U -i ../reference/out_index -1 ggal_gut_1.fq -2 ggal_gut_2.fq -o ggal_gut &amp;&gt;log_quant</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>step 3: fastqc quality control</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">singularity <span class="built_in">exec</span> \</span><br><span class="line">  ./fastqc_0.11.9--0.sif \</span><br><span class="line">  fastqc -o out_fastqc -f fastq -q ggal_gut_1.fq ggal_gut_2.fq &amp;&gt;log_fq</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>step 4: multiqc multiple quality control</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">mkdir out_multiqc</span><br><span class="line"><span class="built_in">cd</span> out_multiqc</span><br><span class="line">ln -s ../ggal_gut .</span><br><span class="line">ln -s ../out_fastqc .</span><br><span class="line"><span class="comment"># ONLY CHANGE THE NEXT LINE - EXECUTION LINE</span></span><br><span class="line">singularity <span class="built_in">exec</span> \</span><br><span class="line">  -B /share/home/jianglab/huangsisi/usr/singularity/data/containers-bioinformatics-workshop/exercises/pipeline/data \</span><br><span class="line">  ../multiqc_1.9--pyh9f0ad1d_0.sif \</span><br><span class="line">  multiqc -v . &amp;&gt;../log_mq</span><br></pre></td></tr></table></figure>
+
+<p>备份，做修改然后运行</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ cp original_pipe.sh pipe.1.sh</span><br><span class="line">$ vi pipe.1.sh</span><br><span class="line">$ ./pipe.1.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="second-pass"><a href="#second-pass" class="headerlink" title="second pass"></a>second pass</h4><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ./clean_outputs.sh</span><br><span class="line">$ cp pipe.1.sh pipe.2.sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Container image paths</li>
+</ul>
+<p>在 <code>#!/bin/bash</code> 之后，为每一个容器镜像定义变量，使用绝对路径</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">WORK=/share/home/jianglab/huangsisi/usr/singularity/data/containers-bioinformatics-workshop</span><br><span class="line">salmon_image=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/salmon_1.2.1--hf69c8f4_0.sif"</span></span><br><span class="line">fastqc_image=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/fastqc_0.11.9--0.sif"</span></span><br><span class="line">multiqc_image=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/multiqc_1.9--pyh9f0ad1d_0.sif"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Bind mounted directories</li>
+</ul>
+<p>使用变量<code>SINGULARITY_BIN</code></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> SINGULARITY_BINDPATH=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline"</span></span><br></pre></td></tr></table></figure>
+
+<p>脚本框架</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">WORK=/share/home/jianglab/huangsisi/usr/singularity/data/containers-bioinformatics-workshop</span><br><span class="line"></span><br><span class="line">salmon_image=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/salmon_1.2.1--hf69c8f4_0.sif"</span></span><br><span class="line">fastqc_image=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/fastqc_0.11.9--0.sif"</span></span><br><span class="line">multiqc_image=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/multiqc_1.9--pyh9f0ad1d_0.sif"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> SINGULARITY_BINDPATH=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline"</span></span><br><span class="line">[..]</span><br><span class="line"></span><br><span class="line">singularity <span class="built_in">exec</span> \</span><br><span class="line">  <span class="variable">$salmon_image</span> \</span><br><span class="line">[..]</span><br><span class="line"></span><br><span class="line">singularity <span class="built_in">exec</span> \</span><br><span class="line">  <span class="variable">$salmon_image</span> \</span><br><span class="line">[..]</span><br><span class="line"></span><br><span class="line">singularity <span class="built_in">exec</span> \</span><br><span class="line">  <span class="variable">$fastqc_image</span> \</span><br><span class="line">[..]</span><br><span class="line"></span><br><span class="line">singularity <span class="built_in">exec</span> \</span><br><span class="line">  <span class="variable">$multiqc_image</span> \</span><br><span class="line">[..]</span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ./pipe.2.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="Streamlining-the-user-experience-of-containers"><a href="#Streamlining-the-user-experience-of-containers" class="headerlink" title="Streamlining the user experience of containers"></a>Streamlining the user experience of containers</h3><p>注意到命令具有相似的形式</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">singularity <span class="built_in">exec</span> <span class="variable">$image</span> &lt;COMMAND&gt; &lt;ARGUMENTS&gt;</span><br></pre></td></tr></table></figure>
+
+<p>于是可以把打包成如下</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">image=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/salmon_1.2.1--hf69c8f4_0.sif"</span></span><br><span class="line"></span><br><span class="line">cmd=<span class="string">"salmon"</span></span><br><span class="line">args=<span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line"></span><br><span class="line">singularity <span class="built_in">exec</span> <span class="variable">$image</span> <span class="variable">$cmd</span> <span class="variable">$args</span></span><br></pre></td></tr></table></figure>
+
+<p><code>args</code>值为<code>$@</code> ，bash语法，代表了正在调用的脚本参数，在脚本后加上的任何参数都将传递给<code>args</code>。</p>
+<p>将以上三个软件命令都打包到<code>wrappers</code>文件夹，然后</p>
+<ul>
+<li>bind mount paths with <code>SINGULARITY_BINDPATH</code></li>
+<li>include <code>wrappers</code> directory in the value of bash variable <code>PATH</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">PATH=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/wrappers:<span class="variable">$PATH</span>"</span></span><br><span class="line"><span class="built_in">export</span> SINGULARITY_BINDPATH=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline"</span></span><br></pre></td></tr></table></figure>
+
+<p>每个脚本记得定义WORK变量（？）</p>
+<p>总，运行：）</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Pipeline started..."</span></span><br><span class="line">WORK=/share/home/jianglab/huangsisi/usr/singularity/data/containers-bioinformatics-workshop</span><br><span class="line">PATH=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/wrappers:<span class="variable">$PATH</span>"</span></span><br><span class="line"><span class="built_in">export</span> SINGULARITY_BINDPATH=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># step 1</span></span><br><span class="line"><span class="built_in">cd</span> ../reference</span><br><span class="line">salmon index -t ggal_1_48850000_49020000.Ggal71.500bpflank.fa -i out_index &amp;&gt;log_index</span><br><span class="line"><span class="built_in">cd</span> ../data</span><br><span class="line"><span class="built_in">echo</span> <span class="string">" indexing completed"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># step 2</span></span><br><span class="line">salmon quant --libType=U -i ../reference/out_index -1 ggal_gut_1.fq -2 ggal_gut_2.fq -o ggal_gut &amp;&gt;log_quant</span><br><span class="line"><span class="built_in">echo</span> <span class="string">" quantification completed"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># step 3</span></span><br><span class="line">mkdir out_fastqc</span><br><span class="line">fastqc -o out_fastqc -f fastq -q ggal_gut_1.fq ggal_gut_2.fq &amp;&gt;log_fq</span><br><span class="line"><span class="built_in">echo</span> <span class="string">" quality control completed"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># step 4</span></span><br><span class="line">mkdir out_multiqc</span><br><span class="line"><span class="built_in">cd</span> out_multiqc</span><br><span class="line">ln -s ../ggal_gut .</span><br><span class="line">ln -s ../out_fastqc .</span><br><span class="line">multiqc -v . &amp;&gt;../log_mq</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="built_in">echo</span> <span class="string">" multiple quality control completed"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Pipeline finished!"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ cat wrappers/salmon</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">WORK=/share/home/jianglab/huangsisi/usr/singularity/data/containers-bioinformatics-workshop</span><br><span class="line">image=<span class="string">"<span class="variable">$WORK</span>/exercises/pipeline/data/salmon_1.2.1--hf69c8f4_0.sif"</span></span><br><span class="line"></span><br><span class="line">cmd=<span class="string">"salmon"</span></span><br><span class="line">args=<span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line"></span><br><span class="line">singularity <span class="built_in">exec</span> <span class="variable">$image</span> <span class="variable">$cmd</span> <span class="variable">$args</span></span><br></pre></td></tr></table></figure>]]></content>
       <tags>
-        <tag>R</tag>
+        <tag>生信</tag>
       </tags>
   </entry>
   <entry>
-    <title>回归模型（R code）</title>
-    <url>/2020/12/14/R-cmu-hw04/</url>
-    <content><![CDATA[<p>回归 nls，lm，预测 predict<br><a href="https://huangsisihome.files.wordpress.com/2020/12/homework-04.pdf" target="_blank" rel="noopener">https://huangsisihome.files.wordpress.com/2020/12/homework-04.pdf</a></p>
+    <title>Singularity Quick Start</title>
+    <url>/2021/02/03/singularity-quick-start/</url>
+    <content><![CDATA[<p>Singularity: building a root file system that runs on any other Linux system where Singularity is installed.</p>
+<p>Commands</p>
+<ul>
+<li>build：建立一个Singularity容器（container）</li>
+<li>capability：管理容器上的Linux功能</li>
+<li>exec：在容器中执行命令</li>
+<li>help：命令帮助</li>
+<li>inspect：显示容器元数据（metadata）</li>
+<li>instance：管理在背景运行的容器</li>
+<li>keys：管理OpenPGP密钥</li>
+<li>pull：从URI拉下容器</li>
+<li>push：推容器到URI库（library）</li>
+</ul>
+<blockquote>
+<p>URI stands for <strong>Uniform Resource Identifier</strong>, and it’s the official name for those things you see all the time on the Web that begin ‘ http: ‘ or ‘ mailto: ‘</p>
+</blockquote>
+<ul>
+<li>run：在容器中启动运行脚本</li>
+<li>run-help：容器帮助</li>
+<li>search：搜索库</li>
+<li>shell：在容器中运行Bourne shell</li>
+</ul>
+<blockquote>
+<p>A <strong>Bourne shell</strong> (sh) is a UNIX <strong>shell</strong> or command processor that is used for scripting.</p>
+</blockquote>
+<ul>
+<li>sign：将加密签名附加到容器</li>
+<li>verify：验证容器加密签名</li>
+<li>version：应用版本</li>
+</ul>
 <a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">library(tidyverse)</span><br><span class="line">library(DAAG)</span><br><span class="line">library(ggpubr)</span><br></pre></td></tr></table></figure>
+<h2 id="下载-pre-built-镜像（images）"><a href="#下载-pre-built-镜像（images）" class="headerlink" title="下载 pre-built 镜像（images）"></a>下载 pre-built 镜像（images）</h2><p><code>search</code>：定位 groups, collections, and containers of interest on the <a href="https://cloud.sylabs.io/library" target="_blank" rel="noopener">Container Library</a> .</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity search alp</span><br></pre></td></tr></table></figure>
 
-<p>We continue examining the diffusion of tetracycline among doctors in Illinois in the early 1950s, building on our work in lab 6.  You will need the data sets <code>ckm_nodes.csv</code> and <code>ckm_network.dat</code> from the labs.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ckm_nodes &lt;- read.csv(&quot;data/ckm_nodes.csv&quot;, header=T, sep = &quot;,&quot;)</span><br><span class="line">ckm_net &lt;- read.table(&quot;./data/ckm_network.dat&quot;)</span><br></pre></td></tr></table></figure>
+<p><code>pull</code> and <code>build</code>：下载 pre-built images from an external resource like the <a href="https://cloud.sylabs.io/library" target="_blank" rel="noopener">Container Library</a> or <a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity pull library://sylabsed/linux/alpine</span><br></pre></td></tr></table></figure>
 
-<ol>
-<li>Clean the data to eliminate doctors for whom we have no adoption-date information, as in the labs.  Only use this cleaned data in the rest of the assignment.</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">idx &lt;- !is.na(ckm_nodes$adoption_date)</span><br><span class="line">ckm_nodes &lt;- ckm_nodes %&gt;% filter(!is.na(adoption_date))</span><br><span class="line">ckm_net &lt;- ckm_net[idx,idx]</span><br></pre></td></tr></table></figure>
+<p>Docker images are stored in layers, so <code>pull</code> must also combine those layers into a usable Singularity file. Pulling Docker images reduces reproducibility. 因为layer会变化。</p>
+<p><code>build</code>下载镜像需要给名字</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity build ubuntu.sif library://ubuntu</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>Create a new data frame which records, for every doctor, for every month, whether that doctor began prescribing tetracycline that month, whether they had adopted tetracycline before that month, the number of their contacts who began prescribing strictly <em>before</em> that month, and the number of their contacts who began prescribing in that month or earlier.  Explain why the dataframe should have 6 columns, and 2125 rows.  Try not to use any loops.</li>
-</ol>
+<p>Unlike <code>pull</code>, <code>build</code> will convert your image to the latest Singularity image format after downloading it.</p>
+<h2 id="与镜像交互"><a href="#与镜像交互" class="headerlink" title="与镜像交互"></a>与镜像交互</h2><p>It is not actually necessary to <code>pull</code> or <code>build</code> an image to interact with it. </p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity pull library://sylabsed/examples/lolcow</span><br></pre></td></tr></table></figure>
+
+<h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><p>The shell command allows you to spawn a new shell within your container and interact with it as though it were a small virtual machine.</p>
+<p>Once inside of a Singularity container, you are the same user as you are on the host system.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[huangsisi@login01 ~]$ singularity shell lolcow_latest.sif</span><br><span class="line">Singularity&gt; whoami</span><br><span class="line">huangsisi</span><br><span class="line">Singularity&gt; id</span><br><span class="line">uid=2080(huangsisi) gid=1017(jianglab) groups=1017(jianglab)</span><br><span class="line">Singularity&gt; <span class="built_in">exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<p><code>shell</code> also works with the <code>library://</code>, <code>docker://</code>, and <code>shub://</code> URIs. This creates an ephemeral container that disappears when the shell is exited.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity shell library://sylabsed/examples/lolcow</span><br></pre></td></tr></table></figure>
+
+<h3 id="Executing-Commands"><a href="#Executing-Commands" class="headerlink" title="Executing Commands"></a>Executing Commands</h3><p>The exec command allows you to execute a custom command within a container by specifying the image file.</p>
 <ul>
-<li><p>There are 6 variables, so the dataframe has 6 columns.</p>
-</li>
-<li><p>For every doctor, for every month $\Rightarrow$ 125 doctors $\times$ 17 months  = 2125, so the datafram has 2125 rows.</p>
-</li>
+<li>执行cowsay程序</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">df &lt;- data.frame(doctor = rownames(ckm_nodes)) %&gt;% </span><br><span class="line">    slice(rep(1:n(), each = 17)) %&gt;%</span><br><span class="line">    mutate(month = rep(1:17,length.out=n()))</span><br><span class="line">df &lt;- df %&gt;% mutate(prescribe_that_month = as.numeric(ckm_nodes[doctor,2]==month),</span><br><span class="line">                    prescribe_before = as.numeric(ckm_nodes[doctor,2]&lt;month))</span><br><span class="line"></span><br><span class="line"># df &lt;- mutate(df, contacts_before = </span><br><span class="line">#                  sum(ckm_nodes[unlist(ckm_net[as.numeric(doctor),]) == 1, 2] </span><br><span class="line">#                      &lt; as.numeric(month)))</span><br><span class="line"></span><br><span class="line">f &lt;- function(x)&#123;</span><br><span class="line">    return(sum(ckm_nodes[ckm_net[as.numeric(x[1]),] == 1, 2] &lt; as.numeric(x[2])))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">df &lt;- df %&gt;% mutate(contacts_str_before = apply(df, 1, f))</span><br><span class="line"></span><br><span class="line">f &lt;- function(x)&#123;</span><br><span class="line">    return(sum(ckm_nodes[ckm_net[as.numeric(x[1]),] == 1, 2] &lt;= as.numeric(x[2])))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">df &lt;- df %&gt;% mutate(contacts_in_before = apply(df, 1, f))</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity <span class="built_in">exec</span> lolcow_latest.sif cowsay moo</span><br><span class="line"> _____</span><br><span class="line">&lt; moo &gt;</span><br><span class="line"> -----</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
 
-<ol start="3">
-<li><p>Let<br>[<br>p_k = \Pr(\text{A doctor starts prescribing tetracycline this month} \mid \<br>\text{Number of doctor’s contacts prescribing before this month}=k)<br>]<br>and<br>[<br> q_k = \Pr(\text{A doctor starts prescribing tetracycline this month} \mid \ \text{Number of doctor’s contacts prescribing this month}=k)<br>]<br>We suppose that $p_k$ and $q_k$ are the same for all months.<br> a. Explain why there should be no more than $21$ values of $k$ for which we can estimate $p_k$ and $q_k$ directly from the data.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">max(apply(ckm_net, 1, sum))</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>exec</code>直接跟URIs，cached image，创建一个临时的容器执行命令后消失</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity <span class="built_in">exec</span> library://sylabsed/examples/lolcow cowsay <span class="string">"Hello, Sisi Huang!"</span></span><br><span class="line">-bash: !<span class="string">": event not found</span></span><br><span class="line"><span class="string">[huangsisi@login01 ~]$ singularity exec library://sylabsed/examples/lolcow cowsay "</span>Hello, Sisi Huang<span class="string">"</span></span><br><span class="line"><span class="string">INFO:    Using cached image</span></span><br><span class="line"><span class="string"> ___________________</span></span><br><span class="line"><span class="string">&lt; Hello, Sisi Huang &gt;</span></span><br><span class="line"><span class="string"> -------------------</span></span><br><span class="line"><span class="string">        \   ^__^</span></span><br><span class="line"><span class="string">         \  (oo)\_______</span></span><br><span class="line"><span class="string">            (__)\       )\/\</span></span><br><span class="line"><span class="string">                ||----w |</span></span><br><span class="line"><span class="string">                ||     ||</span></span><br></pre></td></tr></table></figure>
 
-<p> Because the maximum of the contacts of a doctor is 20, so the possible values of $k$ are from 0 to 20, the number of which is no more than $21$.</p>
-<p> b. Create a vector of estimated $p_k$ probabilities, using the data frame from (2).  Plot the probabilities against the number of prior-adoptee contacts $k$.</p>
-<p> <strong>Attention</strong>: There can be different understanding as for the expression <em>the number of prior-adoptee contacts $k$</em>. Intuitively, it could just mean $k$ that is from 0 to 20 and I heard many classmates did it like this. But the ambiguity lies in c that says <em>the number of prior-or-contemporary-adoptee contacts $k$</em> while $k$ should just stand for contemporary-adoptee contacts in $q_k$. So another sensible explaination is that we should calculate the number of doctors whose prior-adoptee or prior-or-contemporary-adoptee contacts number equals $k$. From my perspective, I prefer the latter interpretation, and besides this calculation is used in the last problem. Anyway, I plot both of the understandings.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">p.vec &lt;- vector(mode = &quot;numeric&quot;,length = 21)</span><br><span class="line">k.vec &lt;- p.vec</span><br><span class="line">for(k in 0:20)&#123;</span><br><span class="line">    idx &lt;- df$contacts_str_before == k</span><br><span class="line">    k.vec[k+1] &lt;- sum(idx)</span><br><span class="line">    if(k.vec[k+1] == 0)&#123;</span><br><span class="line">        p.vec[k+1] &lt;- NA</span><br><span class="line">        next</span><br><span class="line">    &#125; </span><br><span class="line">    dfk &lt;- df[idx,]</span><br><span class="line">    p1 &lt;- sum(dfk$prescribe_that_month == 1)</span><br><span class="line">    p.vec[k+1] &lt;- p1/k.vec[k+1]</span><br><span class="line">&#125;</span><br><span class="line">k &lt;- c(0:20)</span><br><span class="line">par(mfrow=c(1,2))</span><br><span class="line">plot(k.vec,p.vec, xlab=&quot;num k&quot;, ylab=&quot;p&quot;)</span><br><span class="line">plot(k,p.vec, xlab=&quot;k&quot;, ylab=&quot;p&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="Running-a-container"><a href="#Running-a-container" class="headerlink" title="Running a container"></a>Running a container</h3><ul>
+<li>运行镜像</li>
+</ul>
+<p>The runscript can be triggered with the run command, or simply by calling the container as though it were an executable.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity run lolcow_latest.sif</span><br><span class="line"> _____________________________________</span><br><span class="line">/ When angry, count four; when very   \</span><br><span class="line">| angry, swear.                       |</span><br><span class="line">|                                     |</span><br><span class="line">| -- Mark Twain, <span class="string">"Pudd'nhead Wilson's |</span></span><br><span class="line"><span class="string">\ Calendar"</span>                           /</span><br><span class="line"> -------------------------------------</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ./lolcow_latest.sif</span><br><span class="line"> ____________________________________</span><br><span class="line">/ Q: What is orange and goes <span class="string">"click, \</span></span><br><span class="line"><span class="string">\ click?"</span> A: A ball point carrot.    /</span><br><span class="line"> ------------------------------------</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>直接跟URIs</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity run library://sylabsed/examples/lolcow</span><br><span class="line">INFO:    Using cached image</span><br><span class="line"> _________________________________________</span><br><span class="line">/ You will be imprisoned <span class="keyword">for</span> contributing \</span><br><span class="line">\ your time and skill to a bank robbery.  /</span><br><span class="line"> -----------------------------------------</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
 
-</li>
-</ol>
-<pre><code>c. Create a vector of estimated $q_k$ probabilities, using the data frame from (2). Plot the probabilities against the number of prior-or-contemporary-adoptee contacts $k$.
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">p.vec2 &lt;- vector(mode = &quot;numeric&quot;,length = 21)</span><br><span class="line">k.vec2 &lt;- p.vec2</span><br><span class="line">for(k in 0:20)&#123;</span><br><span class="line">    idx &lt;- (df$contacts_in_before - df$contacts_str_before) == k</span><br><span class="line">    k.vec2[k+1] &lt;- sum(idx)</span><br><span class="line">    if(k.vec2[k+1] == 0)&#123;</span><br><span class="line">        p.vec2[k+1] &lt;- NA</span><br><span class="line">        next</span><br><span class="line">    &#125; </span><br><span class="line">    dfk &lt;- df[idx,]</span><br><span class="line">    p1 &lt;- sum(dfk$prescribe_that_month == 1)</span><br><span class="line">    p.vec2[k+1] &lt;- p1/k.vec2[k+1]</span><br><span class="line">&#125;</span><br><span class="line">k &lt;- c(0:20)</span><br><span class="line">par(mfrow=c(1,2))</span><br><span class="line">plot(k.vec2 + k.vec, p.vec2, xlab=&quot;num k&quot;, ylab=&quot;q&quot;)</span><br><span class="line">plot(k, p.vec2, xlab=&quot;k&quot;, ylab=&quot;q&quot;)</span><br></pre></td></tr></table></figure></code></pre><ol start="4">
-<li><p>Because it only conditions on information from the previous month, $p_k$ is a little easier to interpret than $q_k$.  It is the probability per month that a doctor adopts tetracycline, if they have exactly $k$ contacts who had already adopted tetracycline.<br> a. Suppose $p_k = a + bk$.  This would mean that each friend who adopts the new drug increases the probability of adoption by an equal amount.  Estimate this model by least squares, using the values you constructed in (3b).  Report the parameter estimates.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">df.p &lt;- data.frame(k = 0:20, p = p.vec)</span><br><span class="line">m.1 &lt;- lm(p ~ k, data = df.p)</span><br><span class="line">summary(m.1)</span><br></pre></td></tr></table></figure>
+<h3 id="Working-with-Files"><a href="#Working-with-Files" class="headerlink" title="Working with Files"></a>Working with Files</h3><p>Files on the host are reachable from within the container.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">"Hello, sisi"</span> &gt; <span class="variable">$HOME</span>/hostfile.txt</span><br><span class="line">$ singularity <span class="built_in">exec</span> lolcow_latest.sif cat <span class="variable">$HOME</span>/hostfile.txt</span><br><span class="line">Hello, sisi</span><br></pre></td></tr></table></figure>
 
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">   Estimate Std. Error t value Pr(&gt;|t|)    </span><br><span class="line">a  0.0569324  0.0090507   6.290 1.45e-05 ***</span><br><span class="line">b -0.0037997  0.0009184  -4.137 0.000877 ***</span><br></pre></td></tr></table></figure>
+<p>By default Singularity bind mounts <code>/home/$USER</code>, <code>/tmp</code>, and <code>$PWD</code> into your container at runtime.</p>
+<p>指定目录bind mount into your container with the <code>--bind</code> option.</p>
+<p>例如，<code>/data</code> directory on the host system is bind mounted to the <code>/mnt</code> directory inside the container.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">"Drink milk (and never eat hamburgers)."</span> &gt; /data/cow_advice.txt</span><br><span class="line"></span><br><span class="line">$ singularity <span class="built_in">exec</span> --<span class="built_in">bind</span> /data:/mnt lolcow_latest.sif cat /mnt/cow_advice.txt</span><br><span class="line">Drink milk (and never eat hamburgers).</span><br></pre></td></tr></table></figure>
 
-<p> b. Suppose $p_k = e^{a+bk}/(1+e^{a+bk})$.  Explain, in words, what this model would imply about the impact of adding one more adoptee friend on a given doctor’s probability of adoption.  (You can suppose that $b &gt; 0$, if that makes it easier.)  Estimate the model by least squares, using the values you constructed in (3b).</p>
-<p> It is a logistic curve. Suppose $b&gt;0$. As $k$ grows, the initial stage of growth is approximately exponential (geometric); then, as saturation begins, the growth slows to linear (arithmetic), and at maturity, growth stops.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># logistic.nls</span><br><span class="line">f &lt;- function(k,a,b)&#123;</span><br><span class="line">    return(exp(a+b*k)/(1+exp(a+b*k)))</span><br><span class="line">&#125;</span><br><span class="line">m.2 &lt;- nls(p ~ f(k, a, b), data = df.p, start = list(a = 0, b = -0.2))</span><br><span class="line"></span><br><span class="line"># logistic.lm --convert to ak+b = f(p)</span><br><span class="line">m.3 &lt;- lm(p.log ~ k, df.p %&gt;%</span><br><span class="line">              mutate(p.log = ifelse(p==0, log(0.0001/(1-0.0001)), log(p/(1-p)))))</span><br><span class="line"># m.4 &lt;- glm(p ~ k, df.p, family = &quot;binomial&quot;) </span><br><span class="line"># maybe type = &apos;response&apos; in prediction could work for glm</span><br><span class="line"></span><br><span class="line">summary(m.2)</span><br></pre></td></tr></table></figure>
+<p>Pipes and redirects also work with Singularity commands</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ cat /data/cow_advice.txt | singularity <span class="built_in">exec</span> lolcow_latest.sif cowsay</span><br></pre></td></tr></table></figure>
 
-<p> c. Plot the values from (3b) along with the estimated curves from (4a) and (4b).  (You should have one plot, with $k$ on the horizontal axis, and probabilities on the vertical axis .)  Which model do you prefer, and why?</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">m1 = predict(m.1, newdata=data.frame(k=c(0:20)))</span><br><span class="line">m2 = predict(m.2, newdata=data.frame(k=c(0:20)))</span><br><span class="line">df.p &lt;- mutate(df.p, linear = m1, logistic = m2)</span><br><span class="line">t = predict(m.3, newdata=data.frame(k=c(0:20)))</span><br><span class="line">m3 = exp(t)/(1+exp(t))</span><br><span class="line">df.p &lt;- mutate(df.p, linear = m1, logistic = m2, logistic.2 = m3)</span><br><span class="line"># na.omit(df.p) %&gt;% ggplot(aes(x = k)) + geom_line(aes(y = p)) + </span><br><span class="line"># geom_line(aes(y = predict.a)) + geom_line(aes(y = predict.b))</span><br><span class="line"></span><br><span class="line">df.tidy &lt;- df.p %&gt;% gather(model, res, -k) %&gt;% na.omit()</span><br><span class="line">df.tidy %&gt;% ggplot() + geom_point(aes(x = k, y = res, color = model), size = 3) +</span><br><span class="line">      geom_line(aes(x = k, y = res, color = model), size = 1) +</span><br><span class="line">      labs(y = &quot;Probability&quot;,</span><br><span class="line">           title = &quot;Prediction of linear and logistic models&quot;)</span><br></pre></td></tr></table></figure>
+<h2 id="从头创建镜像"><a href="#从头创建镜像" class="headerlink" title="从头创建镜像"></a>从头创建镜像</h2><p>Singularity v3.0以 Singularity Image File (SIF)格式生成不可变的镜像，确保可重复性和可验证性。</p>
+<p>但是，在测试和调试期间，可能需要可写的镜像格式，安装软件和依赖项，直到确信容器满足需求。对于这些场景，Singularity 还支持<code>sandbox</code>格式（实际上只是一个目录）。</p>
+<h3 id="Sandbox-Directory"><a href="#Sandbox-Directory" class="headerlink" title="Sandbox Directory"></a>Sandbox Directory</h3><p>需要root权限</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo singularity build --sandbox ubuntu/ library://ubuntu</span><br><span class="line">$ sudo singularity <span class="built_in">exec</span> --writable ubuntu touch /foo</span><br><span class="line">$ singularity <span class="built_in">exec</span> ubuntu/ ls /foo</span><br><span class="line">/foo</span><br></pre></td></tr></table></figure>
 
+<p>但我没有权限，所以如下错误</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">FATAL:   container creation failed: mount /usr/<span class="built_in">local</span>/var/singularity/mnt/session/share-&gt;/share error: <span class="keyword">while</span> mounting /usr/<span class="built_in">local</span>/var/singularity/mnt/session/share: destination /share doesn<span class="string">'t exist in container</span></span><br></pre></td></tr></table></figure>
 
-</li>
-</ol>
-<p>The linear model is the worst. I use two methods to establish the logistic model and I think green line <code>logistic</code> using function <code>nls()</code> looks better on the whole. Because <code>logistic.2</code> seems a little overfitting in the tail part.</p>
-<p><em>For quibblers, pedants, and idle hands itching for work to do</em>: The $p_k$ values from problem 3 aren’t all equally precise, because they come from different numbers of observations.  Also, if each doctor with $k$ adoptee contacts is independently deciding whether or not to adopt with probability $p_k$, then the variance in the number of adoptees will depend on $p_k$.  Say that the actual proportion who decide to adopt is $\hat{p}_k$.  A little probability (exercise!) shows that in this situation, $\mathbb{E}[\hat{p}_k] = p_k$, but that $\mathrm{Var}[\hat{p}_k] = p_k(1-p_k)/n_k$, where $n_k$ is the number of doctors in that situation.  (We estimate probabilities more precisely when they’re really extreme [close to 0 or 1], and/or we have lots of observations.)  We can estimate that variance as $\hat{V}_k = \hat{p}_k(1-\hat{p}_k)/n_k$.  Find the $\hat{V}_k$, and then re-do the estimation in (4a) and (4b) where the squared error for $p_k$ is divided by $\hat{V}_k$.  How much do the parameter estimates change?  How much do the plotted curves in (4c) change?</p>
-<p><strong>Probability exercise</strong>: Assume there are $n_k$ observations $x_1,x_2,…,x_{n_k}$. And $x_i = 1$ if the doctor adopts in month $k$, while $x_i = 0$ on the other side. So $x_i\in\lbrace 0,1\rbrace$. The distribution is determined by $P(x_i=1)=p_k$ and $P(x_i=0)=1-p_k$. It is exactly a binomial distribution. So $E(x_i) = p_k$ and $Var(x_i) = p_k(1-p_k)$.</p>
-<p>We can see that the proportion $\hat p_k = \displaystyle\frac{x_1+x_2+…+x_{n_k}}{n_k}$. Therefore, $\mathbb E(\hat p) = \displaystyle\frac{n\cdot E(x_i)}{n} = p_k$ and $Var(\hat  p) = \displaystyle\frac{1}{n_k^2}\cdot n_k\cdot Var(x_i) = p_k(1-p_k)/n_k$.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">idx &lt;- !(is.na(p.vec) | p.vec == 0)</span><br><span class="line">wt &lt;- p.vec*(1-p.vec)/k.vec</span><br><span class="line"># We can only take data!=0 because we just can&apos;t get p=0 more precisely</span><br><span class="line"># and thus the variance of that is meaningless.</span><br><span class="line">m.w1 &lt;- lm(p ~ k, data = df.p[idx,], weight = 1/wt[idx])</span><br><span class="line">summary(m.w1)</span><br><span class="line"></span><br><span class="line">m.w2 &lt;- nls(p ~ f(k, a, b), data = df.p[idx,], </span><br><span class="line">            start = list(a = 0, b = -0.2), weight = 1/wt[idx])</span><br><span class="line">summary(m.w2)</span><br></pre></td></tr></table></figure>
+<p>大概猜到<code>sandbox</code>目录在这里：<code>/usr/local/var/singularity/mnt/session/share</code></p>
+<h3 id="Singularity-Definition-Files"><a href="#Singularity-Definition-Files" class="headerlink" title="Singularity Definition Files"></a>Singularity Definition Files</h3><p>For a reproducible, production-quality container you should build a SIF file using a Singularity definition file. This also makes it easy to add files, environment variables, and install custom software, and still start from your base of choice (e.g., the Container Library).</p>
+<p>A definition file has a header and a body. </p>
+<ul>
+<li>The header determines the base container to begin with.</li>
+<li>The body is further divided into sections that do things like <strong>install software, setup the environment, and copy files into the container from the host system.</strong></li>
+</ul>
+<p>举例</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">BootStrap: library</span><br><span class="line">From: ubuntu:16.04</span><br><span class="line"></span><br><span class="line">%post</span><br><span class="line">    apt-get -y update</span><br><span class="line">    apt-get -y install fortune cowsay lolcat</span><br><span class="line"></span><br><span class="line">%environment</span><br><span class="line">    <span class="built_in">export</span> LC_ALL=C</span><br><span class="line">    <span class="built_in">export</span> PATH=/usr/games:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line">%runscript</span><br><span class="line">    fortune | cowsay | lolcat</span><br><span class="line"></span><br><span class="line">%labels</span><br><span class="line">    Author GodloveD</span><br></pre></td></tr></table></figure>
 
-<p><strong>The change of parameters</strong>:</p>
-<table>
-<thead>
-<tr>
-<th>Parameters</th>
-<th>Linear</th>
-<th>Linear.weight</th>
-<th>Logistic</th>
-<th>Logistic.weight</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>a</td>
-<td>0.0569324</td>
-<td>0.068669</td>
-<td>-2.56508</td>
-<td>-2.48943</td>
-</tr>
-<tr>
-<td>b</td>
-<td>-0.0037997</td>
-<td>-0.008548</td>
-<td>-0.17051</td>
-<td>-0.23754</td>
-</tr>
-</tbody></table>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">w1 = predict(m.w1, newdata=data.frame(k=c(0:20)))</span><br><span class="line">w2 = predict(m.w2, newdata=data.frame(k=c(0:20)))</span><br><span class="line"></span><br><span class="line">df.w &lt;- data.frame(k = 0:20, p = p.vec)</span><br><span class="line">df.w &lt;- mutate(df.w, linear = w1, logistic = w2)</span><br><span class="line">dft &lt;- df.w %&gt;% gather(model, res, -k) %&gt;% na.omit()</span><br><span class="line">dft %&gt;% ggplot() + geom_point(aes(x = k, y = res, color = model), size = 3) +</span><br><span class="line">      geom_line(aes(x = k, y = res, color = model), size = 1) +</span><br><span class="line">      labs(y = &quot;Probability&quot;,</span><br><span class="line">           title = &quot;Prediction of linear and logistic models with weight&quot;)</span><br></pre></td></tr></table></figure>
+<p>To build a container from this definition file (assuming it is a file named lolcow.def), you would call build like so:</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo singularity build lolcow.sif lolcow.def</span><br></pre></td></tr></table></figure>
 
-<p><strong>The change of plots</strong>: Both curves are more fitting when $k$ is small and seem to somehow neglect the dots in the middle-top. From my analysis, the reason is that smaller samples cause larger estimated variances, which reduce the weight of these points. And there are more observations when $k$ is small, which adds to the weight.</p>
+<p>In this example, the header tells Singularity to use a base Ubuntu 16.04 image from the Container Library.</p>
+<ul>
+<li><code>%post</code>：在创建容器时，base OS 安装后即在容器内执行，安装应用。</li>
+<li><code>%environment</code>：定义环境变量</li>
+<li><code>%runscript</code>：容器执行的动作</li>
+<li><code>%lables</code>：自定义元数据添加到容器</li>
+</ul>
+<p>但是我没有root权限，singularity给了一种解决办法，采用remote的方式</p>
+<h2 id="非root用户创建镜像：-Remote-Builder"><a href="#非root用户创建镜像：-Remote-Builder" class="headerlink" title="非root用户创建镜像： Remote Builder"></a>非root用户创建镜像： <a href="https://cloud.sylabs.io/builder" target="_blank" rel="noopener">Remote Builder</a></h2><p>我用github注册</p>
+<p>首先登陆</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity remote login</span><br></pre></td></tr></table></figure>
+
+<p>会有一个生成API密钥的网址，没有的话就去创建一个token，网站上说token要保存好哦，那我就保存了嘿</p>
+<p>然后上面那个<code>sudo</code>命令改为</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">singularity build --remote lolcow.sif lolcow.def</span><br></pre></td></tr></table></figure>
+
+<p>成功了！可以在 remote builder 里面 My Builds 找到它。</p>
+<p><img src="1612250113238.png" alt></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity pull library://sisih/remote-builds/rb-6018ef829a193de1c6105db1:latest</span><br></pre></td></tr></table></figure>
+
+<h3 id="Add-signature"><a href="#Add-signature" class="headerlink" title="Add signature"></a>Add signature</h3><p>但这步骤看起来不是必须的</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity key newpair</span><br><span class="line">Enter your name (e.g., John Doe) :</span><br><span class="line">Enter your email address (e.g., john.doe@example.com) : </span><br><span class="line">Enter optional comment (e.g., development keys) :</span><br><span class="line">Enter a passphrase :</span><br><span class="line">Retype your passphrase :</span><br><span class="line">Would you like to push it to the keystore? [Y,n] y</span><br><span class="line">Generating Entity and OpenPGP Key Pair... <span class="keyword">done</span></span><br><span class="line">Key successfully pushed to: https://keys.sylabs.io</span><br></pre></td></tr></table></figure>
+
+<p>注意邮箱不是任意填写的，可能是这个账号绑定的邮箱……总之填错了，它会提示你给的邮箱</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Failed to push newly created key to keystore: key server did not accept PGP key: entity *****: primary identity does not contain email <span class="string">'我的邮箱@zju.edu.cn'</span> (400 Bad Request)</span><br></pre></td></tr></table></figure>
+
+<p>查看 key list 然后 sign</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity key list</span><br><span class="line">$ singularity sign --keyidx 4 rb-6018ef829a193de1c6105db1_latest.sif</span><br><span class="line">Signing image: rb-6018ef829a193de1c6105db1_latest.sif</span><br><span class="line">Enter key passphrase :</span><br><span class="line">Signature created and applied to rb-6018ef829a193de1c6105db1_latest.sif</span><br></pre></td></tr></table></figure>
+
+<p>然后再 push，但是不能 push 到原来远程build的临时容器当中，可以这样push到一个新的容器中（非remote-built，我default拼写错误请忽视呜呜）</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$  singularity push rb-6018ef829a193de1c6105db1_latest.sif library://sisih/defualt/<span class="built_in">test</span>:0.0.0</span><br></pre></td></tr></table></figure>
+
+<p>它在这里，大家应该都能访问看到 <a href="https://cloud.sylabs.io/library/sisih/defualt/test" target="_blank" rel="noopener">Sylabs Cloud</a></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity pull --arch amd64 library://sisih/defualt/<span class="built_in">test</span>:0.0.0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity verify test_0.0.0.sif</span><br><span class="line">Verifying image: test_0.0.0.sif</span><br><span class="line">[LOCAL]   Signing entity: Sisi Huang &lt;3170103624@zju.edu.cn&gt;</span><br><span class="line">[LOCAL]   Fingerprint: 05C08210E309B5C025A54E7F28983F54A2001DA8</span><br><span class="line">Objects verified:</span><br><span class="line">ID  |GROUP   |LINK    |TYPE</span><br><span class="line">------------------------------------------------</span><br><span class="line">1   |1       |NONE    |Def.FILE</span><br><span class="line">2   |1       |NONE    |FS</span><br><span class="line">Container verified: test_0.0.0.sif</span><br></pre></td></tr></table></figure>
+
+<h2 id="镜像缓存"><a href="#镜像缓存" class="headerlink" title="镜像缓存"></a>镜像缓存</h2><p>查看已有cache</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity cache list --verbose</span><br><span class="line">NAME                     DATE CREATED           SIZE             TYPE</span><br><span class="line">sha256.02ee8bf9dc335c2   2021-02-02 11:56:15    28.11 MB         library</span><br><span class="line">sha256.4d184900b2dc0cb   2021-02-02 14:26:12    97.99 MB         library</span><br><span class="line">sha256.e37e11f101a9db8   2021-02-02 11:07:21    83.79 MB         library</span><br></pre></td></tr></table></figure>
+
+<p>清除已有cache</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ singularity cache clean</span><br></pre></td></tr></table></figure>
+
+<p>Reference<br><a href="https://sylabs.io/guides/3.5/user-guide/quick_start.html" target="_blank" rel="noopener">https://sylabs.io/guides/3.5/user-guide/quick_start.html</a></p>
 ]]></content>
       <tags>
-        <tag>R</tag>
+        <tag>生信</tag>
       </tags>
   </entry>
   <entry>
-    <title>jackknife估计参数误差（R code）</title>
-    <url>/2020/12/14/R-cmu-hw03/</url>
-    <content><![CDATA[<p>回归拟合，参数估计，nlm<br><a href="https://huangsisihome.files.wordpress.com/2020/12/homework-03.pdf" target="_blank" rel="noopener">https://huangsisihome.files.wordpress.com/2020/12/homework-03.pdf</a></p>
+    <title>docker安装</title>
+    <url>/2021/02/03/install-docker-on-Ubuntu/</url>
+    <content><![CDATA[<p>windows 安装 docker 建议直接上虚拟机+Ubuntu iso，用WSL有太多坑，当然想尝试没问题。</p>
 <a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">library(tidyverse)</span><br><span class="line">library(DAAG)</span><br><span class="line">library(ggpubr)</span><br></pre></td></tr></table></figure>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="安装Ubuntu系统虚拟机"><a href="#安装Ubuntu系统虚拟机" class="headerlink" title="安装Ubuntu系统虚拟机"></a>安装Ubuntu系统虚拟机</h3><p>见 <a href="https://hc1023.github.io/2019/11/27/VMlinux/" target="_blank" rel="noopener">https://hc1023.github.io/2019/11/27/VMlinux/</a></p>
+<h3 id="卸载已有的旧版本"><a href="#卸载已有的旧版本" class="headerlink" title="卸载已有的旧版本"></a>卸载已有的旧版本</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br></pre></td></tr></table></figure>
 
-<p><strong>Background</strong>: In the previous lectures and lab, we began to look at user-written functions. For this assignment we will continue with a look at fitting models by optimizing error functions, and making user-written functions parts of larger pieces of code.</p>
-<p>In lecture, we saw how to estimate the parameter $a$ in a nonlinear model,</p>
-<p>$$<br> Y = y_0 N^a + \mathrm{noise}<br>$$<br>by minimizing the mean squared error<br>$$<br> \frac{1}{n}\sum_{i=1}^{n}{(Y_i - y_0 N_i^a)^2}.<br>$$<br>We did this by approximating the derivative of the MSE, and adjusting $a$ by an amount proportional to that, stopping when the derivative became small.  Our procedure assumed we knew $y_0$.  In this assignment, we will use a built-in R function to estimate both parameters at once; it uses a fancier version of the same idea.</p>
-<p>Because the model is nonlinear, there is no simple formula for the parameter estimates in terms of the data.  Also unlike linear models, there is no simple formula for the <em>standard errors</em> of the parameter estimates.  We will therefore use a technique called <strong>the jackknife</strong> to get approximate standard errors.</p>
-<p>Here is how the jackknife works:</p>
-<ul>
-<li>Get a set of $n$ data points and get an estimate $\hat{\theta}$ for the  parameter of interest $\theta$.</li>
-<li>For each data point $i$, remove $i$ from the data set, and get an  estimate $\hat{\theta}<em>{(-i)}$ from the remaining $n-1$ data points.  The $\hat{\theta}</em>{(-i)}$ are sometimes called the “jackknife estimates”.</li>
-<li>Find the mean $\overline{\theta}$ of the $n$ values of $\hat{\theta}_{(-i)}$</li>
-<li>The jackknife variance of $\hat{\theta}$ is<br>$$<br>\frac{n-1}{n}\sum_{i=1}^{n}{(\hat{\theta}<em>{(-i)} - \overline{\theta})^2} = \frac{(n-1)^2}{n}\mathrm{var}{[\hat{\theta}</em>{(-i)}]}<br>$$<br>where $\mathrm{var}$ stands for the sample variance.  (<em>Challenge</em>: can you explain the factor of $(n-1)^2/n$?  <em>Hint</em>: think about what happens when $n$ is large so $(n-1)/n \approx 1$.)</li>
-<li>The jackknife standard error of $\hat{\theta}$ is the square root of the jackknife variance.</li>
-</ul>
-<p>You will estimate the power-law scaling model, and its uncertainty, using the data alluded to in lecture, available in the file <code>gmp.dat</code> from lecture, which contains data for 2006.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gmp &lt;- read.table(&quot;./data/gmp.dat&quot;)</span><br><span class="line">gmp$pop &lt;- round(gmp$gmp/gmp$pcgmp)</span><br></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="set-up-the-repository"><a href="#set-up-the-repository" class="headerlink" title="set up the repository"></a>set up the repository</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install \</span><br><span class="line">    apt-transport-https \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg-agent \</span><br><span class="line">    software-properties-common</span><br></pre></td></tr></table></figure>
 
-<ol>
-<li>First, plot the data as in lecture, with per capita GMP on the y-axis and population on the x-axis. Add the curve function with the default values provided in lecture. Add two more curves corresponding to $a=0.1$ and $a=0.15$; use the <code>col</code> option to give each curve a different color (of your choice).</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gmp &lt;- gmp %&gt;% mutate(a_0.125 = 6611*(gmp/pcgmp)^(1/8),</span><br><span class="line">                      a_0.1 = 6611*(gmp/pcgmp)^0.1, a_0.15 = 6611*(gmp/pcgmp)^0.15)</span><br><span class="line">gmp_tidy &lt;- gmp[,3:7] %&gt;% gather(para_a_value, nlmfit, -pcgmp, -pop)</span><br><span class="line"></span><br><span class="line">gmp_tidy %&gt;% ggplot() + geom_point(aes(x = pop, y = pcgmp))+</span><br><span class="line">  labs(x = &quot;Population&quot;, y = &quot;Per-Capita Economic Output ($/person-year)&quot;,</span><br><span class="line">  title = &quot;US Metropolitan Areas, 2006&quot;)+</span><br><span class="line">  geom_line(aes(x = pop, y = nlmfit, color = para_a_value), size = 1.5) +</span><br><span class="line">  scale_x_continuous(trans = &apos;log10&apos;) + # take the logarithm of the population</span><br><span class="line">  scale_color_manual(values=c(&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;)) # set color manually</span><br></pre></td></tr></table></figure>
+<p>添加官方GPG key</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>Write a function, called <code>mse()</code>, which calculates the mean squared error of the model on a given data set. <code>mse()</code> should take three arguments: a numeric vector of length two, the first component standing for $y_0$ and the second for $a$; a numerical vector containing the values of $N$; and a numerical vector containing the values of $Y$.  The function should return a single numerical value. The latter two arguments should have as the default values the columns <code>pop</code> and <code>pcgmp</code> (respectively) from the <code>gmp</code> data frame from lecture.  Your function may not use <code>for()</code> or any other loop. Check that, with the default data, you get the following values.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; mse(c(6611,0.15))</span><br><span class="line">[1] 207057513</span><br><span class="line">&gt; mse(c(5000,0.10))</span><br><span class="line">[1] 298459915</span><br></pre></td></tr></table></figure>
+<p>通过搜索后8位数字来确认有相应指纹的密钥 <code>9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88</code></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-key fingerprint 0EBFCD88</span><br></pre></td></tr></table></figure>
 
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mse &lt;- function(para, N = gmp$pop, Y = gmp$pcgmp)&#123;</span><br><span class="line">  return(mean((Y - para[1]*N^para[2])^2))</span><br><span class="line">&#125;</span><br><span class="line">mse(c(6611,0.15))</span><br><span class="line">mse(c(5000,0.10))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pub   rsa4096 2017-02-22 [SCEA]</span><br><span class="line">      9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88</span><br><span class="line">uid           [ unknown] Docker Release (CE deb) &lt;docker@docker.com&gt;</span><br><span class="line">sub   rsa4096 2017-02-22 [S]</span><br></pre></td></tr></table></figure>
 
-<ol start="4">
-<li>R has several built-in functions for optimization, which we will meet as we go through the course.  One of the simplest is <code>nlm()</code>, or non-linear minimization. <code>nlm()</code> takes two required arguments: a function, and a starting value for that function. Run <code>nlm()</code> three times with your function <code>mse()</code> and three starting value pairs for $y0$ and $a$ as in<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nlm(mse, c(y0=6611,a=1/8))</span><br></pre></td></tr></table></figure>
+<p>set up stable repository</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo add-apt-repository \</span><br><span class="line">   <span class="string">"deb [arch=amd64] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">   <span class="variable">$(lsb_release -cs)</span> \</span></span><br><span class="line"><span class="string">   stable"</span></span><br></pre></td></tr></table></figure>
 
-</li>
-</ol>
-<p>What do the quantities <code>minimum</code> and <code>estimate</code> represent? What values does it return for these?</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">t1 &lt;- nlm(mse, c(y0=6611,a=1/8))</span><br><span class="line">t2 &lt;- nlm(mse, c(y0=6600,a=0.1))</span><br><span class="line">t3 &lt;- nlm(mse, c(y0=6620,a=0.15))</span><br></pre></td></tr></table></figure>
+<h3 id="安装docker引擎"><a href="#安装docker引擎" class="headerlink" title="安装docker引擎"></a>安装docker引擎</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><code>minimum</code> represents the the value of the estimated minimum of f.</li>
-<li><code>estimate</code> represents the point at which the minimum value of f is obtained.</li>
-</ul>
-<ol start="5">
-<li>Using <code>nlm()</code>, and the <code>mse()</code> function you wrote, write a function, <code>plm()</code>, which estimates the parameters $y_0$ and $a$ of the model by minimizing the mean squared error.  It should take the following arguments: an initial guess for $y_0$; an initial guess for $a$; a vector containing the $N$ values; a vector containing the $Y$ values.  All arguments except the initial guesses should have suitable default values.  It should return a list with the following components: the final guess for $y_0$; the final guess for $a$; the final value of the MSE.  Your function must call those you wrote in earlier questions (it should not repeat their code), and the appropriate arguments to <code>plm()</code> should be passed on to them.<br>What parameter estimate do you get when starting from $y_0 = 6611$ and $a = 0.15$?  From $y_0 = 5000$ and $a = 0.10$?  If these are not the same, why do they differ?  Which estimate has the lower MSE?  </li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">plm &lt;- function(para, N = gmp$pop, Y = gmp$pcgmp)&#123;</span><br><span class="line">  t &lt;- nlm(mse, c(para[1], para[2]), N, Y)</span><br><span class="line">  return(list(parameters = c(t$estimate[1], t$estimate[2]), MSE = t$minimum))</span><br><span class="line">&#125;</span><br><span class="line">plm(c(6611,0.15))</span><br><span class="line">plm(c(5000,0.10))</span><br></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
 
-<p>There are multiple local optimal values. The first group of parameters has the lower MSE.</p>
-<ol start="7">
-<li><p><em>Convince yourself the jackknife can work</em>.<br> a. Calculate the mean per-capita GMP across cities, and the standard error of this mean, using the built-in functions <code>mean()</code> and <code>sd()</code>, and the formula for the standard error of the mean you learned in your intro. stats. class (or looked up on Wikipedia…).</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mean(gmp$pcgmp)</span><br><span class="line">sd(gmp$pcgmp)/sqrt(nrow(gmp)) # standard error = sd/sqrt(n)</span><br></pre></td></tr></table></figure>
-
-<p> The standard error of the mean $(\sigma_{\bar x}) = \sqrt{\frac{\Sigma_{i=1}^n (x_i - \bar x)^2}{n(n-1)}}$<br> b. Write a function which takes in an integer <code>i</code>, and calculate the mean per-capita GMP for every city <em>except</em> city number <code>i</code>.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mean.jackknife &lt;- function(i, pc = gmp$pcgmp)&#123;</span><br><span class="line">  return(mean(pc[-i]))</span><br><span class="line">&#125;</span><br><span class="line"># mean.jackknife(1)</span><br></pre></td></tr></table></figure>
-
-<p> c. Using this function, create a vector, <code>jackknifed.means</code>, which has the mean per-capita GMP where every city is held out in turn.  (You may use a <code>for</code> loop or <code>sapply()</code>.)</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">n = nrow(gmp)</span><br><span class="line">jackknifed.means &lt;- sapply(1:n,mean.jackknife)</span><br></pre></td></tr></table></figure>
-
-<p> d. Using the vector <code>jackknifed.means</code>, calculate the jack-knife approximation to the standard error of the mean.  How well does it match your answer from part (a)?</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sqrt((n-1)^2/n*var(jackknifed.means))</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>They are the same. Furthermore, it is easy to prove the equivalence that $$\frac{n-1}{n} \sum_{i=1}^{n}\left(\hat{\theta}<em>{(-i)}-\hat{\theta}</em>{(\cdot)}\right)^{2}=\frac{1}{n(n-1)} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}$$when $\hat\theta_{(-i)} = \displaystyle\frac{\sum_{j=1}^n x_j - x_i}{n-1}$ and $\hat{\theta}<em>{(\cdot)}=\frac{1}{n} \sum</em>{i=1}^{n} \hat{\theta}_{(-i)}$.</p>
-<ol start="8">
-<li>Write a function, <code>plm.jackknife()</code>, to calculate jackknife standard errors for the parameters $y_0$ and $a$.  It should take the same arguments as <code>plm()</code>, and return standard errors for both parameters.  This function should call your <code>plm()</code> function repeatedly.  What standard errors do you get for the two parameters?</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">plm.jackknife &lt;- function(para, N = gmp$pop, Y = gmp$pcgmp)&#123;</span><br><span class="line">  # para = c(6611, 0.125)</span><br><span class="line">  jackknife &lt;- function(i)&#123;</span><br><span class="line">      return(plm(para,N[-i],Y[-i])$parameters)</span><br><span class="line">  &#125;</span><br><span class="line">  n = length(N)</span><br><span class="line">  jackknifed.para &lt;- sapply(1:n, jackknife)</span><br><span class="line">  y.sd &lt;- sqrt((n-1)^2/n*var(jackknifed.para[1,]))</span><br><span class="line">  a.sd &lt;- sqrt((n-1)^2/n*var(jackknifed.para[2,]))</span><br><span class="line">  sd &lt;- c(y.sd,a.sd) </span><br><span class="line">  names(sd) = c(&apos;y.sd&apos;,&apos;a.sd&apos;)</span><br><span class="line">  return(sd)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">plm.jackknife(c(6611, 0.125))</span><br></pre></td></tr></table></figure>
-
-<ol start="9">
-<li>The file <code>gmp-2013.dat</code> contains measurements for for 2013.  Load it, and use <code>plm()</code> and <code>plm.jackknife</code> to estimate the parameters of the model for 2013, and their standard errors.  Have the parameters of the model changed significantly?</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gmp_2013 &lt;- read.csv(&quot;data/gmp-2013.dat&quot;, header=T, sep = &quot; &quot;) %&gt;%</span><br><span class="line">  mutate(pop = round(gmp/pcgmp))</span><br><span class="line">plm(c(6611,1/8),N = gmp_2013$pop, Y = gmp_2013$pcgmp)</span><br><span class="line">plm.jackknife(c(6611, 0.125),N = gmp_2013$pop, Y = gmp_2013$pcgmp)</span><br></pre></td></tr></table></figure>
-
-<p>We can see that parameters don’t change significiantly.</p>
+<p><img src="1612092243314.png" alt></p>
+<p>成功</p>
 ]]></content>
       <tags>
-        <tag>R</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tidyverse数据处理和作图（R code）</title>
-    <url>/2020/12/14/R-cmu-hw02/</url>
-    <content><![CDATA[<p>数据清洗，ggplot，tidyverse<br><a href="https://huangsisihome.files.wordpress.com/2020/12/homework-02.pdf" target="_blank" rel="noopener">https://huangsisihome.files.wordpress.com/2020/12/homework-02.pdf</a></p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">library(tidyverse)</span><br><span class="line">library(DAAG)</span><br><span class="line">library(ggpubr)</span><br></pre></td></tr></table></figure>
-
-<p>The data set calif_penn_2011.csv contains information about the housing stock of California and Pennsylvania, as of 2011.  Information as aggregated into “Census tracts”, geographic regions of a few thousand people which are supposed to be fairly homogeneous economically and socially.</p>
-<ol>
-<li><p><em>Loading and cleaning</em><br> a. Load the data into a dataframe called <code>ca_pa</code>.<br> b. How many rows and columns does the dataframe have?</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_pa &lt;- read.csv(&quot;data/calif_penn_2011.csv&quot;, header=T)[,-1]</span><br><span class="line">nrow(ca_pa)</span><br><span class="line">ncol(ca_pa)</span><br></pre></td></tr></table></figure>
-
-<p> c. Run this command, and explain, in words, what this does:</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">colSums(apply(ca_pa,c(1,2),is.na))</span><br></pre></td></tr></table></figure>
-
-<p> Count the number of missing data in each column.</p>
-<p> d. The function <code>na.omit()</code> takes a dataframe and returns a new dataframe, omitting any row containing an NA value.  Use it to purge the data set of rows with incomplete data.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_pa &lt;- na.omit(ca_pa)</span><br></pre></td></tr></table></figure>
-
-<p> e. How many rows did this eliminate?    </p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nrow(read.csv(&quot;data/calif_penn_2011.csv&quot;, header=T))-nrow(ca_pa)</span><br></pre></td></tr></table></figure>
-
-<p> f. Are your answers in (c) and (e) compatible? Explain.<br> Yes. Some rows may have more than one missing data.</p>
-</li>
-<li><p><em>This Very New House</em>  </p>
-<p> a. The variable <code>Built_2005_or_later</code> indicates the percentage of houses in each Census tract built since 2005.  Plot median house prices against this variable.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ggplot(ca_pa, aes(Built_2005_or_later, Median_house_value)) +</span><br><span class="line">  geom_point() + geom_smooth()</span><br></pre></td></tr></table></figure>
-
-<p> Or we can calculate the mean of the median house value for each value of variable <code>Built_2005_or_later</code>. So the number of points can be fewer.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_pa %&gt;% group_by(Built_2005_or_later) %&gt;%</span><br><span class="line">  summarize(median_house_price = mean(Median_house_value)) %&gt;%</span><br><span class="line">ggplot(aes(Built_2005_or_later, median_house_price)) +</span><br><span class="line">  geom_point() + geom_smooth()</span><br></pre></td></tr></table></figure>
-
-<p> b. Make a new plot, or pair of plots, which breaks this out by state. Note that the state is recorded in the <code>STATEFP</code> variable, with California being state 6 and Pennsylvania state 42.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_pa$STATEFP &lt;- factor(ca_pa$STATEFP)</span><br><span class="line"></span><br><span class="line">ca_pa %&gt;% group_by(Built_2005_or_later, STATEFP) %&gt;%</span><br><span class="line">  summarize(median_house_price = mean(Median_house_value)) %&gt;%</span><br><span class="line">  ggplot(aes(Built_2005_or_later, median_house_price, color = STATEFP)) +</span><br><span class="line">  geom_point() + geom_smooth()</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><em>Nobody Home</em>  </p>
-<p> The vacancy rate is the fraction of housing units which are not occupied.  The dataframe contains columns giving the total number of housing units for each Census tract, and the number of vacant housing units.  </p>
-<p> a. Add a new column to the dataframe which contains the vacancy rate.  What are the minimum, maximum, mean, and median vacancy rates?</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_pa &lt;- ca_pa %&gt;% mutate(vacancy_rate = Vacant_units/Total_units)</span><br><span class="line">summary(ca_pa$vacancy_rate)</span><br></pre></td></tr></table></figure>
-
-<p> b. Plot the vacancy rate against median house value.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_pa %&gt;% </span><br><span class="line">  ggplot(aes(Median_house_value, vacancy_rate)) +</span><br><span class="line">  geom_point() + geom_smooth()</span><br></pre></td></tr></table></figure>
-
-<p> c. Plot vacancy rate against median house value separately for California and for Pennsylvania.  Is there a difference?</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_pa %&gt;%</span><br><span class="line">  ggplot(aes(Median_house_value, vacancy_rate, shape = STATEFP, color = STATEFP)) +</span><br><span class="line">  geom_point() + geom_smooth()</span><br><span class="line"></span><br><span class="line">p1 &lt;- ca_pa %&gt;% filter(STATEFP == 6) %&gt;% ggplot(aes(Median_house_value, vacancy_rate)) + </span><br><span class="line">  geom_point() + ggtitle(&quot;California&quot;)</span><br><span class="line">p2 &lt;- ca_pa %&gt;% filter(STATEFP ==42) %&gt;% ggplot(aes(Median_house_value, vacancy_rate)) + </span><br><span class="line">  geom_point() + ggtitle(&quot;Pennsylvania&quot;)</span><br><span class="line">ggarrange(p1, p2, ncol = 2, nrow = 1)</span><br></pre></td></tr></table></figure>
-
-<p> The prices of the houses are lower in Pennysylvania, so the points are clustered at the left-bottom. And the variance of the vacancy rate in Pennysylvania is also lower.</p>
-</li>
-<li><p>The column <code>COUNTYFP</code> contains a numerical code for counties within each state.  We are interested in Alameda County (county 1 in California), Santa Clara (county 85 in California), and Allegheny County (county 3 in Pennsylvania).</p>
-<p> a. Explain what the block of code at the end of this question is supposed to accomplish, and how it does it.</p>
-<p> Object: Calculate the median number of total units in Alameda County, California.</p>
-<p> Fisrtly, pick the row number of Alameda County, California and save it as <code>acca</code>. Then using <code>acca</code> as index, the information of total units in Alameda County, California is saved in <code>accamhv</code>. The method is loop trasversal. Lastly the median number can be calculated from <code>accamhv</code>.</p>
-<p> b. Give a single line of R which gives the same final answer as the block of code.  Note: there are at least two ways to do this; you just have to find one.</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_pa %&gt;% filter(STATEFP == 6, COUNTYFP == 1) %&gt;%</span><br><span class="line">  select(Total_units) %&gt;% unlist() %&gt;% median()</span><br></pre></td></tr></table></figure>
-
-<p> c. For Alameda, Santa Clara and Allegheny Counties, what were the average percentages of housing built since 2005?</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ca_house_2005 &lt;- ca_pa %&gt;% </span><br><span class="line">  filter(((STATEFP == 6) &amp; (COUNTYFP %in% c(1,85))) | </span><br><span class="line">           ((STATEFP == 42) &amp; (COUNTYFP == 3)) ) %&gt;% </span><br><span class="line">  group_by(COUNTYFP) %&gt;% summarize(mean_2005 = mean(Built_2005_or_later))</span><br><span class="line">ca_house_2005[,1] &lt;- c(&apos;Alameda&apos;, &apos;Santa Clara&apos;, &apos;Allegheny&apos;)</span><br><span class="line">ca_house_2005</span><br></pre></td></tr></table></figure>
-
-<p> d. The <code>cor</code> function calculates the correlation coefficient between two variables.  What is the correlation between median house value and the percent of housing built since 2005 in (i) the whole data, (ii) all of California, (iii) all of Pennsylvania, (iv) Alameda County, (v) Santa Clara County and (vi) Allegheny County?</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mycor &lt;- function(x)&#123;</span><br><span class="line">  return(cor(x$Median_house_value, x$Built_2005_or_later))</span><br><span class="line">&#125;</span><br><span class="line">mycor(ca_pa)</span><br><span class="line">ca_pa %&gt;% filter(STATEFP == 6) %&gt;% mycor()</span><br><span class="line">ca_pa %&gt;% filter(STATEFP == 42) %&gt;% mycor()</span><br><span class="line">ca_pa %&gt;% filter(STATEFP == 6, COUNTYFP == 1) %&gt;% mycor()</span><br><span class="line">ca_pa %&gt;% filter(STATEFP == 6, COUNTYFP == 85) %&gt;% mycor()</span><br><span class="line">ca_pa %&gt;% filter(STATEFP == 42, COUNTYFP == 3) %&gt;% mycor()</span><br></pre></td></tr></table></figure>
-
-<p> e. Make three plots, showing median house values against median income, for Alameda, Santa Clara, and Allegheny Counties.  (If you can fit the information into one plot, clearly distinguishing the three counties, that’s OK too.)</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">p1 &lt;- ca_pa %&gt;% filter(STATEFP == 6, COUNTYFP == 1) %&gt;% </span><br><span class="line">  ggplot(aes(Median_household_income, Median_house_value)) + </span><br><span class="line">  geom_point() + ggtitle(&quot;Alameda&quot;)</span><br><span class="line">p2 &lt;- ca_pa %&gt;% filter(STATEFP == 6, COUNTYFP == 85) %&gt;% </span><br><span class="line">  ggplot(aes(Median_household_income, Median_house_value)) + </span><br><span class="line">  geom_point() + ggtitle(&quot;Santa Clara&quot;)</span><br><span class="line">p3 &lt;- ca_pa %&gt;% filter(STATEFP ==42, COUNTYFP == 3) %&gt;% </span><br><span class="line">  ggplot(aes(Median_household_income, Median_house_value)) + </span><br><span class="line">  geom_point() + ggtitle(&quot;Allegheny&quot;)</span><br><span class="line">ggarrange(p1, p2, p3, ncol = 3, nrow = 1)</span><br></pre></td></tr></table></figure>
-
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">acca &lt;- c()</span><br><span class="line">for (tract in 1:nrow(ca_pa)) &#123;</span><br><span class="line">  if (ca_pa$STATEFP[tract] == 6) &#123;</span><br><span class="line">    if (ca_pa$COUNTYFP[tract] == 1) &#123;</span><br><span class="line">      acca &lt;- c(acca, tract)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">accamhv &lt;- c()</span><br><span class="line">for (tract in acca) &#123;</span><br><span class="line">  accamhv &lt;- c(accamhv, ca_pa[tract,10])</span><br><span class="line">&#125;</span><br><span class="line">median(accamhv)</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>MB.Ch1.11. Run the following code:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gender &lt;- factor(c(rep(&quot;female&quot;, 91), rep(&quot;male&quot;, 92)))</span><br><span class="line">table(gender)</span><br><span class="line">gender &lt;- factor(gender, levels=c(&quot;male&quot;, &quot;female&quot;))</span><br><span class="line">table(gender)</span><br><span class="line">gender &lt;- factor(gender, levels=c(&quot;Male&quot;, &quot;female&quot;))</span><br><span class="line"># Note the mistake: &quot;Male&quot; should be &quot;male&quot;</span><br><span class="line">table(gender)</span><br><span class="line">table(gender, exclude=NULL)</span><br><span class="line">rm(gender)  # Remove gender</span><br></pre></td></tr></table></figure>
-
-<p>Explain the output from the successive uses of table().</p>
-<p>Table uses the cross-classifying factors to build a contingency table of the counts at each combination of factor levels.</p>
-<ul>
-<li>First line makes <code>gender</code> a factor with two levels <code>female</code>, <code>male</code>. </li>
-<li>Third line just changes the levels order.</li>
-<li>Fifth line takes the <code>levels</code> to be “Male” and “female”, but there is no Male in gender.</li>
-<li>Eighth line outputs the count number of NA, which is the number of “female”.</li>
-</ul>
-<p>MB.Ch1.12. Write a function that calculates the proportion of values in a vector x that exceed some value cutoff.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">func_cutoff &lt;- function(x, thresh)&#123;</span><br><span class="line">  return(prop.table(table(x&gt;thresh))[2] %&gt;% unname())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>(a) Use the sequence of numbers 1, 2, . . . , 100 to check that this function gives the result that is expected.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">x = 1:100</span><br><span class="line">thresh = 25</span><br><span class="line">func_cutoff(x,thresh)</span><br></pre></td></tr></table></figure>
-
-<p>(b) Obtain the vector ex01.36 from the Devore6 (or Devore7) package. These data give the times required for individuals to escape from an oil platform during a drill. Use dotplot() to show the distribution of times. Calculate the proportion of escape times that exceed 7 minutes.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># The package has been removed</span><br></pre></td></tr></table></figure>
-
-<p>MB.Ch1.18. The Rabbit data frame in the MASS library contains blood pressure change measurements on five rabbits (labeled as R1, R2, . . . ,R5) under various control and treatment conditions. Read the help file for more information. Use the unstack() function (three times) to convert Rabbit to the following form:</p>
-<p>Treatment Dose   R1   R2   R3   R4   R5 </p>
-<p>1 Control 6.25  0.50 1.00 0.75 1.25 1.5 </p>
-<p>2 Control 12.50 4.50 1.25 3.00 1.50 1.5 </p>
-<p>….</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># method 1: Use spread()</span><br><span class="line"># as.data.frame(MASS::Rabbit)[,-3] %&gt;% spread(Animal,BPchange) %&gt;% arrange(Treatment)</span><br><span class="line"># method 2: Use the unstack() function (three times)</span><br><span class="line">library(MASS)</span><br><span class="line">Dose &lt;- unstack(Rabbit, Dose ~ Animal)[,1]</span><br><span class="line">Treatment &lt;- unstack(Rabbit, Treatment ~ Animal)[,1]</span><br><span class="line">BPchange &lt;- unstack(Rabbit, BPchange ~ Animal)</span><br><span class="line">data.frame(Treatment, Dose, BPchange)</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>R</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>基础操作（R code）</title>
-    <url>/2020/12/14/R-cmu-hw01/</url>
-    <content><![CDATA[<p>把自己做过的几份R小练习传上来，便于检索。<br>文件读取，vector, list, dataframe基本操作，plot<br><a href="https://huangsisihome.files.wordpress.com/2020/12/homework-01.pdf" target="_blank" rel="noopener">https://huangsisihome.files.wordpress.com/2020/12/homework-01.pdf</a></p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">library(tidyverse)</span><br><span class="line">library(DAAG)</span><br><span class="line">library(ggpubr)</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>The Iowa data set iowa.csv is a toy example that summarises the yield of wheat (bushels per acre) for the state of Iowa between 1930-1962. In addition to yield, year, rainfall and temperature were recorded as the main predictors of yield.<br> a. First, we need to load the data set into R using the command <code>read.csv()</code>. Use the help function to learn what arguments this function takes. Once you have the necessary input, load the data set into R and make it a data frame called <code>iowa.df</code>.<br> b. How many rows and columns does <code>iowa.df</code> have?<br> c. What are the names of the columns of <code>iowa.df</code>?<br> d. What is the value of row 5, column 7 of <code>iowa.df</code>?<br> e. Display the second row of <code>iowa.df</code> in its entirety.</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># a</span><br><span class="line">iowa.df&lt;-read.csv(&quot;data/iowa.csv&quot;,header=T,sep = &quot;;&quot;)</span><br><span class="line"># b</span><br><span class="line">nrow(iowa.df)</span><br><span class="line">ncol(iowa.df)</span><br><span class="line"># c</span><br><span class="line">colnames(iowa.df)</span><br><span class="line"># d</span><br><span class="line">iowa.df[5,7]</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># e</span><br><span class="line">iowa.df[2,]</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>Syntax and class-typing.<br> a. For each of the following commands, either explain why they should be errors, or explain the non-erroneous result.</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vector1 &lt;- c(&quot;5&quot;, &quot;12&quot;, &quot;7&quot;, &quot;32&quot;)</span><br><span class="line">max(vector1)</span><br><span class="line">sort(vector1)</span><br><span class="line">sum(vector1)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>Create a character vector. The elements are strings.</p>
-</li>
-<li><p>Maximum element in lexicographical order. The comparison is based on the Unicode value of each character in the concatenation.</p>
-</li>
-<li><p>Sort in lexicographical order.</p>
-</li>
-<li><p>The arguments of sum should be numeric or complex or logical vectors.</p>
-<p>  b. For the next series of commands, either explain their results, or why they should produce errors.</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vector2 &lt;- c(&quot;5&quot;,7,12)</span><br><span class="line">vector2[2] + vector2[3]</span><br><span class="line"></span><br><span class="line">dataframe3 &lt;- data.frame(z1=&quot;5&quot;,z2=7,z3=12)</span><br><span class="line">dataframe3[1,2] + dataframe3[1,3]</span><br><span class="line"></span><br><span class="line">list4 &lt;- list(z1=&quot;6&quot;, z2=42, z3=&quot;49&quot;, z4=126)</span><br><span class="line">list4[[2]]+list4[[4]]</span><br><span class="line">list4[2]+list4[4]</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>It is important to remember that a vector can contain elements of only one type. When types are missed, R modifies the entire vector to be one of the more complicated type. In this example, vector2 has been inserted a character among the numeric, so the entire vector gets converted to character.</p>
-</li>
-<li><p>The data type is character.</p>
-</li>
-<li><p>Create a dataframe, the elements are of data types character, numeric, numeric separately.</p>
-</li>
-<li><p>Numeric variable can be added.</p>
-</li>
-<li><p>Create a list, which keeps the data type.</p>
-</li>
-<li><p>Numeric variable can be added.</p>
-</li>
-<li><p>Indexing a list is done using double bracket.</p>
-</li>
-</ul>
-<ol start="3">
-<li>Working with functions and operators.<br> a. The colon operator will create a sequence of integers in order. It is a special case of the function <code>seq()</code> which you saw earlier in this assignment. Using the help command <code>?seq</code> to learn about the function, design an expression that will give you the sequence of numbers from 1 to 10000 in increments of 372. Design another that will give you a sequence between 1 and 10000 that is exactly 50 numbers in length.<br> b. The function <code>rep()</code> repeats a vector some number of times. Explain the difference between `rep(1:3, times=3) and rep(1:3, each=3).</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">seq(1,10000,by = 372)</span><br><span class="line">seq(1,10000,length.out = 50)</span><br></pre></td></tr></table></figure>
-
-<p>MB.Ch1.2. The orings data frame gives data on the damage that had occurred in US space shuttle launches prior to the disastrous Challenger launch of 28 January 1986. The observations in rows 1, 2, 4, 11, 13, and 18 were included in the pre-launch charts used in deciding whether to proceed with the launch, while remaining rows were omitted.</p>
-<p>Create a new data frame by extracting these rows from orings, and plot total incidents against temperature for this new data frame. Obtain a similar plot for the full data set.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data(orings)</span><br><span class="line">prelaunch &lt;- orings[c(1,2,4,11,13,18),]</span><br><span class="line">plot(prelaunch$Temperature, prelaunch$Total)</span><br><span class="line">plot(orings$Temperature, orings$Total)</span><br></pre></td></tr></table></figure>
-
-<p>MB.Ch1.4. For the data frame ais (DAAG package)</p>
-<p>(a) Use the function str() to get information on each of the columns. Determine whether any of the columns hold missing values.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data(ais)</span><br><span class="line">str(ais)</span><br><span class="line">complete.cases(t(ais))</span><br></pre></td></tr></table></figure>
-
-<p>(b) Make a table that shows the numbers of males and females for each different sport. In which sports is there a large imbalance (e.g., by a factor of more than 2:1) in the numbers of the two sexes?</p>
-<figure class="highlight plain"><figcaption><span>echo</span></figcaption><table><tr><td class="code"><pre><span class="line">res &lt;- ais %&gt;% </span><br><span class="line">  group_by(sport,sex) %&gt;% </span><br><span class="line">  summarize(count = n()) #%&gt;% spread(sex,count)</span><br><span class="line"></span><br><span class="line">ais %&gt;% </span><br><span class="line">  group_by(sport) %&gt;% </span><br><span class="line">  summarize(cnt_f = sum(sex == &quot;f&quot;), </span><br><span class="line">            cnt_m = sum(sex == &quot;m&quot;)) %&gt;%</span><br><span class="line">  mutate(ratio = cnt_f/cnt_m) %&gt;%</span><br><span class="line">  mutate(isbalance = (ratio &lt; 2) &amp; (ratio &gt; 0.5))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data.frame(t(table(ais[,12:13]))) %&gt;% spread(sex,Freq) %&gt;%</span><br><span class="line">  mutate(ratio = f/m) %&gt;%</span><br><span class="line">  mutate(isbalance = (ratio &lt; 2) &amp; (ratio &gt; 0.5))</span><br></pre></td></tr></table></figure>
-
-<p>MB.Ch1.6.Create a data frame called Manitoba.lakes that contains the lake’s elevation (in meters above sea level) and area (in square kilometers) as listed below. Assign the names of the lakes using the row.names() function.<br>               elevation  area<br>Winnipeg             217 24387<br>Winnipegosis         254  5374<br>Manitoba             248  4624<br>SouthernIndian       254  2247<br>Cedar                253  1353<br>Island               227  1223<br>Gods                 178  1151<br>Cross                207   755<br>Playgreen            217   657</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Manitoba.lakes &lt;- data.frame(elevation = c(217, 254, 248, 254, 253, 227, 178, 207, 217),</span><br><span class="line">                             area = c(24387, 5374, 4624, 2247, 1353, 1223, 1151, 755, 657),</span><br><span class="line">                             row.names = c(&quot;Winnipeg&quot;,&quot;Winnipegosis&quot;,&quot;Manitoba&quot;,</span><br><span class="line">                                           &quot;SouthernIndian&quot;,&quot;Cedar&quot;,&quot;Island&quot;,</span><br><span class="line">                                           &quot;Gods&quot;,&quot;Cross&quot;,&quot;Playgreen&quot;))</span><br></pre></td></tr></table></figure>
-
-<p>(a) Use the following code to plot log2(area) versus elevation, adding labeling infor- mation (there is an extreme value of area that makes a logarithmic scale pretty much essential):</p>
-<figure class="highlight plain"><figcaption><span>figs, echo</span></figcaption><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">attach(Manitoba.lakes)</span><br><span class="line">plot(log2(area) ~ elevation, pch=16, xlim=c(170,280))</span><br><span class="line"># NB: Doubling the area increases log2(area) by 1.0</span><br><span class="line">text(log2(area) ~ elevation, labels=row.names(Manitoba.lakes), pos=4)</span><br><span class="line">text(log2(area) ~ elevation, labels=area, pos=2) </span><br><span class="line">title(&quot;Manitoba’s Largest Lakes&quot;)</span><br></pre></td></tr></table></figure>
-
-<p>Devise captions that explain the labeling on the points and on the y-axis. It will be necessary to explain how distances on the scale relate to changes in area.</p>
-<p>(b) Repeat the plot and associated labeling, now plotting area versus elevation, but specifying log=”y” in order to obtain a logarithmic y-scale.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">plot(area ~ elevation, pch=16, xlim=c(170,280),log=&quot;y&quot;)</span><br><span class="line">text(area ~ elevation, labels=row.names(Manitoba.lakes), pos=4)</span><br><span class="line">text(area ~ elevation, labels=area, pos=2) </span><br><span class="line">title(&quot;Manitoba’s Largest Lakes&quot;)</span><br></pre></td></tr></table></figure>
-
-<p>MB.Ch1.7. Look up the help page for the R function dotchart(). Use this function to display the areas of the Manitoba lakes (a) on a linear scale, and (b) on a logarithmic scale. Add, in each case, suitable labeling information.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dotchart(area, labels = rownames(Manitoba.lakes), </span><br><span class="line">         main = &quot;Manitoba’s Largest Lakes&quot;,</span><br><span class="line">         xlab = &quot;area&quot;)</span><br><span class="line">dotchart(log2(area), labels = rownames(Manitoba.lakes), </span><br><span class="line">         main = &quot;Manitoba’s Largest Lakes&quot;,</span><br><span class="line">         xlab = &quot;log2(area)&quot;)</span><br></pre></td></tr></table></figure>
-
-<p>MB.Ch1.8. Using the sum() function, obtain a lower bound for the area of Manitoba covered by water.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sum(area)</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>R</tag>
+        <tag>生信</tag>
       </tags>
   </entry>
   <entry>
@@ -492,86 +442,6 @@
       </tags>
   </entry>
   <entry>
-    <title>肠道菌群研究和应用——仍需稳扎稳打（社论）</title>
-    <url>/2020/11/01/gut-check/</url>
-    <content><![CDATA[<p>Other, 2020-10-05<br>Gut check<br>Current Biology, [9.601]<br><a href="http://dx.doi.org/10.1016/j.cub.2020.09.003" target="_blank" rel="noopener">10.1016/j.cub.2020.09.003</a></p>
-<h2 id="肠道检查"><a href="#肠道检查" class="headerlink" title="肠道检查"></a>肠道检查</h2><ul>
-<li>微生物是我们体内的重要组成部分，但随着微生物组领域愈发热门，研究和医学界、保健品行业以及普通大众都对其效用有了过高的期待；</li>
-<li>许多论断缺乏有力证据：益生菌对肠道微生物组的作用潜力是不确定的，粪菌移植也仅取得了有限的成功，对肠道微生物组研究的设计和解释也受到批评；</li>
-<li>肠道微生物操纵宿主行为的可能性亦受到质疑，从进化的角度或能带来新的启发；</li>
-<li>对此该领域接受了这些批评，将以更严谨的姿态迸发活力。</li>
-</ul>
-<blockquote>
-<p>肠道菌群与人体健康的关系，已开始受到大众的关注。Current Biology近期发表的社论文章，对肠道菌群研究和转化方面的现状和问题进行了探讨。作者认为这一领域发展得太快了，以至于有些论调可能已经超过了证据，特别是在转化应用方面，仍有大量的研究工作需要完成。鉴于微生物组研究的复杂性，作者主张采用简化论的方法，来研究菌群内微生物之间的互作以及与宿主的互作机制。</p>
-</blockquote>
-<a id="more"></a>
-
-<p>在热门医疗趋势的候选名单上，人们越来越意识到我们的身体与数十亿种微生物密切相关，而这些微生物正是我们赖以生存的健康和福祉。</p>
-<p>大部分注意力都集中在居住在肠道中的微生物群落-所谓的“肠道微生物组”。 但是也有皮肤微生物组，阴道微生物组等等。</p>
-<p>功能性肠病检查肠道微生物组及其与我们的健康甚至行为之间的关系的研究引起了公众的关注，益生菌产业已开始资本化。领域进展如此之快，以至于某些论断可能并没有充分的证据支撑。</p>
-<h2 id="肠道微生物组作为生物反应器"><a href="#肠道微生物组作为生物反应器" class="headerlink" title="肠道微生物组作为生物反应器"></a>肠道微生物组作为生物反应器</h2><p>肠道微生物的数量等于或超过人体细胞的数量。也许这可以解释一些诱人之处-微生物组可以被视为我们以前视而不见的身体的重要组成部分。确实，肠道微生物组已被比喻为一种器官。观察肠道微生物组的另一种方法是作为一个复杂的生态系统，例如热带雨林，其中许多成分相互依赖，最小的干扰会破坏微妙的平衡，从而可能导致疾病。</p>
-<p>这个主题贯穿了有关肠道微生物组的许多话题，不仅被研究人员抓住，而且也被希望利用肠道微生物组获得经济利益的研究人员抓住。例如，我们被告知，我们的抑郁症和焦虑症可以用一个“失控”的微生物组来解释，或者用花哨的医学术语来说，我们正在经历“营养不良”。 进入益生菌行业，该行业有望通过单一药丸来恢复肠道健康，但是目前为止并未看出其有效性。</p>
-<p>像许多新的研究领域一样，最初的兴奋已经超过了证据，肠道微生物组领域经历了起伏。早期操纵肠道微生物来治疗疾病的医学主张未能成功，基础研究方面也未取得突破性进展。此外，该领域还被认为紧紧抓住微生物组本身作为疾病的潜在病因，而不是采用简化派的方法来试图识别可能引起疾病或避免疾病的特定微生物或微生物群。</p>
-<p>但该领域似乎已经接受了这些批评，并且正在以富有成效的方式向前发展。尽管在大多数情况下，像益生菌这样的治疗方法最初的希望并未实现，但新的研究表明，这种方法仍具有优点。这些最新发展带来了各种各样的问题，包括肠道微生物组到底是什么，以及我们如何利用这些信息来改善我们的生活？尽管大多数这些微生物的活性尚不清楚，但很明显，存在于我们肠道中的某些细菌会消化食物中原本无法使用的多糖，从而释放出一部分我们可以受益的能量。同时由于他们的努力，细菌得到了舒适的生存环境和营养的稳定供应。这种情况下，两方互相帮助，这在生物学上被称为互惠主义。</p>
-<p>从人类之外更广泛地看，我们可以看到肠道共生极端化，例如，在像牛这样的反刍动物中，它们进化出了专门的胃，其中容纳的细菌可以分解草中发现的坚韧的纤维素纤维。也许更明显的例子是白蚁，其中许多物种以木材为唯一食物来源。与牛一样，白蚁肠道是微生物的家园，可以处理顽固的聚合物。这些昆虫是热带生态系统的关键，因为它们是肉眼可见的小动物介导的大部分分解的原因。</p>
-<h2 id="肠道微生物组被夸大的功能"><a href="#肠道微生物组被夸大的功能" class="headerlink" title="肠道微生物组被夸大的功能"></a>肠道微生物组被夸大的功能</h2><p>肠道微生物在消化中的功能现在是宿主-肠道微生物组共生的经典例子。2000年代初期开始，研究浪潮开始兴起，表明肠道微生物与宿主生物学功能以及疾病状态之间存在更多联系。研究人员通过使用被剥夺了微生物群的“无菌”小鼠，可以更轻松地操纵肠道微生物组来探测其他功能。</p>
-<p>可能最广泛采用的实验范例是将无菌小鼠用作空白板或血管，在其上施加选择的微生物组，以测试不同微生物群落对宿主的影响。虽然难以解释但现有研究暗示我们的疾病状态以某种方式反映在我们的肠道微生物组中，而微生物组又可以将这些疾病状态强加给我们。</p>
-<p>这些对动物具有启发性的结果对研究和医学界，保健品行业以及普通大众产生了许多重要影响。通过将健康的微生物组移植到接受者体内看似调节疾病状态的能力，证明了在人类中使用粪便移植物来治疗多种疾病，包括肠道的各种疾病。益生菌的制造商通过兴奋地声称制造出可以使肠道微生物组与含有少量甚至单一活菌的鸡尾酒恢复平衡的药丸，从而激发了人们的兴奋。为了使此类主张更加可信，医疗保健提供者通常会规定使用益生菌来治疗一系列疾病，包括情绪障碍。甚至婴儿配方奶粉行业也开始采取行动，许多配方奶粉都添加了活细菌菌株，这种想法是，积极的培养将有助于开始建立健康的微生物组。也许在某些早期使用无菌小鼠的研究（例如自闭症研究）中提出的最有争议的想法是，暗示肠道微生物可能会操纵我们的神经系统，并最终操纵我们的行为。</p>
-<h2 id="强烈反对的声音"><a href="#强烈反对的声音" class="headerlink" title="强烈反对的声音"></a>强烈反对的声音</h2><p>考虑到肠道微生物组带来的无限兴奋，毫无疑问的是，有确凿的证据需要遏制某些期望。益生菌补品中的菌株并没有占据肠道。在这里，有证据表明，如果不与其他微生物竞争，益生菌菌株可以在宿主中站稳脚跟。</p>
-<p>研究结果表明，益生菌改变我们肠道微生物组的潜力充其量是可变的，并且应该使医生以及公众对这些补品的功效产生疑问。粪菌移植也仅取得了有限的成功。</p>
-<p>对肠道微生物组研究的设计和解释也提出了严重的批评。例如，该领域的许多早期研究仅限于报告肠道微生物群落组成与疾病状态之间的相关性，而没有提供因果关系的证据。</p>
-<h2 id="采用进化论的观点"><a href="#采用进化论的观点" class="headerlink" title="采用进化论的观点"></a>采用进化论的观点</h2><p>关于肠道微生物可能操纵我们行为的可能性，一些进化生物学家对这些说法也有严重的怀疑。许多微生物可能彼此直接竞争。因此，其他菌株也可以享受一种菌株中宿主操纵的进化。解释从进化的角度上看也许是有用的，例如可以用进化生物学家所谓的“进化依赖性”来解释两个相互作用的伙伴之间（或在一个方向上）交换的基本功能。</p>
-<h2 id="恢复严格性和机制"><a href="#恢复严格性和机制" class="headerlink" title="恢复严格性和机制"></a>恢复严格性和机制</h2><p>鉴于困扰该领域早期研究的批评，问题是，随着时间的流逝，对肠道微生物组的研究是否变得更加严格？更严格的方法可以使粪便移植和益生菌方法复活，从而产生有效的疗法。</p>
-]]></content>
-      <tags>
-        <tag>reading</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>微生物组不良事件的挑战与机遇（综述）</title>
-    <url>/2020/10/22/Engineering-the-Microbiome-to-Prevent-Adverse-Events-Challenges-and-Opportunities/</url>
-    <content><![CDATA[<p>Review, 2020-10-13<br>Engineering the Microbiome to Prevent Adverse Events: Challenges and Opportunities<br>Annual Review of Pharmacology and Toxicology, [11.25]<br><a href="http://dx.doi.org/10.1146/annurev-pharmtox-031620-031509" target="_blank" rel="noopener">10.1146/annurev-pharmtox-031620-031509</a></p>
-<h2 id="挑战与机遇并存：利用微生物组工程预防不良事件"><a href="#挑战与机遇并存：利用微生物组工程预防不良事件" class="headerlink" title="挑战与机遇并存：利用微生物组工程预防不良事件"></a>挑战与机遇并存：利用微生物组工程预防不良事件</h2><ul>
-<li>微生物组不良事件（MAE）充满挑战与机遇：医学干预会改变微生物组，而其治疗效果又受到微生物组的影响；</li>
-<li>通过粪菌移植、服用益生菌或益生元、使用工程化细菌等方法改变肠道菌群或有助于预防和治疗MAE；</li>
-<li>微生物生态关系的复杂性以及难以推断的因果关系成为研究的阻碍；</li>
-<li>统计建模、多组学技术和适当的动物模型的选择是医学干预和微生物组之间的因果关系研究和预防MAE的有效方法；</li>
-<li>对于不同个体的MAE，需要一种个性化的诊断和缓解方法。</li>
-</ul>
-<blockquote>
-<p>在过去的微生物组研究中，人们了解到共生微生物群与药物、辐射和外科手术等医疗干预措施之间的许多不良相互作用。如果我们能改变我们的微生物群来预防这些事件呢？发表在Annual Review of Pharmacology and Toxicology的一篇综述文章，讨论了减轻微生物组不良事件（Microbiome adverse event，MAE）的潜在途径，包括微生物组基因工程等新兴领域的应用。了解和预防微生物组不良事件充满了挑战，这需要数据驱动的方法，包括因果推理、多组分技术分析以及针对不同人群的个性化手段等。</p>
-</blockquote>
-<a id="more"></a>
-
-<p>与微生物组相关的不良相互作用从根本上不同于药物基因组学介导的不良事件，因为该现象不是由人类基因组中的单个变异体或一组变异体而是由人体的整个生态系统介导的。 微生物组生态系统不断响应其环境而变化，因此很难确定导致不良事件风险的特定变异。 这对如何研究和调制该系统具有影响。</p>
-<p>MAE大致可分为两类：<br>（a）微生物组作为辅助因子，改变特定治疗以产生不良作用的事件；<br>（b）处理直接或间接显着改变微生物组的事件。</p>
-<h2 id="微生物组工程"><a href="#微生物组工程" class="headerlink" title="微生物组工程"></a>微生物组工程</h2><p>新兴领域随着微生物组研究的发展，我们可以从寻找统计关联性转变为寻找因果关系。但是此领域面临两个关键的挑战：精度（是否针对某一特定菌群进行了调节）和大小（改变的程度有多大）。</p>
-<h3 id="粪便微生物群移植改造微生物组"><a href="#粪便微生物群移植改造微生物组" class="headerlink" title="粪便微生物群移植改造微生物组"></a>粪便微生物群移植改造微生物组</h3><p>最直接，最引人注目的方法是粪便微生物群移植（FMT），它将整个微生物群从健康的供体转移到接受者。健康的供体在微生物组组成上也可能有很大差异，供体的组成也会影响成功率，但是导致FMT成功或失败的微生物组特征仍然未知。Duvallet等人提出了一个基于所讨论的疾病/干预模型的供体选择框架：利用对MAE和微生物组生态学机制的了解，根据其微生物组组成选择最合适的供体。</p>
-<h3 id="益生元，益生菌和合生元"><a href="#益生元，益生菌和合生元" class="headerlink" title="益生元，益生菌和合生元"></a>益生元，益生菌和合生元</h3><p>施用能促进肠道中所需细菌生长的化合物和孢子制剂。理论上可以结合微生物的任何组合来构建有针对性的个性化合生元，然而可能的合生素种类繁多，很难进行比较；尚不清楚共生疗法是否真的改变了微生物组，当剂量更大时可能会产生负面影响；合生素本身会引起不良事件。</p>
-<h3 id="合成微生物"><a href="#合成微生物" class="headerlink" title="合成微生物"></a>合成微生物</h3><p>正在进行研究来创建具有人工修饰的遗传途径的合成微生物，以产生特定的预期效果。已经以这种方式工程化了许多细菌属，并且这些生物可以用作传递遗传有效载荷的底盘。该领域的许多研究都集中在病原体消除或宿主健康监测上，但是合成细菌将来可能成为通用微生物组工程的强大工具，例如用于MAE缓解。迄今为止，还没有成功的干预手段能够利用工程微生物改善患者的预后。</p>
-<p>噬菌体疗法是用于精密微生物组工程的另一种有前途的技术。噬菌体治疗的目的是分离或设计感染和杀死某些不希望的细菌如病原体的噬菌体。然而，噬菌体作为活生物体存在进化并会对微生物群落产生未知的影响，且很难设计出具有特定期望宿主范围的噬菌体。最近证明了一种通过结合使用计算技术、高通量筛选和合成生物学来调节噬菌体宿主范围的方法，该方法可用于调整治疗的特异性。个性化的噬菌体治疗已经在少数极端情况下成功进行。</p>
-<h2 id="预防微生物组对治疗的不良影响"><a href="#预防微生物组对治疗的不良影响" class="headerlink" title="预防微生物组对治疗的不良影响"></a>预防微生物组对治疗的不良影响</h2><p>易于理解的MAE类包括通过某些细菌中的酶对食物和药物进行的化学修饰。微生物组作为辅助因子，改变原始治疗效果。</p>
-<ul>
-<li>药物激活：有些细菌会干扰药物的代谢，导致药物保持活性或重新活化。</li>
-<li>药物失活：微生物组还可以通过代谢使药物失活，从而改变其治疗特性。</li>
-<li>有毒副产物：微生物酶可通过摄入食物的代谢产生有毒副产物。</li>
-</ul>
-<h2 id="预防治疗对微生物组的不良影响"><a href="#预防治疗对微生物组的不良影响" class="headerlink" title="预防治疗对微生物组的不良影响"></a>预防治疗对微生物组的不良影响</h2><p>MAE的另一类是由治疗引起的微生物组变化。最著名的例子是长期使用抗生素的效果，以及观察到许多非抗生素化合物具有抗菌特性。</p>
-<p>在癌症治疗中，辐射和免疫疗法都会与微生物组相互作用，可能引起不良反应。</p>
-<p>由于滥用抗生素有诸多弊端，使用抗生素进行术前准备受到质疑。而另一方面，微生物组却可能成为准备手术的重要根据，有证据表明其在诸如伤口修复之类的生理过程中起作用。临床试验评估了益生菌，益生元和合生元在减少手术并发症方面的功效，结果令人鼓舞。</p>
-<h2 id="缓解微生物不良事件的研究注意事项"><a href="#缓解微生物不良事件的研究注意事项" class="headerlink" title="缓解微生物不良事件的研究注意事项"></a>缓解微生物不良事件的研究注意事项</h2><h3 id="统计建模"><a href="#统计建模" class="headerlink" title="统计建模"></a>统计建模</h3><p>减轻MAE要求改变我们对微生物组的研究方式，而不是将重点放在统计关联上。从观测结果中进行因果推断是一项艰巨的任务，但长期以来一直在统计学中进行研究，并在流行病学和基因组学中也使用了这一方法。最常见的方法涉及<strong>概率图形模型</strong>，其中边表示实体之间的因果关系。<br>使用介入演算来推导个体分类群和抗生素作用之间的因果关系，他们提出将其作为量化微生物组扰动作用的通用方法。不幸的是，由于维数高，他们的方法需要约数千个样本的数据，这对于大多数当前的微生物组项目来说是不可行的。</p>
-<p>也已经尝试使用<strong>时间序列分析方法来推断微生物组网络</strong>，但是这些方法也面临着类似的挑战。为了从较小的数据集进行统计推断，可以尝试<strong>简化问题空间</strong>。<br>例如，Surana＆Kasper在研究微生物组对结肠炎的影响的实验中特意合用了小鼠，以限制群落结构的范围并简化推断。或者，可以尝试合并多个研究中的数据以增加数据集的大小，但这充满了自身的问题。混合异构数据会引入统计伪像，并且实验条件可能会发生巨大变化。</p>
-<p>另一个解决方案是通过将微生物组<strong>嵌入低维空间或将结构相似的微生物组聚集</strong>在一起来简化微生物组的表示，但是这些方法在不同环境下的通用性尚不清楚。因此，寻找在微生物组中执行因果推断的可靠实用方法仍然是一个悬而未决的问题。</p>
-<h3 id="多组学"><a href="#多组学" class="headerlink" title="多组学"></a>多组学</h3><p>量化患者的微生物组，可以使我们以微生物组的治疗效果为基础，比较不同的工程模式。最受欢迎的组学定量方法是16S核糖体RNA亚基的测序。这种测序是表征微生物组中生物相对丰度的相对便宜且简单的方法，但可能会错过群落结构的潜在重要细节。为了识别单个物种和基因，必须使用<strong>whole-community shotgun sequencing（WCS）</strong>。</p>
-<p>此外，还有一些分析方法可以超越物种丰度。<strong>RNA表达测序，蛋白质组学和串联质谱分析是定量单个基因、蛋白质和代谢产物实际表达的高通量手段。</strong>最后，应考虑宿主基因型，以整合有关药物基因组学和药物微生物学的信息。从宏基因组学到表观遗传学再到宿主基因组学，更多的研究正在采取多组学方法，并结合了多种测序方式。</p>
-<h3 id="动物模型"><a href="#动物模型" class="headerlink" title="动物模型"></a>动物模型</h3><p>微生物组研究的一项常见任务是证明可以通过将病原性微生物群落转移到新宿主上来复制表型（例如不良事件）。表型转移研究通常是通过粪便移植在人源化小鼠模型中进行的。根据研究的问题，需要选择具有与所考虑的MAE类型有相关特征的模型生物或系统。</p>
-<h2 id="个性化疗法及总结"><a href="#个性化疗法及总结" class="headerlink" title="个性化疗法及总结"></a>个性化疗法及总结</h2><p>不良事件几乎总是一种个性化现象。并非每个人都会因治疗而产生不良反应，这些事件的性质可能有很大差异。因此需要个性化的解决方法。<br>我们对微生物组群落结构动力学的了解还处于早期阶段，这限制了我们的能力：（a）预测工程化扰动的效果，以及（b）精确实现所需的扰动。<br>尽管如此，由于MAE领域的潜在影响和跨学科性质，它仍然令人兴奋，并将结合实验生物学、数学、数据科学和临床研究交叉合作共同解决问题。</p>
-]]></content>
-      <tags>
-        <tag>reading</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CRISPR-Cas系统及基因编辑技术</title>
     <url>/2020/10/14/crispr-cas-and-genome-editing/</url>
     <content><![CDATA[<p>2020年的诺贝尔化学奖颁发给了法国生物化学家埃马纽埃尔·卡彭蒂耶（Emmanuelle Charpentier）、美国生物学家詹妮弗·杜德纳（Jennifer Doudna），以表彰认可她们在新一代基因编辑技术的重要贡献。<strong>CRISPR-Cas9基因编辑技术</strong>能对DNA进行定点切割，显著提升了基因编辑效率，是生物医学领域最重要的新兴技术之一。本篇文章的理论部分主要参考2016年发表在Annual Review of Ecology, Evolution, and Systematics的综述文章Evolution and Ecology of CRISPR介绍CRISPR-Cas系统[1]，并借此希望对基因编辑技术能有更深刻的认识。</p>
@@ -654,7 +524,7 @@
       </tags>
   </entry>
   <entry>
-    <title>服务器conda环境配置</title>
+    <title>服务器conda环境配置（lab精简版）</title>
     <url>/2020/09/04/conda-setup/</url>
     <content><![CDATA[<blockquote>
 <p>Brief version for Jiang lab. Original link: <a href="https://hc1023.github.io/2019/09/07/conda/" target="_blank" rel="noopener">https://hc1023.github.io/2019/09/07/conda/</a></p>
@@ -4221,7 +4091,9 @@
 <a id="more"></a>
 
 <h2 id="下载VirtualBox和Linux-ISO"><a href="#下载VirtualBox和Linux-ISO" class="headerlink" title="下载VirtualBox和Linux ISO"></a>下载VirtualBox和Linux ISO</h2><p>首先到官网上下载VirtualBox和Linux ISO（这里选择Ubuntu）<br>VirtualBox,  free and open source virtualization software from Oracle. download <a href="https://www.virtualbox.org/" target="_blank" rel="noopener">https://www.virtualbox.org/</a><br>Ubuntu Linux, ISO file of the Linux distribution. download <a href="https://ubuntu.com/desktop" target="_blank" rel="noopener">https://ubuntu.com/desktop</a></p>
-<p>这里强烈建议到网络好一些的地方</p>
+<p>这里强烈建议到网络好一些的地方，大概科学上网可以快很多。</p>
+<p>先安装virtualbox，各步骤可见 <a href="https://itsfoss.com/install-linux-in-virtualbox/" target="_blank" rel="noopener">https://itsfoss.com/install-linux-in-virtualbox/</a></p>
+<p>大概唯一需要在对话框中操作的步骤是去掉勾选<code>download updates while installing Ubuntu</code></p>
 <h2 id="在虚拟机上安装Linux"><a href="#在虚拟机上安装Linux" class="headerlink" title="在虚拟机上安装Linux"></a>在虚拟机上安装Linux</h2><p>打开VirtualBox，点击<code>New</code>，自己取一个名字，type选<code>Linux</code>，version选<code>Ubuntu(64bit)</code><br>容易发现version选项都只有32bit，这是因为BIOS中virtualization is blocked on your system。在Windows中打开BIOS，一按下开机键立刻按<code>F1</code>/<code>F2</code>/<code>F12</code>，打开BIOS，在<code>configuration</code>中找到<code>Virtualization Technology</code>改为<code>Enabled</code>.</p>
 <ul>
 <li>Allocate RAM to the virtual OS 在我的电脑属性中看到我的电脑内存8G，所以我给它2G</li>
@@ -4229,33 +4101,36 @@
 <li>VDI file type</li>
 <li>Dynamically allocated</li>
 </ul>
-<p>设置好后<code>Start</code>，选择前面下载的iso文件，启动后点击<code>install Ubuntu</code>，然后看自己的感觉按照提示继续就好了。安装系统的时候会比较耗时吧耐心等待……</p>
+<p>设置好后<code>Start</code>，选择前面下载的iso文件，启动后点击<code>install Ubuntu</code>，然后看自己的感觉按照提示继续就好了。安装系统的时候会比较耗时吧耐心等待……官网上说10-15min，大概在国外 是。。</p>
 <p>安装完成后restart，yeah！Linux系统安装完成，这时可以把之前自己电脑上下载的那个iso文件拖进回收站了…</p>
 <h2 id="Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu"><a href="#Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu" class="headerlink" title="Install &amp; Use VirtualBox Guest Additions on Ubuntu"></a>Install &amp; Use VirtualBox Guest Additions on Ubuntu</h2><p>安装使用 VirtualBox Guest Additions，可以使guest and host systems联系更紧密使用更方便。</p>
 <ul>
 <li>Host &amp; Guest system<br>Host system is your actual operating system installed on your physical system.<br>Guest system is the virtual machine you have installed inside your host operating system.</li>
 </ul>
 <h3 id="几个重要的功能"><a href="#几个重要的功能" class="headerlink" title="几个重要的功能"></a>几个重要的功能</h3><ul>
-<li>Mouse pointer integration: You no longer need to press any key to “free” the cursor from the Guest OS.</li>
-<li>Shared clipboard: With the Guest Additions installed, you can copy-paste between the guest and the host operating systems.</li>
-<li>Drag and drop: You can also drag and drop files between the host and the guest OS.</li>
-<li>Shared folders: My favorite feature; this feature allows you to exchange files between the host and the guest. You can tell VirtualBox to treat a certain host directory as a shared folder, and the program will make it available to the guest operating system as a network share, irrespective of whether guest actually has a network.</li>
-<li>Better video support: The custom video drivers that are installed with the Guest Additions provide you with extra high and non-standard video modes, as well as accelerated video performance. It also allows you to resize the virtual machine’s window. The video resolution in the guest will be automatically adjusted, as if you had manually entered an arbitrary resolution in the guest’s Display settings.</li>
-<li>Seamless windows: The individual windows that are displayed on the desktop of the virtual machine can be mapped on the host’s desktop, as if the underlying application was actually running on the host.</li>
-<li>Generic host/guest communication channels: The Guest Additions enable you to control and monitor guest execution. The “guest properties” provide a generic string-based mechanism to exchange data bits between a guest and a host, some of which have special meanings for controlling and monitoring the guest. Applications can be started in the Guest machine from the Host.</li>
-<li>Time synchronization: The Guest Additions will resynchronize the time with that of the Host machine regularly. The parameters of the time synchronization mechanism can be configured.</li>
-<li>Automated logins: Basically credentials passing, it can be a useful feature.</li>
+<li><strong>鼠标指针集成</strong>: You no longer need to press any key to “free” the cursor from the Guest OS.</li>
+<li><strong>共享剪贴板</strong>: With the Guest Additions installed, you can copy-paste between the guest and the host operating systems.</li>
+<li><strong>拖放文件</strong>: You can also drag and drop files between the host and the guest OS.</li>
+<li><strong>共享文件夹</strong>: My favorite feature; this feature allows you to exchange files between the host and the guest. You can tell VirtualBox to treat a certain host directory as a shared folder, and the program will make it available to the guest operating system as a network share, irrespective of whether guest actually has a network.</li>
+<li><strong>调整虚拟机窗口大小和分辨率</strong></li>
 </ul>
-<p>点击<code>devices</code>，点击<code>Insert Guest Additions CD image…</code>，大概极有可能遇到（因为我遇到了） Could not mount the media/drive……报错。退出系统，打开 <code>settings</code>，in the Storage tab, click the little CD symbol and select ‘remove disk…’ 重新启动重复报错前的操作就可以成功Mount了！</p>
-<p>然后打开<code>terminal</code>，还要安装一些包，能用<code>sudo</code>真实太爽了，我就是管理员，我再也不用去征求什么管理员权限了</p>
+<p>更多可见 <a href="https://itsfoss.com/virtualbox-guest-additions-ubuntu/" target="_blank" rel="noopener">https://itsfoss.com/virtualbox-guest-additions-ubuntu/</a></p>
+<p>点击<code>devices</code>，点击<code>Insert Guest Additions CD image…</code>，大概极有可能遇到（因为我遇到了） Could not mount the media/drive……报错。退出系统，打开 <code>settings</code>，in the Storage tab, click the little CD symbol and select ‘remove disk…’ 重新启动重复报错前的操作就可以成功Mount了！（重启万能</p>
+<p>然后打开<code>terminal</code>，还要安装一些包，能用<code>sudo</code>真实太爽了，我就是管理员，再也不用去征求什么管理员权限了</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt install build-essential dkms linux-headers-generic</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo rcvboxadd setup</span><br></pre></td></tr></table></figure>
 
-<h3 id="Using-VirtualBox-Guest-Addition-features"><a href="#Using-VirtualBox-Guest-Addition-features" class="headerlink" title="Using VirtualBox Guest Addition features"></a>Using VirtualBox Guest Addition features</h3><ul>
-<li><p>Configure Drag And Drop (any files)<br>top menu -&gt; Devices -&gt;Drag and Drop -&gt; Bidirectional</p>
+<h3 id="Using-VirtualBox-Guest-Addition-features-配置"><a href="#Using-VirtualBox-Guest-Addition-features-配置" class="headerlink" title="Using VirtualBox Guest Addition features 配置"></a>Using VirtualBox Guest Addition features 配置</h3><p><strong>重启后再配置</strong></p>
+<ul>
+<li>配置拖放任何文件<br>top menu -&gt; Devices -&gt;Drag and Drop -&gt; Bidirectional</li>
+</ul>
+<p>这个功能在一些版本的VirtualBox里可能不起作用，解决办法是改成单向host to guest，拖到文件夹里（2020.1.31）</p>
+<ul>
+<li><p>配置共享剪贴板<br>top menu -&gt; Devices -&gt; Shared Clipboard -&gt; Bidirectional</p>
 </li>
-<li><p>Configure Shared Clipboard<br>top menu -&gt; Devices -&gt; Shared Clipboard -&gt; Bidirectional</p>
+<li><p>更改虚拟屏幕分辨率</p>
+<p>top menu -&gt; View -&gt; Virtual Screen 1 -&gt; …</p>
 </li>
 </ul>
 <p>至此接下来就可以开始自由发挥，开始在终端敲命令啦！</p>
@@ -5480,6 +5355,7 @@
 <blockquote>
 <p>缺乏智力深度的庸常生活难以忍受，对深刻抽象的理论产生了由衷的神往。</p>
 </blockquote>
+<p><a href="https://hc1023.github.io/about/" target="_blank" rel="noopener">关于我</a></p>
 <p>Hello, welcome to <strong>Hc’s Blog</strong>. </p>
 <p>My name is Sisi Huang, a senior student from <a href="http://www.math.zju.edu.cn/mathen/" target="_blank" rel="noopener">School of Mathematical Sciences</a> and <a href="http://ckc.zju.edu.cn/english/" target="_blank" rel="noopener">Chu Kochen Honors College</a> at Zhejiang University.</p>
 <a id="more"></a>
