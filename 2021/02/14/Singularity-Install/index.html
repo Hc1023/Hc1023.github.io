@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,">
+  <meta name="keywords" content="生信,">
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。">
-<meta name="keywords" content="Linux">
+<meta name="description" content="官网上便有一些过时的失败教程 123456$ git clone https://github.com/singularityware/singularity.git$ cd singularity$ ./autogen.sh$ ./configure --prefix=/usr/local --sysconfdir=/etc$ make$ sudo make install  如果满足于安装旧版">
+<meta name="keywords" content="生信">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Windows安装虚拟机">
-<meta property="og:url" content="http://yoursite.com/2019/11/27/VMlinux/index.html">
+<meta property="og:title" content="失败人士的Singularity安装失败经历">
+<meta property="og:url" content="http://yoursite.com/2021/02/14/Singularity-Install/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。">
+<meta property="og:description" content="官网上便有一些过时的失败教程 123456$ git clone https://github.com/singularityware/singularity.git$ cd singularity$ ./autogen.sh$ ./configure --prefix=/usr/local --sysconfdir=/etc$ make$ sudo make install  如果满足于安装旧版">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/11/27/VMlinux/1.png">
-<meta property="og:updated_time" content="2021-01-31T11:02:32.610Z">
+<meta property="og:updated_time" content="2021-02-14T14:45:10.246Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Windows安装虚拟机">
-<meta name="twitter:description" content="Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。">
-<meta name="twitter:image" content="http://yoursite.com/2019/11/27/VMlinux/1.png">
+<meta name="twitter:title" content="失败人士的Singularity安装失败经历">
+<meta name="twitter:description" content="官网上便有一些过时的失败教程 123456$ git clone https://github.com/singularityware/singularity.git$ cd singularity$ ./autogen.sh$ ./configure --prefix=/usr/local --sysconfdir=/etc$ make$ sudo make install  如果满足于安装旧版">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/11/27/VMlinux/">
+  <link rel="canonical" href="http://yoursite.com/2021/02/14/Singularity-Install/">
 
 
 
 
 
-  <title>Windows安装虚拟机 | Hc's Blog</title>
+  <title>失败人士的Singularity安装失败经历 | Hc's Blog</title>
   
 
 
@@ -287,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/27/VMlinux/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/14/Singularity-Install/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -304,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Windows安装虚拟机</h1>
+          <h1 class="post-title" itemprop="name headline">失败人士的Singularity安装失败经历</h1>
         
 
         <div class="post-meta">
@@ -316,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-27T21:05:22+08:00">
-                2019-11-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-02-14T22:20:55+08:00">
+                2021-02-14
               </time>
             
 
@@ -354,55 +352,51 @@
       
 
       
-        <p>Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。</p>
+        <p>官网上便有一些过时的失败教程</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/singularityware/singularity.git</span><br><span class="line">$ <span class="built_in">cd</span> singularity</span><br><span class="line">$ ./autogen.sh</span><br><span class="line">$ ./configure --prefix=/usr/<span class="built_in">local</span> --sysconfdir=/etc</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+
+<p>如果满足于安装旧版本，能成功</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">VERSION=2.5.2</span><br><span class="line">wget https://github.com/singularityware/singularity/releases/download/<span class="variable">$VERSION</span>/singularity-<span class="variable">$VERSION</span>.tar.gz</span><br><span class="line">tar xvf singularity-<span class="variable">$VERSION</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> singularity-<span class="variable">$VERSION</span></span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span></span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
 <a id="more"></a>
 
-<h2 id="下载VirtualBox和Linux-ISO"><a href="#下载VirtualBox和Linux-ISO" class="headerlink" title="下载VirtualBox和Linux ISO"></a>下载VirtualBox和Linux ISO</h2><p>首先到官网上下载VirtualBox和Linux ISO（这里选择Ubuntu）<br>VirtualBox,  free and open source virtualization software from Oracle. download <a href="https://www.virtualbox.org/" target="_blank" rel="noopener">https://www.virtualbox.org/</a><br>Ubuntu Linux, ISO file of the Linux distribution. download <a href="https://ubuntu.com/desktop" target="_blank" rel="noopener">https://ubuntu.com/desktop</a></p>
-<p>这里强烈建议到网络好一些的地方，大概科学上网可以快很多。</p>
-<p>先安装virtualbox，各步骤可见 <a href="https://itsfoss.com/install-linux-in-virtualbox/" target="_blank" rel="noopener">https://itsfoss.com/install-linux-in-virtualbox/</a></p>
-<p>大概唯一需要在对话框中操作的步骤是去掉勾选<code>download updates while installing Ubuntu</code></p>
-<h2 id="在虚拟机上安装Linux"><a href="#在虚拟机上安装Linux" class="headerlink" title="在虚拟机上安装Linux"></a>在虚拟机上安装Linux</h2><p>打开VirtualBox，点击<code>New</code>，自己取一个名字，type选<code>Linux</code>，version选<code>Ubuntu(64bit)</code><br>容易发现version选项都只有32bit，这是因为BIOS中virtualization is blocked on your system。在Windows中打开BIOS，一按下开机键立刻按<code>F1</code>/<code>F2</code>/<code>F12</code>，打开BIOS，在<code>configuration</code>中找到<code>Virtualization Technology</code>改为<code>Enabled</code>.</p>
-<ul>
-<li>Allocate RAM to the virtual OS 在我的电脑属性中看到我的电脑内存8G，所以我给它2G</li>
-<li>Create a virtual disk 10G</li>
-<li>VDI file type</li>
-<li>Dynamically allocated</li>
-</ul>
-<p>设置好后<code>Start</code>，选择前面下载的iso文件，启动后点击<code>install Ubuntu</code>，然后看自己的感觉按照提示继续就好了。安装系统的时候会比较耗时吧耐心等待……官网上说10-15min，大概在国外 是。。</p>
-<p>安装完成后restart，yeah！Linux系统安装完成，这时可以把之前自己电脑上下载的那个iso文件拖进回收站了…</p>
-<h2 id="Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu"><a href="#Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu" class="headerlink" title="Install &amp; Use VirtualBox Guest Additions on Ubuntu"></a>Install &amp; Use VirtualBox Guest Additions on Ubuntu</h2><p>安装使用 VirtualBox Guest Additions，可以使guest and host systems联系更紧密使用更方便。</p>
-<ul>
-<li>Host &amp; Guest system<br>Host system is your actual operating system installed on your physical system.<br>Guest system is the virtual machine you have installed inside your host operating system.</li>
-</ul>
-<h3 id="几个重要的功能"><a href="#几个重要的功能" class="headerlink" title="几个重要的功能"></a>几个重要的功能</h3><ul>
-<li><strong>鼠标指针集成</strong>: You no longer need to press any key to “free” the cursor from the Guest OS.</li>
-<li><strong>共享剪贴板</strong>: With the Guest Additions installed, you can copy-paste between the guest and the host operating systems.</li>
-<li><strong>拖放文件</strong>: You can also drag and drop files between the host and the guest OS.</li>
-<li><strong>共享文件夹</strong>: My favorite feature; this feature allows you to exchange files between the host and the guest. You can tell VirtualBox to treat a certain host directory as a shared folder, and the program will make it available to the guest operating system as a network share, irrespective of whether guest actually has a network.</li>
-<li><strong>调整虚拟机窗口大小和分辨率</strong></li>
-</ul>
-<p>更多可见 <a href="https://itsfoss.com/virtualbox-guest-additions-ubuntu/" target="_blank" rel="noopener">https://itsfoss.com/virtualbox-guest-additions-ubuntu/</a></p>
-<p>点击<code>devices</code>，点击<code>Insert Guest Additions CD image…</code>，大概极有可能遇到（因为我遇到了） Could not mount the media/drive……报错。退出系统，打开 <code>settings</code>，in the Storage tab, click the little CD symbol and select ‘remove disk…’ 重新启动重复报错前的操作就可以成功Mount了！（重启万能</p>
-<p>然后打开<code>terminal</code>，还要安装一些包，能用<code>sudo</code>真实太爽了，我就是管理员，再也不用去征求什么管理员权限了</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install build-essential dkms linux-headers-generic</span><br></pre></td></tr></table></figure>
+<p>测试</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ singularity</span><br><span class="line">Increasing verbosity level (2)</span><br><span class="line">Singularity version: 2.5.2-dist</span><br><span class="line">USAGE: singularity [global options...] &lt;<span class="built_in">command</span>&gt; [<span class="built_in">command</span> options...] ...</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rcvboxadd setup</span><br></pre></td></tr></table></figure>
+<p>但用着用着发现2.5.2这个版本太低了，有些bug</p>
+<p>开启万能卸载重安装大法</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get autoremove singularity</span><br></pre></td></tr></table></figure>
 
-<h3 id="Using-VirtualBox-Guest-Addition-features-配置"><a href="#Using-VirtualBox-Guest-Addition-features-配置" class="headerlink" title="Using VirtualBox Guest Addition features 配置"></a>Using VirtualBox Guest Addition features 配置</h3><p><strong>重启后再配置</strong></p>
-<ul>
-<li>配置拖放任何文件<br>top menu -&gt; Devices -&gt;Drag and Drop -&gt; Bidirectional</li>
-</ul>
-<p>这个功能在一些版本的VirtualBox里可能不起作用，解决办法是改成单向host to guest，拖到文件夹里（2020.1.31）</p>
-<ul>
-<li><p>配置共享剪贴板<br>top menu -&gt; Devices -&gt; Shared Clipboard -&gt; Bidirectional</p>
-</li>
-<li><p>更改虚拟屏幕分辨率</p>
-<p>top menu -&gt; View -&gt; Virtual Screen 1 -&gt; …</p>
-</li>
-</ul>
-<p>至此接下来就可以开始自由发挥，开始在终端敲命令啦！</p>
-<p><img src="1.png" alt></p>
-<p>reference:<br><a href="https://itsfoss.com/install-linux-in-virtualbox/" target="_blank" rel="noopener">https://itsfoss.com/install-linux-in-virtualbox/</a><br><a href="https://itsfoss.com/virtualbox-guest-additions-ubuntu/" target="_blank" rel="noopener">https://itsfoss.com/virtualbox-guest-additions-ubuntu/</a></p>
+<h2 id="移除旧版本"><a href="#移除旧版本" class="headerlink" title="移除旧版本"></a>移除旧版本</h2><p><a href="https://singularity.lbl.gov/docs-installation#remove-an-old-version" target="_blank" rel="noopener">https://singularity.lbl.gov/docs-installation#remove-an-old-version</a></p>
+<p>之前将Singularity安装在<code>/usr/local</code>，需要移除它们</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/libexec/singularity</span><br><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/etc/singularity</span><br><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/include/singularity</span><br><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/lib/singularity</span><br><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/var/lib/singularity/</span><br><span class="line">sudo rm /usr/<span class="built_in">local</span>/bin/singularity</span><br><span class="line">sudo rm /usr/<span class="built_in">local</span>/bin/run-singularity</span><br><span class="line">sudo rm /usr/<span class="built_in">local</span>/etc/bash_completion.d/singularity </span><br><span class="line">sudo rm /usr/<span class="built_in">local</span>/man/man1/singularity.1</span><br></pre></td></tr></table></figure>
+
+<p>如果对系统配置目录做过修改，移除<code>singularity.conf</code>文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls /etc/*.conf</span><br></pre></td></tr></table></figure>
+
+<p>发现我没有配置过这个文件，那就不管了</p>
+<p>如果只是将singularity安装在一个平常的文件目录下，移除那个文件目录即可（真不错，可惜我属于前一种情况）。比如<code>--prefix=/some/temp/dir</code>，则</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo rm -rf /some/temp/dir</span><br></pre></td></tr></table></figure>
+
+<h2 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h2><p>原来v3的安装教程在这里 <a href="https://sylabs.io/guides/3.6/admin-guide/installation.html#installation-on-linux" target="_blank" rel="noopener">https://sylabs.io/guides/3.6/admin-guide/installation.html#installation-on-linux</a></p>
+<h3 id="安装dependency"><a href="#安装dependency" class="headerlink" title="安装dependency"></a>安装dependency</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update &amp;&amp; sudo apt-get install -y \</span><br><span class="line">    build-essential \</span><br><span class="line">    uuid-dev \</span><br><span class="line">    libgpgme-dev \</span><br><span class="line">    squashfs-tools \</span><br><span class="line">    libseccomp-dev \</span><br><span class="line">    wget \</span><br><span class="line">    pkg-config \</span><br><span class="line">    git \</span><br><span class="line">    cryptsetup-bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装GO"><a href="#安装GO" class="headerlink" title="安装GO"></a>安装GO</h3><p>Singularity v3主要是用Go编写的，需要安装Go 1.13或更高版本才能从源代码进行编译。</p>
+<p>下载解压到<code>/usr/local</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> VERSION=1.13.5 OS=linux ARCH=amd64 &amp;&amp; \</span><br><span class="line">    wget https://dl.google.com/go/go<span class="variable">$VERSION</span>.<span class="variable">$OS</span>-<span class="variable">$ARCH</span>.tar.gz &amp;&amp; \</span><br><span class="line">    sudo tar -C /usr/<span class="built_in">local</span> -xzvf go<span class="variable">$VERSION</span>.<span class="variable">$OS</span>-<span class="variable">$ARCH</span>.tar.gz &amp;&amp; \</span><br><span class="line">    rm go<span class="variable">$VERSION</span>.<span class="variable">$OS</span>-<span class="variable">$ARCH</span>.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>设置Go环境变量</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'export PATH=/usr/local/go/bin:$&#123;PATH&#125;'</span> &gt;&gt; ~/.bashrc &amp;&amp; \</span><br><span class="line">    <span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="源代码安装"><a href="#源代码安装" class="headerlink" title="源代码安装"></a>源代码安装</h3><p><a href="https://github.com/hpcng/singularity/releases" target="_blank" rel="noopener">https://github.com/hpcng/singularity/releases</a> 找到新版本<code>tag</code>，然后再tar.gz文件右键复制链接地址</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> VERSION=3.6.3 &amp;&amp; <span class="comment"># adjust this as necessary \</span></span><br><span class="line">    wget https://github.com/sylabs/singularity/releases/download/v<span class="variable">$&#123;VERSION&#125;</span>/singularity-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz &amp;&amp; \</span><br><span class="line">    tar -xzf singularity-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz &amp;&amp; \</span><br><span class="line">    <span class="built_in">cd</span> singularity</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ./mconfig &amp;&amp; \</span><br><span class="line">    make -C ./builddir &amp;&amp; \</span><br><span class="line">    sudo make -C ./builddir install</span><br></pre></td></tr></table></figure>
+
+<p>版本&gt;=3.6.4也可用<code>git checkout</code>安装</p>
+<p>然而，真是可恶，GO被墙了，而且由于GO DEP不走proxy，可恶……</p>
+<p><a href="https://github.com/goproxy/goproxy.cn/issues/29" target="_blank" rel="noopener">https://github.com/goproxy/goproxy.cn/issues/29</a></p>
+<p>反正服务器上有，不弄了，哼！</p>
 
       
     </div>
@@ -420,7 +414,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
+            <a href="/tags/生信/" rel="tag"># 生信</a>
           
         </div>
       
@@ -433,8 +427,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/11/22/Discriminant-Analysis/" rel="next" title="判别分析1">
-                <i class="fa fa-chevron-left"></i> 判别分析1
+              <a href="/2021/02/03/Containerising-a-Pipeline/" rel="next" title="Containerising a Pipeline">
+                <i class="fa fa-chevron-left"></i> Containerising a Pipeline
               </a>
             
           </div>
@@ -443,8 +437,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/12/08/GWAS-process/" rel="prev" title="Human GWAS">
-                Human GWAS <i class="fa fa-chevron-right"></i>
+              <a href="/2021/02/14/Building-Containers/" rel="prev" title="Building Containers">
+                Building Containers <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -570,7 +564,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载VirtualBox和Linux-ISO"><span class="nav-number">1.</span> <span class="nav-text">下载VirtualBox和Linux ISO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在虚拟机上安装Linux"><span class="nav-number">2.</span> <span class="nav-text">在虚拟机上安装Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu"><span class="nav-number">3.</span> <span class="nav-text">Install &amp; Use VirtualBox Guest Additions on Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#几个重要的功能"><span class="nav-number">3.1.</span> <span class="nav-text">几个重要的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-VirtualBox-Guest-Addition-features-配置"><span class="nav-number">3.2.</span> <span class="nav-text">Using VirtualBox Guest Addition features 配置</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#移除旧版本"><span class="nav-number">1.</span> <span class="nav-text">移除旧版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新版本"><span class="nav-number">2.</span> <span class="nav-text">新版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装dependency"><span class="nav-number">2.1.</span> <span class="nav-text">安装dependency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装GO"><span class="nav-number">2.2.</span> <span class="nav-text">安装GO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源代码安装"><span class="nav-number">2.3.</span> <span class="nav-text">源代码安装</span></a></li></ol></li></ol></div>
             
 
           </div>
