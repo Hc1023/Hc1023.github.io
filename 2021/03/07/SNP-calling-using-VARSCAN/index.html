@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="随笔,">
+  <meta name="keywords" content="生信,">
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="元旦快乐！">
-<meta name="keywords" content="随笔">
+<meta name="description" content="VarScan 用 Java 编写，命令行执行，输入pileup文件。 安装https://sourceforge.net/projects/varscan/files/ 下载相应版本VarScan.jar文件到指定位置如/public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar 使用方法 1java -jar /public/home/huangs">
+<meta name="keywords" content="生信">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2019">
-<meta property="og:url" content="http://yoursite.com/2019/12/31/2019/index.html">
+<meta property="og:title" content="SNP calling using VARSCAN">
+<meta property="og:url" content="http://yoursite.com/2021/03/07/SNP-calling-using-VARSCAN/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="元旦快乐！">
+<meta property="og:description" content="VarScan 用 Java 编写，命令行执行，输入pileup文件。 安装https://sourceforge.net/projects/varscan/files/ 下载相应版本VarScan.jar文件到指定位置如/public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar 使用方法 1java -jar /public/home/huangs">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/12/31/2019/1.jpg">
-<meta property="og:updated_time" content="2019-12-31T15:02:10.886Z">
+<meta property="og:updated_time" content="2021-03-07T04:50:49.365Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="2019">
-<meta name="twitter:description" content="元旦快乐！">
-<meta name="twitter:image" content="http://yoursite.com/2019/12/31/2019/1.jpg">
+<meta name="twitter:title" content="SNP calling using VARSCAN">
+<meta name="twitter:description" content="VarScan 用 Java 编写，命令行执行，输入pileup文件。 安装https://sourceforge.net/projects/varscan/files/ 下载相应版本VarScan.jar文件到指定位置如/public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar 使用方法 1java -jar /public/home/huangs">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/31/2019/">
+  <link rel="canonical" href="http://yoursite.com/2021/03/07/SNP-calling-using-VARSCAN/">
 
 
 
 
 
-  <title>2019 | Hc's Blog</title>
+  <title>SNP calling using VARSCAN | Hc's Blog</title>
   
 
 
@@ -287,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/31/2019/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/SNP-calling-using-VARSCAN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -304,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">2019</h1>
+          <h1 class="post-title" itemprop="name headline">SNP calling using VARSCAN</h1>
         
 
         <div class="post-meta">
@@ -316,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-31T22:50:38+08:00">
-                2019-12-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-07T12:46:02+08:00">
+                2021-03-07
               </time>
             
 
@@ -354,17 +352,93 @@
       
 
       
-        <p>元旦快乐！</p>
+        <p>VarScan 用 Java 编写，命令行执行，输入pileup文件。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://sourceforge.net/projects/varscan/files/" target="_blank" rel="noopener">https://sourceforge.net/projects/varscan/files/</a></p>
+<p>下载相应版本VarScan.jar文件到指定位置如<code>/public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar</code></p>
+<p>使用方法</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar [命令]</span><br></pre></td></tr></table></figure>
+
 <a id="more"></a>
 
-<blockquote>
-<p>The Soul that rises with us</p>
-<p>Our life’s Star</p>
-<p>Hath had elsewhere its setting</p>
-<p>And cometh from afar</p>
-<p>– William WordsWorth</p>
-</blockquote>
-<p><img src="1.jpg" alt></p>
+<h2 id="call-SNP流程"><a href="#call-SNP流程" class="headerlink" title="call SNP流程"></a>call SNP流程</h2><ul>
+<li><code>fastp</code>质控</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fastp -i <span class="variable">$&#123;InDir&#125;</span>/<span class="variable">$&#123;fq1&#125;</span> -I <span class="variable">$&#123;InDir&#125;</span>/<span class="variable">$&#123;fq2&#125;</span> -w <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> \</span><br><span class="line">     -o <span class="variable">$&#123;OutDir&#125;</span>/<span class="variable">$&#123;fq1&#125;</span> -O  <span class="variable">$&#123;OutDir&#125;</span>/<span class="variable">$&#123;fq2&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>bwa</code>比对，要sort</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建立index</span></span><br><span class="line">bwa index <span class="variable">$&#123;ref&#125;</span></span><br><span class="line"></span><br><span class="line">bwa mem -M <span class="variable">$&#123;ref&#125;</span> <span class="variable">$OutDir</span>/<span class="variable">$fq1</span> <span class="variable">$OutDir</span>/<span class="variable">$fq2</span> |\</span><br><span class="line">	samtools view -hbS - |\ </span><br><span class="line">	samtools sort -@ <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span>  -  &gt; sort.bam</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>生成<code>pileup</code>文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools mpileup -B -f <span class="variable">$&#123;ref&#125;</span> sort.bam &gt; sort.mpileup</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>varscan <code>mpileup2snp</code> call SNP</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar \</span><br><span class="line">	mpileup2snp sort.mpileup &gt; mpileup_varscan_snp.vcf</span><br></pre></td></tr></table></figure>
+
+<p>后两步骤也可以合起来</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">samtools mpileup -B -f <span class="variable">$&#123;ref&#125;</span> sort.bam |\</span><br><span class="line">	java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar\</span><br><span class="line">    mpileup2snp &gt; variants.vcf</span><br></pre></td></tr></table></figure>
+
+<h2 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h2><p>将以上流程应用到新冠病毒分离培养捕获测序样本（credit to jianglab），结果如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Chrom   Position        Ref     Var     Cons:Cov:Reads1:Reads2:Freq:P-value     StrandFilter:R1+:R1-:R2+:R2-:pval       SamplesRef      SamplesHet      SamplesHom      SamplesNC       Cons:Cov:Reads1:Reads2:Freq:P-value</span><br><span class="line">NC_045512.2     9       T       A       W:76:60:16:21.05%:6.3227E-6     Pass:1.0:58:2:16:0:6.2105E-1    0       1       0       0       W:76:60:16:21.05%:6.3227E-6</span><br><span class="line">NC_045512.2     22303   T       G       G:7430:405:6962:93.7%:0E0       Pass:396:9:5709:1253:1E0        0       0       1       0       G:7430:405:6962:93.7%:0E0</span><br><span class="line">NC_045512.2     27775   T       C       C:5853:159:5683:97.16%:0E0      Pass:157:2:4049:1634:1E0        0       0       1       0       C:5853:159:5683:97.16%:0E0</span><br><span class="line">NC_045512.2     27776   T       G       G:5805:82:5637:97.17%:0E0       Pass:79:3:4011:1626:1E0 0       0       1       0       G:5805:82:5637:97.17%:0E0</span><br><span class="line">NC_045512.2     27777   G       A       A:6421:163:6238:97.21%:0E0      Pass:157:6:4030:2208:1E0        0       0       1       0       A:6421:163:6238:97.21%:0E0</span><br></pre></td></tr></table></figure>
+
+<p>其中Reads1表示未发生突变数量，Reads2表示突变数量，R1+表示未发生突变的正义链数量，R1-、R2+、R2-类似理解，Freq为突变频率。（但是我算了一下有些不太对头，并不清楚每个值明确是怎样计算的，大致差不多）</p>
+<p>可以看到高于90%的高频突变为</p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>参考序列碱基</th>
+<th>突变</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>22303</td>
+<td>T</td>
+<td>G</td>
+</tr>
+<tr>
+<td>27775</td>
+<td>T</td>
+<td>C</td>
+</tr>
+<tr>
+<td>27776</td>
+<td>T</td>
+<td>G</td>
+</tr>
+<tr>
+<td>27777</td>
+<td>G</td>
+<td>A</td>
+</tr>
+</tbody></table>
+<p>以及程序输出结果</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Only SNPs will be reported</span><br><span class="line">Warning: No p-value threshold provided, so p-values will not be calculated</span><br><span class="line">Min coverage:   8</span><br><span class="line">Min reads2:     2</span><br><span class="line">Min var freq:   0.2</span><br><span class="line">Min avg qual:   15</span><br><span class="line">P-value thresh: 0.01</span><br><span class="line">Reading input from STDIN</span><br><span class="line">29903 bases <span class="keyword">in</span> pileup file</span><br><span class="line">6 variant positions (5 SNP, 1 indel)</span><br><span class="line">0 were failed by the strand-filter</span><br><span class="line">5 variant positions reported (5 SNP, 0 indel)</span><br></pre></td></tr></table></figure>
+
+<h2 id="mpileup2snp选项说明"><a href="#mpileup2snp选项说明" class="headerlink" title="mpileup2snp选项说明"></a><code>mpileup2snp</code>选项说明</h2><ul>
+<li>–min-coverage：最小读深度[8]</li>
+<li>–min-reads2：呼叫突变的位置处的最小支持读数[2]</li>
+<li>–min-avg-qual：在计算读次数的位置上的最低碱基质量[15]</li>
+<li>–min-var-freq：最低突变等位基因频率阈值[0.01]</li>
+<li>–min-freq-for-hom：呼叫纯合子的最低频率[0.75]</li>
+<li>–p-value：呼叫突变的p值阈值[99e-02]</li>
+<li>–strand-filter：忽略在一个链上支持&gt; 90％的突变[1]</li>
+<li>–output-vcf：如果设置为1，以VCF格式输出，不需要可以不设置</li>
+<li>–variants：仅报告突变（SNP / indel）位置（仅适用于mpileup2cns）[0]</li>
+</ul>
+<p>由于扩增子测序链常常有bias（正反链比例悬殊比如2205:72），因此采用<code>--strand-filter 0</code>，同时可以降低频率阈值查看更低频突变。例如</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar \</span><br><span class="line">	mpileup2snp sort.mpileup &gt; mpileup_varscan_snp.vcf \</span><br><span class="line">	--min-var-freq 0.05 --strand-filter 0</span><br></pre></td></tr></table></figure>
+
+<p>此外，varscan除<code>mpileup2snp</code>外，还有</p>
+<ul>
+<li><code>mpileup2indel</code>：call indel</li>
+<li><code>mpileup2cns</code>：makes consensus calls (SNP/Indel/Reference)</li>
+</ul>
 
       
     </div>
@@ -382,7 +456,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随笔/" rel="tag"># 随笔</a>
+            <a href="/tags/生信/" rel="tag"># 生信</a>
           
         </div>
       
@@ -395,8 +469,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/31/Hashing/" rel="next" title="Hashing">
-                <i class="fa fa-chevron-left"></i> Hashing
+              <a href="/2021/02/14/Building-Containers/" rel="next" title="Building Containers">
+                <i class="fa fa-chevron-left"></i> Building Containers
               </a>
             
           </div>
@@ -404,10 +478,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/01/30/GSEA/" rel="prev" title="GSEA">
-                GSEA <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -459,8 +529,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -513,6 +592,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#call-SNP流程"><span class="nav-number">2.</span> <span class="nav-text">call SNP流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出结果"><span class="nav-number">3.</span> <span class="nav-text">输出结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mpileup2snp选项说明"><span class="nav-number">4.</span> <span class="nav-text">mpileup2snp选项说明</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -285,6 +285,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/08/map-contigs-to-reference-genome/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/08/map-contigs-to-reference-genome/" itemprop="url">map contigs to reference genome</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-08T22:37:01+08:00">
+                2020-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="方法一：nucmer-ggbio"><a href="#方法一：nucmer-ggbio" class="headerlink" title="方法一：nucmer+ggbio"></a>方法一：nucmer+ggbio</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">conda install -c bioconda mummer4=4.0.0beta2</span><br><span class="line">nucmer --mum NC_045512.2.fna spades_output_sc_4000/scaffolds.fasta -p <span class="built_in">test</span> </span><br><span class="line"><span class="comment"># 筛选长度为1000以上的</span></span><br><span class="line">delta-filter -l 1000 -q test.delta &gt; test_filter.delta</span><br><span class="line">show-coords -c -l -L 1000 -r -T test_filter.delta &gt; test_filter_coords.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools faidx NC_045512.2.fna</span><br></pre></td></tr></table></figure>
+
+<p>需要用到的是<code>test_filter_coords.txt</code>和<code>NC_045512.2.fna.fai</code></p>
+<p>参考<br><a href="https://taylorreiter.github.io/2019-05-11-Visualizing-NUCmer-Output/" target="_blank" rel="noopener">https://taylorreiter.github.io/2019-05-11-Visualizing-NUCmer-Output/</a></p>
+<p>跑链接里这个R代码，但这个R代码需要改进</p>
+<h2 id="方法二：minidot"><a href="#方法二：minidot" class="headerlink" title="方法二：minidot"></a>方法二：minidot</h2><p>下载<code>minidot</code>加入环境变量，这个软件会依赖一些R包，按照报错进行安装。</p>
+<p><code>-S</code>参数可以不要显示自己跟自己比对的结果</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minidot -S -o out.pdf spades_output_sc_4000/scaffolds.fasta NC_045512.2.fna</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/04/symbolic-link-solve-libso-error/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1514,139 +1642,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/03/LASSO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/03/LASSO/" itemprop="url">LASSO（L1 正则化）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-03T23:22:17+08:00">
-                2020-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>嵌入式特征选择是将特征选择过程与学习器训练过程融为一体，两者在同一优化过程中完成。</p>
-<p>给定数据集$D = \lbrace (x_1,y_1),(x_2,y_2),….,(x_m,y_m) \rbrace$，其中$x \in \mathbb R ^d,y\in \mathbb R$<br>简单的线性回归模型优化目标为$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2$</p>
-<p>当样本特征很多，而样本数较少，容易过拟合，为缓解此问题，引入正则化项，正则化参数$\lambda &gt; 0$。</p>
-<ul>
-<li><p>$L_1$范数正则化，LASSO（Least Absolute Shrinkage and Selection Operator）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_1$</p>
-</li>
-<li><p>$L_2$范数正则化，岭回归（ridge regression）：$min_w \Sigma_{i=1}^m(y_i-w^Tx_i)^2+\lambda ||w||_2^2$</p>
-</li>
-</ul>
-<p>$L_1$范数和$L_2$范数正则化都有助于降低过拟合风险，<strong>前者比后者更容易获得稀疏解</strong>，求得$w$有更少的非零分量。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/07/03/LASSO/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1699,7 +1694,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -88,7 +88,7 @@
 <meta property="og:description" content="Singularity: building a root file system that runs on any other Linux system where Singularity is installed. Commands  build：建立一个Singularity容器（container） capability：管理容器上的Linux功能 exec：在容器中执行命令 help：命令">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2021/02/03/singularity-quick-start/1612250113238.png">
-<meta property="og:updated_time" content="2021-02-03T13:35:53.138Z">
+<meta property="og:updated_time" content="2021-02-16T07:47:02.186Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Singularity Quick Start">
 <meta name="twitter:description" content="Singularity: building a root file system that runs on any other Linux system where Singularity is installed. Commands  build：建立一个Singularity容器（container） capability：管理容器上的Linux功能 exec：在容器中执行命令 help：命令">
@@ -416,7 +416,7 @@
 <ul>
 <li><code>exec</code>直接跟URIs，cached image，创建一个临时的容器执行命令后消失</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ singularity <span class="built_in">exec</span> library://sylabsed/examples/lolcow cowsay <span class="string">"Hello, Sisi Huang!"</span></span><br><span class="line">-bash: !<span class="string">": event not found</span></span><br><span class="line"><span class="string">[huangsisi@login01 ~]$ singularity exec library://sylabsed/examples/lolcow cowsay "</span>Hello, Sisi Huang<span class="string">"</span></span><br><span class="line"><span class="string">INFO:    Using cached image</span></span><br><span class="line"><span class="string"> ___________________</span></span><br><span class="line"><span class="string">&lt; Hello, Sisi Huang &gt;</span></span><br><span class="line"><span class="string"> -------------------</span></span><br><span class="line"><span class="string">        \   ^__^</span></span><br><span class="line"><span class="string">         \  (oo)\_______</span></span><br><span class="line"><span class="string">            (__)\       )\/\</span></span><br><span class="line"><span class="string">                ||----w |</span></span><br><span class="line"><span class="string">                ||     ||</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ singularity <span class="built_in">exec</span> library://sylabsed/examples/lolcow cowsay <span class="string">"Hello, Sisi Huang"</span></span><br><span class="line">INFO:    Using cached image</span><br><span class="line"> ___________________</span><br><span class="line">&lt; Hello, Sisi Huang &gt;</span><br><span class="line"> -------------------</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
 
 <h3 id="Running-a-container"><a href="#Running-a-container" class="headerlink" title="Running a container"></a>Running a container</h3><ul>
 <li>运行镜像</li>
@@ -628,7 +628,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

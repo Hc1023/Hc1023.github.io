@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="官网上便有一些过时的失败教程 123456$ git clone https://github.com/singularityware/singularity.git$ cd singularity$ ./autogen.sh$ ./configure --prefix=/usr/local --sysconfdir=/etc$ make$ sudo make install  如果满足于安装旧版">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2021-02-14T14:45:10.246Z">
+<meta property="og:updated_time" content="2021-02-18T01:02:37.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="失败人士的Singularity安装失败经历">
 <meta name="twitter:description" content="官网上便有一些过时的失败教程 123456$ git clone https://github.com/singularityware/singularity.git$ cd singularity$ ./autogen.sh$ ./configure --prefix=/usr/local --sysconfdir=/etc$ make$ sudo make install  如果满足于安装旧版">
@@ -388,8 +388,7 @@
 <p>设置Go环境变量</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'export PATH=/usr/local/go/bin:$&#123;PATH&#125;'</span> &gt;&gt; ~/.bashrc &amp;&amp; \</span><br><span class="line">    <span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-<h3 id="源代码安装"><a href="#源代码安装" class="headerlink" title="源代码安装"></a>源代码安装</h3><p><a href="https://github.com/hpcng/singularity/releases" target="_blank" rel="noopener">https://github.com/hpcng/singularity/releases</a> 找到新版本<code>tag</code>，然后再tar.gz文件右键复制链接地址</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> VERSION=3.6.3 &amp;&amp; <span class="comment"># adjust this as necessary \</span></span><br><span class="line">    wget https://github.com/sylabs/singularity/releases/download/v<span class="variable">$&#123;VERSION&#125;</span>/singularity-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz &amp;&amp; \</span><br><span class="line">    tar -xzf singularity-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz &amp;&amp; \</span><br><span class="line">    <span class="built_in">cd</span> singularity</span><br></pre></td></tr></table></figure>
+<h3 id="源代码安装"><a href="#源代码安装" class="headerlink" title="源代码安装"></a>源代码安装</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> VERSION=3.6.3 &amp;&amp; <span class="comment"># adjust this as necessary \</span></span><br><span class="line">    wget https://github.com/sylabs/singularity/releases/download/v<span class="variable">$&#123;VERSION&#125;</span>/singularity-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz &amp;&amp; \</span><br><span class="line">    tar -xzf singularity-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz &amp;&amp; \</span><br><span class="line">    <span class="built_in">cd</span> singularity</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ./mconfig &amp;&amp; \</span><br><span class="line">    make -C ./builddir &amp;&amp; \</span><br><span class="line">    sudo make -C ./builddir install</span><br></pre></td></tr></table></figure>
 
@@ -518,7 +517,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
