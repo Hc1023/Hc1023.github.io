@@ -285,6 +285,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/18/github-trick-gitignore/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/18/github-trick-gitignore/" itemprop="url">github使用.gitignore指定不同步文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-18T16:07:37+08:00">
+                2020-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Github加入<code>.gitignore</code>可以使指定的文件不同步。</p>
+<h2 id="情况一：文件夹不同步"><a href="#情况一：文件夹不同步" class="headerlink" title="情况一：文件夹不同步"></a>情况一：文件夹不同步</h2><p>在这个文件夹下，<code>.gitignore</code>写入<code>*</code></p>
+<h2 id="情况二：保留一个空文件夹"><a href="#情况二：保留一个空文件夹" class="headerlink" title="情况二：保留一个空文件夹"></a>情况二：保留一个空文件夹</h2><p>在这个文件夹下，<code>.gitignore</code>写入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Ignore everything in this directory</span><br><span class="line">*</span><br><span class="line"># Except this file</span><br><span class="line">!.gitignore</span><br></pre></td></tr></table></figure>
+
+<h2 id="情况三：指定文件不同步"><a href="#情况三：指定文件不同步" class="headerlink" title="情况三：指定文件不同步"></a>情况三：指定文件不同步</h2><p>可以直接在仓库根目录的<code>.gitignore</code>写入，比如说</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*.rar</span><br><span class="line">*.pdf</span><br></pre></td></tr></table></figure>
+
+<p>它在同步时会忽略<code>rar</code>和<code>pdf</code>后缀的文件。</p>
+<h2 id="情况四：删除缓存的索引文件"><a href="#情况四：删除缓存的索引文件" class="headerlink" title="情况四：删除缓存的索引文件"></a>情况四：删除缓存的索引文件</h2><p>会遇到的一个问题是，原来同步的文件在后来不希望同步了，于是这个时候要先删除缓存的索引文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm -r --cached .</span><br></pre></td></tr></table></figure>
+
+<p>重新生成，并忽略<code>.gitignore</code>的指定文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+
+<p>上传，但会在github上移除<code>.gitignore</code>的指定文件，本地保留</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">'Removing ignored files'</span></span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/08/map-contigs-to-reference-genome/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -931,172 +1068,6 @@
             </a>
           </div>
           <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/become-rich/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/08/15/become-rich/" itemprop="url">become rich</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-15T14:10:05+08:00">
-                2020-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><del>从今天起开始发家致富</del><br>本人为学生，比较穷，先定一个小目标：脱贫。<br>时间：2020年8月15日<br>采用且慢投资组合，因为钱较少QVQ，暂时直接买入，没有定投。</p>
-<table>
-<thead>
-<tr>
-<th>产品</th>
-<th>预期年化（%）</th>
-<th>最大回撤（%）</th>
-<th>现存金额比例（%）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>余额宝</td>
-<td>1.4450</td>
-<td>——</td>
-<td>不计入比例，方便支付宝</td>
-</tr>
-<tr>
-<td>零钱通</td>
-<td>1.5270</td>
-<td>——</td>
-<td>不计入比例，方便微信</td>
-</tr>
-<tr>
-<td>盈米</td>
-<td>1.6717</td>
-<td>——</td>
-<td>0</td>
-</tr>
-<tr>
-<td>货币三佳</td>
-<td>2.1006</td>
-<td>——</td>
-<td>77.78</td>
-</tr>
-<tr>
-<td>我要稳稳的幸福</td>
-<td>5.22-8.44</td>
-<td>2.79</td>
-<td>11.11</td>
-</tr>
-<tr>
-<td>春华秋实</td>
-<td>15.78</td>
-<td>5.07</td>
-<td>11.11</td>
-</tr>
-</tbody></table>
-
-          
         
       
     </div>

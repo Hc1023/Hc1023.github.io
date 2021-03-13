@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="生信,">
+  <meta name="keywords" content="生信,reading,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
-<meta name="keywords" content="生信">
+<meta name="description" content="RNA-seq技术以其单核苷酸水平的高分辨力成为研究宿主-微生物相互作用的主要技术，从而提高对其生理后果和作用机制的认识； 根据真核生物和细菌的转录组特征的共性和差异比较了两者 RNA-seq 方案，进而从宏转录组学、互作转录组学等方面概述了跨物种 RNA-seq 方法； 同时单细胞RNA-seq技术进入感染生物学领域，从单细胞水平来理解细胞异质性的决定作用； 未来转录组学或将与功能基因组学等数">
+<meta name="keywords" content="生信,reading">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CPU, core and threads in HPC --SBATCH setup">
-<meta property="og:url" content="http://yoursite.com/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/index.html">
+<meta property="og:title" content="rna-seq deciphering host-microbe interactions">
+<meta property="og:url" content="http://yoursite.com/2021/03/13/rna-seq-deciphering-host-microbe-interactions/index.html">
 <meta property="og:site_name" content="Hc&#39;s Blog">
-<meta property="og:description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
+<meta property="og:description" content="RNA-seq技术以其单核苷酸水平的高分辨力成为研究宿主-微生物相互作用的主要技术，从而提高对其生理后果和作用机制的认识； 根据真核生物和细菌的转录组特征的共性和差异比较了两者 RNA-seq 方案，进而从宏转录组学、互作转录组学等方面概述了跨物种 RNA-seq 方法； 同时单细胞RNA-seq技术进入感染生物学领域，从单细胞水平来理解细胞异质性的决定作用； 未来转录组学或将与功能基因组学等数">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-10-25T05:44:43.737Z">
+<meta property="og:updated_time" content="2021-03-13T13:33:09.515Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CPU, core and threads in HPC --SBATCH setup">
-<meta name="twitter:description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
+<meta name="twitter:title" content="rna-seq deciphering host-microbe interactions">
+<meta name="twitter:description" content="RNA-seq技术以其单核苷酸水平的高分辨力成为研究宿主-微生物相互作用的主要技术，从而提高对其生理后果和作用机制的认识； 根据真核生物和细菌的转录组特征的共性和差异比较了两者 RNA-seq 方案，进而从宏转录组学、互作转录组学等方面概述了跨物种 RNA-seq 方法； 同时单细胞RNA-seq技术进入感染生物学领域，从单细胞水平来理解细胞异质性的决定作用； 未来转录组学或将与功能基因组学等数">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/">
+  <link rel="canonical" href="http://yoursite.com/2021/03/13/rna-seq-deciphering-host-microbe-interactions/">
 
 
 
 
 
-  <title>CPU, core and threads in HPC --SBATCH setup | Hc's Blog</title>
+  <title>rna-seq deciphering host-microbe interactions | Hc's Blog</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/13/rna-seq-deciphering-host-microbe-interactions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sisi Huang">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CPU, core and threads in HPC --SBATCH setup</h1>
+          <h1 class="post-title" itemprop="name headline">rna-seq deciphering host-microbe interactions</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-20T21:27:45+08:00">
-                2020-08-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-13T21:29:45+08:00">
+                2021-03-13
               </time>
             
 
@@ -352,109 +352,90 @@
       
 
       
-        <p>使用的集群会有计算结点和登录结点。以lab的集群为例</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo</span><br><span class="line">PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST</span><br><span class="line">sugon*       up   infinite      1   idle node1</span><br><span class="line">low          up   infinite      1   idle node1</span><br><span class="line">download     up   infinite      1   idle tc6000</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>-N</code> node oriented</li>
-<li><code>-l</code> 提供更多的信息：number of CPUs, memory, temporary disk (also called scratch space), node weight (an internal parameter specifying preferences in nodes for allocations when there are multiple possibilities), features of the nodes (such as processor type for instance) and the reason, if any, for which a node is down.</li>
+        <ul>
+<li>RNA-seq技术以其单核苷酸水平的高分辨力成为研究宿主-微生物相互作用的主要技术，从而提高对其生理后果和作用机制的认识；</li>
+<li>根据真核生物和细菌的转录组特征的共性和差异比较了两者 RNA-seq 方案，进而从宏转录组学、互作转录组学等方面概述了跨物种 RNA-seq 方法；</li>
+<li>同时单细胞RNA-seq技术进入感染生物学领域，从单细胞水平来理解细胞异质性的决定作用；</li>
+<li>未来转录组学或将与功能基因组学等数据结合，对抗传染病和微生物疾病。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo -Nl</span><br><span class="line">Sun Aug 16 10:38:15 2020</span><br><span class="line">NODELIST   NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON</span><br><span class="line">node1          1    sugon*        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">node1          1       low        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">tc6000         1  download        idle   12   1:12:1  63889        0      1   (null) none</span><br></pre></td></tr></table></figure>
-
-<p>node1是计算结点（不连网），tc6000是登录结点（连网），sbatch递交作业后slurm是在计算结点进行工作调度。</p>
 <a id="more"></a>
 
-<h2 id="sinfo信息"><a href="#sinfo信息" class="headerlink" title="sinfo信息"></a>sinfo信息</h2><ul>
-<li>CPU, core and threads</li>
-</ul>
-<p>CPU的核数是指硬件上存在着几个核心，例如双核就是包括2个相对独立的CPU核心单元组。 线程数是一种逻辑的概念，是模拟出的CPU核心数。</p>
-<p>总核数 = 物理CPU个数 $\times$ 每个物理CPU的核数 (core)<br>总逻辑CPU数 = 物理CPU个数 $\times$ 每个物理CPU的核数 (core) $\times$ 线程数 (thread)</p>
+<h2 id="真核生物和细菌的转录组特征"><a href="#真核生物和细菌的转录组特征" class="headerlink" title="真核生物和细菌的转录组特征"></a>真核生物和细菌的转录组特征</h2><p>尽管经过了20亿年的分离进化，原核生物和真核生物之间还是分享了基本的 RNA 类别。核糖体 RNA (Ribosomal RNAs，RNAs)在核糖体中具有高度的支架作用和酶促作用，占细菌和真核细胞 RNA 含量的80% 以上(在快速生长的细胞中大于95%)。转移 RNA (tRNA)分子将 RNA 语言(核糖核酸酶)翻译为蛋白质信息(氨基酸链) ，通常对细胞 RNA 含量贡献10% 。mRNAs 占细胞转录组总数的5% 。</p>
+<p>细菌基因的平均长度为1kb，然而，它们通常被转录为多顺反子，从而形成跨越多个基因的长 mRNAs。</p>
+<p>真核编码转录本是作为带有内含子和外显子的前体合成的，在细胞核中进行剪接(内含子去除) ，然后输出到细胞质中。成熟的人类 mRNAs 的平均长度约为3kb，由于哺乳动物中只存在单顺反子，所以极长的编码转录本(大于10kb)非常罕见。</p>
 <ul>
-<li>tc6000</li>
+<li><p>转录本差异</p>
+</li>
+<li><p>RNA 含量差异</p>
+</li>
 </ul>
-<p>12 logical CPUs = 1 physical CPU $\times$ 12 cores $\times$ 1 thread</p>
+<p>这些定性和定量转录组的差异反映在当前细菌和哺乳动物标准 RNA-seq 方案中。</p>
+<h2 id="细菌与真核生物-RNA-seq-工作流程比较"><a href="#细菌与真核生物-RNA-seq-工作流程比较" class="headerlink" title="细菌与真核生物 RNA-seq 工作流程比较"></a>细菌与真核生物 RNA-seq 工作流程比较</h2><p>Rna seq 实验的标准步骤是从生物样本中提纯核酸，对污染的基因组 DNA 进行酶消化，去除丰富但信息量较小的 rRNA，将剩余的转录本转化为 cDNA，对 cDNA 片段进行高通量测序，将测序结果与参考基因组序列比对，并对映射到个体基因特征的片段进行定量。</p>
+<p>目前细菌和真核表达谱的标准都是使用 Illumina 公司技术的“短读”合成测序</p>
+<h3 id="1-转录组固定、细胞裂解和-RNA-提取"><a href="#1-转录组固定、细胞裂解和-RNA-提取" class="headerlink" title="1 转录组固定、细胞裂解和 RNA 提取"></a>1 转录组固定、细胞裂解和 RNA 提取</h3><ul>
+<li>由于转录组是出了名的不稳定，在这种情况下，RNA 的组成应该借助固定剂来保持，以阻止从头转录和 RNA 衰变。</li>
+<li>原核细胞和真核细胞的物理化学性质有很大的不同，仔细评估跨物种转录组学的裂解效率，有效和均匀地分解样品中的所有细胞类型，同时仍然足够温和，不降解细胞 RNAs。</li>
+<li>裂解物准备好-&gt;下游RNA 分离技术</li>
+</ul>
+<h3 id="2-核糖耗尽"><a href="#2-核糖耗尽" class="headerlink" title="2 核糖耗尽"></a>2 核糖耗尽</h3><ul>
+<li><p>在细菌中，rRNA 通常在 cDNA 文库产生之前或期间被主动去除。</p>
+</li>
+<li><p>在真核生物 RNA-seq 中，rna 一般是通过选择性启动多腺苷酸转录本的 cDNA 来间接耗尽的</p>
+</li>
+</ul>
+<h3 id="3-cDNA-文库的制备和测序"><a href="#3-cDNA-文库的制备和测序" class="headerlink" title="3 cDNA 文库的制备和测序"></a>3 cDNA 文库的制备和测序</h3><ul>
+<li>细菌 RNA-seq 中，RNA 适配器通常连接到所获得的 RNA 片段的3′端，然后通过适配器特异性引物(如流行的 NEBNext 小型 RNA 文库预备装置; 新英格兰生物实验室)作为反转录锚</li>
+<li>真核生物 mRNA 表达谱的构建通常包括增加多腺苷酸转录本，然后通过随机引发(例如 TruSeq 的受体 mRNA 试剂盒; Illumina)使 RNA 片段化和 RT</li>
+</ul>
+<p>测序深度的要求也取决于 RNA-seq 实验的预期结果。尽管精确绘制转录本边界、操作子或选择性剪接结构和对低丰度转录本进行定量需要较高的测序深度，但大多数细菌和真核生物的 rna seq 研究实质上是差异表达分析，因此测序强度要小得多。</p>
+<h3 id="4-读对齐，归一化，量化和功能分析"><a href="#4-读对齐，归一化，量化和功能分析" class="headerlink" title="4 读对齐，归一化，量化和功能分析"></a>4 读对齐，归一化，量化和功能分析</h3><ul>
+<li>由于剪接是真核生物独有的分子过程，原核生物 RNA-seq 的标准读比对，节省计算量和时间，而真核生物的比对过程则依赖于剪接序列</li>
+<li>归一化</li>
+<li>功能分析：<ul>
+<li>差异表达分析：DESeq2、 edgeR52和 limma/vom。</li>
+<li>全局通路分析：基因本体论(GO)或京都基因和基因组百科全书(KEGG)。</li>
+<li>此外，对于小鼠或人类 RNA-seq 数据的分析，还存在更精确的数据库，专门研究例如代谢或免疫相关基因组。</li>
+</ul>
+</li>
+</ul>
+<h2 id="细菌-RNA-seq-在体内转录组学中的应用"><a href="#细菌-RNA-seq-在体内转录组学中的应用" class="headerlink" title="细菌 RNA-seq 在体内转录组学中的应用"></a>细菌 RNA-seq 在体内转录组学中的应用</h2><p>为了充分利用宿主和微生物的全局表达数据，需要高分辨率的转录组图谱。然而，小鼠和人类的转录组已经很好地注释了多年，细致的转录组图谱没有给予大多数细菌。相反，细菌转录组通常是基于计算机搜索长度大于100个氨基酸的潜在开放阅读框(orf)而注释，但可能缺少短的开放阅读框、非翻译区(UTRs)或非编码 RNA 基因。</p>
+<p>研究细菌病原体在<strong>宿主机体内</strong>的基因表达成为必要</p>
+<p>丰富细菌转录本，“杂交选择”是指将复杂的 cDNA 样本与物种特异性的生物素化探针进行孵化，以捕获并丰富远离宿主 cDNA 背景的感兴趣的 cDNA -&gt; 设计捕获探针</p>
+<h2 id="跨物种-RNA-seq-方法"><a href="#跨物种-RNA-seq-方法" class="headerlink" title="跨物种 RNA-seq 方法"></a>跨物种 RNA-seq 方法</h2><p>研究微生物与其他微生物或与宿主细胞的联系</p>
+<h3 id="Metatranscriptics"><a href="#Metatranscriptics" class="headerlink" title="Metatranscriptics"></a>Metatranscriptics</h3><p>基于测序的细菌群落结构分析始于宏基因组学：16S rDNA 序列分析(16S profiling) ，基因组 DNA shotgun 测序。然而，某个微生物物种或某个基因的丰度并不一定与该物种或基因在联合体中的功能贡献相关。</p>
+<p>metatranscriptomics ：对微生物内部相互作用的功能研究</p>
+<p>得到的 DNA 和 RNA 测序数据是分开处理的，然后用宏基因组数据来归一化metatranscriptomic reads。</p>
+<p>两种方法：参考基因组分类法，从头基因组组装基因组分类法de novo metagenome-assembled genomes (MAGs)</p>
 <ul>
-<li>node1</li>
+<li>基于参考基因组的分类器：HUMAnN2、 Kaiju87或 Kraken2。群落成员物种基本上是预先确定的，只有它们的相对丰度是未知的，例如在人类肠道微生物区系。</li>
+<li>群落中的细菌种类位置，优先采用MAGs 的新分类学分类法</li>
 </ul>
-<p>144 logical CPUs = 4 physical CPUs $\times$ 18 cores $\times$ 2 threads</p>
-<p>后续sbatch作业还需要node1的一些信息</p>
-<p>对于memory默认单位是Mb，对于node1，206359Mb相当于201G，啊但事实上我们有2T……大概是没有显示完全。</p>
-<blockquote>
-<p>感受下单位换算的数量级，一般来说如果看文件信息<code>ll</code>，不加<code>-h</code>给的是字节（byte）数。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1byte=8bit. 1KB=1024byte. </span><br><span class="line">1MB=1024KB=1,048,576byte. </span><br><span class="line">1GB=1024MB=1,073,741,824byte. </span><br><span class="line">1TB=1024GB=1,099,511,627,776byte</span><br></pre></td></tr></table></figure>
-
-<p>我们一共有3个分区，分别是<code>sugon</code>,<code>low</code>,<code>download</code>，是人为自定义的，我们一般把作业递交到<code>sugon</code>（打星号的是默认递交的分区）。</p>
-<blockquote>
-<p>A partition is a set of compute nodes (computers dedicated to … computing,) grouped logically. Typical examples include partitions dedicated to batch processing, debugging, post processing, or visualization.</p>
-</blockquote>
-<p>看一下运行时间限制，由于这个集群只有我们lab使用，所以是infinite，也太舒服了QVQ……</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sinfo --partition sugon</span><br><span class="line">PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST</span><br><span class="line">sugon*       up   infinite      1   idle node1</span><br></pre></td></tr></table></figure>
-
-<h2 id="SBATCH-参数设置"><a href="#SBATCH-参数设置" class="headerlink" title="SBATCH 参数设置"></a>SBATCH 参数设置</h2><p><a href="http://ircc.fiu.edu/download/user-guides/Slurm_Cheat_Sheet.pdf" target="_blank" rel="noopener">Slurm_Cheat_Sheet.pdf</a></p>
-<p>由上面的信息，我们可以更好的设置这些参数</p>
+<p>对健康人体肠道微生物组的比较研究表明，与metagenomic对应部分相比，metatranscriptomic对应部分的个体化程度通常较低。而纵向分析显示，随着时间的推移，个体的metatranscriptome比metagenome变化更大，这表明微生物基因表达受到环境和营养波动的积极调节。人类肠道微生物群的组成(metagenomics)和功能(metatranscriptomics)变化也与传染病的结果有关。</p>
+<h3 id="Dual-RNA-seq"><a href="#Dual-RNA-seq" class="headerlink" title="Dual RNA-seq"></a>Dual RNA-seq</h3><p>Dual RNA-seq 同时测量基因在(细胞内或细胞外)细菌和被感染的宿主细胞或组织中的表达。</p>
+<p>一般来说，来自被感染的寄主组织或器官的整体 RNA-seq 数据很难分析，因为改变的转录丰度代表了差异表达基因的总和和寄主细胞类型组成的改变。尽管如此，双 RNA-seq 已经成功地用于其中一些感染模型。</p>
+<p>当测序大量组织样本，细胞类型特异性基因表达可能会丢失在平均表达谱。两种方式提高分辨率: 在测序之前，通过分离感染组织和隔离预先确定的细胞类型，或者在测序之后，利用细胞类型特定标记对异质数据进行去计算处理。</p>
+<h3 id="Triple-RNA-seq"><a href="#Triple-RNA-seq" class="headerlink" title="Triple RNA-seq"></a>Triple RNA-seq</h3><h3 id="关于-‘omni-RNA-seq’-方法的探讨"><a href="#关于-‘omni-RNA-seq’-方法的探讨" class="headerlink" title="关于 ‘omni-RNA-seq’ 方法的探讨"></a>关于 ‘omni-RNA-seq’ 方法的探讨</h3><p>总的来说，在过去的5年里，多生物体 rna seq 方法的普及程度有了巨大的提高。虽然 metatranscriptics 和dual RNA-seq 正在成为现代感染生物学的常规技术，跨物种 RNA-seq 的发展将继续考虑更多的相互作用和复杂的相互作用网络。对产生的数据进行适当的分析需要复杂的生物信息学工具，并应随后进行试验，以探索预测的多物种相互作用节点的因果关系和功能结果。在这些努力的同时，感染研究领域目前正在被单细胞转录组学的引入所动摇。</p>
+<h2 id="单细胞-RNA-seq"><a href="#单细胞-RNA-seq" class="headerlink" title="单细胞 RNA-seq"></a>单细胞 RNA-seq</h2><p>超越批量分析的新的转录组学方法来捕获和理解细胞异质性如何决定宿主-微生物相互作用的结果。</p>
+<h3 id="真核细胞-scRNA-seq"><a href="#真核细胞-scRNA-seq" class="headerlink" title="真核细胞 scRNA-seq"></a>真核细胞 scRNA-seq</h3><p>细胞类型特异性基因表达特征和细胞组成变化有一个全面的图谱，单细胞数据集为研究不同宿主细胞类型的异质性提供了丰富的资源。</p>
+<p>局限性：</p>
 <ul>
-<li><code>#SBATCH --partition</code> 工作分区，我们用<code>sugon</code> </li>
-<li><code>#SBATCH --nodes</code> 使用nodes数量，我们只有1个 </li>
-<li><code>#SBATCH --ntasks</code> tasks数量，可能分配给不同node</li>
-<li><code>#SBATCH --ntasks-per-node</code> 每个结点的tasks数量，由于我们只有1 node，所以<code>ntasks</code>和<code>ntasks-per-node</code>是相同的</li>
-<li><code>#SBATCH --cpus-per-task</code> 每个task使用的core的数量（默认 1 core per task），同一个task会在同一个node</li>
-<li><code>#SBATCH --mem</code> 这个作业要求的内存 (Specified in MB)</li>
-<li><code>#SBATCH --mem-per-cpu</code> 每个core要求的内存 (Specified in MB)</li>
+<li>体内 scRNA-seq 组织分离过程中空间信息的丢失 -&gt; NICHE-seq</li>
+<li>依赖于寡核苷酸启动的 RT，从而丢失了许多非多聚腺苷酸化 RNA 类的信息，最重要的是小型真核 RNA -&gt; Small-seq 方法</li>
 </ul>
-<p>在slurm中，一个任务（task）被理解为一个进程（process），一个多进程（multi-process）程序由多个任务组成。相反，多线程（multithreaded）程序只有一个任务，但这个任务使用多个logical CPU。</p>
-<p>更好的理解ntasks，参考<a href="https://stackoverflow.com/questions/39186698/what-does-the-ntasks-or-n-tasks-does-in-slurm#:~:text=sbatch%20does%20not%20launch%20tasks,to%20provide%20for%20sufficient%20resources." target="_blank" rel="noopener">what-does-the-ntasks-or-n-tasks-does-in-slurm</a></p>
-<blockquote>
-<p>The <code>--ntasks</code> parameter is useful if you have commands that you want to run in parallel within the same batch script. This may be two separate commands separated by an <code>&amp;</code> or two commands used in a bash pipe <code>|</code>.</p>
-</blockquote>
-<p>例子1</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#SBATCH --ntasks=1</span></span><br><span class="line"></span><br><span class="line">srun sleep 10 &amp; </span><br><span class="line">srun sleep 12 &amp;</span><br><span class="line"><span class="built_in">wait</span></span><br></pre></td></tr></table></figure>
-
-<p>总共会用时22s，并有警告<em>Job step creation temporarily disabled, retrying</em>。但是如果<code>#SBATCH --ntasks=1</code>，两个task会同时进行，总共用时12s。</p>
-<p>例子2</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks=8</span></span><br><span class="line"><span class="comment">## more options</span></span><br><span class="line"><span class="built_in">echo</span> hello</span><br></pre></td></tr></table></figure>
-
-<p>上面这个脚本只会输出1行，但是后面使用<code>srun</code>以后，会输出8行。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks=8</span></span><br><span class="line"><span class="comment">## more options</span></span><br><span class="line">srun <span class="built_in">echo</span> hello</span><br></pre></td></tr></table></figure>
-
-<p>所以说如果我们是想比如说<code>samtools</code>可以使用更多的线程，应该修改的是<code>#SBATCH --cpus-per-task</code>，并且记得在后面修改samtools的线程参数，否则多余的线程就会被占着却不使用。</p>
-<ul>
-<li>多线程实例</li>
-</ul>
-<p>Use <code>${SLURM_CPUS_PER_TASK}</code> variable to pass the number of cores in the job to commands that accept an argument for number of core, cpus or threads.</p>
-<p>For job arrays, the default file name is “slurm-%A_%a.out”, “%A” is replaced by the job ID and “%a” with the array index. For other jobs, the default file name is “slurm-%j.out”, where the “%j” is replaced by the job ID. </p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --job-name=test</span></span><br><span class="line"><span class="comment">#SBATCH -o %x_%A.%a_%N.out</span></span><br><span class="line"><span class="comment">#SBATCH --account=huangsisi</span></span><br><span class="line"><span class="comment">#SBATCH --partition=sugon</span></span><br><span class="line"><span class="comment">#SBATCH --nodes=1</span></span><br><span class="line"><span class="comment">#SBATCH --tasks-per-node=1</span></span><br><span class="line"><span class="comment">#SBATCH --cpus-per-task=16</span></span><br><span class="line"><span class="comment">#SBATCH --mem-per-cpu=2000</span></span><br><span class="line"><span class="comment">#SBATCH --time=400:00:00</span></span><br><span class="line"><span class="comment">#SBATCH --mail-user=sisih@mit.edu</span></span><br><span class="line"><span class="comment">#SBATCH --mail-type=ALL</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> activate rna</span><br><span class="line"></span><br><span class="line">InDir=<span class="string">"/public/home/shared_lab/first11/Fasta_file"</span></span><br><span class="line"></span><br><span class="line">bowtie2-build NC_045512.2.fna index</span><br><span class="line">bowtie2 -p <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/P3-VERO-P3-1-vero_L4_1.fq.gz \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/P3-VERO-P3-1-vero_L4_2.fq.gz -S out.sam</span><br><span class="line"></span><br><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -bS out.sam &gt;tmp.bam</span><br><span class="line"><span class="comment"># samtools sort -@$&#123;SLURM_CPUS_PER_TASK&#125; tmp.bam &gt; tmp.sort.bam</span></span><br><span class="line"><span class="comment"># bam to fastq</span></span><br><span class="line"><span class="comment"># samtools fastq has no thread argument</span></span><br><span class="line">samtools fastq -1 r1.fq -2 r2.fq -n tmp.bam</span><br><span class="line"><span class="comment">#  -1 FILE   write paired reads flagged READ1 to FILE</span></span><br><span class="line"><span class="comment">#  -2 FILE   write paired reads flagged READ2 to FILE</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="基于Ubuntu系统的查看信息方式"><a href="#基于Ubuntu系统的查看信息方式" class="headerlink" title="基于Ubuntu系统的查看信息方式"></a>基于Ubuntu系统的查看信息方式</h2><ul>
-<li>cpu全部信息</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less -SN /proc/cpuinfo</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看物理CPU个数</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">"physical id"</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">2</span><br><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">"physical id"</span> /proc/cpuinfo| sort -u</span><br><span class="line">physical id     : 0</span><br><span class="line">physical id     : 1</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看每个物理CPU中core的个数</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">"cpu cores"</span> /proc/cpuinfo| uniq</span><br><span class="line">cpu cores       : 12</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">'core id'</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看逻辑CPU的个数</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">"processor"</span> /proc/cpuinfo| wc -l</span><br><span class="line">48</span><br></pre></td></tr></table></figure>
-
-<p>？怎么不太一致，看起来是</p>
-<p>48 logical CPUs = 2 physical CPUs $\times$ 12 cores $\times$ 2 threads</p>
-<p>我愿意相信这个信息比sinfo更准……好惊喜呀！</p>
-<p>下面到计算结点看看情况</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 登录计算结点</span></span><br><span class="line">[huangsisi@tc6000 ~]$ ssh node1</span><br><span class="line">Last login: Mon Jul 27 15:31:57 2020</span><br><span class="line"><span class="comment"># 查看物理CPU个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">"physical id"</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">4</span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">"physical id"</span> /proc/cpuinfo| sort -u</span><br><span class="line">physical id     : 0</span><br><span class="line">physical id     : 1</span><br><span class="line">physical id     : 2</span><br><span class="line">physical id     : 3</span><br><span class="line"><span class="comment"># 查看每个物理CPU中core的个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">"cpu cores"</span> /proc/cpuinfo| uniq</span><br><span class="line">cpu cores       : 18</span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">'core id'</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">18</span><br><span class="line"><span class="comment"># 查看逻辑CPU的个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">"processor"</span> /proc/cpuinfo| wc -l</span><br><span class="line">144</span><br></pre></td></tr></table></figure>
-
-<p>node1和之前<code>sinfo</code>得到的信息一致。</p>
+<h3 id="细菌-scRNA-seq"><a href="#细菌-scRNA-seq" class="headerlink" title="细菌 scRNA-seq"></a>细菌 scRNA-seq</h3><p>由于细菌细胞含有的 RNA19只有femtogram量，即比典型的真核细胞少100倍以上，因此需要一个灵敏的 cDNA 合成和扩增方案。目前大多数真核细胞 scRNA-seq 检测下限是每个细胞10份转录本，而细菌 scRNA-seq 协议必须考虑更低的平均拷贝数(每个细胞0.4份)。</p>
+<p>细菌 mRNAs (半衰期在微小范围内，而真核生物的半衰期在数小时内)的内在不稳定性。</p>
+<p>功能性细菌转录本上缺少poly A尾阻碍了基于 oligo (dT)的 RT 引发。</p>
+<p>以上问题 -&gt; 测序方法改进：期望 MATQ-seq、 PETRI-seq 和 microSPLiT 三个方案中步骤的技术改进和自动化将有助于细菌 scRNA-seq 成为在感染环境中研究微生物病原体的一种广泛使用的方法。</p>
+<p>-&gt; 感染生物学</p>
+<h2 id="未来：微生物疾病治疗"><a href="#未来：微生物疾病治疗" class="headerlink" title="未来：微生物疾病治疗"></a>未来：微生物疾病治疗</h2><p>在寻求理解宿主-微生物相互作用引起的基因表达变化的过程中，RNA-seq 已经成为一种核心方法学。</p>
+<p>虽然感染生物学的蛋白质中心史倾向于将 RNA-seq 研究的重点放在 mRNA 表达水平上，但人们越来越重视许多非编码转录本，这些转录本可能在感染的任何一方，即微生物和宿主发生变化。</p>
+<p>RNA 修饰是扩展 RNA 序列分析种间相互作用范围的另一个方面。</p>
+<p>时间和空间分辨率也必将进一步提高。新转录跟踪技术与 scRNA-seq 技术相结合，提供了病毒攻击的早期细胞反应的细粒度时间图像; 它也可以直接应用于感染细菌细胞的细胞。</p>
+<p>RNA-seq 的最终目标是同时描述和关联单个感染宿主细胞和病原体的基因表达变化。</p>
+<p>任何转录组学方法的一个重要的内在警告是，mRNA 水平可能不一定与分别编码的蛋白质的丰度相关。</p>
+<p>在蛋白质水平验证 rna-seq 具有重要性：蛋白质定量，范围从低通量(对于选定的关键因子，采用 western blot 或流式细胞术)到中通量(多重 ELISA 或‘免疫 pcr’与寡核苷酸结合的抗体181)到高通量。</p>
+<p>将宿主-微生物转录组学与这些功能基因组学的数据结合起来，最终将得到可检验的假设，并提出 RNA 分子可以作为未来的生物标志物或药物靶点，用于对抗传染病和微生物疾病。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>Westermann, Alexander J., and Jörg Vogel. “Cross-species RNA-seq for deciphering host–microbe interactions.” <em>Nature Reviews Genetics</em> (2021): 1-18.</p>
 
       
     </div>
@@ -474,6 +455,8 @@
           
             <a href="/tags/生信/" rel="tag"># 生信</a>
           
+            <a href="/tags/reading/" rel="tag"># reading</a>
+          
         </div>
       
 
@@ -485,8 +468,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/07/30/aspera-dowload-NCBI-database/" rel="next" title="aspera下载NCBI数据">
-                <i class="fa fa-chevron-left"></i> aspera下载NCBI数据
+              <a href="/2021/03/07/SNP-calling-using-VARSCAN/" rel="next" title="SNP calling using VARSCAN">
+                <i class="fa fa-chevron-left"></i> SNP calling using VARSCAN
               </a>
             
           </div>
@@ -494,10 +477,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/09/01/latex-bib-reference/" rel="prev" title="LaTeX中使用bib插入参考文献">
-                LaTeX中使用bib插入参考文献 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -622,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sinfo信息"><span class="nav-number">1.</span> <span class="nav-text">sinfo信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SBATCH-参数设置"><span class="nav-number">2.</span> <span class="nav-text">SBATCH 参数设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于Ubuntu系统的查看信息方式"><span class="nav-number">3.</span> <span class="nav-text">基于Ubuntu系统的查看信息方式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#真核生物和细菌的转录组特征"><span class="nav-number">1.</span> <span class="nav-text">真核生物和细菌的转录组特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#细菌与真核生物-RNA-seq-工作流程比较"><span class="nav-number">2.</span> <span class="nav-text">细菌与真核生物 RNA-seq 工作流程比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-转录组固定、细胞裂解和-RNA-提取"><span class="nav-number">2.1.</span> <span class="nav-text">1 转录组固定、细胞裂解和 RNA 提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-核糖耗尽"><span class="nav-number">2.2.</span> <span class="nav-text">2 核糖耗尽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-cDNA-文库的制备和测序"><span class="nav-number">2.3.</span> <span class="nav-text">3 cDNA 文库的制备和测序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-读对齐，归一化，量化和功能分析"><span class="nav-number">2.4.</span> <span class="nav-text">4 读对齐，归一化，量化和功能分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#细菌-RNA-seq-在体内转录组学中的应用"><span class="nav-number">3.</span> <span class="nav-text">细菌 RNA-seq 在体内转录组学中的应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跨物种-RNA-seq-方法"><span class="nav-number">4.</span> <span class="nav-text">跨物种 RNA-seq 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Metatranscriptics"><span class="nav-number">4.1.</span> <span class="nav-text">Metatranscriptics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dual-RNA-seq"><span class="nav-number">4.2.</span> <span class="nav-text">Dual RNA-seq</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Triple-RNA-seq"><span class="nav-number">4.3.</span> <span class="nav-text">Triple RNA-seq</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于-‘omni-RNA-seq’-方法的探讨"><span class="nav-number">4.4.</span> <span class="nav-text">关于 ‘omni-RNA-seq’ 方法的探讨</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单细胞-RNA-seq"><span class="nav-number">5.</span> <span class="nav-text">单细胞 RNA-seq</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#真核细胞-scRNA-seq"><span class="nav-number">5.1.</span> <span class="nav-text">真核细胞 scRNA-seq</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#细菌-scRNA-seq"><span class="nav-number">5.2.</span> <span class="nav-text">细菌 scRNA-seq</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未来：微生物疾病治疗"><span class="nav-number">6.</span> <span class="nav-text">未来：微生物疾病治疗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
