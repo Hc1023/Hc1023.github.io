@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="VarScan 用 Java 编写，命令行执行，输入pileup文件。 安装https://sourceforge.net/projects/varscan/files/ 下载相应版本VarScan.jar文件到指定位置如/public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar 使用方法 1java -jar /public/home/huangs">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2021-03-07T12:29:11.907Z">
+<meta property="og:updated_time" content="2021-03-21T07:28:47.238Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SNP calling using VARSCAN">
 <meta name="twitter:description" content="VarScan 用 Java 编写，命令行执行，输入pileup文件。 安装https://sourceforge.net/projects/varscan/files/ 下载相应版本VarScan.jar文件到指定位置如/public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar 使用方法 1java -jar /public/home/huangs">
@@ -368,12 +368,13 @@
 <ul>
 <li><code>bwa</code>比对，要sort</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建立index</span></span><br><span class="line">bwa index <span class="variable">$&#123;ref&#125;</span></span><br><span class="line"></span><br><span class="line">bwa mem -M <span class="variable">$&#123;ref&#125;</span> <span class="variable">$OutDir</span>/<span class="variable">$fq1</span> <span class="variable">$OutDir</span>/<span class="variable">$fq2</span> |\</span><br><span class="line">	samtools view -hbS - |\</span><br><span class="line">	samtools sort -@ <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span>  -  &gt; sort.bam</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建立index</span></span><br><span class="line">bwa index <span class="variable">$&#123;ref&#125;</span></span><br><span class="line"></span><br><span class="line">bwa mem -M <span class="variable">$&#123;ref&#125;</span> <span class="variable">$OutDir</span>/<span class="variable">$fq1</span> <span class="variable">$OutDir</span>/<span class="variable">$fq2</span> |\</span><br><span class="line">	samtools view -hbS -F4 - |\</span><br><span class="line">	samtools sort -@ <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span>  -  &gt; sort.bam</span><br></pre></td></tr></table></figure>
 
+<p><code>-F4</code>去掉比对不上的读，但可能非必要。</p>
 <ul>
 <li>生成<code>pileup</code>文件</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools mpileup -B -f <span class="variable">$&#123;ref&#125;</span> sort.bam &gt; sort.mpileup</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools mpileup -f <span class="variable">$&#123;ref&#125;</span> sort.bam &gt; sort.mpileup</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>varscan <code>mpileup2snp</code> call SNP</li>
@@ -381,7 +382,17 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar \</span><br><span class="line">	mpileup2snp sort.mpileup &gt; mpileup_varscan_snp.vcf</span><br></pre></td></tr></table></figure>
 
 <p>后两步骤也可以合起来</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">samtools mpileup -B -f <span class="variable">$&#123;ref&#125;</span> sort.bam |\</span><br><span class="line">	java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar\</span><br><span class="line">    mpileup2snp &gt; variants.vcf</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">samtools mpileup -f <span class="variable">$&#123;ref&#125;</span> sort.bam |\</span><br><span class="line">	java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar\</span><br><span class="line">    mpileup2snp &gt; variants.vcf</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：我一开始使用samtools mpileup中加了-B参数，</p>
+<p> -B, –no-BAQ            disable BAQ (per-Base Alignment Quality)</p>
+<p>即忽略了比对质量，导致多了很多不可靠突变，这是不可取的，但是作为探索似乎也能说明什么……</p>
+</blockquote>
+<ul>
+<li>个人完整版本</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fastp -i <span class="variable">$&#123;InDir&#125;</span>/<span class="variable">$&#123;fq1&#125;</span> -I <span class="variable">$&#123;InDir&#125;</span>/<span class="variable">$&#123;fq2&#125;</span> -w <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> \</span><br><span class="line">     -o <span class="variable">$&#123;OutDir&#125;</span>/<span class="variable">$&#123;fq1&#125;</span> -O <span class="variable">$&#123;OutDir&#125;</span>/<span class="variable">$&#123;fq2&#125;</span></span><br><span class="line">bwa mem -M <span class="variable">$&#123;ref&#125;</span> <span class="variable">$OutDir</span>/<span class="variable">$fq1</span> <span class="variable">$OutDir</span>/<span class="variable">$fq2</span> | samtools view -hbS -F4 - | samtools sort -@ <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span>  -  &gt; <span class="variable">$&#123;OutDir&#125;</span>/sort.bam</span><br><span class="line">samtools mpileup -B -f <span class="variable">$&#123;ref&#125;</span> <span class="variable">$&#123;OutDir&#125;</span>/sort.bam | java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar \</span><br><span class="line">	mpileup2snp sort.mpileup &gt; <span class="variable">$&#123;OutDir&#125;</span>/sample.vcf \</span><br><span class="line">	--min-reads2 5 --min-var-freq 0.05 --strand-filter 0</span><br></pre></td></tr></table></figure>
 
 <h2 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h2><p>将以上流程应用到新冠病毒分离培养捕获测序样本（credit to jianglab），结果如下</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Chrom   Position        Ref     Var     Cons:Cov:Reads1:Reads2:Freq:P-value     StrandFilter:R1+:R1-:R2+:R2-:pval       SamplesRef      SamplesHet      SamplesHom      SamplesNC       Cons:Cov:Reads1:Reads2:Freq:P-value</span><br><span class="line">NC_045512.2     9       T       A       W:76:60:16:21.05%:6.3227E-6     Pass:1.0:58:2:16:0:6.2105E-1    0       1       0       0       W:76:60:16:21.05%:6.3227E-6</span><br><span class="line">NC_045512.2     22303   T       G       G:7430:405:6962:93.7%:0E0       Pass:396:9:5709:1253:1E0        0       0       1       0       G:7430:405:6962:93.7%:0E0</span><br><span class="line">NC_045512.2     27775   T       C       C:5853:159:5683:97.16%:0E0      Pass:157:2:4049:1634:1E0        0       0       1       0       C:5853:159:5683:97.16%:0E0</span><br><span class="line">NC_045512.2     27776   T       G       G:5805:82:5637:97.17%:0E0       Pass:79:3:4011:1626:1E0 0       0       1       0       G:5805:82:5637:97.17%:0E0</span><br><span class="line">NC_045512.2     27777   G       A       A:6421:163:6238:97.21%:0E0      Pass:157:6:4030:2208:1E0        0       0       1       0       A:6421:163:6238:97.21%:0E0</span><br></pre></td></tr></table></figure>
@@ -560,7 +571,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

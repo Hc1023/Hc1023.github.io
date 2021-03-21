@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>from Bayes to computational biology</title>
+    <url>/2021/03/21/from-Bayes-to-computational-biology/</url>
+    <content><![CDATA[<p>贝叶斯统计非常重要的应用之一是MCMC，Gibbs采样则是Metropolis采样的变体。计算生物中即有使用gibbs采样进行motif finding，同样EM算法亦适用（exer！）。</p>
+<p><a href="https://huangsisihome.files.wordpress.com/2021/03/bayes-21-03-19.pdf" target="_blank" rel="noopener">https://huangsisihome.files.wordpress.com/2021/03/bayes-21-03-19.pdf</a></p>
+<p>生活中最美好的事情就是有所期待了鹰！</p>
+]]></content>
+      <tags>
+        <tag>生信</tag>
+        <tag>统计</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>rna-seq deciphering host-microbe interactions</title>
     <url>/2021/03/13/rna-seq-deciphering-host-microbe-interactions/</url>
     <content><![CDATA[<ul>
@@ -84,7 +96,7 @@
 <p>时间和空间分辨率也必将进一步提高。新转录跟踪技术与 scRNA-seq 技术相结合，提供了病毒攻击的早期细胞反应的细粒度时间图像; 它也可以直接应用于感染细菌细胞的细胞。</p>
 <p>RNA-seq 的最终目标是同时描述和关联单个感染宿主细胞和病原体的基因表达变化。</p>
 <p>任何转录组学方法的一个重要的内在警告是，mRNA 水平可能不一定与分别编码的蛋白质的丰度相关。</p>
-<p>在蛋白质水平验证 rna-seq 具有重要性：蛋白质定量，范围从低通量(对于选定的关键因子，采用 western blot 或流式细胞术)到中通量(多重 ELISA 或‘免疫 pcr’与寡核苷酸结合的抗体181)到高通量。</p>
+<p>在蛋白质水平验证 rna-seq 具有重要性：蛋白质定量，范围从低通量(对于选定的关键因子，采用 western blot 或流式细胞术)到中通量(多重 ELISA 或‘免疫 pcr’与寡核苷酸结合的抗体)到高通量。</p>
 <p>将宿主-微生物转录组学与这些功能基因组学的数据结合起来，最终将得到可检验的假设，并提出 RNA 分子可以作为未来的生物标志物或药物靶点，用于对抗传染病和微生物疾病。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>Westermann, Alexander J., and Jörg Vogel. “Cross-species RNA-seq for deciphering host–microbe interactions.” <em>Nature Reviews Genetics</em> (2021): 1-18.</p>
 ]]></content>
@@ -112,12 +124,13 @@
 <ul>
 <li><code>bwa</code>比对，要sort</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 建立index</span></span><br><span class="line">bwa index <span class="variable">$&#123;ref&#125;</span></span><br><span class="line"></span><br><span class="line">bwa mem -M <span class="variable">$&#123;ref&#125;</span> <span class="variable">$OutDir</span>/<span class="variable">$fq1</span> <span class="variable">$OutDir</span>/<span class="variable">$fq2</span> |\</span><br><span class="line">	samtools view -hbS - |\</span><br><span class="line">	samtools sort -@ <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span>  -  &gt; sort.bam</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 建立index</span></span><br><span class="line">bwa index <span class="variable">$&#123;ref&#125;</span></span><br><span class="line"></span><br><span class="line">bwa mem -M <span class="variable">$&#123;ref&#125;</span> <span class="variable">$OutDir</span>/<span class="variable">$fq1</span> <span class="variable">$OutDir</span>/<span class="variable">$fq2</span> |\</span><br><span class="line">	samtools view -hbS -F4 - |\</span><br><span class="line">	samtools sort -@ <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span>  -  &gt; sort.bam</span><br></pre></td></tr></table></figure>
 
+<p><code>-F4</code>去掉比对不上的读，但可能非必要。</p>
 <ul>
 <li>生成<code>pileup</code>文件</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools mpileup -B -f <span class="variable">$&#123;ref&#125;</span> sort.bam &gt; sort.mpileup</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools mpileup -f <span class="variable">$&#123;ref&#125;</span> sort.bam &gt; sort.mpileup</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>varscan <code>mpileup2snp</code> call SNP</li>
@@ -125,7 +138,17 @@
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar \</span><br><span class="line">	mpileup2snp sort.mpileup &gt; mpileup_varscan_snp.vcf</span><br></pre></td></tr></table></figure>
 
 <p>后两步骤也可以合起来</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools mpileup -B -f <span class="variable">$&#123;ref&#125;</span> sort.bam |\</span><br><span class="line">	java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar\</span><br><span class="line">    mpileup2snp &gt; variants.vcf</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">samtools mpileup -f <span class="variable">$&#123;ref&#125;</span> sort.bam |\</span><br><span class="line">	java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar\</span><br><span class="line">    mpileup2snp &gt; variants.vcf</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：我一开始使用samtools mpileup中加了-B参数，</p>
+<p> -B, –no-BAQ            disable BAQ (per-Base Alignment Quality)</p>
+<p>即忽略了比对质量，导致多了很多不可靠突变，这是不可取的，但是作为探索似乎也能说明什么……</p>
+</blockquote>
+<ul>
+<li>个人完整版本</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">fastp -i <span class="variable">$&#123;InDir&#125;</span>/<span class="variable">$&#123;fq1&#125;</span> -I <span class="variable">$&#123;InDir&#125;</span>/<span class="variable">$&#123;fq2&#125;</span> -w <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> \</span><br><span class="line">     -o <span class="variable">$&#123;OutDir&#125;</span>/<span class="variable">$&#123;fq1&#125;</span> -O <span class="variable">$&#123;OutDir&#125;</span>/<span class="variable">$&#123;fq2&#125;</span></span><br><span class="line">bwa mem -M <span class="variable">$&#123;ref&#125;</span> <span class="variable">$OutDir</span>/<span class="variable">$fq1</span> <span class="variable">$OutDir</span>/<span class="variable">$fq2</span> | samtools view -hbS -F4 - | samtools sort -@ <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span>  -  &gt; <span class="variable">$&#123;OutDir&#125;</span>/sort.bam</span><br><span class="line">samtools mpileup -B -f <span class="variable">$&#123;ref&#125;</span> <span class="variable">$&#123;OutDir&#125;</span>/sort.bam | java -jar /public/home/huangsisi/bin/varscan/VarScan.v2.3.9.jar \</span><br><span class="line">	mpileup2snp sort.mpileup &gt; <span class="variable">$&#123;OutDir&#125;</span>/sample.vcf \</span><br><span class="line">	--min-reads2 5 --min-var-freq 0.05 --strand-filter 0</span><br></pre></td></tr></table></figure>
 
 <h2 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h2><p>将以上流程应用到新冠病毒分离培养捕获测序样本（credit to jianglab），结果如下</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Chrom   Position        Ref     Var     Cons:Cov:Reads1:Reads2:Freq:P-value     StrandFilter:R1+:R1-:R2+:R2-:pval       SamplesRef      SamplesHet      SamplesHom      SamplesNC       Cons:Cov:Reads1:Reads2:Freq:P-value</span><br><span class="line">NC_045512.2     9       T       A       W:76:60:16:21.05%:6.3227E-6     Pass:1.0:58:2:16:0:6.2105E-1    0       1       0       0       W:76:60:16:21.05%:6.3227E-6</span><br><span class="line">NC_045512.2     22303   T       G       G:7430:405:6962:93.7%:0E0       Pass:396:9:5709:1253:1E0        0       0       1       0       G:7430:405:6962:93.7%:0E0</span><br><span class="line">NC_045512.2     27775   T       C       C:5853:159:5683:97.16%:0E0      Pass:157:2:4049:1634:1E0        0       0       1       0       C:5853:159:5683:97.16%:0E0</span><br><span class="line">NC_045512.2     27776   T       G       G:5805:82:5637:97.17%:0E0       Pass:79:3:4011:1626:1E0 0       0       1       0       G:5805:82:5637:97.17%:0E0</span><br><span class="line">NC_045512.2     27777   G       A       A:6421:163:6238:97.21%:0E0      Pass:157:6:4030:2208:1E0        0       0       1       0       A:6421:163:6238:97.21%:0E0</span><br></pre></td></tr></table></figure>
