@@ -285,6 +285,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/reading-alignment-and-SNP-calling-algorithms/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/19/reading-alignment-and-SNP-calling-algorithms/" itemprop="url">Reading--alignment and SNP calling algorithms</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-19T08:56:15+08:00">
+                2020-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data"><a href="#Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data" class="headerlink" title="Review of alignment and SNP calling algorithms for next-generation sequencing data"></a>Review of alignment and SNP calling algorithms for next-generation sequencing data</h2><p><em>2015, J Appl Genetics</em></p>
+<ul>
+<li>Bioinformatic tools for next-generation sequencing (NGS) data processing.</li>
+<li>Two of most significant tasks: <ul>
+<li><strong>alignment to a reference genome -&gt; suffix tries and hash tables.</strong> Suffix array-based aligners are memory efficient and work faster than hash-based aligners, but they are less accurate. Hash table algorithms tend to be slower but more sensitive.</li>
+<li><strong>detection of single nucleotide polymorphisms (SNPs) -&gt; heuristic and probabilistic methods.</strong> Due to the computational demands of heuristic methods, probabilistic methods are more commonly used.</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/19/reading-alignment-and-SNP-calling-algorithms/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/16/tex-spell-check/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1413,161 +1545,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/16/comparative-genomic-analysis/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/16/comparative-genomic-analysis/" itemprop="url">Comparative Genomic Analysis</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T15:11:23+08:00">
-                2020-03-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>承接上一篇<a href="https://hc1023.github.io/2020/03/15/global-alignment-of-protein-sequence/" target="_blank" rel="noopener">Global Alignment of Protein Sequence</a>马尔科夫链的部分继续。马尔科夫链在学随机过程或者计算机模拟的时候都会学到，这里主要讲述它在基因序列上的应用。</p>
-<h2 id="马尔科夫链"><a href="#马尔科夫链" class="headerlink" title="马尔科夫链"></a>马尔科夫链</h2><ul>
-<li><p>将多个试验结果按时间标记为一系列“前后相继”的状态: $x_1,x_2,⋯$</p>
-</li>
-<li><p>也称为离散时间马尔可夫链(discrete-time Markov chain): 描述从状态$x_i$到状态$x_j$的转换的随机过程;</p>
-</li>
-<li><p>马尔可夫性质(无记忆性): 下一状态的概率分布只能由当前状态决定,在时间序列中它前面的事件均与之无关</p>
-</li>
-<li><p>推广到连续时间状态$x(t)$的情形，统称：Markov 过程</p>
-</li>
-</ul>
-<p>这里面需要掌握的是</p>
-<p>1.状态转化概率构成的转移矩阵</p>
-<p>一个行向量$v_{(1\times n)}$表示状态概率，一个矩阵$P_{n\times n}$为转移矩阵，则下一状态概率为$vP$，可以画一下状态转移图理解。这个矩阵每一行的和为$1$。</p>
-<p>2.平稳分布</p>
-<ul>
-<li><p>迭代关系 $p_{t+1}=p_t \pi$，有$\pi P=\pi$，则$\pi$为其极限分布，记$\lim_{n\rightarrow \infty}p_n=\pi$</p>
-</li>
-<li><p>Perron-Frobenius 定理</p>
-</li>
-</ul>
-<p>如果概率转移矩阵$𝑃$满足$𝑝_{(i,j)} &gt; \delta &gt; 0, \forall i,j$，那么有</p>
-<p> （1）𝑃存在特征值为$1$且对应的左特征向量$𝒘$严格为正，且唯一<br> （2）如果此特征向量被归一化则进一步有</p>
-<p>$$ lim_{n\rightarrow \infty}⁡ P^n =1w $$</p>
-<ul>
-<li>需要注意的是这个左特征向量存在的条件很低，可是说总是存在的，但是这不一定是任意初始向量的迭代极限，参考马氏链定理的条件：<strong>非周期</strong>的转移概率矩阵，任何两个状态是连通的。$\pi$是$\pi P=\pi$的唯一非负解，$\pi$称为马氏链的平稳分布。</li>
-</ul>
-<p>3.细致平稳条件</p>
-<p>如果非周期马氏链的转移矩阵$P$和分布$\pi(x)$满足</p>
-<p>$$\pi (i)P_{ij}=\pi (j) P_{ji},\ \forall i,j$$</p>
-<p>则$\pi(x)$是马氏链的平稳分布，上式被称为细致平稳条件。</p>
-<p>下面看一下其在DNA序列进化的应用。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/03/16/comparative-genomic-analysis/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1620,7 +1597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
