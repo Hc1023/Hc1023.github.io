@@ -486,7 +486,55 @@
       
         
           
-            
+            <p>大家好，为了便于使用latex以及让我的主页面看起来更简洁，我把一些内容放到了我新建的一个<a href="https://hc1023.github.io/zone/" target="_blank" rel="noopener">zone</a>.</p>
+<p>我在<code>source</code>目录下新建了一个目录，然后由于之后直接写入网页文件，所以在配置文件<code>_config.yml</code>里面设置跳过渲染</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">skip_render:</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"zone/statistical_learning/*"</span></span><br></pre></td></tr></table></figure>
+
+<p>至于<code>html</code>文件如何生成</p>
+<ol>
+<li>可以选择直接写</li>
+</ol>
+<p>记得在开头加上MathJax的<code>src</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://polyfill.io/v3/polyfill.min.js?features=es6"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"MathJax-script"</span> <span class="attr">async</span></span></span><br><span class="line"><span class="tag">          <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以下可以作为模板，效果：<a href="https://hc1023.github.io/zone/statistical_learning/testhtml.html" target="_blank" rel="noopener">https://hc1023.github.io/zone/statistical_learning/testhtml.html</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>MathJax example<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://polyfill.io/v3/polyfill.min.js?features=es6"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"MathJax-script"</span> <span class="attr">async</span></span></span><br><span class="line"><span class="tag">          <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are</span><br><span class="line">  \[x = &#123;-b \pm \sqrt&#123;b^2-4ac&#125; \over 2a&#125;.\]</span><br><span class="line"></span><br><span class="line">I can also use LaTeX aligned environment.</span><br><span class="line"></span><br><span class="line">  \begin&#123;aligned&#125;</span><br><span class="line">\delta_&#123;k&#125;(x) &amp;=-\frac&#123;1&#125;&#123;2 \sigma_&#123;k&#125;^&#123;2&#125;&#125;\left(x-\mu_&#123;k&#125;\right)^&#123;2&#125;+\log \pi_&#123;k&#125; \\</span><br><span class="line">&amp;=-\frac&#123;1&#125;&#123;2 \sigma_&#123;k&#125;^&#123;2&#125;&#125; x^&#123;2&#125;+\frac&#123;x \mu_&#123;k&#125;&#125;&#123;\sigma_&#123;k&#125;^&#123;2&#125;&#125;-\frac&#123;\mu_&#123;k&#125;^&#123;2&#125;&#125;&#123;2 \sigma_&#123;k&#125;^&#123;2&#125;&#125;+\log \pi_&#123;k&#125;</span><br><span class="line">\end&#123;aligned&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方法自由度比较高，但同时也有点费时（尤其当涉及到的格式比较多的时候，而我对html的语法也不太熟悉）。</p>
+<ol start="2">
+<li>可以借助markdown加一个MD生成HTML的工具</li>
+</ol>
+<p>目前来看，<code>typora</code>生成的<code>html</code>文件是比较合适的，但它里面的公式采用的生成方法是MathJax图片格式插入，当然缺点就是文件会比较大。</p>
+<ul>
+<li>效果：<a href="https://hc1023.github.io/zone/statistical_learning/testmd.html" target="_blank" rel="noopener">https://hc1023.github.io/zone/statistical_learning/testmd.html</a></li>
+</ul>
+<p>其它Vscode有用<code>MathML</code>的，体验效果不佳……</p>
+<p>另外可以用<code>pandoc</code>，windows系统安装自行搜索，但有没有可能我是WSL小能手呢？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install pandoc</span><br><span class="line">pandoc --toc --standalone --mathjax -f markdown -t html test.md -o test.html</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>效果：<a href="https://hc1023.github.io/zone/statistical_learning/test.html" target="_blank" rel="noopener">https://hc1023.github.io/zone/statistical_learning/test.html</a></li>
+</ul>
+<p>优点就是文件大小立马比上面图片嵌入的方式缩小了二十几倍，而且网页端效果也很不错，带了目录。缺点是手机端看起来不太好看啊……公式都变小了……</p>
+<p>所以说想寻求完美的话，就选择第一种方法自己直接写吧，应该也会有一些辅助工具。但是我没这么高要求，就选第二种方法。</p>
+<ul>
+<li>顺便还有一招就是直接放pdf：<a href="https://hc1023.github.io/zone/statistical_learning/test.pdf" target="_blank" rel="noopener">https://hc1023.github.io/zone/statistical_learning/test.pdf</a></li>
+</ul>
+<p>但是手机上点击链接需要下载，PC端看也是很不错的，这比较适合放CV。</p>
+<hr>
+<p>以及近段时间使用<code>git</code>总是碰到类似于连接不上的问题。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal: unable to access <span class="string">'https://github.com/Hc1023/Hc1023.github.io.git/'</span>: OpenSSL SSL_read: Connection was reset, errno 10054</span><br></pre></td></tr></table></figure>
+
+<p>生活不容易，我也不知道自己做错了什么。于是现在就通过代理</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy http://userName:password@proxyaddress:port</span><br><span class="line">git config --global https.proxy http://userName:password@proxyaddress:port</span><br></pre></td></tr></table></figure>
+
+<p>可以检查一下自己的设置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list | grep proxy</span><br></pre></td></tr></table></figure>
+
+<p>也可以重新<code>unset</code>，等到又连接不上的时候，再如上设置代理呜呜</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br></pre></td></tr></table></figure>
+
+
           
         
       
@@ -605,7 +653,9 @@
       
         
           
-            <p><a href="https://hc1023.github.io/zone/regression-methods.html" target="_blank" rel="noopener">Regression methods</a></p>
+            <p>参考 统计学习 mooc 视频<br>选了统计学习课程后，春学期开头去了两次课，夏学期去了一次课；发现这门课很实用，但是听起来有点无聊QVQ</p>
+<p><a href="https://hc1023.github.io/zone/statistical_learning/regression-methods.html" target="_blank" rel="noopener">回归方法</a><br><a href="https://hc1023.github.io/zone/statistical_learning/SVM.html" target="_blank" rel="noopener">支持向量机</a><br><a href="https://hc1023.github.io/zone/statistical_learning/ensemble-learning.html" target="_blank" rel="noopener">合奏学习</a></p>
+<p>更新中……</p>
 
           
         
