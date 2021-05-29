@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hc&#39;s Blog">
 <meta property="og:description" content="大家好，为了便于使用latex以及让我的主页面看起来更简洁，我把一些内容放到了我新建的一个zone. 我在source目录下新建了一个目录，然后由于之后直接写入网页文件，所以在配置文件_config.yml里面设置跳过渲染 12skip_render: - &quot;zone/statistical_learning/*&quot;  至于html文件如何生成  可以选择直接写  记得在开头加上MathJax的sr">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2021-05-29T01:39:23.249Z">
+<meta property="og:updated_time" content="2021-05-29T03:24:41.220Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="create a zone">
 <meta name="twitter:description" content="大家好，为了便于使用latex以及让我的主页面看起来更简洁，我把一些内容放到了我新建的一个zone. 我在source目录下新建了一个目录，然后由于之后直接写入网页文件，所以在配置文件_config.yml里面设置跳过渲染 12skip_render: - &quot;zone/statistical_learning/*&quot;  至于html文件如何生成  可以选择直接写  记得在开头加上MathJax的sr">
@@ -387,19 +387,6 @@
 <li>顺便还有一招就是直接放pdf：<a href="https://hc1023.github.io/zone/statistical_learning/test.pdf" target="_blank" rel="noopener">https://hc1023.github.io/zone/statistical_learning/test.pdf</a></li>
 </ul>
 <p>但是手机上点击链接需要下载，PC端看也是很不错的，这比较适合放CV。</p>
-<hr>
-<p>以及近段时间使用<code>git</code>总是碰到类似于连接不上的问题。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal: unable to access <span class="string">'https://github.com/Hc1023/Hc1023.github.io.git/'</span>: OpenSSL SSL_read: Connection was reset, errno 10054</span><br></pre></td></tr></table></figure>
-
-<p>生活不容易，我也不知道自己做错了什么。于是现在就通过代理</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy http://userName:password@proxyaddress:port</span><br><span class="line">git config --global https.proxy http://userName:password@proxyaddress:port</span><br></pre></td></tr></table></figure>
-
-<p>可以检查一下自己的设置</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list | grep proxy</span><br></pre></td></tr></table></figure>
-
-<p>也可以重新<code>unset</code>，等到又连接不上的时候，再如上设置代理呜呜</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
@@ -430,8 +417,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/03/21/from-Bayes-to-computational-biology/" rel="next" title="from Bayes to computational biology">
-                <i class="fa fa-chevron-left"></i> from Bayes to computational biology
+              <a href="/2021/05/26/openSSL-err/" rel="next" title="OpenSSL err">
+                <i class="fa fa-chevron-left"></i> OpenSSL err
               </a>
             
           </div>
@@ -440,7 +427,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2021/05/26/Statistical-learning/" rel="prev" title="Statistical learning">
+              <a href="/2021/05/29/Statistical-learning/" rel="prev" title="Statistical learning">
                 Statistical learning <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -512,7 +499,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -63,7 +63,7 @@ $\mathrm{MSE}=$ 偏差$^2$+方差
 
 - 偏差-方差平衡
 
-![1622255735786](D:\OneDrive - zju.edu.cn\course\大四下\统计学习\1622255735786.png)
+![1622255735786](https://raw.githubusercontent.com/Hc1023/Hc1023.github.io/master/zone/statistical_learning/1622255735786.png)
 
 增加训练数据可以允许使用更复杂的模型，即向右移动最优复杂度。
 
@@ -109,7 +109,7 @@ $$
 w_{j}=w_{j}+\eta y_{i} x_{i j} \exp \left(-y_{i}\left(w \cdot x_{i}+b\right)\right)-\eta \lambda w_{j}
 $$
 
-![1622257109162](D:\OneDrive - zju.edu.cn\course\大四下\统计学习\1622257109162.png)
+![1622257109162](https://raw.githubusercontent.com/Hc1023/Hc1023.github.io/master/zone/statistical_learning/1622257109162.png)
 
 如果 $w_{j}$ 为正, 降低 $w_{j}$；如果 $w_j$ 为负, 增加 $w_j$.
 
