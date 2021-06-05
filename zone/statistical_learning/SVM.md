@@ -55,7 +55,7 @@ $$
 
 对于线性不可分的分类问题，将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间里是线性可分的。
 
-令 $\phi(\boldsymbol{x})$ 表示将$\boldsymbol{x}$映射后的特征向量，于是在特征空间中分割超平面所 对应的模型可表示为:
+令 $\phi(\boldsymbol{x})$ 表示将$\boldsymbol{x}$映射后的特征向量，于是在特征空间中分割超平面所对应的模型可表示为:
 $$
 f(\boldsymbol{x})=\boldsymbol{b}^{\top} \phi(\boldsymbol{x})+a .
 $$
@@ -103,11 +103,14 @@ $$
 $$
 f(\boldsymbol{x})=\boldsymbol{b}^{\top} \phi(\boldsymbol{x})+a=\sum_{i=1}^{m} \alpha_{i} y_{i} \kappa\left(\boldsymbol{x}, \boldsymbol{x}_{i}\right)+a
 $$
-线性核 $\quad \kappa\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}$
-多项式核 $\quad \kappa\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\left(\boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}\right)^{d} \quad d \geq 1$
-径向核 $\quad \kappa\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\exp \left(-\gamma\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}\right) \quad \gamma>0$
-拉普拉斯核 $\quad \kappa\left(x_{i}, x_{j}\right)=\exp \left(-\frac{\left\|x_{i}-x_{j}\right\|}{\sigma}\right) \quad \sigma>0$
-Sigmoid 核 $\quad \kappa\left(x_{i}, \boldsymbol{x}_{j}\right)=\tanh \left(\beta \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\theta\right) \quad \beta>0, \theta<0$
+| 核函数     | 表达式                                                       |
+| ---------- | ------------------------------------------------------------ |
+| 线性核     | $\quad \kappa\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}$ |
+| 多项式核   | $\quad \kappa\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\left(\boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}\right)^{d} \quad d \geq 1$ |
+| 径向核     | $\quad \kappa\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\exp \left(-\gamma\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|^{2}\right) \quad \gamma>0$ |
+| 拉普拉斯核 | $\quad \kappa\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\exp \left(-\frac{\left\|\boldsymbol{x}_{i}-\boldsymbol{x}_{j}\right\|}{\sigma}\right) \quad \sigma>0$ |
+| Sigmoid 核 | $\quad \kappa\left(\boldsymbol{x}_{i}, \boldsymbol{x}_{j}\right)=\tanh \left(\beta \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}+\theta\right) \quad \beta>0, \theta<0$ |
+
 
 ## code
 
