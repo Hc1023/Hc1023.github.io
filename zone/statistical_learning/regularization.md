@@ -1,6 +1,6 @@
 [Hc's blog](https://hc1023.github.io/)
 
-[Hc's blog: R与统计学习基础](https://hc1023.github.io/2021/05/29/Statistical-learning/)
+[Hc's blog: R与统计学习基础](https://hc1023.github.io/2021/06/13/Statistical-learning/)
 
 [机器学习与人工智能 浙江大学 中国大学MOOC(慕课)](https://www.icourse163.org/course/ZJU-1206689820)
 
