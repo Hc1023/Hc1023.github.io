@@ -117,5 +117,5 @@ $$
 
 最终参数更新可简化为$\mu_j:=\displaystyle\frac{\sum_{i=1}^m\gamma_{j}^ix_i}{\sum_{i=1}^m\gamma_{j}^i}$，$\Sigma_j:=\displaystyle\frac{\sum_{i=1}^m\gamma_j^i(x_i-\mu_j)(x_i-\mu_j)^\top}{\sum_{i=1}^m\gamma_j^i}$，$\alpha_j=\displaystyle\frac 1 m \sum_{i=1}^m\gamma^i_j$.
 
-最后收敛后，进行簇划分，$x^{(i)}$属于簇$z^{(i)}=\arg\max_{j=1,...,k}\lambda_j^i$.
+最后收敛后，进行簇划分，$x^{(i)}$属于簇$z^{(i)}=\arg\max_{j=1,...,k}\gamma_j^i$.
 
