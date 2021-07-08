@@ -4,6 +4,8 @@
 
 [机器学习与人工智能 浙江大学 中国大学MOOC(慕课)](https://www.icourse163.org/course/ZJU-1206689820)
 
+[TOC]
+
 # 深度学习
 
 2006年，多伦多大学Geoffrey Hinton教授提出真正意义上的“深度”神经网络（deep neural network，DNN），使网络层数达到7层，从而掀起了第二次机器学习热潮——“深度学习”。
