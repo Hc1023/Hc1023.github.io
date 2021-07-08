@@ -1,0 +1,263 @@
+---
+title: "Homework 1"
+author: "Huang Sisi"
+output: html_document
+---
+
+```{r setup, message = F, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(warn=-1)
+```
+
+1.\ Describe the null hypotheses to which the $p$-values given in Table $3.4$ correspond. Explain what conclusions you can draw based on these p-values. Your explanation should be phrased in terms of `sales`, `TV`, `radio`, and `newspaper`, rather than in terms of the coefficients of the linear model.
+    
+*Answer*. Null hypothesis $H_0:\ \beta_i = 0$.
+
+* Intercept: $p<0.0001$ means that the null hypothesis is rejected, i.e., `sales` is not zero when `TV`, `radio` and `newspaper` are zero.
+* `TV`: $p<0.0001$ means that the null hypothesis is rejected, i.e., the change in `TV` will affect `sales` value.
+* `radio`: $p<0.0001$ means that the null hypothesis is rejected, i.e., the change in `radio` will affect `sales` value. 
+* `newspaper`: $p=0.8599$ means that the null hypothesis is accpeted, i.e., there is no relationship between `sales` and `newspaper`.
+
+5.\ Consider the fitted values that result from performing linear regression without an intercept. In this setting, the $i$ th fitted value takes the form
+\begin{equation}\label{eq:1}
+\hat{y}_{i}=x_{i} \hat{\beta},
+\end{equation}
+where
+\begin{equation}\label{eq:2}
+\hat{\beta}=\left(\sum_{i=1}^{n} x_{i} y_{i}\right) /\left(\sum_{i^{\prime}=1}^{n} x_{i^{\prime}}^{2}\right).
+\end{equation}
+Show that we can write
+\begin{equation}\label{eq:3}
+\hat{y}_{i}=\sum_{i^{\prime}=1}^{n} a_{i^{\prime}} y_{i^{\prime}}.
+\end{equation}
+What is $a_{i^{\prime}}$?
+
+*proof*. Substitute (\ref{eq:2}) into (\ref{eq:1}) and get
+\begin{equation}
+\hat{y}_{i}=x_i\frac{\sum_{i^{\prime}=1}^{n} x_{i^{\prime}} y_{i^{\prime}}}{\sum_{j=1}^{n} x_{j}^{2}}
+=\sum_{i^{\prime}=1}^{n}\frac{x_ix_{i^{\prime}}}{\sum_{j=1}^n{x_j}^2} y_{i^{\prime}}.
+\end{equation}
+So it is the form of equation (\ref{eq:3}), and $a_{i^{\prime}} = \displaystyle\frac{x_ix_{i^{\prime}}}{\sum_{j=1}^n{x_j}^2}$.
+
+8.\ This question involves the use of simple linear regression on the `Auto` data set.
+
+(a) Use the `lm()` function to perform a simple linear regression with `mpg` as the response and `horsepower` as the predictor. Use the `summary()` function to print the results. 
+
+    ```{r}
+    library(ISLR)
+    fit.lm <- lm(mpg ~ horsepower, data = Auto)
+    summary(fit.lm)
+    ```
+
+    Comment on the output. For example:
+
+    i. Is there a relationship between the predictor and the response?
+    
+        Yes. Because the $p$-value <2e-16, which means the relationship between the predictor and the response is statistically significant.
+    
+    ii. How strong is the relationship between the predictor and the response?
+    
+    ```{r}
+    summary(fit.lm)$r.squared    
+    ```    
+    
+    The `horsepower` explains 60.59% of the variance in `mpg`.    
+    
+    ```{r}
+    summary(fit.lm)$sigma
+    summary(fit.lm)$sigma/mean(Auto$mpg)
+    ```
+        
+    The residual standard error (RSE) is 4.906. The percentage of error is 20.92%.
+        
+    
+    iii. Is the relationship between the predictor and the response positive or negative?
+    ```{r}
+    coefficients(fit.lm)["horsepower"]
+    ```
+    It is negative.
+    
+    iv. What is the predicted `mpg` associated with a `horsepower` of 98? What are the associated $95 \%$ confidence and prediction intervals?
+    
+    ```{r}
+    predict(fit.lm, data.frame(horsepower = 98), 
+                interval = "confidence", level = 0.95)
+    ```
+        
+    The confidence interval is $24.467 \pm 0.494$.
+        
+    ```{r}
+    predict(fit.lm, data.frame(horsepower = 98), 
+            interval = "prediction", level = 0.95)
+    ```
+        
+    The prediction interval is $24.467 \pm 9.658$.
+
+    The prediction interval is wider. Because the true $y$ at $x_0$ is $y=x_{0}^{T} \beta+\epsilon$. Since $E(\epsilon)=0$, the predicted value will be $\hat{y}=x_{0}^{T} \hat{\beta}$. The prediction interval includes the variance of $\hat{\beta}$ and $\epsilon$. But the confidence interval only considers the variance of $\epsilon$ and does not take the error term into account.
+  
+
+(b) Plot the response and the predictor. Use the `abline()` function to display the least squares regression line.
+
+    ```{r}
+    # ggplot(Auto, aes(x = horsepower, y = mpg)) + geom_point() +
+    #     geom_abline(intercept = coef(fit.lm)[1], slope = coef(fit.lm)[2],
+    #                 col = "blue", size = 1) + 
+    #                 theme_set(theme_bw())
+    attach(Auto)
+    plot(horsepower, mpg); abline(fit.lm, col = "blue", size = 1)
+    ```
+
+(c) Use the `plot()` function to produce diagnostic plots of the least squares regression fit. Comment on any problems you see with the fit.
+
+    ```{r}
+    par(mfrow=c(2,2))
+    plot(fit.lm)
+    ```
+    
+    From residual plot, there are distinctive patterns from observing the deviation from the residual = 0 line. The non-linear relationship is not explained by the model and is left out in the residuals.
+
+9.\ This question involves the use of multiple linear regression on the `Auto` data set.
+
+(a) Produce a scatterplot matrix which includes all of the variables in the data set.
+
+    ```{r}
+    library(ISLR)
+    pairs(Auto, main="Scatterplot-Auto", pch = 21, bg=c(1:nrow(Auto)))
+    ```
+
+(b) Compute the matrix of correlations between the variables using the function `cor()` . You will need to exclude the name variable, which is qualitative.
+
+    ```{r}
+    cor(Auto[,-9])
+    ```
+
+(c) Use the `lm()` function to perform a multiple linear regression with `mpg` as the response and all other variables except name as the predictors. Use the `summary()` function to print the results. Comment on the output. For instance:
+
+    i. Is there a relationship between the predictors and the response?
+    
+    ```{r}
+    Auto$origin <- as.factor(Auto$origin)
+    fit.lm <- lm(mpg ~ ., data = Auto[,-9])
+    summary(fit.lm)
+    ```
+    
+    Yes. The null hypothesis is that all the coefficients are 0. We use F-statistic to test the hypothesis. Since p-value: < 2.2e-16, we reject null hypothesis and there is a relation between the predictors and response.
+    
+    ii. Which predictors appear to have a statistically significant relationship to the response?
+    
+    `displacement`, `weight`, `year` and `origin`.
+    
+    iii. What does the coefficient for the `year` variable suggest?
+
+    ```{r}
+    coef(fit.lm)["year"]
+    ```
+    The increase of a unit in `year` is associated with the increase of 0.7770 unit in `mpg`.
+    
+(d) Use the `plot()` function to produce diagnostic plots of the linear regression fit. Comment on any problems you see with the fit. Do the residual plots suggest any unusually large outliers? Does the leverage plot identify any observations with unusually high leverage?
+
+    ```{r}
+    par(mfrow=c(2,2))
+    plot(fit.lm)
+    ```
+
+    From residual plot, there are some distinctive patterns from observing the deviation from the residual = 0 line. There may be non-linear relationship. Points in the upper-right corner may be outliers.
+    
+    From leverage plot, point 14 has unsually high leverage compared to other points. But the case is within Cook's line. (When cases are outside of the Cook’s distance, they are influential to the regression results. The regression results will be altered if we exclude those cases.) So the leverage plot seems admissable.
+    
+(e) Use the `*` and `:` symbols to fit linear regression models with interaction effects. Do any interactions appear to be statistically significant?
+
+    ```{r}
+    fit.lm <- lm(mpg ~ .*., data = Auto[,-9])
+    # summary(fit.lm)
+    ```
+    
+    Set p-values threshold as 0.05. The interaction terms are as follows.
+    
+    ```
+    cylinders:acceleration    *  
+    acceleration:year         *  
+    acceleration:origin2      ***
+    acceleration:origin3      *  
+    year:origin2              *  
+    year:origin3              * 
+    ---
+    Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+    ```
+    In fact, they are `cylinder:acceleration`, `acceleration:year`, `acceleration:origin` and `year:origin`.
+
+(f) Try a few different transformations of the variables, such as $\log (X), \sqrt{X}, X^{2}$. Comment on your findings.
+
+    ```{r}
+    # Auto[,c(-8,-9)] no transformation on origin
+    R2 <- rep(0,6)
+    R2.log <- R2
+    R2.sqrt <- R2
+    R2.quadr <- R2
+    
+    for (i in 2:7){
+      # X
+      R2[i-1] <- summary(lm(Auto$mpg ~ Auto[,i]))$r.squared 
+      
+      if (min(Auto[,i]<0)){
+        X <- Auto[,i]+min(Auto[,i])
+      }else{
+        X <- Auto[,i]
+      }
+      # log(X)
+      R2.log[i-1] <- summary(lm(Auto$mpg~log(X+1)))$r.squared
+      
+      # sqrt(X)
+      R2.sqrt[i-1] <- summary(lm(Auto$mpg~sqrt(X)))$r.squared
+      
+      # X+X^2
+      X <- Auto[,i]
+      R2.quadr[i-1] <- summary(lm(Auto$mpg~X+I(X^2)))$r.squared
+    }
+    
+    library(dplyr)
+    method <- c("none", "log", "sqrt", "quadratic")
+    p <- data.frame(predictor = colnames(Auto)[2:7],
+                    R2 = round(R2, 3), 
+                    R2.log = round(R2.log, 3), 
+                    R2.sqrt = round(R2.sqrt, 3),
+                    R2.quadr = round(R2.quadr, 3)) 
+    p <- p %>%
+      mutate(R2.max = pmax(R2, R2.log, R2.sqrt, R2.quadr), 
+             method = method[max.col(p[,2:5])]) %>%
+      arrange(desc(R2.max))
+    p
+    ```
+    $X^2$ transformation seems more suitable. We then visualize the improvement of $R^2$. Here I refer to https://rpubs.com/lmorgan95/ISLR_CH3_Solutions.
+
+    ```{r}
+    library(tidyr)
+    colnames(p)[2:5] <- method
+    mpg_predictors <- p %>%
+      select(-c(R2.max, method)) %>%
+      gather(key = "method", value = "R2", -predictor)
+    mpg_predictors$predictor <- factor(mpg_predictors$predictor, 
+                                       ordered = T, 
+                                       levels = p$predictor)
+    mpg_predictors$method <- factor(mpg_predictors$method,
+                                       levels = method)
+    
+    library(ggplot2)
+    ggplot(mpg_predictors, aes(x = R2, y = predictor, col = method, group = predictor)) + 
+      geom_line(col = "grey15") + geom_point(size = 2) + 
+      theme_light() + theme(legend.position = "bottom") +
+      labs(title = "Best predictors (& transformations) for mpg", 
+           col = "Predictor Transformation", 
+           y = "Predictor") 
+    ```
+    
+    Concluded from the graph, we should test quadratic terms for `weight`, `displacement`, `horsepower` and `year`.
+    
+    ```{r}
+    fit.lm.2 <- lm(mpg ~ . + I(weight^2) + I(displacement^2) + 
+                     I(horsepower^2) + I(year^2), data = Auto[,-9])
+    summary(fit.lm.2)
+    ```
+    
+    The adjusted $R^2$ is improved from 0.8205 to 0.8735 after transformation.
+    
