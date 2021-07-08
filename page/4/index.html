@@ -285,638 +285,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/29/Algebra-notes-05-29-20/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/29/Algebra-notes-05-29-20/" itemprop="url">Algebra notes 05.29.20</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-29T23:38:40+08:00">
-                2020-05-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Weyl代数：<br>$$k \langle x,y \rangle/ \langle yx-xy-1 \rangle$$<br>q-Weyl代数：<br>$$k \langle x,x^{-1},y,y^{-1} \rangle/\langle yx-qxy,xx^{-1}-1,yy^{-1}-1,x^{-1}x-1,y^{-1}y-1 \rangle$$</p>
-<p><strong>命题：Weyl代数$A$的基为$\lbrace x^i y^j,i,j\geq 0 \rbrace$</strong></p>
-<p>证：首先证明$x^iy^j$可以张成$A$。注意到由关系$yx=xy+1$，任意单词可以重排为$x$在$y$的左侧的单词的组合，i.e.，任意单词可以被表示为$x^iy^j$的线性组合。<br>下证$x^iy^j$线性无关（基于表示论进行证明）。$a$是一个变元，令$E=t^ak[a][t,t^{-1}]$（这里$t^a$只是一个形式符号，因为根据后面的作用我们总能提出$t^a$写成这样的形式，所以可以说实际上$E=k[a][t,t^{-1}]$）。如下定义$A$在$E$上的作用，$$xf=tf,\ yf=\frac{df}{dt},$$可以验证这个作用满足$yx=xy+1$所以是良定义的，且注意经作用后的像依旧落于$E$中。现假设有非平凡线性关系式$\Sigma c_{ij}x^i y^j = 0$，那么即有算子$$L=\Sigma c_{ij}t^i (\frac{d}{dt})^j$$在$E$上的作用为0。$L$可以写为$$L=\Sigma_{j=0}^r Q_j(t) (\frac{d}{dt})^j,$$其中$Q_r\neq 0$。于是<br>$$Lt^a = \Sigma_{j=0}^r Q_j(t) a(a-1)\dots (a-j+1)t^{a-j}=0$$由于$a$为未定元，则$$Q_r(t)t^{-r}a^r=0\Rightarrow Q_r(t)=0$$矛盾。Q.E.D</p>
-<p><strong>命题：q-Weyl代数$A_q$的基为$\lbrace x^i y^j,i,j\in \mathbb Z \rbrace$</strong></p>
-<p>证：首先证明$x^iy^j$可以张成$A_q$。由关系式容易有$yx=qxy$和$y^{-1}x^{-1}=qx^{-1}y^{-1}$，于是任意单词可以通过这两个关系式化作$x^iy^j,i,j\in \mathbb Z $的线性组合。下证其线性无关。<br>构造表示为$E=k[a,a^{-1}][t,t^{-1}]$，作用为$$xf=tf,\ yf(t)=af(qt),\ x^{-1}f = t^{-1} f,\ y^{-1}f(t) = a^{-1}f(q^{-1}t)$$则有$$yxf(t)=ytf(t)=aqtf(qt)=qxaf(qt)=qxyf(t)$$且易验证剩余几个关系式，所以这个作用是良定义的。设有非平凡线性组合$\Sigma c_{ij}x^i y^j = 0$，并令$$L=\Sigma c_{ij}x^i y^j = \Sigma_{s}^r Q_j[t,t^{-1}]y^j$$为$0$算子，其中$Q_r\neq 0$，则$$La = \Sigma_{s}^r Q_j[t,t^{-1}]a^{j+1}=0 $$而同样有$a$作为未定元，考察它的最高次项必须有$Q_r[t,t^{-1}]=0$，矛盾。Q.E.D</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/Algebra-notes-05-28-20/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/28/Algebra-notes-05-28-20/" itemprop="url">Algebra notes 05.28.20</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-28T23:45:08+08:00">
-                2020-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>对于代数$A$的一个非零表示$V$，若它的唯一子表示为$0$和$V$本身，则称其<strong>不可约</strong>；若它不能被写作两个非零子表示的直和，则称其<strong>不可分</strong>。显然有不可约蕴含不可分，反之不成立。</p>
-<p><strong>令$V$是代数$A$的非零有限维表示，证明它有不可约子表示。但这对无限维表示不一定成立，请举例说明。</strong></p>
-<p>证：若$V$不可约取$V$本身即为它的不可约子表示。否则$V$可约，取$W\subset V$为其非零的真子表示，于是$1\leq dim\ W &lt; dim\ V &lt; \infty$。后对$W$重复上述讨论，并反复往下可得到一串非零真子表示链，且表示的维数严格递减。则又由于维数为$1$的表示不可约，所以总能找到一个不可约的子表示。<br>反例可以考虑$A=k[x]$多项式上的正则表示$V=_A A$，$A$无限维所以$V$无限维，取$V$的任意子表示$_AM$。但$\forall m\in M,\ m\neq 0 \Rightarrow 0\neq Axm \subsetneq AM \subset M$，其中的真包含关系考虑它们的degree便可知，所以$Axm$是$M$的真子表示，即它的任意子表示可约。Rmk: 事实上，$A$的任意非零元在$A$模作用下生成的表示都与$A$同构。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/reading-alignment-and-SNP-calling-algorithms/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/19/reading-alignment-and-SNP-calling-algorithms/" itemprop="url">Reading--alignment and SNP calling algorithms</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-19T08:56:15+08:00">
-                2020-05-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data"><a href="#Review-of-alignment-and-SNP-calling-algorithms-for-next-generation-sequencing-data" class="headerlink" title="Review of alignment and SNP calling algorithms for next-generation sequencing data"></a>Review of alignment and SNP calling algorithms for next-generation sequencing data</h2><p><em>2015, J Appl Genetics</em></p>
-<ul>
-<li>Bioinformatic tools for next-generation sequencing (NGS) data processing.</li>
-<li>Two of most significant tasks: <ul>
-<li><strong>alignment to a reference genome -&gt; suffix tries and hash tables.</strong> Suffix array-based aligners are memory efficient and work faster than hash-based aligners, but they are less accurate. Hash table algorithms tend to be slower but more sensitive.</li>
-<li><strong>detection of single nucleotide polymorphisms (SNPs) -&gt; heuristic and probabilistic methods.</strong> Due to the computational demands of heuristic methods, probabilistic methods are more commonly used.</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/19/reading-alignment-and-SNP-calling-algorithms/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/16/tex-spell-check/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/16/tex-spell-check/" itemprop="url">Tex语法检查</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-16T16:49:24+08:00">
-                2020-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>两个方法：<br>1.IDE自带的语法检查，但是不同IDE操作不一样，我用的是TeXworks；<br>2.优雅地转为word，然后用word进行语法检查。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/16/tex-spell-check/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/15/Slurm-Workload-Manager/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sisi Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/15/Slurm-Workload-Manager/" itemprop="url">Slurm Workload Manager</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-15T13:16:46+08:00">
-                2020-05-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="SLURM-Simple-Linux-Utility-for-Resource-Management"><a href="#SLURM-Simple-Linux-Utility-for-Resource-Management" class="headerlink" title="SLURM: Simple Linux Utility for Resource Management"></a>SLURM: Simple Linux Utility for Resource Management</h2><p>a free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters.</p>
-<p>Key functions:</p>
-<ul>
-<li>allocating exclusive and/or non-exclusive access to resources (computer nodes).</li>
-<li>providing a framework for starting, executing, and monitoring work on a set of allocated nodes.</li>
-<li>arbitrating contention for resources by managing a queue of pending jobs.</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/15/Slurm-Workload-Manager/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/13/reading-SNP-calling-from-HTS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1533,6 +901,670 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/trivial0321/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/21/trivial0321/" itemprop="url">trivial0321</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-21T17:15:52+08:00">
+                2020-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>进大学快三年，个人的一些分享也许会对大家尤其是大学生群体哈有点帮助吧哈哈。当然个人的想法不一定对所有人适用。<br>有些是别人分享给我的，有些是自己的习惯。我觉得分享的内容都挺亲民的，没什么高大上的，轻松扫一眼说不准有收获呗。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/21/trivial0321/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/Short-Read-Alignment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/Short-Read-Alignment/" itemprop="url">Short Read Alignment</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T21:42:20+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>我们如何将基因组转换为可以快速匹配数百万条reads的表示形式？</p>
+<p>这里介绍一种方式，或说一种数据结构：<strong>Full-text Minute-size index (FM Index / BWT)</strong></p>
+<p>参考基因序列经过BWT变换后，通过FM Index和FL mapping能够实现reads的快速匹配。</p>
+<ul>
+<li>给定参考基因和一组reads，至少能找到一个“良好”的局部比对，或说找到一个read在参考基因序列中的位置。</li>
+<li>怎样的比对结果是“良好”的？<ul>
+<li>错配越少越好</li>
+<li>低质量的碱基错配要比高质量的碱基错配更好</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/17/Short-Read-Alignment/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/16/comparative-genomic-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/comparative-genomic-analysis/" itemprop="url">Comparative Genomic Analysis</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T15:11:23+08:00">
+                2020-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>承接上一篇<a href="https://hc1023.github.io/2020/03/15/global-alignment-of-protein-sequence/" target="_blank" rel="noopener">Global Alignment of Protein Sequence</a>马尔科夫链的部分继续。马尔科夫链在学随机过程或者计算机模拟的时候都会学到，这里主要讲述它在基因序列上的应用。</p>
+<h2 id="马尔科夫链"><a href="#马尔科夫链" class="headerlink" title="马尔科夫链"></a>马尔科夫链</h2><ul>
+<li><p>将多个试验结果按时间标记为一系列“前后相继”的状态: $x_1,x_2,⋯$</p>
+</li>
+<li><p>也称为离散时间马尔可夫链(discrete-time Markov chain): 描述从状态$x_i$到状态$x_j$的转换的随机过程;</p>
+</li>
+<li><p>马尔可夫性质(无记忆性): 下一状态的概率分布只能由当前状态决定,在时间序列中它前面的事件均与之无关</p>
+</li>
+<li><p>推广到连续时间状态$x(t)$的情形，统称：Markov 过程</p>
+</li>
+</ul>
+<p>这里面需要掌握的是</p>
+<p>1.状态转化概率构成的转移矩阵</p>
+<p>一个行向量$v_{(1\times n)}$表示状态概率，一个矩阵$P_{n\times n}$为转移矩阵，则下一状态概率为$vP$，可以画一下状态转移图理解。这个矩阵每一行的和为$1$。</p>
+<p>2.平稳分布</p>
+<ul>
+<li><p>迭代关系 $p_{t+1}=p_t \pi$，有$\pi P=\pi$，则$\pi$为其极限分布，记$\lim_{n\rightarrow \infty}p_n=\pi$</p>
+</li>
+<li><p>Perron-Frobenius 定理</p>
+</li>
+</ul>
+<p>如果概率转移矩阵$𝑃$满足$𝑝_{(i,j)} &gt; \delta &gt; 0, \forall i,j$，那么有</p>
+<p> （1）𝑃存在特征值为$1$且对应的左特征向量$𝒘$严格为正，且唯一<br> （2）如果此特征向量被归一化则进一步有</p>
+<p>$$ lim_{n\rightarrow \infty}⁡ P^n =1w $$</p>
+<ul>
+<li>需要注意的是这个左特征向量存在的条件很低，可是说总是存在的，但是这不一定是任意初始向量的迭代极限，参考马氏链定理的条件：<strong>非周期</strong>的转移概率矩阵，任何两个状态是连通的。$\pi$是$\pi P=\pi$的唯一非负解，$\pi$称为马氏链的平稳分布。</li>
+</ul>
+<p>3.细致平稳条件</p>
+<p>如果非周期马氏链的转移矩阵$P$和分布$\pi(x)$满足</p>
+<p>$$\pi (i)P_{ij}=\pi (j) P_{ji},\ \forall i,j$$</p>
+<p>则$\pi(x)$是马氏链的平稳分布，上式被称为细致平稳条件。</p>
+<p>下面看一下其在DNA序列进化的应用。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/16/comparative-genomic-analysis/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/15/global-alignment-of-protein-sequence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/15/global-alignment-of-protein-sequence/" itemprop="url">Global Alignment of Protein Sequence</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-15T17:26:36+08:00">
+                2020-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>这篇文章主要讲述了不同的BLAST方法，为什么要用氨基酸序列进行比对，如何处理gap惩罚，并用动态规划的方法全局比对找到最优解，然后回溯获得比对结果，同时可以应用到半全局比对和局部比对。这其中需要注意的是PAM matrix的一些特点，这个评分矩阵的设计非常有内涵，最后提了一下我们需要通过DNA序列进化来知道如何设计这样的评分系统的是合理的，而DNA进化序列实际上是一条马尔科夫链。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/15/global-alignment-of-protein-sequence/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/gene-related-conception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sisi Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/profile.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/13/gene-related-conception/" itemprop="url">基因结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-13T17:35:14+08:00">
+                2020-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本文主要介绍了基因结构，包含开放阅读框open reading frames（ORF），内含子intron，外显子exon，编码基因 coding sequence（CDS），非翻译区untranslated region（UTR）,互补DNA complementary DNA（cDNA），核糖体结合位点 ribosome binding site（RBS）。</p>
+<p>对于真核生物而言，一个基因经转录产生mRNA，在剪接过程中除去内含子intron，保留外显子exon。能翻译为蛋白的exon区域是CDS区域，不能翻译的为5’和3’非翻译区UTR区域。以mRNA或microRNA（miRNA））为模板逆转录合成的DNA为cDNA，它仅包含外显子（包含5’UTR，3’UTR），不含内含子。</p>
+<p>intron和exon是针对转录而言的，CDS和UTR是针对翻译而言的。</p>
+<p>这些基因结构信息用GTF file保存。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/13/gene-related-conception/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1585,7 +1617,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
