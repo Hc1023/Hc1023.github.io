@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Metagenome-wide association studies (MWAS) have enabled the high-resolution investigation of associations between the human microbiome and several complex diseases, including type 2 diabetes, obesity,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MWAS fine-mining the microbiome">
+<meta property="og:url" content="https://hc1023.github.io/2020/06/30/MWAS-fine-mining-the-micriobiome/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="Metagenome-wide association studies (MWAS) have enabled the high-resolution investigation of associations between the human microbiome and several complex diseases, including type 2 diabetes, obesity,">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2020/06/30/MWAS-fine-mining-the-micriobiome/1.png">
+<meta property="og:image" content="https://hc1023.github.io/2020/06/30/MWAS-fine-mining-the-micriobiome/2.png">
+<meta property="og:image" content="https://hc1023.github.io/2020/06/30/MWAS-fine-mining-the-micriobiome/3.png">
+<meta property="article:published_time" content="2020-06-30T02:26:32.000Z">
+<meta property="article:modified_time" content="2021-10-24T07:16:44.198Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="reading">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2020/06/30/MWAS-fine-mining-the-micriobiome/1.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2020/06/30/MWAS-fine-mining-the-micriobiome/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2020/06/30/MWAS-fine-mining-the-micriobiome/","path":"2020/06/30/MWAS-fine-mining-the-micriobiome/","title":"MWAS fine-mining the microbiome"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MWAS fine-mining the microbiome | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Some-conceptions"><span class="nav-number">1.</span> <span class="nav-text">Some conceptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Designing-and-carrying-out-an-MWAS"><span class="nav-number">2.</span> <span class="nav-text">Designing and carrying out an MWAS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Metagenomic-sequencing-and-assembly"><span class="nav-number">2.1.</span> <span class="nav-text">Metagenomic sequencing and assembly</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Microbial-reference-gene-catalogues"><span class="nav-number">2.2.</span> <span class="nav-text">Microbial reference gene catalogues</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Taxonomy-from-metagenomic-data"><span class="nav-number">2.3.</span> <span class="nav-text">Taxonomy from metagenomic data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controlling-for-phenotypes-in-MWAS"><span class="nav-number">2.4.</span> <span class="nav-text">Controlling for phenotypes in MWAS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Identifying-associations-using-MWAS"><span class="nav-number">3.</span> <span class="nav-text">Identifying associations using MWAS</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/06/30/MWAS-fine-mining-the-micriobiome/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MWAS fine-mining the microbiome
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-06-30 10:26:32" itemprop="dateCreated datePublished" datetime="2020-06-30T10:26:32+08:00">2020-06-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-10-24 15:16:44" itemprop="dateModified" datetime="2021-10-24T15:16:44+08:00">2021-10-24</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Metagenome-wide association studies (MWAS) have enabled the <strong>high-resolution</strong> investigation of associations between the human microbiome and several complex diseases, including <em>type 2 diabetes, obesity, liver cirrhosis, colorectal cancer and rheumatoid arthritis</em>.</p>
+<ul>
+<li>the identification of taxa that are more or less abundant, as is the case with taxanomic approaches</li>
+<li>the identification of microbial functions that are enriched or depleted</li>
+</ul>
+<p>goal: inform the prevention, diagnosis and treatment of human disease in the future.</p>
+<span id="more"></span>
+
+<h2 id="Some-conceptions"><a href="#Some-conceptions" class="headerlink" title="Some conceptions"></a>Some conceptions</h2><p><strong>Microbiome</strong>: The ensemble of microbial genomes and products at a given site.</p>
+<p><strong>Microbiota</strong>: The ecological community of microorganisms at a given site.</p>
+<p><strong>16S rRNA gene amplicon sequencing</strong>: Amplification and sequencing of the variable regions in 16S ribosomal RNA genes for the taxonomic profiling of bacteria and archaea in a sample.</p>
+<p>16S rRNA gene amplicon sequencing is widely used but the data produced are of limited use in several aspects, owing to a <strong>poor taxonomic resolution and an absence of information about the function of the microbiome</strong>.</p>
+<p><strong>Metagenomic shotgun sequencing</strong>, in which <strong>the full complement of genes that are present in the microbiome are sequenced rather than just a single taxonomic marker gene</strong>, is able to overcome these limitations by <strong>providing information about the abundances of genes in functional pathways and at all taxonomical levels</strong>.</p>
+<p>In the current forms of MWAS, the relative abundance of a gene in a metagenomes is used to establish an association with a disease of interest, typically after the genes are first grouped into strain-level clusters known as metagenomic linkage groups (MLGs), metagenomic clusters (MGCs) or metagenomic species (MGS), which reduces the dimensionality of the data.</p>
+<h2 id="Designing-and-carrying-out-an-MWAS"><a href="#Designing-and-carrying-out-an-MWAS" class="headerlink" title="Designing and carrying out an MWAS"></a>Designing and carrying out an MWAS</h2><h3 id="Metagenomic-sequencing-and-assembly"><a href="#Metagenomic-sequencing-and-assembly" class="headerlink" title="Metagenomic sequencing and assembly"></a>Metagenomic sequencing and assembly</h3><p>Requirement: sufficient volume of sequencing data is obtained to enable reliable quantitative comparisons between samples, as the number of genes that are detected in any given sample increases with the volume of sequencing data until saturation.</p>
+<p>Difficulties: </p>
+<ul>
+<li>faecal samples: sequencing reads from the host account for no more than 1% of the total. However, for non-faecal samples: dominated by sequencing reads from the host, even several Gb of raw sequence data may be insufficient.</li>
+<li>experimental removal of host DNA without affecting the microbial content of the samples remains challenging, although bioinformatic tools can be used to remove host sequences after sequencing.</li>
+</ul>
+<h3 id="Microbial-reference-gene-catalogues"><a href="#Microbial-reference-gene-catalogues" class="headerlink" title="Microbial reference gene catalogues"></a>Microbial reference gene catalogues</h3><p>A non-redundant gene catalogue can be constructed from a metagenome assembly by predicting genes from the assembled contigs and removing highly similar genes across samples, which are considered to be redundant.</p>
+<p>The abundances of genes, taxa and functions in metagenomic datasets can be quantified by alignment to such a gene catalogue to identify associations with a disease of interest.</p>
+<p>Note: constructing a gene catalogue from a poor-quality metagenome assembly can artificially increase the number of genes.</p>
+<h3 id="Taxonomy-from-metagenomic-data"><a href="#Taxonomy-from-metagenomic-data" class="headerlink" title="Taxonomy from metagenomic data"></a>Taxonomy from metagenomic data</h3><p>One goal: identify associations between the disease that is being investigated and specific taxa.</p>
+<p>To increase taxonomic resolution to the level of strains, genes in a metagenomic dataset can be clustered according to the genome of origin.<br>Based on the idea: genes from the same microbial genome are physically linked and should have the same pattern of abundance variation to one anotheer across many samples.</p>
+<p>Organize microbial genes in metagenomic data into strain-level clusters known as metagenomic linkage groups (MLGs), metagenomic clusters (MGCs) or metagenomic species (MGS).</p>
+<p>Sequence alignment to existing microbial genome sequences are typically used to assign genes or strain-level clusters to taxa.</p>
+<p>The alignment of conserved single-copy genes and strain-specific regions of the genome may be more useful than other loci for taxanomic annotation.<br>Incorporation of addistional information, such as GC content and tetra-nucleotide frequency, might help to separate clusters that could not be resolved using abundance variation, which has been a particular problem in datasets with a small number of samples.</p>
+<h3 id="Controlling-for-phenotypes-in-MWAS"><a href="#Controlling-for-phenotypes-in-MWAS" class="headerlink" title="Controlling for phenotypes in MWAS"></a>Controlling for phenotypes in MWAS</h3><p>Include extensive metadata that enable factors that influence the microbiota to be controlled for.<br>Cohorts should then be matched according to these metadata rather than using statistical regression methods that would undermine the power of MWAS to control for confounding factors.</p>
+<p>Note: for associations that are identified by MWAS that have a small effect size, a larger sample size might be required to distinguish the association from background variation.</p>
+<h2 id="Identifying-associations-using-MWAS"><a href="#Identifying-associations-using-MWAS" class="headerlink" title="Identifying associations using MWAS"></a>Identifying associations using MWAS</h2><p>Although MWAS can, in principle, be used to study associations between the microbiome and any trait, studies to date have focused on identifying associations between the microbiome and disease.</p>
+<ol>
+<li>A typical cohort : a group of healthy individuals and a group of individuals with a disease. </li>
+<li>Longitudinal study: before and after a certain intervention. </li>
+<li>Natural process: such as the development of an infant or the progression of a disease. </li>
+<li>Compare the microbiomes at different body sites for a cohort of individuals with a disease.</li>
+</ol>
+<p><img src="1.png"></p>
+<ul>
+<li>gene catalogue</li>
+</ul>
+<p>Bioinformatics tools are used to assemble the metagenomic reads into contigs. Genes that are predicted from contigs are compiled into a <strong>gene catalogue</strong>, or an existing reference gene catalogue that is representative of the data could be readily used.</p>
+<ul>
+<li>sample relative abundance</li>
+</ul>
+<p>The relative abundance of a gene can be quantified by determining the number of sequencing reads that align to that gene in the reference catalogue.</p>
+<ul>
+<li>grouping of the predicted genes</li>
+</ul>
+<p>Phylogenetic or functional annotation and grouping of the predicted genes allows the quantification of microbial taxa or functional pathways in the samples and comparisons between samples.<br>Genes (or contigs, which can contain several genes and intergenic regions) that have abundances that co-vary in samples can be clustered into strain-level taxonomic units (known, according to the clustering algorithm used, as metagenomic linkage groups (MLGs), metagenomic clusters (MGCs) or metagenomic species (MGS)).</p>
+<p><img src="2.png"></p>
+<ul>
+<li>associations with a disease</li>
+</ul>
+<p>Associations with a disease can be identified for individual microbial genes, taxa or functions.<br>In addition, classifiers can be constructed using supervised machine learning to assign each sample to a certain category, such as healthy or diseased.</p>
+<p><img src="3.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/reading/" rel="tag"># reading</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/03/Algebra-notes/" rel="prev" title="表示论 Algebra notes">
+                  <i class="fa fa-chevron-left"></i> 表示论 Algebra notes
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/03/LASSO/" rel="next" title="LASSO（L1 正则化）">
+                  LASSO（L1 正则化） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

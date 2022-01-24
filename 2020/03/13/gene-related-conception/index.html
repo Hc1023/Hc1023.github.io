@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要介绍了基因结构，包含开放阅读框open reading frames（ORF），内含子intron，外显子exon，编码基因 coding sequence（CDS），非翻译区untranslated region（UTR）,互补DNA complementary DNA（cDNA），核糖体结合位点 ribosome binding site（RBS）。 对于真核生物而言，一个基因经转录产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因结构">
+<meta property="og:url" content="https://hc1023.github.io/2020/03/13/gene-related-conception/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="本文主要介绍了基因结构，包含开放阅读框open reading frames（ORF），内含子intron，外显子exon，编码基因 coding sequence（CDS），非翻译区untranslated region（UTR）,互补DNA complementary DNA（cDNA），核糖体结合位点 ribosome binding site（RBS）。 对于真核生物而言，一个基因经转录产">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2020/03/13/gene-related-conception/0313.png">
+<meta property="og:image" content="https://hc1023.github.io/2020/03/13/gene-related-conception/0313-2.png">
+<meta property="og:image" content="https://hc1023.github.io/2020/03/13/gene-related-conception/0313-3.png">
+<meta property="og:image" content="https://hc1023.github.io/2020/03/13/gene-related-conception/0313-4.png">
+<meta property="article:published_time" content="2020-03-13T09:35:14.000Z">
+<meta property="article:modified_time" content="2020-03-15T09:41:20.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生物">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2020/03/13/gene-related-conception/0313.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2020/03/13/gene-related-conception/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2020/03/13/gene-related-conception/","path":"2020/03/13/gene-related-conception/","title":"基因结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>基因结构 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E5%9B%A0%E7%BB%93%E6%9E%84gene-structure"><span class="nav-number">1.</span> <span class="nav-text">基因结构gene structure</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ORF-and-ORFeome"><span class="nav-number">1.1.</span> <span class="nav-text">ORF and ORFeome</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#intron"><span class="nav-number">1.2.</span> <span class="nav-text">intron</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exon"><span class="nav-number">1.3.</span> <span class="nav-text">exon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CDS"><span class="nav-number">1.4.</span> <span class="nav-text">CDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UTR"><span class="nav-number">1.5.</span> <span class="nav-text">UTR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cDNA"><span class="nav-number">1.6.</span> <span class="nav-text">cDNA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EST"><span class="nav-number">1.7.</span> <span class="nav-text">EST</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RBS"><span class="nav-number">1.8.</span> <span class="nav-text">RBS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GTF-GFF-file"><span class="nav-number">2.</span> <span class="nav-text">GTF&#x2F;GFF file</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GFF-general-structure"><span class="nav-number">2.1.</span> <span class="nav-text">GFF general structure</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%9C%E7%BB%84-omes-%E2%80%9D%E5%92%8C%E2%80%9C%E7%BB%84%E5%AD%A6-omics-%E2%80%9D"><span class="nav-number">3.</span> <span class="nav-text">“组(omes)”和“组学(omics)”</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/03/13/gene-related-conception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基因结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-03-13 17:35:14" itemprop="dateCreated datePublished" datetime="2020-03-13T17:35:14+08:00">2020-03-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-03-15 17:41:20" itemprop="dateModified" datetime="2020-03-15T17:41:20+08:00">2020-03-15</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文主要介绍了基因结构，包含开放阅读框open reading frames（ORF），内含子intron，外显子exon，编码基因 coding sequence（CDS），非翻译区untranslated region（UTR）,互补DNA complementary DNA（cDNA），核糖体结合位点 ribosome binding site（RBS）。</p>
+<p>对于真核生物而言，一个基因经转录产生mRNA，在剪接过程中除去内含子intron，保留外显子exon。能翻译为蛋白的exon区域是CDS区域，不能翻译的为5’和3’非翻译区UTR区域。以mRNA或microRNA（miRNA））为模板逆转录合成的DNA为cDNA，它仅包含外显子（包含5’UTR，3’UTR），不含内含子。</p>
+<p>intron和exon是针对转录而言的，CDS和UTR是针对翻译而言的。</p>
+<p>这些基因结构信息用GTF file保存。</p>
+<span id="more"></span>
+
+
+<h2 id="基因结构gene-structure"><a href="#基因结构gene-structure" class="headerlink" title="基因结构gene structure"></a>基因结构gene structure</h2><p><img src="0313.png"></p>
+<p>真核eukaryotic蛋白质编码基因的结构。 调控序列regulatory sequence控制蛋白质编码区coding region（红色）表达的时间和地点。 启动子Promoter和增强子enhancer区域（黄色）调节基因转录为前mRNA，将其修饰以去除内含子intron（浅灰色）并添加5’帽和poly-A尾巴（深灰色）。 mRNA的5’和3’非翻译区untranslated regions（蓝色）调节翻译成最终蛋白质产物。</p>
+<p><img src="0313-2.png"></p>
+<p>蛋白质编码基因的原核操纵子prokaryotic operon的结构。 调节序列控制何时多个蛋白质编码区（红色）发生表达。 启动子Promoter，操纵子operator和增强子enhancer区域（黄色）调节基因转录为mRNA。 mRNA非翻译区untranslated regions（蓝色）调节翻译成最终蛋白质产物。</p>
+<h3 id="ORF-and-ORFeome"><a href="#ORF-and-ORFeome" class="headerlink" title="ORF and ORFeome"></a>ORF and ORFeome</h3><p>在分子遗传学中，开放阅读框open reading frames（ORF）是具有翻译功能的阅读框的一部分。 ORF是从起始密码子（通常为AUG）开始到终止密码子（通常为UAA，UAG或UGA）结束的连续密码子序列，但不包括终止密码子。</p>
+<p> ORF中的（不一定是第一个）ATG密码子（相对于RNA而言是AUG）可以指示翻译在何处开始。转录终止位点位于ORF之后，在翻译终止密码子之后。如果转录在终止密码子之前停止，则翻译过程中会产生不完整的蛋白质。</p>
+<p>在分子遗传学中，ORFeome是指基因组中完整的开放阅读框（ORF）集。 该术语也可用于描述一组克隆的ORF。ORF对应于基因的蛋白质编码序列protein coding sequences（CDS）。 可以通过计算机程序（如GENSCAN）在基因组序列中发现ORF，然后通过PCR进行扩增。 尽管这在细菌中相对来说是寻找ORF是很trivial的事情，但在真核生物中由于存在内含子和外显子以及剪接变体，内含子可能包含终止密码子也许会引起阅读框之间的移位，因此在真核生物基因组中ORF finding并不简单。</p>
+<h3 id="intron"><a href="#intron" class="headerlink" title="intron"></a>intron</h3><p>内含子intron是最终产生成熟RNA产物时被RNA剪接除去的核苷酸序列。或说内含子是RNA转录本或编码它的DNA的非编码区noncoding regions，在翻译前通过剪接splicing被消除。</p>
+<h3 id="exon"><a href="#exon" class="headerlink" title="exon"></a>exon</h3><p>外显子exon是通过RNA剪接除去内含子后编码产生最终成熟RNA的一部分的那部分对应的基因。 术语外显子既指基因中的DNA序列，又指RNA转录物中的相应序列。 在RNA剪接中，内含子被去除，外显子彼此共价连接，作为生成成熟信使RNA mature messenger RNA 的一部分。 就像一个物种species的整个基因gene的集合构成了基因组genome一样，整个外显子exon的集合也构成了外显子组exome。</p>
+<h3 id="CDS"><a href="#CDS" class="headerlink" title="CDS"></a>CDS</h3><p>基因的编码区，也称为CDS（from coding sequence），是基因的DNA或RNA中编码蛋白质的部分，EXON中可以翻译成蛋白质的部分。与不同物种和时间段的非编码区相比，研究编码区的长度，组成，调控regulation，剪接splicing，结构和功能可以提供大量有关原核生物prokaryotes和真核生物eukaryotes的基因组织和进化的重要信息。</p>
+<p><img src="0313-3.png"></p>
+<h3 id="UTR"><a href="#UTR" class="headerlink" title="UTR"></a>UTR</h3><p>非翻译区untranslated region（UTR）位于mRNA链上编码序列的两侧。 如果在5’侧，则称为5’UTR（或前导序列leader sequence），或者在3’侧，则称为3’UTR（或尾部序列trailer sequence）。 mRNA将信息从DNA传递到核糖体（细胞内蛋白质合成（翻译）的位点）。 首先从相应的DNA序列转录mRNA，然后翻译成蛋白质。 但是，mRNA的有些区域通常不翻译为蛋白质，包括5’和3’UTR。</p>
+<h3 id="cDNA"><a href="#cDNA" class="headerlink" title="cDNA"></a>cDNA</h3><p>在遗传学中，complementary DNA（cDNA）是以单链RNA（例如信使RNA（mRNA）或microRNA（miRNA））为模板经逆转录酶催化合成的DNA。 它仅包含外显子（包含5’UTR，3’UTR），不含内含子。</p>
+<p>cDNA通常用于在原核生物中克隆真核基因。 当科学家想要在通常不表达该蛋白的细胞中表达特定蛋白（即异源表达heterologous expression）时，他们会将编码该蛋白的cDNA转移至受体细胞。 cDNA还可以由逆转录病毒（例如HIV-1，HIV-2，猿猴免疫缺陷病毒等）自然产生，然后整合到宿主基因组中，从而产生前病毒。</p>
+<p>cDNA通常在生物信息学中也用于表示mRNA转录物的序列，表示为DNA碱基（GCAT）而不是RNA碱基（GCAU）。</p>
+<h3 id="EST"><a href="#EST" class="headerlink" title="EST"></a>EST</h3><p>表达的序列标签expressed sequence tag（EST）是cDNA序列的短子序列。 EST可以用于鉴定基因转录本，并在基因发现和基因序列确定中发挥作用。</p>
+<h3 id="RBS"><a href="#RBS" class="headerlink" title="RBS"></a>RBS</h3><p>核糖体结合位点ribosome binding site（RBS）是mRNA转录物起始密码子start codon上游upstream的核苷酸序列，负责在蛋白质翻译过程中募集核糖体。 尽管已经在感染真核生物的真核细胞或病毒的mRNA中描述了内部核糖体进入位点internal ribosome entry sites（IRES），但RBS通常是指细菌序列。 真核生物中的核糖体募集通常由真核mRNA上存在的5’帽介导。</p>
+<h2 id="GTF-GFF-file"><a href="#GTF-GFF-file" class="headerlink" title="GTF/GFF file"></a>GTF/GFF file</h2><p>基因转移格式Gene transfer format （GTF）是一种文件格式，用于保存有关基因结构的信息。 它是基于一般特征格式general feature format （GFF）的制表符分隔tab-delimited的文本格式，但包含一些特定于基因信息的附加约定。</p>
+<p>例如在ensembl下载基因转录本cDNA的序列：<br><a target="_blank" rel="noopener" href="https://asia.ensembl.org/info/data/ftp/index.html">https://asia.ensembl.org/info/data/ftp/index.html</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://ftp.ensembl.org/pub/release-95/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz</span><br><span class="line">wget ftp://ftp.ensembl.org/pub/release-95/gtf/homo_sapiens/Homo_sapiens.GRCh38.95.chr.gtf.gz</span><br><span class="line">zless -S Homo_sapiens.GRCh38.95.chr.gtf.gz</span><br></pre></td></tr></table></figure>
+
+<p><img src="0313-4.png"></p>
+<h3 id="GFF-general-structure"><a href="#GFF-general-structure" class="headerlink" title="GFF general structure"></a>GFF general structure</h3><p>所有GFF格式（GFF2，GFF3和GTF）均由制表符分隔，每行9个字段。 它们的前7个字段都具有相同的结构，但是<em>第九个字段</em>的内容和格式不同。 总体结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>序列</td>
+<td>序列名</td>
+</tr>
+<tr>
+<td>2</td>
+<td>来源</td>
+<td>标明feature来源的关键词，例如一个项目或组织</td>
+</tr>
+<tr>
+<td>3</td>
+<td>feature</td>
+<td>feature类型名，例如“gene”，“exon”， 在结构良好的GFF文件中，所有子级特征始终在单个块中跟随其父级（因此，一个转录本的所有外显子都放在其父级“transcript”要素行之后，并在任何其他父级转录本之前）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>起始位置</td>
+<td>该功能的基因组起点，”1-base offset”。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>结束位置</td>
+<td>该功能的基因组终点，”1-base offset”。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>得分</td>
+<td>通常表示来源在带注释的要素中的置信度。 值为“.” （点）用于定义空值。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>strand</td>
+<td>代表它在哪条链上，“ +”（正链，5’-&gt; 3’），“-”（负链，3’-&gt; 5’），“.”（未确定）。</td>
+</tr>
+<tr>
+<td>8</td>
+<td>phase</td>
+<td>phase of CDS features; 0, 1, 2 (for CDS features) or “.” (for everything else).</td>
+</tr>
+<tr>
+<td>9</td>
+<td>属性</td>
+<td>与该功能有关的所有其他信息。 这一列的的格式、结构和内容是三种文件格式之间变化最大的。</td>
+</tr>
+</tbody></table>
+<h2 id="“组-omes-”和“组学-omics-”"><a href="#“组-omes-”和“组学-omics-”" class="headerlink" title="“组(omes)”和“组学(omics)”"></a>“组(omes)”和“组学(omics)”</h2><p>受术语“基因组（genome）和基因组学（genomics）”的启发，其他描述完整生物学数据集的词（通常是源自一种生物的生物分子集）都带有后缀-ome和-omics，中文翻译为xxx组，xxx组学。</p>
+<p>这些术语中的某些以分层方式彼此相关。 例如，基因组包含ORFeome，它产生转录组transcriptome，该转录组transcriptome经翻译产生蛋白质组proteome.</p>
+<p>一位组学家omicist是研究组学omeomics的科学家。omeomics: cataloging all the “omics” subfields.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E7%89%A9/" rel="tag"># 生物</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/03/11/shell/" rel="prev" title="shell and shell scripts">
+                  <i class="fa fa-chevron-left"></i> shell and shell scripts
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/03/15/global-alignment-of-protein-sequence/" rel="next" title="Global Alignment of Protein Sequence">
+                  Global Alignment of Protein Sequence <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

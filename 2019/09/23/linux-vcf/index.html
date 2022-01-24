@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="vcfWhat is a VCF and how should I interpret it?  VCF stands for Variant Call Format. It is a standardized text file format for representing SNP, indel, and structural variation calls.A valid VCF file">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux --vcf格式文件处理">
+<meta property="og:url" content="https://hc1023.github.io/2019/09/23/linux-vcf/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="vcfWhat is a VCF and how should I interpret it?  VCF stands for Variant Call Format. It is a standardized text file format for representing SNP, indel, and structural variation calls.A valid VCF file">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/23/linux-vcf/0917.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/23/linux-vcf/0917-2.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/23/linux-vcf/0917-3.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/23/linux-vcf/0917-4.png">
+<meta property="article:published_time" content="2019-09-23T11:42:32.000Z">
+<meta property="article:modified_time" content="2019-09-27T07:07:40.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2019/09/23/linux-vcf/0917.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2019/09/23/linux-vcf/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2019/09/23/linux-vcf/","path":"2019/09/23/linux-vcf/","title":"Linux --vcf格式文件处理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux --vcf格式文件处理 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vcf"><span class="nav-number">1.</span> <span class="nav-text">vcf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%83%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">小练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">概念题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2019/09/23/linux-vcf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux --vcf格式文件处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-23 19:42:32" itemprop="dateCreated datePublished" datetime="2019-09-23T19:42:32+08:00">2019-09-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2019-09-27 15:07:40" itemprop="dateModified" datetime="2019-09-27T15:07:40+08:00">2019-09-27</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="vcf"><a href="#vcf" class="headerlink" title="vcf"></a>vcf</h2><p><a target="_blank" rel="noopener" href="https://gatkforums.broadinstitute.org/gatk/discussion/1268/how-should-i-interpret-vcf-files-produced-by-the-gatk">What is a VCF and how should I interpret it?</a></p>
+<blockquote>
+<p>VCF stands for Variant Call Format. It is a standardized text file format for representing SNP, indel, and structural variation calls.<br>A valid VCF file is composed of two main parts: the <strong>header</strong>, and the <strong>variant call records</strong>.<br>The <strong>header</strong> contains information about the dataset and relevant reference sources (e.g. the organism, genome build version etc.), as well as definitions of all the annotations used to qualify and quantify the properties of the variant calls contained in the VCF file.<br>For each <strong>site record</strong>, the information is structured into columns (also called fields) as follows:<br>CHROM  POS ID  REF ALT     QUAL    FILTER  INFO    FORMAT  NA12878 [other samples…]</p>
+</blockquote>
+<span id="more"></span>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/biosoft</span><br><span class="line"><span class="built_in">cd</span> ~/biosoft</span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh </span><br><span class="line">bash Miniconda3-latest-Linux-x86_64.sh </span><br><span class="line"><span class="built_in">source</span> ~/.bashrc </span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda</span><br><span class="line">conda config --<span class="built_in">set</span> show_channel_urls yes</span><br><span class="line">conda create -y -n <span class="built_in">test</span></span><br><span class="line">conda activate <span class="built_in">test</span></span><br><span class="line">conda install -y samtools bcftools</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.4.3/bowtie2-2.3.4.3-linux-x86_64.zip </span><br><span class="line">unzip bowtie2-2.3.4.3-linux-x86_64.zip </span><br><span class="line"><span class="built_in">cd</span> ~/biosoft/bowtie2-2.3.4.3-linux-x86_64/example/reads</span><br><span class="line"><span class="comment"># 用bowtie2进行比对，生成bam文件</span></span><br><span class="line"><span class="comment"># sort 可以使bam文件最小 @ 5 5线程</span></span><br><span class="line">../../bowtie2 -x ../index/lambda_virus -1 reads_1.fq -2 reads_2.fq | samtools sort -@ 5 -o tmp.bam - </span><br><span class="line"><span class="comment"># bcftools生成vcf文件</span></span><br><span class="line">bcftools mpileup -f ../reference/lambda_virus.fa tmp.bam |bcftools call -vm &gt; tmp.vcf</span><br></pre></td></tr></table></figure>
+<h2 id="小练习"><a href="#小练习" class="headerlink" title="小练习"></a>小练习</h2><p>1.把突变记录的vcf文件区分成 INDEL和SNP条目</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">less tmp.vcf|grep -v <span class="string">&quot;^#&quot;</span>|grep INDEL|less -S</span><br><span class="line">less tmp.vcf|grep -v <span class="string">&quot;^#&quot;</span>|grep -v INDEL|less -S</span><br></pre></td></tr></table></figure>
+<p>或者根据SNP第四列和第五列都只有一个字符，否则是INDEL</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ less tmp.vcf | grep -v <span class="string">&#x27;^#&#x27;</span>| awk <span class="string">&#x27;&#123;if(length($4)!=1) print&#125;&#x27;</span> | less -S</span><br><span class="line">$ less tmp.vcf | grep -v <span class="string">&#x27;^#&#x27;</span>| awk <span class="string">&#x27;&#123;if(length($4)==1 &amp;&amp; length($5)==1) print&#125;&#x27;</span> | less -S</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> 人类基因组上的变异主要分为三大类：1. 单核苷酸变异，（通常称为单核苷酸多态性，通俗的说法就是单个DNA碱基的不同，简称SNP）；2. 小的Indel（Insertion 和 Deletion的简），指的是在基因组的某个位置上所发生的小片段序列的插入或者删除，其长度通常在50bp以下（这个长度范围的变异可以利用Smith-Waterman 的比对算法来获得）；3. 大的结构性变异，这种类型比较多，包括长度在50bp以上的长片段序列的插入或者删除、染色体倒位，染色体内部或染色体之间的序列易位，拷贝数变异，以及一些形式更为复杂的变异。为了和SNP变异作区分，第2和第3类变异通常也被称为基因组结构性变异（Structural variation，简称SV）。</p>
+</blockquote>
+<p>2.统计INDEL和SNP条目的各自的平均测序深度</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># indel</span></span><br><span class="line">$  less tmp.vcf | grep -v <span class="string">&#x27;^#&#x27;</span>|grep INDEL| cut -f 8 | cut -d <span class="string">&quot;;&quot;</span> -f 4 | cut -d <span class="string">&quot;=&quot;</span> -f 2 | awk <span class="string">&#x27;&#123;sum+=$1&#125;END&#123;print sum/NR&#125;&#x27;</span></span><br><span class="line">40.4429</span><br><span class="line"><span class="comment"># snp</span></span><br><span class="line">$ less tmp.vcf | grep -v <span class="string">&#x27;^#&#x27;</span>|grep -v INDEL| cut -f 8 | cut -d <span class="string">&quot;;&quot;</span> -f 1 | cut -d <span class="string">&quot;=&quot;</span> -f 2 | awk <span class="string">&#x27;&#123;sum+=$1&#125;END&#123;print sum/NR&#125;&#x27;</span></span><br><span class="line">37</span><br></pre></td></tr></table></figure>
+
+<p>3.把INDEL条目再区分成insertion和deletion情况</p>
+<p>insertion，第5列比第4列字符数多；deletion，那么第5列比第4列字符数少</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># insertion</span></span><br><span class="line">$ less tmp.vcf | grep -v <span class="string">&#x27;^#&#x27;</span> | grep INDEL | awk <span class="string">&#x27;&#123;if(length($5)&gt;length($4)) print&#125;&#x27;</span> | less -S</span><br><span class="line"><span class="comment"># deletion</span></span><br><span class="line">$ less tmp.vcf | grep -v <span class="string">&#x27;^#&#x27;</span> | grep INDEL | awk <span class="string">&#x27;&#123;if(length($5)&lt;length($4)) print&#125;&#x27;</span> | less -S</span><br></pre></td></tr></table></figure>
+<p>该文件明显deletion多得多</p>
+<p>4.统计SNP条目的突变组合分布频率</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ less tmp.vcf | grep -v <span class="string">&#x27;^#&#x27;</span>| grep -v INDEL | cut -f 4,5 | sort | uniq -c</span><br><span class="line">      7 A       C</span><br><span class="line">      1 A       G</span><br><span class="line">      4 A       T</span><br><span class="line">      2 C       A</span><br><span class="line">      4 C       G</span><br><span class="line">      3 G       A</span><br><span class="line">      2 G       C</span><br><span class="line">      4 G       T</span><br><span class="line">      6 T       A</span><br><span class="line">      1 T       C</span><br><span class="line">      2 T       G</span><br></pre></td></tr></table></figure>
+<p>SNP行的第4、5列分别表示参考基因和研究对象的碱基类型</p>
+<p>5.找到基因型不是 1/1 的条目，个数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ grep -n --color 1/1 tmp.vcf</span><br><span class="line">$ grep 1/1 tmp.vcf|wc -l</span><br><span class="line">81</span><br></pre></td></tr></table></figure>
+
+<p>6.筛选测序深度大于20的条目</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^#&#x27;</span> tmp.vcf| grep -v <span class="string">&quot;DP=[1-20]&quot;</span>| less -S</span><br></pre></td></tr></table></figure>
+
+<p>7.筛选变异位点质量值大于30的条目</p>
+<p>质量值在第6列</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^#&#x27;</span> tmp.vcf| awk <span class="string">&#x27;&#123;if($6&gt;30)print&#125;&#x27;</span>| less -S</span><br></pre></td></tr></table></figure>
+
+<p>8.组合筛选变异位点质量值大于30并且深度大于20的条目</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^#&#x27;</span> tmp.vcf| awk <span class="string">&#x27;&#123;if($6&gt;30)print&#125;&#x27;</span>| grep -v <span class="string">&quot;DP=[1-20]&quot;</span>| less -S</span><br></pre></td></tr></table></figure>
+
+<p>9.理解DP4=4,7,11,18 这样的字段，就是 Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases 计算每个变异位点的 AF</p>
+<p>DP4的话放到IGV看一下就知道。reads有正反，然后还有跟参考基因组相同和不相同的，还有正向相同、正向相反、反向相同、反向相反，就是DP4。如果DP4比例失衡，蕴含变异。</p>
+<blockquote>
+<p>DP4: number of high-quality ref-forward bases, ref-reverse, alt-forward and alt-reverse bases</p>
+</blockquote>
+<blockquote>
+<p>The definition for “DP” in the INFO column is “raw read depth”;  “DP4” in the INFO column is a breakdown of “high quality bases”.  The sum of “DP4” bases from the INFO column should be equal to the sum of “DP” values from the genotype fields for all individuals, and, obviously, this will be less than or equal to the “raw read depth” by the number of NOT “high quality” bases.</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^#&#x27;</span> tmp.vcf| cut -f 8|grep -Eo <span class="string">&#x27;DP4=[0-9]+,[0-9]+,[0-9]+,[0-9]+&#x27;</span>| cut -d = -f 2| awk -F <span class="string">&#x27;,&#x27;</span> <span class="string">&#x27;&#123;print ($3+$4)/($1+$2+$3+$4)&#125;&#x27;</span>| less -S</span><br></pre></td></tr></table></figure>
+
+<p>问题：为什么SNP的DP4四个加起来小于DP呢？</p>
+<p><img src="0917.png"></p>
+<p>10.在前面步骤的bam文件里面找到这个vcf文件的某一个突变位点的测序深度表明的那些reads，并且在IGV里面可视化bam和vcf定位到该变异位点。</p>
+<h2 id="概念题"><a href="#概念题" class="headerlink" title="概念题"></a>概念题</h2><p>1.<strong>vcf的全称是什么？是用来记录什么信息的标准格式的文本？</strong></p>
+<p>VCF：Variant Call Format，表示基因组的SNP, INDEL和SV变异信息。</p>
+<p>2.<strong>一般选用哪个指令查看vcf文件，为什么不用vim</strong>?</p>
+<p><code>less -SN</code>，vim可以对文本进行编辑，有误操作文件的风险，且不能单行显示。</p>
+<p>3.<strong>vcf文件以’##’开头的是什么信息？请认真查看这些信息。’#’开头的是什么信息？</strong></p>
+<ul>
+<li>以##开头：mate-information line，格式为key=value。<br>fileformat是必须的字段，表明VCF格式的版本，其他行主要用来描述INFO, FORMAT, FILTER等字段的具体含义。</li>
+</ul>
+<p><img src="0917-2.png"></p>
+<ul>
+<li>以#开头：heaher line，只有一行，行内以<code>\t</code>分隔，是下方具体信息的表头。</li>
+</ul>
+<p><img src="0917-3.png"></p>
+<blockquote>
+<p>VCF is a text file format (most likely stored in a compressed manner). It contains meta-information lines, a header line, and then data lines each containing information about a position in the genome.</p>
+</blockquote>
+<p>4.<strong>vcf文件除头信息，每行有多少列，请详细叙述每列的含义！请准确记忆。</strong></p>
+<p><img src="0917-4.png"><br>参考<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAxMDkxODM1Ng==&mid=2247483826&idx=1&sn=bd60f79d3dfacd5178e87ee0558810ba&chksm=9b484109ac3fc81f06ce406956287cd012252adbab409302d966ef5d9aef63317411fddb55fc&scene=25#wechat_redirect&tdsourcetag=s_pctim_aiomsg">必须要理解vcf格式记录的变异位点信息</a></p>
+<p>必有的是8列，一般有9列，最后可能会有样本的名称本就是10列</p>
+<ul>
+<li>CHROM：参考序列名。</li>
+<li>POS：variant的位置；如果是INDEL的话，位置是INDEL的第一个碱基位置。起始位置为1。</li>
+<li>ID：variant的ID。比如在dbSNP中有该SNP的id，则会在此行给出rs号；若没有，则用<code>.</code>表示其为一个novel variant。</li>
+<li>REF：参考基因组上的碱基。</li>
+<li>ALT：Variant的碱基。</li>
+<li>QUAL：Phred格式(Phred_scaled)的质量值，Phred值 $= -10  log_{10} p $为variant存在的概率。该值越高，为真实的变异位点的概率越大。通过计算公式可以看出值为10的表示错误概率$p=0.1$，则该位点为variant的概率为90%。</li>
+<li>FILTER：使用上一个QUAL值来进行过滤的话，是不够的。GATK能使用其它的方法来进行过滤，过滤结果中通过则该值为”PASS”;若variant不可靠，则该项不为”PASS”或”.”。</li>
+<li>INFO：额外的信息，具体的含义可以查看mate-information line 中对INFO 字段的描述，看上去是一列，但其中的内容可以无限扩增。</li>
+<li>FORMAT：表头的##FORMAT就是对第九列的解释，主要包括某一个特定位点基因型、测序深度的表述。</li>
+</ul>
+<p>5.<strong>理解format列和样本列的对应关系以及GT AD DP的含义。</strong></p>
+<p>format列例如：<code>GT:PL 2 1/1:36,1,0</code></p>
+<p>两列内容是对应的，前者为格式，后者为格式对应的数据。</p>
+<ul>
+<li>GT：样品的基因型（genotype）。两个数字中间用’/“分 开，这两个数字表示双倍体的sample的基因型。0 表示样品中有ref的allele； 1 表示样品中variant的allele； 2表示有第二个variant的allele。因此： 0/0 表示sample中该位点为纯合的，和ref一致； 0/1 表示sample中该位点为杂合的，有ref和variant两个基因型； 1/1 表示sample中该位点为纯合的，和variant一致。</li>
+<li>PL：指定的三种基因型的质量值(provieds the likelihoods of the given genotypes)。这三种指定的基因型为(0/0,0/1,1/1)，这三种基因型的概率总和为1。和之前不一致，该值越大，表明为该种基因型的可能性越小。 Phred值 $= -10 * log (p) $，其中p为基因型存在的概率。</li>
+<li>AD 和 DP：AD(Allele Depth)为sample中每一种allele的reads覆盖度,在diploid中则是用逗号分割的两个值，前者对应ref基因型，后者对应variant基因型； DP（Depth）为sample中该位点的覆盖度。</li>
+</ul>
+<p>6.<strong>vcf文件第三列如果不是’.’，出现的rs号的id是什么？</strong></p>
+<p>变异位点名称，对应dbSNP数据库中的ID</p>
+<p>7.<strong>vcf文件的ref，alt列和样本列的<code>0/1</code>、<code>1/1</code> 或者<code>1/2</code>的联系？</strong></p>
+<blockquote>
+<p>0/0表示sample中该位点为纯合位点，和REF的碱基类型一致<br>0/1表示sample中该位点为杂合突变，有REF和ALT两个基因型（部分碱基和REF碱基类型一致，部分碱基和ALT碱基类型一致）<br>1/1表示sample中该位点为纯合突变，总体突变类型和ALT碱基类型一致<br>1/2表示sample中该位点为杂合突变，有ALT1和ALT2两个基因型（部分和ALT1碱基类型一致，部分和ALT2碱基类型一致）</p>
+</blockquote>
+<p>8.<strong>vcf文件一般用什么软件生成？请至少说出两个软件。请注意不同软件生成的vcf格式的稍有不同的地方。</strong></p>
+<p>GATK和bcftools，不同之处主要在mate-information line部分</p>
+<p>9.<strong>Vcf文件一般都比较大，压缩后的.gz文件用什么指令直接查看而不用解压后查看？</strong></p>
+<p><code>zless</code> <code>zcat</code></p>
+<p>10.<strong>了解gvcf是什么格式，gvcf全称是什么？他与vcf有什么前后联系？</strong></p>
+<p><a target="_blank" rel="noopener" href="https://gatkforums.broadinstitute.org/gatk/discussion/4017/what-is-a-gvcf-and-how-is-it-different-from-a-regular-vcf">What is a GVCF and how is it different from a ‘regular’ VCF?</a></p>
+<blockquote>
+<p>GVCF stands for Genomic VCF. A GVCF is a kind of VCF, so the basic format specification is the same as for a regular VCF (see the spec documentation <a target="_blank" rel="noopener" href="http://vcftools.sourceforge.net/specs.html">here</a>), but a Genomic VCF contains extra information.<br>The key difference between a regular VCF and a gVCF is that the gVCF has records for all sites, whether there is a variant call there or not. </p>
+</blockquote>
+<p>11.<strong>把alt列出现<code>.</code>的行提取出来</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&quot;^#&quot;</span> tmp.vcf |awk <span class="string">&#x27;&#123;if($5 ~&quot;.&quot;)print&#125;&#x27;</span>|head</span><br></pre></td></tr></table></figure>
+
+<p>12.<strong>请将chrid、postion、ref、alt、format、样本列切割出来生成一个文本</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&quot;^#&quot;</span> tmp.vcf|cut -f 1,2,4,5,9 &gt; tmp.cut.txt </span><br></pre></td></tr></table></figure>
+
+<p>13.<strong>将一个含snp，indel信息的vcf拆成一个只含snp，一个只含indel信息的2个vcf文件。可借鉴软件</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&quot;^#&quot;</span> tmp.vcf|grep INDEL&gt;indel.vcf</span><br><span class="line">$ grep -v <span class="string">&quot;^#&quot;</span> tmp.vcf|grep -v INDEL&gt;snp.vcf</span><br></pre></td></tr></table></figure>
+
+<p>14.<strong>用指令操作indel的vcf文件，提取indel长度&gt;4的变异行数，存成一个文本。</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;if(length($5)&gt;4)print&#125;&#x27;</span> indel.vcf &gt; indel.new.txt</span><br></pre></td></tr></table></figure>
+
+<p>15.<strong>用vcftools过滤vcf文件，如maf设置成0.05， depth设置成5-20，统计过滤前后的变异位点的总个数</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ vcftools --vcf tmp.vcf --maf 0.05 --minDP 5 --maxDP 20 --recode --out tmpout.vcf</span><br><span class="line">Outputting VCF file...</span><br><span class="line">After filtering, kept 25 out of a possible 106 Sites</span><br><span class="line">$ grep -v <span class="string">&quot;^#&quot;</span> tmpout.vcf.recode.vcf| wc -l</span><br><span class="line">25</span><br></pre></td></tr></table></figure>
+
+<p>16.<strong>利用vcftools提取每个样本每一个位点的变异信息和深度信息，生成一个矩阵的文件，至少含chrid，postion，sample_DP，sample_GT四项信息</strong></p>
+<p>17.<strong>提取出变异位点上样本有纯和突变的行数</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep 1/1 tmp.vcf |wc -l</span><br><span class="line">81</span><br></pre></td></tr></table></figure>
+
+<p>18.<strong>统计一下1号染色体上的变异总个数。</strong></p>
+<p>示例文件的序列全部在一条染色体上。</p>
+<p>19.<strong>提取一下BRCA1基因上发生变异的行数，如果是人类wes变异结果文件</strong></p>
+<p>20.<strong>统计vcf文件各样本的缺失率，如果是多个样本的群体call结果。</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/07/conda/" rel="prev" title="Conda环境搭建">
+                  <i class="fa fa-chevron-left"></i> Conda环境搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/27/R-statistic/" rel="next" title="R统计基础">
+                  R统计基础 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

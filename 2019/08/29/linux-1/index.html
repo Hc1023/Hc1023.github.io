@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="基础知识 Tab键 命令、路径、文件匹配，两次Tab寻找文件名 \n 回车 \t tab键，可以用Excel打开 分隔符 (重新定义文本切割分隔符）sep cut 进入路径：cd 上层目录：cd ..  家目录：cd enter or cd ~ 查看当前路径的文件大小 ls –lh (long human) 建立多层路径：mkdir -p  建立文本：touch new.txt功能：确认是否有写入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux最低要求">
+<meta property="og:url" content="https://hc1023.github.io/2019/08/29/linux-1/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="基础知识 Tab键 命令、路径、文件匹配，两次Tab寻找文件名 \n 回车 \t tab键，可以用Excel打开 分隔符 (重新定义文本切割分隔符）sep cut 进入路径：cd 上层目录：cd ..  家目录：cd enter or cd ~ 查看当前路径的文件大小 ls –lh (long human) 建立多层路径：mkdir -p  建立文本：touch new.txt功能：确认是否有写入">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2019/08/29/linux-1/0908.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/08/29/linux-1/0829.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/08/29/linux-1/0829-2.png">
+<meta property="article:published_time" content="2019-08-29T13:40:25.000Z">
+<meta property="article:modified_time" content="2020-09-04T12:24:18.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2019/08/29/linux-1/0908.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2019/08/29/linux-1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2019/08/29/linux-1/","path":"2019/08/29/linux-1/","title":"Linux最低要求"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux最低要求 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">Linux系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">基础操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BD%8E%E8%A6%81%E6%B1%82"><span class="nav-number">4.</span> <span class="nav-text">最低要求</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2019/08/29/linux-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux最低要求
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-29 21:40:25" itemprop="dateCreated datePublished" datetime="2019-08-29T21:40:25+08:00">2019-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-09-04 20:24:18" itemprop="dateModified" datetime="2020-09-04T20:24:18+08:00">2020-09-04</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><ul>
+<li>Tab键 命令、路径、文件匹配，两次Tab寻找文件名</li>
+<li>\n 回车 \t tab键，可以用Excel打开</li>
+<li>分隔符 (重新定义文本切割分隔符）sep cut</li>
+<li>进入路径：cd 上层目录：cd ..  家目录：cd enter or cd ~</li>
+<li>查看当前路径的文件大小 ls –lh (long human)</li>
+<li>建立多层路径：mkdir -p </li>
+<li>建立文本：touch new.txt功能：确认是否有写入权限（debug）</li>
+<li>删除一个文本：rm 删除路径：rm -r</li>
+<li>拷贝文件：cp ~/myproject/1/temp.txt ~/myproject/2/</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li>拷贝文件夹：cp -r ~/myproject/1/ ~/myproject/2/</li>
+<li>查看文本：less -S 单行显示 -N 带行号 q 退出</li>
+<li>cat &gt;newfile.txt 可进行编辑 ctrl+c退出 &gt; 覆盖 &gt;&gt; 继续写入</li>
+<li>查看文本输出到屏幕 cat 小文本（大文本从前往后）| less -S</li>
+<li>查看文本前十行：head 后十行：tail</li>
+<li>编辑文本：vim esc :wq</li>
+<li>树形展示目录：tree -d</li>
+<li>移动文本/文件夹实现方法：mv </li>
+<li>对一个文本/目录更名实现方法：mv </li>
+<li>建立软连接的实现方法：ln -s</li>
+</ul>
+<h2 id="Linux系统"><a href="#Linux系统" class="headerlink" title="Linux系统"></a>Linux系统</h2><p>是一套免费使用和自由传播的类Unix操作系统，是一个基于POSIX和UNIX的多用户、多任务、支持多线程和多CPU的操作系统。目前市面上较知名的发行版有：Ubuntu、RedHat、CentOS、Debian、Fedora、SuSE、OpenSUSE、Arch Linux、SolusOS 等。</p>
+<p>优势：批量处理任务、处理大文本、运行速度快、登录远程服务器获取数据/文件</p>
+<p>/：根目录，一般根目录下只存放目录，不存放文件<br>/bin：可执行的二进制文件目录,如今天我们要学的<br>命令就可以放在这个目录下<br>/usr：用户目录，存放用户级的文件。<br>/usr/bin：存放应用程序，<br>/usr/share：存放共享数据，<br>/usr/lib：存放不能直接运行但却是许多程序运行所必<br>需的一些函数库文件，<br>/usr/local：存放软件升级包，<br>/usr/share/doc：系统说明文件存放目录，<br>/usr/share/man：存放程序说明文件<br>/local：本地安装软件保存位置<br>/etc：系统配置文件存放的目录<br>/home：系统默认的用户家目录，新增用户账号时，<br>用户的家目录都存放在此目录下<br>/mnt：光盘默认挂载点<br>/sbin：放置系统管理员使用的可执行命令<br>/tmp：一般用户或正在执行的程序临时存放文件的<br>目录<br>/var：放置系统执行过程中经常变化的文件，如随<br>时更改的日志文件<br>/dev：存放linux系统下的设备文件</p>
+<h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><ul>
+<li><p><code>pwd</code>查看当前目录，<code>top -c</code>查看cpu使用</p>
+</li>
+<li><p>修改颜色显示（只是好看些）</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS1=<span class="string">&quot;\[\033]2;\h:\u \w\007\033[33;1m\]\u \033[35;1m\t\033[0m \[\033[36;1m\]\w\[\033[0m\]\n\[\e[32;1m\]$ \[\e[0m\]&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>寻找文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name <span class="string">&#x27;*.fa*.gz&#x27;</span> -size +500M</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>添加环境变量</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&#x27;export PATH=~/.aspera/connect/bin:$PATH&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line">$ <span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>然而第一句话很容易写错，比如等号后面多空格等，于是就要人工<code>vim</code>修改</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/bin/vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ less -S -N ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>碱基序列处理</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> ATGCGGCG|tr <span class="string">&#x27;G&#x27;</span> <span class="string">&#x27;#&#x27;</span></span><br><span class="line">$ <span class="built_in">echo</span> ATGCGGCG|tr <span class="string">&#x27;AG&#x27;</span> <span class="string">&#x27;CT&#x27;</span></span><br><span class="line"> <span class="comment">#tr 行使一一替换</span></span><br><span class="line">$ <span class="built_in">echo</span> ATGCGGGG|tr <span class="string">&#x27;AG&#x27;</span> <span class="string">&#x27;TC&#x27;</span>|rev</span><br><span class="line">$ <span class="built_in">echo</span> ATGCGGGG|tr <span class="string">&#x27;AGTC&#x27;</span> <span class="string">&#x27;TCAG&#x27;</span>|rev</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>带有字符的排序</li>
+</ul>
+<p>直接指定按照第一列排序，第一列含有字符r，没法识别为数字，所以指定-n参数实现不了，加上-t参数指定以r为分隔符，然后按照第二列排序就是纯数字了，就可以实现需求</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools view tmp.bam|sort  -t r -k 2 -n|less -S</span><br></pre></td></tr></table></figure>
+
+<p><img src="0908.png"></p>
+<ul>
+<li>Linux按照文件时间升序倒序</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 升序</span></span><br><span class="line">ls -lrt</span><br><span class="line"><span class="comment">#-l     use a long listing format</span></span><br><span class="line"><span class="comment">#-t     sort by modification time</span></span><br><span class="line"><span class="comment">#-r     reverse order while sorting</span></span><br><span class="line"><span class="comment"># 降序</span></span><br><span class="line">ls -lt</span><br></pre></td></tr></table></figure>
+
+<p>一般我习惯</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -lth</span><br><span class="line"><span class="comment"># -h可以把文件大小变可读</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>显示所有文档及目录，包括隐藏<code>.</code>开头文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -a</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>tac</code> 可以倒叙</p>
+</li>
+<li><p>解压<code>gz</code>文件</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvzf archivename.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>此命令将解压<code>archivename.tar.gz</code>文件到当前目录下，<code>x</code>表示解压目录；<code>v</code>产生详细的进度输出（详细模式），如果在Shell脚本中使用tar，则可能应该忽略它；<code>z</code>使用gzip解压缩存档，这仅适用于已经通过gzip压缩的压缩包，例如，使用z选项创建的压缩包；<code>f</code>文件名是下一个参数。</p>
+<ul>
+<li>解压<code>zip</code>文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip xxx.zip target_archive_dir</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置软链接</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s original_dir link_dir</span><br></pre></td></tr></table></figure>
+
+<h2 id="最低要求"><a href="#最低要求" class="headerlink" title="最低要求"></a>最低要求</h2><p>一、在任意文件夹下面创建形如 1/2/3/4/5/6/7/8/9 格式的文件夹系列。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 19:32:03 ~</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> homework</span></span><br><span class="line">(base) hz04 19:33:09 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir -p 1/2/3/4/5/6/7/8/9</span></span><br></pre></td></tr></table></figure>
+
+<p>二、在创建好的文件夹下面，比如我的是 /Users/jimmy/tmp/1/2/3/4/5/6/7/8/9 ，里面创建文本文件 me.txt。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 19:33:32 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> 1/2/3/4/5/6/7/8/9/</span></span><br><span class="line">(base) hz04 19:33:48 ~/homework/1/2/3/4/5/6/7/8/9</span><br><span class="line"><span class="meta">$</span><span class="bash"> touch me.txt</span></span><br></pre></td></tr></table></figure>
+
+<p>三、在文本文件 me.txt 里面输入内容:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 19:34:03 ~/homework/1/2/3/4/5/6/7/8/9</span><br><span class="line"><span class="meta">$</span><span class="bash"> vim me.txt</span></span><br><span class="line">i</span><br><span class="line"><span class="meta">#</span><span class="bash"> 输入文字</span></span><br><span class="line">Go to: http://www.biotrainee.com/</span><br><span class="line">I love bioinfomatics.</span><br><span class="line">And you ?</span><br><span class="line"><span class="meta">#</span><span class="bash"> esc :wq enter</span></span><br><span class="line">(base) hz04 19:36:02 ~/homework/1/2/3/4/5/6/7/8/9</span><br><span class="line"><span class="meta">$</span><span class="bash"> cat me.txt</span></span><br><span class="line">Go to: http://www.biotrainee.com/</span><br><span class="line">I love bioinfomatics.</span><br><span class="line">And you ?</span><br></pre></td></tr></table></figure>
+
+<p>四、删除上面创建的文件夹 1/2/3/4/5/6/7/8/9 及文本文件 me.txt</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 18:11:11 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> rm -r *</span></span><br></pre></td></tr></table></figure>
+
+<p>五、在任意文件夹下面创建 folder1~5这5个文件夹，然后每个文件夹下面继续创建 folder1~5这5个文件夹。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 19:36:22 ~/homework/1/2/3/4/5/6/7/8/9</span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir -p folder&#123;1..5&#125;/folder&#123;1..5&#125;</span></span><br><span class="line">(base) hz04 19:39:40 ~/homework/1/2/3/4/5/6/7/8/9</span><br><span class="line"><span class="meta">$</span><span class="bash"> ls */</span></span><br><span class="line">folder1/:</span><br><span class="line">folder1  folder2  folder3  folder4  folder5</span><br><span class="line"></span><br><span class="line">folder2/:</span><br><span class="line">folder1  folder2  folder3  folder4  folder5</span><br><span class="line"></span><br><span class="line">folder3/:</span><br><span class="line">folder1  folder2  folder3  folder4  folder5</span><br><span class="line"></span><br><span class="line">folder4/:</span><br><span class="line">folder1  folder2  folder3  folder4  folder5</span><br><span class="line"></span><br><span class="line">folder5/:</span><br><span class="line">folder1  folder2  folder3  folder4  folder5</span><br></pre></td></tr></table></figure>
+
+<p>六、在第五题创建的每一个文件夹下面都 创建第二题文本文件 me.txt ，内容也要一样。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 18:14:47 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..5&#125;;<span class="keyword">do</span>  <span class="keyword">for</span> j <span class="keyword">in</span> &#123;1..5&#125;;<span class="keyword">do</span> cp me.txt folder<span class="variable">$i</span>/folder<span class="variable">$j</span>;<span class="keyword">done</span>  <span class="keyword">done</span></span></span><br></pre></td></tr></table></figure>
+
+<p>或者使用 <code>xargs</code> 进行参数传递</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 18:24:06 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> folder&#123;1..5&#125;/folder&#123;1..5&#125;|xargs -n 1 cp me.txt</span></span><br></pre></td></tr></table></figure>
+
+<p>七，再次删除掉前面几个步骤建立的文件夹及文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 18:24:29 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br><span class="line">folder1  folder2  folder3  folder4  folder5  me.txt</span><br><span class="line">(base) hz04 18:28:11 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> rm -r *</span></span><br><span class="line">(base) hz04 18:28:17 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br></pre></td></tr></table></figure>
+
+<p>八、下载 <a target="_blank" rel="noopener" href="http://www.biotrainee.com/jmzeng/igv/test.bed">http://www.biotrainee.com/jmzeng/igv/test.bed</a> 文件，后在里面选择含有 H3K4me3 的那一行是第几行，该文件总共有几行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 18:34:43 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> wget  -c http://www.biotrainee.com/jmzeng/igv/test.bed</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> grep -n --color H3K4me3 test.bed</span></span><br><span class="line">8:chr1  9810    10438   ID=SRX387603;Name=H3K4me3%20(@%20HMLE);Title=GSM1280527:%20HMLE%20Twist3D%20H3K4me3%20rep2%3B%20Homo%20sapiens%3B%20ChIP-Seq;Cell%20group=Breast;&lt;br&gt;source_name=HMLE_Twist3D_H3K4me3;cell%20type=human%20mammary%20epithelial%20cells;transfected%20with=Twist1;culture%20type=sphere;chip%20antibody=H3K4me3;chip%20antibody%20vendor=Millipore;  222     .       9810    10438   0,226,255</span><br><span class="line">(base) hz04 18:34:53 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> wc -l test.bed</span></span><br><span class="line">10 test.bed</span><br></pre></td></tr></table></figure>
+
+<p>九、下载 <a target="_blank" rel="noopener" href="http://www.biotrainee.com/jmzeng/rmDuplicate.zip">http://www.biotrainee.com/jmzeng/rmDuplicate.zip</a> 文件，并且解压，查看里面的文件夹结构。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 18:38:53 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> wget -c http://www.biotrainee.com/jmzeng/rmDuplicate.zip</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> unzip rmDuplicate.zip</span></span><br></pre></td></tr></table></figure>
+
+<p>十、打开第九题解压的文件，进入 rmDuplicate/samtools/single 文件夹里面，查看后缀为 .sam 的文件，搞清楚生物信息学里面的SAM/BAM 定义是什么。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 18:41:56 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> rmDuplicate/samtools/single</span></span><br><span class="line">(base) hz04 18:42:00 ~/homework/rmDuplicate/samtools/single</span><br><span class="line"><span class="meta">$</span><span class="bash">  ls *.sam</span></span><br><span class="line">tmp.sam</span><br></pre></td></tr></table></figure>
+
+<p><strong>SAM/BAM文件</strong></p>
+<p>当测序得到的fastq文件map到基因组之后，用sam（Sequence Alignment/Map）统一格式来表示这种mapping结果，BAM是SAM的二进制文件(B binary)。</p>
+<p>可以看看sam/bam文件的样子</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(rna) hz04 20:43:19 ~/homework/rmDuplicate</span><br><span class="line">$ samtools view -h ./samtools/single/tmp.rmdup.bam |head  -n 5</span><br><span class="line">@HD     VN:1.0  SO:coordinate</span><br><span class="line">@SQ     SN:chr1 LN:248956422</span><br><span class="line">@SQ     SN:chr10        LN:133797422</span><br><span class="line">@SQ     SN:chr11        LN:135086622</span><br><span class="line">@SQ     SN:chr11_KI270721v1_random      LN:100316</span><br><span class="line">(rna) hz04 20:45:27 ~/homework/rmDuplicate</span><br><span class="line">$ samtools view  ./samtools/single/tmp.rmdup.bam |head  -n 5</span><br><span class="line">SRR1042600.42157053     0       chr1    629895  42      51M     *       0       0       ATAACCAATACTACCAATCANTACTCATCATTAATAATCATAATGGCTATA     CCCFFFFFHHHHHJJJJJJJ<span class="comment">#4AGHJJIIJJIIIIIJJJJIJIIIIJJIJI      AS:i:-6 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:11C8A30    YT:Z:UU</span></span><br><span class="line">SRR1042600.29629551     16      chr1    629895  40      51M     *       0       0       ATAACCAATACTACCAATCACTACTCATCATTAATAATCATAATGGCTATA     HGF?JJHHFDHHGJJIHDFA+E?JIJJIIHGJJJJJJJHHHHHFFFFFCC@      AS:i:-8 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:11C8A30    YT:Z:UU</span><br><span class="line">SRR1042600.41910745     0       chr1    629896  42      51M     *       0       0       TAACCAATACTACCAATCAANACTCATCATTAATAATCATAATGGCTATAG     CC@FFFFFHHHHGIIHIJJJ<span class="comment">#3&lt;CFHCGGIIIJJJJJJJJIGGFHIIJFII      AS:i:-6 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:10C9T30    YT:Z:UU</span></span><br><span class="line">SRR1042600.15078214     16      chr1    629896  40      51M     *       0       0       TAACCAATACTACCAATCAATACCCATCATTAATAATCATAATGGCTATAG     9?1EFDD4CE?1F@?F&lt;HFA&lt;&lt;<span class="string">C+F9HBC&lt;&lt;FEBBC4GD&lt;=+8DDDDA=;1      AS:i:-8 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:10C12T27   YT:Z:UU</span></span><br><span class="line"><span class="string">SRR1042600.41649846     0       chr1    629897  42      51M     *       0       0       AACCAATACTACCAATCAATNCTCATCATTAATAATCATAATGGCTATAGC     :?=DB=ABCF?FF&gt;G&lt;&lt;&lt;?F#3&lt;C</span>?CFHE@91?GFFEGEEEDD&lt;?FADBG&gt;      AS:i:-6 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:9C10A30    YT:Z:UU</span><br><span class="line">(rna) hz04 20:47:34 ~/homework/rmDuplicate</span><br><span class="line">$ less  ./samtools/single/tmp.sam |head  -n 5</span><br><span class="line">SRR1042600.42157053     0       chr1    629895  42      51M     *       0       0       ATAACCAATACTACCAATCANTACTCATCATTAATAATCATAATGGCTATA     CCCFFFFFHHHHHJJJJJJJ<span class="comment">#4AGHJJIIJJIIIIIJJJJIJIIIIJJIJI      AS:i:-6 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:11C8A30    YT:Z:UU</span></span><br><span class="line">SRR1042600.42212881     0       chr1    629895  42      51M     *       0       0       ATAACCAATACTACCAATCANTACTCATCATTAATAATCATAATGGCTATA     @@&lt;FDFFBFDHHFJEIIGJI<span class="comment">#3AFHGEHEIJIIGIIGGIJIIJIGIIGIIJ      AS:i:-6 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:11C8A30    YT:Z:UU</span></span><br><span class="line">SRR1042600.12010763     16      chr1    629895  24      51M     *       0       0       ATAACCAATACTTCTAATCAAAACTCATCATTAATAATCATAATGGCTATA     ?4B?1*4DD?11*1*?+22+&lt;3F:3@EC:CC4EA,DEDDDDD?D3B:==+;      AS:i:-10        XN:i:0  XM:i:4  XO:i:0  XG:i:0  NM:i:4  MD:Z:11C0A1C6T29        YT:Z:UU</span><br><span class="line">SRR1042600.29629551     16      chr1    629895  40      51M     *       0       0       ATAACCAATACTACCAATCACTACTCATCATTAATAATCATAATGGCTATA     HGF?JJHHFDHHGJJIHDFA+E?JIJJIIHGJJJJJJJHHHHHFFFFFCC@      AS:i:-8 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:11C8A30    YT:Z:UU</span><br><span class="line">SRR1042600.41910745     0       chr1    629896  42      51M     *       0       0       TAACCAATACTACCAATCAANACTCATCATTAATAATCATAATGGCTATAG     CC@FFFFFHHHHGIIHIJJJ<span class="comment">#3&lt;CFHCGGIIIJJJJJJJJIGGFHIIJFII      AS:i:-6 XN:i:0  XM:i:2  XO:i:0  XG:i:0  NM:i:2  MD:Z:10C9T30    YT:Z:UU</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>sam文件拥有头部描述和详细比对两部分，其中头部描述是以@开头，后面紧跟两个缩写字母表示相应的含义。<br>SAM分为两部分，注释信息（header section）和比对结果部分（alignment section），注释信息可有可无，都是以@开头，用不同的tag表示不同的信息，主要有@HD，说明符合标准的版本、对比序列的排列顺序；@SQ，参考序列说明；@RG，比对上的序列（read）说明；@PG，使用的程序说明；@CO，任意的说明信息。而详细比对部分是通过11个tab隔开的字段来表示。 </p>
+</blockquote>
+<p>详细看<a target="_blank" rel="noopener" href="http://samtools.github.io/hts-specs/SAMv1.pdf">SAM文件说明文档</a></p>
+<p>十一、安装 samtools 软件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 18:42:17 ~/homework/rmDuplicate/samtools/single</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> activate rna</span></span><br><span class="line">(rna) hz04 18:44:17 ~/homework/rmDuplicate/samtools/single</span><br><span class="line"><span class="meta">$</span><span class="bash"> conda install samtools</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>十二、打开 后缀为BAM 的文件，找到产生该文件的命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(rna) hz04 18:55:12 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> find ./ -name <span class="string">&#x27;*.bam&#x27;</span></span></span><br><span class="line">./rmDuplicate/samtools/single/tmp.rmdup.bam</span><br><span class="line">./rmDuplicate/samtools/single/tmp.sorted.bam</span><br><span class="line">./rmDuplicate/samtools/paired/tmp.rmdup.bam</span><br><span class="line">./rmDuplicate/samtools/paired/tmp.sorted.bam</span><br><span class="line">./rmDuplicate/picard/single/tmp.rmdup.bam</span><br><span class="line">./rmDuplicate/picard/single/tmp.sorted.bam</span><br><span class="line">./rmDuplicate/picard/paired/tmp.rmdup.bam</span><br><span class="line">./rmDuplicate/picard/paired/tmp.sorted.bam</span><br><span class="line">(rna) hz04 18:55:26 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> find ./ -name <span class="string">&#x27;*.header&#x27;</span></span></span><br><span class="line">./rmDuplicate/samtools/single/tmp.header</span><br><span class="line">./rmDuplicate/samtools/paired/tmp.header</span><br><span class="line">./rmDuplicate/picard/single/tmp.header</span><br><span class="line">./rmDuplicate/picard/paired/tmp.header</span><br><span class="line">(rna) hz04 18:57:30 ~/homework</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> rmDuplicate/</span></span><br><span class="line">(rna) hz04 18:58:02 ~/homework/rmDuplicate</span><br><span class="line"><span class="meta">$</span><span class="bash"> samtools view -h ./samtools/single/tmp.rmdup.bam|less -S</span></span><br><span class="line">(rna) hz04 18:59:23 ~/homework/rmDuplicate</span><br><span class="line"><span class="meta">$</span><span class="bash"> tail -n 1 ./samtools/single/tmp.header</span></span><br><span class="line">@PG     ID:bowtie2      PN:bowtie2      VN:2.2.9        CL:&quot;/home/jianmingzeng/biosoft/bowtie/bowtie2-2.2.9/bowtie2-align-s --wrapper basic-0 -p 20 -x /home/jianmingzeng/reference/index/bowtie/hg38 -S /home/jianmingzeng/data/public/allMouse/alignment/WT_rep2_Input.sam -U /tmp/41440.unp&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>十三、找到我使用的参考基因组 /home/jianmingzeng/reference/index/bowtie/hg38 具体有多少条染色体。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(rna) hz04 19:14:30 ~/homework/rmDuplicate</span><br><span class="line">$ samtools view -H ./samtools/single/tmp.rmdup.bam|grep -o -E <span class="string">&quot;SN:chr[0-9]+|SN:chr[a-zA-Z]+&quot;</span>|sort |uniq -c|wc -l</span><br><span class="line">26</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>十四、上面的后缀为BAM 的文件的第二列，只有 0 和 16 两个数字，用 cut/sort/uniq等命令统计它们的个数。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(rna) hz04 19:19:31 ~/homework/rmDuplicate</span><br><span class="line">$ samtools view  ./samtools/single/tmp.rmdup.bam|cut -f 2|sort -n|uniq -c</span><br><span class="line">     16 0</span><br><span class="line">     12 16</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>十五、重新打开 rmDuplicate/samtools/paired 文件夹下面的后缀为BAM 的文件，再次查看第二列，并且统计。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(rna) hz04 19:21:34 ~/homework/rmDuplicate</span><br><span class="line">$ samtools view ./samtools/paired/tmp.rmdup.bam|cut -f 2|sort -n|uniq -c</span><br><span class="line">      2 83</span><br><span class="line">      2 97</span><br><span class="line">      8 99</span><br><span class="line">      7 147</span><br><span class="line">      2 163</span><br><span class="line">      1 323</span><br><span class="line">      1 353</span><br><span class="line">      1 371</span><br><span class="line">      1 387</span><br><span class="line">      1 433</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>十六、下载 <a target="_blank" rel="noopener" href="http://www.biotrainee.com/jmzeng/sickle/sickle-results.zip">http://www.biotrainee.com/jmzeng/sickle/sickle-results.zip</a> 文件，并且解压，查看里面的文件夹结构， 这个文件有2.3M，注意留心下载时间及下载速度。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">(rna) hz04 19:23:29 ~/homework/rmDuplicate</span><br><span class="line">$ wget -c http://www.biotrainee.com/jmzeng/sickle/sickle-results.zip</span><br><span class="line">--2019-08-29 19:27:01--  http://www.biotrainee.com/jmzeng/sickle/sickle-results.zip</span><br><span class="line">Resolving www.biotrainee.com (www.biotrainee.com)... 123.206.72.184</span><br><span class="line">Connecting to www.biotrainee.com (www.biotrainee.com)|123.206.72.184|:80... connected.</span><br><span class="line">HTTP request sent, awaiting response... 200 OK</span><br><span class="line">Length: 2391084 (2.3M) [application/zip]</span><br><span class="line">Saving to: ‘sickle-results.zip’</span><br><span class="line"></span><br><span class="line">sickle-results.zip       100%[==================================&gt;]   2.28M   146KB/s    <span class="keyword">in</span> 24s</span><br><span class="line"></span><br><span class="line">2019-08-29 19:27:25 (98.7 KB/s) - ‘sickle-results.zip’ saved [2391084/2391084]</span><br><span class="line"></span><br><span class="line">(rna) hz04 19:27:25 ~/homework/rmDuplicate</span><br><span class="line">$ unzip sickle-results.zip</span><br><span class="line">Archive:  sickle-results.zip</span><br><span class="line">   creating: sickle-results/</span><br><span class="line">  inflating: sickle-results/command.txt</span><br><span class="line">  inflating: sickle-results/single_tmp_fastqc.html</span><br><span class="line">  inflating: sickle-results/single_tmp_fastqc.zip</span><br><span class="line">  inflating: sickle-results/test1_fastqc.html</span><br><span class="line">  inflating: sickle-results/test1_fastqc.zip</span><br><span class="line">  inflating: sickle-results/test2_fastqc.html</span><br><span class="line">  inflating: sickle-results/test2_fastqc.zip</span><br><span class="line">  inflating: sickle-results/trimmed_output_file1_fastqc.html</span><br><span class="line">  inflating: sickle-results/trimmed_output_file1_fastqc.zip</span><br><span class="line">  inflating: sickle-results/trimmed_output_file2_fastqc.html</span><br><span class="line">  inflating: sickle-results/trimmed_output_file2_fastqc.zip</span><br><span class="line">(rna) hz04 19:27:45 ~/homework/rmDuplicate</span><br><span class="line">$ tree sickle-results</span><br><span class="line">sickle-results</span><br><span class="line">├── command.txt</span><br><span class="line">├── single_tmp_fastqc.html</span><br><span class="line">├── single_tmp_fastqc.zip</span><br><span class="line">├── test1_fastqc.html</span><br><span class="line">├── test1_fastqc.zip</span><br><span class="line">├── test2_fastqc.html</span><br><span class="line">├── test2_fastqc.zip</span><br><span class="line">├── trimmed_output_file1_fastqc.html</span><br><span class="line">├── trimmed_output_file1_fastqc.zip</span><br><span class="line">├── trimmed_output_file2_fastqc.html</span><br><span class="line">└── trimmed_output_file2_fastqc.zip</span><br><span class="line"></span><br><span class="line">0 directories, 11 files</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>十七、解压 sickle-results/single_tmp_fastqc.zip 文件，并且进入解压后的文件夹，找到 fastqc_data.txt 文件，并且搜索该文本文件以 &gt;&gt;开头的有多少行？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(rna) hz04 19:44:23 ~/homework/rmDuplicate</span><br><span class="line">$ unzip sickle-results/single_tmp_fastqc.zip</span><br><span class="line">(rna) hz04 19:44:29 ~/homework/rmDuplicate</span><br><span class="line">$ <span class="built_in">cd</span> single_tmp_fastqc</span><br><span class="line">(rna) hz04 19:45:30 ~/homework/rmDuplicate/single_tmp_fastqc</span><br><span class="line">$ cat fastqc_data.txt | grep <span class="string">&#x27;&gt;&gt;&#x27;</span> | wc -l</span><br><span class="line">24</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>十八、下载 <a target="_blank" rel="noopener" href="http://www.biotrainee.com/jmzeng/tmp/hg38.tss">http://www.biotrainee.com/jmzeng/tmp/hg38.tss</a> 文件，去NCBI找到TP53/BRCA1等自己感兴趣的基因对应的 refseq数据库 ID，然后找到它们的hg38.tss 文件的哪一行。</p>
+<p><img src="0829.png"></p>
+<p><img src="0829-2.png"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 19:59:52 ~/homework</span><br><span class="line">$ grep -n NM_000546 hg38.tss</span><br><span class="line">413:NM_000546   chr17   7685550 7689550 1</span><br><span class="line">(base) hz04 19:59:55 ~/homework</span><br><span class="line">$ grep -n NM_001126112 hg38.tss</span><br><span class="line">28918:NM_001126112      chr17   7685550 7689550 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由于可变剪切，一个基因对应多个mRNA序列。</p>
+<p>转录本是由一条基因通过转录形成的一种或多种可供编码蛋白质的成熟的mRNA。</p>
+<p>十九、解析hg38.tss 文件，统计每条染色体的基因个数。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 20:20:00 ~/homework</span><br><span class="line">$ less hg38.tss|cut -f 2|cut -d <span class="string">&#x27;_&#x27;</span> -f 1|sort|uniq -c</span><br><span class="line">   6157 chr1</span><br><span class="line">   2838 chr10</span><br><span class="line">   3577 chr11</span><br><span class="line">   3014 chr12</span><br><span class="line">   1133 chr13</span><br><span class="line">   1982 chr14</span><br><span class="line">   2377 chr15</span><br><span class="line">   2696 chr16</span><br><span class="line">   3794 chr17</span><br><span class="line">    883 chr18</span><br><span class="line">   5880 chr19</span><br><span class="line">   4090 chr2</span><br><span class="line">   1692 chr20</span><br><span class="line">    895 chr21</span><br><span class="line">   1410 chr22</span><br><span class="line">   3395 chr3</span><br><span class="line">   2277 chr4</span><br><span class="line">   2821 chr5</span><br><span class="line">   5782 chr6</span><br><span class="line">   2785 chr7</span><br><span class="line">   2221 chr8</span><br><span class="line">   2310 chr9</span><br><span class="line">      2 chrM</span><br><span class="line">     32 chrUn</span><br><span class="line">   2561 chrX</span><br><span class="line">    414 chrY</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>二十、解析hg38.tss 文件，统计NM和NR开头的数量，了解NM和NR开头的含义。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 20:28:47 ~/homework</span><br><span class="line">$ less hg38.tss |grep -c NM</span><br><span class="line">51064</span><br><span class="line">(base) hz04 20:29:04 ~/homework</span><br><span class="line">$  less hg38.tss |grep -c NR</span><br><span class="line">15954</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 20:29:09 ~/homework</span><br><span class="line">$ less hg38.tss |grep NR|wc -l</span><br><span class="line">15954</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 20:29:15 ~/homework</span><br><span class="line">$ grep -o -E <span class="string">&quot;NM|NR&quot;</span> hg38.tss |sort |uniq -c</span><br><span class="line">  51064 NM</span><br><span class="line">  15954 NR</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(base) hz04 20:34:07 ~/homework</span><br><span class="line">$ less hg38.tss | cut -d <span class="string">&#x27;_&#x27;</span> -f 1|sort|uniq -c</span><br><span class="line">  51064 NM</span><br><span class="line">  15954 NR</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>NM表示标准序列（可以转录成蛋白质），NR表示非编码蛋白的mRNA序列，XM表示预测的蛋白编码序列，AF表示克隆序列，BC表示模板序列。<br>​</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/07/CNN/" rel="prev" title="卷积神经网络CNN">
+                  <i class="fa fa-chevron-left"></i> 卷积神经网络CNN
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/30/linux-fa-fq/" rel="next" title="Linux --fasta和fastq格式文件处理">
+                  Linux --fasta和fastq格式文件处理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

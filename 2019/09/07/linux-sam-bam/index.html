@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="SAM&#x2F;BAM当测序得到的fastq文件map到基因组之后，用sam（Sequence Alignment&#x2F;Map）统一格式来表示这种mapping结果，bam是sam的二进制文件(b binary)。sam文件由注释信息和比对结果两部分组成。  注释信息（header section） @HD，说明符合标准的版本、对比序列的排列顺序 @SQ，参考序列说明 @RG，比对上的序列（read）说明 @">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux --sam和bam格式文件处理">
+<meta property="og:url" content="https://hc1023.github.io/2019/09/07/linux-sam-bam/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="SAM&#x2F;BAM当测序得到的fastq文件map到基因组之后，用sam（Sequence Alignment&#x2F;Map）统一格式来表示这种mapping结果，bam是sam的二进制文件(b binary)。sam文件由注释信息和比对结果两部分组成。  注释信息（header section） @HD，说明符合标准的版本、对比序列的排列顺序 @SQ，参考序列说明 @RG，比对上的序列（read）说明 @">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/07/linux-sam-bam/0905.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/07/linux-sam-bam/0905-1.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/07/linux-sam-bam/0905-2.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/07/linux-sam-bam/0905-3.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/07/linux-sam-bam/0906.png">
+<meta property="article:published_time" content="2019-09-07T07:20:02.000Z">
+<meta property="article:modified_time" content="2020-09-10T07:39:48.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2019/09/07/linux-sam-bam/0905.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2019/09/07/linux-sam-bam/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2019/09/07/linux-sam-bam/","path":"2019/09/07/linux-sam-bam/","title":"Linux --sam和bam格式文件处理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux --sam和bam格式文件处理 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SAM-BAM"><span class="nav-number">1.</span> <span class="nav-text">SAM&#x2F;BAM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sam%E5%92%8Cbam%E6%A0%BC%E5%BC%8F%E6%96%87%E4%BB%B6%E7%9A%84shell%E5%B0%8F%E7%BB%83%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">sam和bam格式文件的shell小练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">3.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IGV%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">IGV可视化</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2019/09/07/linux-sam-bam/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux --sam和bam格式文件处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-07 15:20:02" itemprop="dateCreated datePublished" datetime="2019-09-07T15:20:02+08:00">2019-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-09-10 15:39:48" itemprop="dateModified" datetime="2020-09-10T15:39:48+08:00">2020-09-10</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="SAM-BAM"><a href="#SAM-BAM" class="headerlink" title="SAM/BAM"></a>SAM/BAM</h2><p>当测序得到的fastq文件map到基因组之后，用sam（Sequence Alignment/Map）统一格式来表示这种mapping结果，bam是sam的<strong>二进制文件</strong>(b binary)。sam文件由<strong>注释信息</strong>和<strong>比对结果</strong>两部分组成。</p>
+<ul>
+<li>注释信息（header section）<ul>
+<li>@HD，说明符合标准的版本、对比序列的排列顺序</li>
+<li>@SQ，参考序列说明</li>
+<li>@RG，比对上的序列（read）说明</li>
+<li>@PG，使用的程序说明</li>
+<li>@CO，任意的说明信息</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li>比对结果（alignment section）<ul>
+<li>通过11个tab隔开的字段来表示，11个必须字段+可选字段</li>
+<li>每一行表示一个read的比对信息</li>
+</ul>
+</li>
+</ul>
+<p><img src="0905.png"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@HD     VN:1.0  SO:unsorted</span><br><span class="line">@SQ     SN:gi|9626243|ref|NC_001416.1|  LN:48502</span><br><span class="line">@PG     ID:bowtie2      PN:bowtie2      VN:2.3.4.3      CL:<span class="string">&quot;/trainee2/hz04/biosoft/bowtie2-2.3.4.3-l</span></span><br><span class="line"><span class="string">r1      99      gi|9626243|ref|NC_001416.1|     18401   42      122M    =       18430   227     TGAA</span></span><br><span class="line"><span class="string">r1      147     gi|9626243|ref|NC_001416.1|     18430   42      198M    =       18401   -227    GTGA</span></span><br><span class="line"><span class="string">r2      99      gi|9626243|ref|NC_001416.1|     8886    42      275M    =       8973    275     NTTN</span></span><br><span class="line"><span class="string">r2      147     gi|9626243|ref|NC_001416.1|     8973    42      188M    =       8886    -275    ATAA</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r1      147     gi|9626243|ref|NC_001416.1|     18430   42      198M    =       18401   -227    GTGACGATAGCTGAAAACTGTACGATAAACGGTACGCTGAGGGCGGAAAAAATCGTCGGGGACATNGTANAGGCGGCGAGCGCGGCTTTNCCGCGCCAGCGTGAAAGCAGTGTGGACTGGCCGTCAGGTACCCGTACTGTCACCGTGACCGATGACCATCCTTTTGATCGCCAGATAGTGGTGCTTCCGCTGACGTTN  B+9+D)1&quot;7&gt;:@=D&amp;D0@:@7:10@;&lt;CA9&gt;(&#x27;A5D*G0@&gt;!6%+,B&lt;(%@#+8$@$+!-1=1::@:;99E((&gt;--9H&gt;H))&quot;?8&amp;4-9#C:E*#&amp;?D@6!;6&#x27;-@&amp;$3&gt;2.11,?AG9?-:?CBA.?1#+!0$@?C&#x27;*=B#/&amp;:F&amp;/-,E&lt;&gt;-F#++)/B0:2!E;.D8&amp;?9;+G/2;E=&gt;*&lt;5@94H8CA9&amp;F$?&amp;  AS:i:-4 XN:i:0  XM:i:4  XO:i:0  XG:i:0  NM:i:4  MD:Z:65T3A19T107T0      YS:i:-5 YT:Z:CP</span><br></pre></td></tr></table></figure>
+
+<p>详细看<a target="_blank" rel="noopener" href="http://samtools.github.io/hts-specs/SAMv1.pdf">SAM文件说明文档</a></p>
+<ul>
+<li>  <a target="_blank" rel="noopener" href="https://github.com/samtools/samtools">samtools</a>: 对SAM/BAM等格式进行各种相关操作的软件，功能最丰富。</li>
+<li>  <a target="_blank" rel="noopener" href="https://github.com/samtools/htslib">htslib</a>: samtools的C接口，可以通过该库，在C语言中完成samtools的同等功能。</li>
+<li>  <a target="_blank" rel="noopener" href="https://github.com/samtools/htsjdk">htsjdk</a>: Java接口</li>
+<li>  <a target="_blank" rel="noopener" href="https://github.com/pysam-developers/pysam">pysam</a>: Python接口</li>
+</ul>
+<h2 id="sam和bam格式文件的shell小练习"><a href="#sam和bam格式文件的shell小练习" class="headerlink" title="sam和bam格式文件的shell小练习"></a>sam和bam格式文件的shell小练习</h2><p>首先使用bowtie2软件自带的测试数据生成sam/bam文件，代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/biosoft</span><br><span class="line">cd ~/biosoft</span><br><span class="line">wget https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.4.3/bowtie2-2.3.4.3-linux-x86_64.zip </span><br><span class="line">unzip bowtie2-2.3.4.3-linux-x86_64.zip </span><br><span class="line">cd ~/biosoft/bowtie2-2.3.4.3-linux-x86_64/example/reads</span><br><span class="line">../../bowtie2 -x ../index/lambda_virus -1 reads_1.fq -2 reads_2.fq &gt; tmp.sam</span><br><span class="line"><span class="meta">#</span><span class="bash"> samtools view -bS tmp.sam &gt;tmp.bam</span></span><br></pre></td></tr></table></figure>
+<p>1.统计共多少条reads(pair-end reads这里算一条)参与了比对参考基因组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|cut -f 1 |uniq |wc -l</span></span><br><span class="line">10000</span><br></pre></td></tr></table></figure>
+<p>^@ 以@开头，质量评分中也会有@<br>cut -f 1 |uniq 由于pair-end reads这里算一条</p>
+<p>2.统计共有多少种比对的类型(即第二列数值有多少种)及其分布。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|cut -f 2|sort|uniq -c|sort -k 1 -nr</span></span><br><span class="line">   4650 83</span><br><span class="line">   4650 163</span><br><span class="line">   4516 99</span><br><span class="line">   4516 147</span><br><span class="line">    213 77</span><br><span class="line">    213 141</span><br><span class="line">    165 69</span><br><span class="line">    165 137</span><br><span class="line">    153 73</span><br><span class="line">    153 133</span><br><span class="line">    136 89</span><br><span class="line">    136 165</span><br><span class="line">    125 153</span><br><span class="line">    125 101</span><br><span class="line">     24 65</span><br><span class="line">     24 129</span><br><span class="line">     16 177</span><br><span class="line">     16 113</span><br><span class="line">      2 81</span><br><span class="line">      2 161</span><br></pre></td></tr></table></figure>
+<p>-k 1 按第一列排序，-n 按数字大小排序， -r 逆序</p>
+<p>3.筛选出比对失败的reads，看看序列特征。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;&#123;if($6==&quot;*&quot;)print$10&#125;&#x27;</span>|head -2</span><br><span class="line">GCGTNGTACNNGNNGATGNTTACGACTAANACTTNNNNNTNCNGNNT</span><br><span class="line">ANTGGNTNAGCGGNCGNAGNGNTCNGNAGCNANNAANCTGNTATGNTNNNTNNATCNNNCNNNNGTGNNAANNNCCAGNNNNGGCNNNNCATACANNNTNNNCNTNNNTACANNATANNCGNNATTNNACNGTNNCGNGNNCCGNGTNNNNN</span><br></pre></td></tr></table></figure>
+<p>第六列为*比对失败，序列特征：含有较多N碱基</p>
+<p>4.比对失败的reads区分成单端失败和双端失败情况，并且拿到序列ID</p>
+<ul>
+<li>单端失败<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;&#123;if($6 ==&quot;*&quot;) print$1&#125;&#x27;</span>|sort -n |uniq -c |grep -w 1 </span><br></pre></td></tr></table></figure></li>
+<li>双端失败<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;&#123;if($6 ==&quot;*&quot;) print$1&#125;&#x27;</span>|sort -n |uniq -c |grep -w 2</span><br></pre></td></tr></table></figure>
+单端失败 grep -w 1 出现一次；双端失败 grep -w 2 出现两次</li>
+</ul>
+<p>5.筛选出比对质量值大于30的情况（看第5列）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;&#123;if($5&gt;30)print&#125;&#x27;</span>|less -S</span><br></pre></td></tr></table></figure>
+
+<p>6.筛选出比对成功，但是并不是完全匹配的序列</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;$6~&quot;[IDNSHPX]&quot; &#123;print&#125;&#x27;</span> |less -S</span><br></pre></td></tr></table></figure>
+<p>以下代码序列信息丢失</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|cut -f 6|grep <span class="string">&#x27;[IDNSHPX]&#x27;</span>|less -S</span><br></pre></td></tr></table></figure>
+
+<p>7.筛选出inset size长度大于1250bp的 pair-end reads</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;&#123;if($9&gt;1250||$9&lt;-1250)print&#125;&#x27;</span>|less -S</span><br></pre></td></tr></table></figure>
+
+<p>8.统计参考基因组上面各条染色体的成功比对reads数量</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|cut -f 3|sort|uniq -c</span><br><span class="line">    426 *</span><br><span class="line">  19574 gi|9626243|ref|NC_001416.1|</span><br></pre></td></tr></table></figure>
+
+<p>9.筛选出原始fq序列里面有N的比对情况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;$10~&quot;N&quot;&#123;print&#125;&#x27;</span>|less -S</span><br></pre></td></tr></table></figure>
+
+<p>10.筛选出原始fq序列里面有N，但是比对的时候却是完全匹配的情况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;$6!~&quot;[IDNSHPX*]&quot; &amp;&amp; $10~&quot;N&quot;&#123;print&#125;&#x27;</span>|less -S</span><br></pre></td></tr></table></figure>
+
+<p>11.sam文件里面的头文件行数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep -c <span class="string">&#x27;^@&#x27;</span> tmp.sam</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>12.sam文件里每一行的tags个数一样吗;</p>
+<p>13.sam文件里每一行的tags个数分别是多少个</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam |cut -f 12-|head -2</span><br><span class="line">AS:i:-5 XN:i:0  XM:i:3  XO:i:0  XG:i:0  NM:i:3  MD:Z:59G13G21G26        YS:i:-4 YT:Z:CP</span><br><span class="line">AS:i:-4 XN:i:0  XM:i:4  XO:i:0  XG:i:0  NM:i:4  MD:Z:65T3A19T107T0      YS:i:-5 YT:Z:CP</span><br><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|cut -f 12-|awk <span class="string">&#x27;&#123;print NF&#125;&#x27;</span> |sort|uniq -c</span><br><span class="line">    457 1</span><br><span class="line">    548 2</span><br><span class="line">    579 8</span><br><span class="line">  18416 9</span><br></pre></td></tr></table></figure>
+
+<p>14.sam文件里记录的参考基因组染色体长度分别是？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ grep <span class="string">&#x27;^@&#x27;</span> tmp.sam|grep <span class="string">&#x27;LN&#x27;</span></span><br><span class="line">@SQ     SN:gi|9626243|ref|NC_001416.1|  LN:48502</span><br><span class="line">$ grep <span class="string">&#x27;^@&#x27;</span> tmp.sam|grep <span class="string">&#x27;LN&#x27;</span>|cut -f 3|cut -d : -f 2</span><br><span class="line">48502</span><br></pre></td></tr></table></figure>
+
+<p>15.找到比对情况有insertion情况的</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;&#123;if($6 ~&quot;I&quot;)print&#125;&#x27;</span> tmp.sam|less -S</span><br></pre></td></tr></table></figure>
+
+<p>16.找到比对情况有deletion情况的</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;&#123;if($6 ~&quot;D&quot;)print&#125;&#x27;</span> tmp.sam|less -S</span><br></pre></td></tr></table></figure>
+
+<p>17.取出位于参考基因组某区域的比对记录，比如 5013到50130 区域</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;&#123;if($4&gt;5013 &amp;&amp; $4&lt;50130) print&#125;&#x27;</span> tmp.sam|less -S</span><br></pre></td></tr></table></figure>
+
+<p>18.把sam文件按照染色体以及起始坐标排序</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -v <span class="string">&#x27;^@&#x27;</span> tmp.sam|awk <span class="string">&#x27;&#123;if($4!=0)print&#125;&#x27;</span>|sort -k 4 -n|less -S</span><br></pre></td></tr></table></figure>
+
+<p>19.找到 102M3D11M 的比对情况，计算其reads片段长度。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> grep <span class="string">&quot;102M3D11M&quot;</span> tmp.sam |awk <span class="string">&#x27;&#123;print length($10)&#125;&#x27;</span></span></span><br><span class="line">113</span><br></pre></td></tr></table></figure>
+<p>以下代码多一个估计是算上了\t</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep &quot;102M3D11M&quot; tmp.sam |cut -f 10|wc -m</span><br><span class="line">114</span><br></pre></td></tr></table></figure>
+
+<p>20.安装samtools软件后使用samtools软件的各个功能尝试把上述题目重新做一遍。</p>
+<p>尴尬而不失礼貌地微笑.jpg</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>1.高通量测序数据分析中，序列与参考序列的比对后得到的标准文件为什么文件？</p>
+<p>sam文件</p>
+<p>2.sam文件是一种比对后的文件，能直接查看吗？</p>
+<p>less直接查看</p>
+<p>3.Sam/Bam文件分为两部分，一部分以@开头的是什么序列，另一部分是什么序列？</p>
+<p>@开头的为标头注释信息，另一部分为比对结果</p>
+<p>4.Sam文件除头文件，以什么符号分割文本的，比对部分信息一行是多少列？你能用awk计算列数吗？</p>
+<p>通过11个tab隔开的字段来表示，11个必须字段+可选字段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> grep -v <span class="string">&quot;^@&quot;</span> tmp.sam|awk <span class="string">&#x27;&#123;print NF&#125;&#x27;</span>|sort|uniq -c</span></span><br><span class="line">    457 12</span><br><span class="line">    548 13</span><br><span class="line">    579 19</span><br><span class="line">  18416 20</span><br></pre></td></tr></table></figure>
+
+<p>5.Sam/Bam文件的@SQ开头的行是什么？你能生成一个文本，两列，一列是参考基因组染色体/sca id，一列是长度吗？</p>
+<p>@SQ：参考序列说明</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep ^@SQ tmp.sam|cut -f 2,3</span><br><span class="line">SN:gi|9626243|ref|NC_001416.1|  LN:48502</span><br></pre></td></tr></table></figure>
+
+<p>6.Sam文件的比对位置是从1还是0开始的？</p>
+<p>从1开始</p>
+<p>7.常见CIGAR 字符串各字母代表的意义</p>
+<p><img src="0905-1.png"></p>
+<p>比如说<code>150M</code>代表150个位点都比对上，<code>64M2I84M</code>代表64个位点比对上，2个位点有插入，84个位点比对错误。</p>
+<p>8.比对质量的数字是哪一列？越大比对质量越好还是越小越好？</p>
+<p>第五列，越大越好。</p>
+<p>9.Sam文件的flag是第几列，数字代表什么意义？是怎么计算来的？</p>
+<p>第二列，多个数字相加得到。</p>
+<p><img src="0905-2.png"></p>
+<p>一般flag值不需要自己去算，直接将flag值导入网站即可<br><a target="_blank" rel="noopener" href="http://broadinstitute.github.io/picard/explain-flags.html">http://broadinstitute.github.io/picard/explain-flags.html</a></p>
+<p>例如某条reads的第二列是99。99=1（ template having multiple segments in sequencing）+ 2（each segment properly aligned according to the aligner）+ 32（SEQ of the next segment in the template being reverse complemented）+ 64（the first segment in the template）</p>
+<p><img src="0905-3.png"></p>
+<p>10.Sam文件怎么转bam文件？用什么指令？为什么要转换？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ samtools view -bS tmp.sam &gt;tmp.bam</span><br></pre></td></tr></table></figure>
+<p>bam为二进制文件，占用内存小</p>
+<p>11.Bam文件查看用什么指令？如果需要查看头文件需要增加参数？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ samtools view tmp.bam|less -S</span><br></pre></td></tr></table></figure>
+<p>查看头文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ samtools view -H tmp.bam</span><br><span class="line">@HD     VN:1.0  SO:unsorted</span><br><span class="line">@SQ     SN:gi|9626243|ref|NC_001416.1|  LN:48502</span><br><span class="line">@PG     ID:bowtie2      PN:bowtie2      VN:2.3.4.3      CL:<span class="string">&quot;/trainee2/hz04/biosoft/bowtie2-2.3.4.3-linux-x86_64/example/reads/../../bowtie2-align-s --wrapper basic-0 -x ../index/lambda_virus -1 reads_1.fq -2 reads_2.fq&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>12.Bam文件为什么要排序？排序后的bam和未排序的bam头文件和chr position列有什么区别？</p>
+<p>Bam 文件 sort 之后体积会变小，二进制文件相似内容在一起可以提高压缩比</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ samtools sort tmp.bam &gt; tmpsort.bam</span><br><span class="line">$ ls -ltrh</span><br><span class="line">-rw-rw-r-- 1 hz04 hz04 3.0M Sep  5 21:40 tmp.bam</span><br><span class="line">-rw-rw-r-- 1 hz04 hz04 2.5M Sep  5 21:49 tmpsort.bam</span><br></pre></td></tr></table></figure>
+
+<p>SO由unsorted变为coordinate</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ samtools view -H tmp.bam|head -1</span><br><span class="line">@HD   VN:1.0   SO:unsorted</span><br><span class="line">$ samtools view -H tmpsort.bam|head -1</span><br><span class="line">@HD   VN:1.0   SO:coordinate</span><br></pre></td></tr></table></figure>
+
+<p>sort 后的POS从小到大排了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ samtools view tmp.bam|cut -f 4|head</span><br><span class="line">18401</span><br><span class="line">18430</span><br><span class="line">8886</span><br><span class="line">8973</span><br><span class="line">11599</span><br><span class="line">11596</span><br><span class="line">40075</span><br><span class="line">40211</span><br><span class="line">48010</span><br><span class="line">48180</span><br><span class="line">$ samtools view tmpsort.bam|cut -f 4|head</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+
+<p>13.Bam文件建索引的指令是什么？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ samtools index &lt;tmp.bam&gt;  out.index</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ samtools sort tmp.bam &gt; tmp.sort.bam</span><br><span class="line">$ samtools index tmp.sort.bam</span><br></pre></td></tr></table></figure>
+
+<p>14.Bam文件可视化用什么工具？查看时需要建立索引吗？</p>
+<p><code>igv</code>可视化，需要建立索引</p>
+<p>15.Bam文件统计reads比对情况用samtools的哪一个子命令？</p>
+<p>这之前先sort &amp; index</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ samtools idxstats tmp.sort.bam</span><br><span class="line">gi|9626243|ref|NC_001416.1|     48502   18995   579</span><br><span class="line">*       0       0       426</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一列：染色体名称</li>
+<li>第二列：序列长度</li>
+<li>第三列：mapped reads数</li>
+<li>第四列：unmapped reads数</li>
+</ul>
+<p>16.SE测序和PE测序的所比对后得到的sam文件的区别在哪里？</p>
+<p>单末端序列(singleendSE)比对和双末端序列(pairendPE)比对</p>
+<p>17.Bam能用gzip再压缩吗？</p>
+<p>bam可以压缩，但是压缩比不够（有一个国产软件，gtx.zp好像不错）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zcvf tmp.tar.gz tmp.bam</span><br><span class="line">$ ls -ltrh</span><br><span class="line">rw-rw-r-- 1 hz04 hz04 3.0M Sep  5 21:40 tmp.bam</span><br><span class="line">-rw-rw-r-- 1 hz04 hz04 3.0M Sep  6 16:48 tmp.tar.gz</span><br></pre></td></tr></table></figure>
+<p>压缩前后文件并没有明显减小</p>
+<p>18.Sam文件通常由哪些比对软件得到的</p>
+<p><code>bowtie2</code> <code>bwa</code></p>
+<p>19.Sam/Bam文件能转成fastq文件吗？</p>
+<p>能啊，二者都是fastq文件经过序列比对或者mapping后输出的格式（其储存的信息都是一致的）<br>有相应的工具</p>
+<p>20.有时候不能通过文件名的后缀来区别是sam还是bam，你是怎么区别的？</p>
+<p>sam文件可以直接文本查看，而bam文件为二进制文件需要<code>samtools view</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ less tmp.bam</span><br><span class="line"><span class="string">&quot;tmp.bam&quot;</span> may be a binary file.  See it anyway?</span><br></pre></td></tr></table></figure>
+<p>按<code>y</code>可见乱码</p>
+<h2 id="IGV可视化"><a href="#IGV可视化" class="headerlink" title="IGV可视化"></a>IGV可视化</h2><ul>
+<li>安装软件：JAVA version 8，IGV</li>
+<li>打开igv.bat</li>
+</ul>
+<p>igv比较耗内存，可以考虑编辑igv.bat，比如用VScode打开igv.bat，尝试将</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start %JAVA_CMD% -showversion --module-path=%BatchPath%\lib -Xmx4g -Dproduction=true @%BatchPath%\igv.args -Djava.net.preferIPv4Stack=true -Dsun.java2d.noddraw=true --module=org.igv/org.broad.igv.ui.Main  %*</span><br></pre></td></tr></table></figure>
+<p>中的<code>-Xmx4g</code>改为<code>-Xmx1g</code>或更小，但我不改，相比之下，我更需要好点的网。。。已经下载的基因组在<code>C:\Users\用户名\igv\genomes</code></p>
+<ul>
+<li>查看bam文件</li>
+</ul>
+<p>为bam文件建立索引，生成一个<code>.bai</code>文件，两者放入同一文件夹下，它根据文件名自动和.bam关联，最后将bam导入IGV中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> samtools sort tmp.bam &gt; tmp.sort.bam</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> samtools index tmp.sort.bam</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ls -ltrh</span></span><br><span class="line">-rw-rw-r-- 1 hz04 hz04 2.5M Sep  6 15:03 tmp.sort.bam</span><br><span class="line">-rw-rw-r-- 1 hz04 hz04  216 Sep  6 15:05 tmp.sort.bam.bai</span><br></pre></td></tr></table></figure>
+
+<p>载入bam后，默认会出现两个track: </p>
+<ul>
+<li>Coverage track 显示覆盖率和测序深度</li>
+<li>Alignment track 显示每个reads的比对情况<br><img src="0906.png"></li>
+</ul>
+<p>tip：按住<code>alt</code>可以避免黄色提示出现</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/30/linux-fa-fq/" rel="prev" title="Linux --fasta和fastq格式文件处理">
+                  <i class="fa fa-chevron-left"></i> Linux --fasta和fastq格式文件处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/07/conda/" rel="next" title="Conda环境搭建">
+                  Conda环境搭建 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

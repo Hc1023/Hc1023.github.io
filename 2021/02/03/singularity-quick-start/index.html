@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Singularity: building a root file system that runs on any other Linux system where Singularity is installed. Commands  build：建立一个Singularity容器（container） capability：管理容器上的Linux功能 exec：在容器中执行命令 help：命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Singularity Quick Start">
+<meta property="og:url" content="https://hc1023.github.io/2021/02/03/singularity-quick-start/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="Singularity: building a root file system that runs on any other Linux system where Singularity is installed. Commands  build：建立一个Singularity容器（container） capability：管理容器上的Linux功能 exec：在容器中执行命令 help：命令">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2021/02/03/singularity-quick-start/1612250113238.png">
+<meta property="article:published_time" content="2021-02-03T13:21:26.000Z">
+<meta property="article:modified_time" content="2021-02-16T07:47:02.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2021/02/03/singularity-quick-start/1612250113238.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2021/02/03/singularity-quick-start/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2021/02/03/singularity-quick-start/","path":"2021/02/03/singularity-quick-start/","title":"Singularity Quick Start"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Singularity Quick Start | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-pre-built-%E9%95%9C%E5%83%8F%EF%BC%88images%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">下载 pre-built 镜像（images）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E%E9%95%9C%E5%83%8F%E4%BA%A4%E4%BA%92"><span class="nav-number">2.</span> <span class="nav-text">与镜像交互</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell"><span class="nav-number">2.1.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Executing-Commands"><span class="nav-number">2.2.</span> <span class="nav-text">Executing Commands</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Running-a-container"><span class="nav-number">2.3.</span> <span class="nav-text">Running a container</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Working-with-Files"><span class="nav-number">2.4.</span> <span class="nav-text">Working with Files</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%A4%B4%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="nav-number">3.</span> <span class="nav-text">从头创建镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sandbox-Directory"><span class="nav-number">3.1.</span> <span class="nav-text">Sandbox Directory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Singularity-Definition-Files"><span class="nav-number">3.2.</span> <span class="nav-text">Singularity Definition Files</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9Eroot%E7%94%A8%E6%88%B7%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F%EF%BC%9A-Remote-Builder"><span class="nav-number">4.</span> <span class="nav-text">非root用户创建镜像： Remote Builder</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-signature"><span class="nav-number">4.1.</span> <span class="nav-text">Add signature</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E7%BC%93%E5%AD%98"><span class="nav-number">5.</span> <span class="nav-text">镜像缓存</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2021/02/03/singularity-quick-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Singularity Quick Start
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-02-03 21:21:26" itemprop="dateCreated datePublished" datetime="2021-02-03T21:21:26+08:00">2021-02-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-02-16 15:47:02" itemprop="dateModified" datetime="2021-02-16T15:47:02+08:00">2021-02-16</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Singularity: building a root file system that runs on any other Linux system where Singularity is installed.</p>
+<p>Commands</p>
+<ul>
+<li>build：建立一个Singularity容器（container）</li>
+<li>capability：管理容器上的Linux功能</li>
+<li>exec：在容器中执行命令</li>
+<li>help：命令帮助</li>
+<li>inspect：显示容器元数据（metadata）</li>
+<li>instance：管理在背景运行的容器</li>
+<li>keys：管理OpenPGP密钥</li>
+<li>pull：从URI拉下容器</li>
+<li>push：推容器到URI库（library）</li>
+</ul>
+<blockquote>
+<p>URI stands for <strong>Uniform Resource Identifier</strong>, and it’s the official name for those things you see all the time on the Web that begin ‘ http: ‘ or ‘ mailto: ‘</p>
+</blockquote>
+<ul>
+<li>run：在容器中启动运行脚本</li>
+<li>run-help：容器帮助</li>
+<li>search：搜索库</li>
+<li>shell：在容器中运行Bourne shell</li>
+</ul>
+<blockquote>
+<p>A <strong>Bourne shell</strong> (sh) is a UNIX <strong>shell</strong> or command processor that is used for scripting.</p>
+</blockquote>
+<ul>
+<li>sign：将加密签名附加到容器</li>
+<li>verify：验证容器加密签名</li>
+<li>version：应用版本</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="下载-pre-built-镜像（images）"><a href="#下载-pre-built-镜像（images）" class="headerlink" title="下载 pre-built 镜像（images）"></a>下载 pre-built 镜像（images）</h2><p><code>search</code>：定位 groups, collections, and containers of interest on the <a target="_blank" rel="noopener" href="https://cloud.sylabs.io/library">Container Library</a> .</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity search alp</span><br></pre></td></tr></table></figure>
+
+<p><code>pull</code> and <code>build</code>：下载 pre-built images from an external resource like the <a target="_blank" rel="noopener" href="https://cloud.sylabs.io/library">Container Library</a> or <a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a>.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity pull library://sylabsed/linux/alpine</span><br></pre></td></tr></table></figure>
+
+<p>Docker images are stored in layers, so <code>pull</code> must also combine those layers into a usable Singularity file. Pulling Docker images reduces reproducibility. 因为layer会变化。</p>
+<p><code>build</code>下载镜像需要给名字</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity build ubuntu.sif library://ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>Unlike <code>pull</code>, <code>build</code> will convert your image to the latest Singularity image format after downloading it.</p>
+<h2 id="与镜像交互"><a href="#与镜像交互" class="headerlink" title="与镜像交互"></a>与镜像交互</h2><p>It is not actually necessary to <code>pull</code> or <code>build</code> an image to interact with it. </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity pull library://sylabsed/examples/lolcow</span><br></pre></td></tr></table></figure>
+
+<h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><p>The shell command allows you to spawn a new shell within your container and interact with it as though it were a small virtual machine.</p>
+<p>Once inside of a Singularity container, you are the same user as you are on the host system.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@login01 ~]$ singularity shell lolcow_latest.sif</span><br><span class="line">Singularity&gt; whoami</span><br><span class="line">huangsisi</span><br><span class="line">Singularity&gt; id</span><br><span class="line">uid=2080(huangsisi) gid=1017(jianglab) groups=1017(jianglab)</span><br><span class="line">Singularity&gt; <span class="built_in">exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<p><code>shell</code> also works with the <code>library://</code>, <code>docker://</code>, and <code>shub://</code> URIs. This creates an ephemeral container that disappears when the shell is exited.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity shell library://sylabsed/examples/lolcow</span><br></pre></td></tr></table></figure>
+
+<h3 id="Executing-Commands"><a href="#Executing-Commands" class="headerlink" title="Executing Commands"></a>Executing Commands</h3><p>The exec command allows you to execute a custom command within a container by specifying the image file.</p>
+<ul>
+<li>执行cowsay程序</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ singularity <span class="built_in">exec</span> lolcow_latest.sif cowsay moo</span><br><span class="line"> _____</span><br><span class="line">&lt; moo &gt;</span><br><span class="line"> -----</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>exec</code>直接跟URIs，cached image，创建一个临时的容器执行命令后消失</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ singularity <span class="built_in">exec</span> library://sylabsed/examples/lolcow cowsay <span class="string">&quot;Hello, Sisi Huang&quot;</span></span><br><span class="line">INFO:    Using cached image</span><br><span class="line"> ___________________</span><br><span class="line">&lt; Hello, Sisi Huang &gt;</span><br><span class="line"> -------------------</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
+
+<h3 id="Running-a-container"><a href="#Running-a-container" class="headerlink" title="Running a container"></a>Running a container</h3><ul>
+<li>运行镜像</li>
+</ul>
+<p>The runscript can be triggered with the run command, or simply by calling the container as though it were an executable.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ singularity run lolcow_latest.sif</span><br><span class="line"> _____________________________________</span><br><span class="line">/ When angry, count four; when very   \</span><br><span class="line">| angry, swear.                       |</span><br><span class="line">|                                     |</span><br><span class="line">| -- Mark Twain, <span class="string">&quot;Pudd&#x27;nhead Wilson&#x27;s |</span></span><br><span class="line"><span class="string">\ Calendar&quot;</span>                           /</span><br><span class="line"> -------------------------------------</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ./lolcow_latest.sif</span><br><span class="line"> ____________________________________</span><br><span class="line">/ Q: What is orange and goes <span class="string">&quot;click, \</span></span><br><span class="line"><span class="string">\ click?&quot;</span> A: A ball point carrot.    /</span><br><span class="line"> ------------------------------------</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>直接跟URIs</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ singularity run library://sylabsed/examples/lolcow</span><br><span class="line">INFO:    Using cached image</span><br><span class="line"> _________________________________________</span><br><span class="line">/ You will be imprisoned <span class="keyword">for</span> contributing \</span><br><span class="line">\ your time and skill to a bank robbery.  /</span><br><span class="line"> -----------------------------------------</span><br><span class="line">        \   ^__^</span><br><span class="line">         \  (oo)\_______</span><br><span class="line">            (__)\       )\/\</span><br><span class="line">                ||----w |</span><br><span class="line">                ||     ||</span><br></pre></td></tr></table></figure>
+
+<h3 id="Working-with-Files"><a href="#Working-with-Files" class="headerlink" title="Working with Files"></a>Working with Files</h3><p>Files on the host are reachable from within the container.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;Hello, sisi&quot;</span> &gt; <span class="variable">$HOME</span>/hostfile.txt</span><br><span class="line">$ singularity <span class="built_in">exec</span> lolcow_latest.sif cat <span class="variable">$HOME</span>/hostfile.txt</span><br><span class="line">Hello, sisi</span><br></pre></td></tr></table></figure>
+
+<p>By default Singularity bind mounts <code>/home/$USER</code>, <code>/tmp</code>, and <code>$PWD</code> into your container at runtime.</p>
+<p>指定目录bind mount into your container with the <code>--bind</code> option.</p>
+<p>例如，<code>/data</code> directory on the host system is bind mounted to the <code>/mnt</code> directory inside the container.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;Drink milk (and never eat hamburgers).&quot;</span> &gt; /data/cow_advice.txt</span><br><span class="line"></span><br><span class="line">$ singularity <span class="built_in">exec</span> --<span class="built_in">bind</span> /data:/mnt lolcow_latest.sif cat /mnt/cow_advice.txt</span><br><span class="line">Drink milk (and never eat hamburgers).</span><br></pre></td></tr></table></figure>
+
+<p>Pipes and redirects also work with Singularity commands</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /data/cow_advice.txt | singularity <span class="built_in">exec</span> lolcow_latest.sif cowsay</span><br></pre></td></tr></table></figure>
+
+<h2 id="从头创建镜像"><a href="#从头创建镜像" class="headerlink" title="从头创建镜像"></a>从头创建镜像</h2><p>Singularity v3.0以 Singularity Image File (SIF)格式生成不可变的镜像，确保可重复性和可验证性。</p>
+<p>但是，在测试和调试期间，可能需要可写的镜像格式，安装软件和依赖项，直到确信容器满足需求。对于这些场景，Singularity 还支持<code>sandbox</code>格式（实际上只是一个目录）。</p>
+<h3 id="Sandbox-Directory"><a href="#Sandbox-Directory" class="headerlink" title="Sandbox Directory"></a>Sandbox Directory</h3><p>需要root权限</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo singularity build --sandbox ubuntu/ library://ubuntu</span><br><span class="line">$ sudo singularity <span class="built_in">exec</span> --writable ubuntu touch /foo</span><br><span class="line">$ singularity <span class="built_in">exec</span> ubuntu/ ls /foo</span><br><span class="line">/foo</span><br></pre></td></tr></table></figure>
+
+<p>但我没有权限，所以如下错误</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FATAL:   container creation failed: mount /usr/<span class="built_in">local</span>/var/singularity/mnt/session/share-&gt;/share error: <span class="keyword">while</span> mounting /usr/<span class="built_in">local</span>/var/singularity/mnt/session/share: destination /share doesn<span class="string">&#x27;t exist in container</span></span><br></pre></td></tr></table></figure>
+
+<p>大概猜到<code>sandbox</code>目录在这里：<code>/usr/local/var/singularity/mnt/session/share</code></p>
+<h3 id="Singularity-Definition-Files"><a href="#Singularity-Definition-Files" class="headerlink" title="Singularity Definition Files"></a>Singularity Definition Files</h3><p>For a reproducible, production-quality container you should build a SIF file using a Singularity definition file. This also makes it easy to add files, environment variables, and install custom software, and still start from your base of choice (e.g., the Container Library).</p>
+<p>A definition file has a header and a body. </p>
+<ul>
+<li>The header determines the base container to begin with.</li>
+<li>The body is further divided into sections that do things like <strong>install software, setup the environment, and copy files into the container from the host system.</strong></li>
+</ul>
+<p>举例</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">BootStrap: library</span><br><span class="line">From: ubuntu:16.04</span><br><span class="line"></span><br><span class="line">%post</span><br><span class="line">    apt-get -y update</span><br><span class="line">    apt-get -y install fortune cowsay lolcat</span><br><span class="line"></span><br><span class="line">%environment</span><br><span class="line">    <span class="built_in">export</span> LC_ALL=C</span><br><span class="line">    <span class="built_in">export</span> PATH=/usr/games:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line">%runscript</span><br><span class="line">    fortune | cowsay | lolcat</span><br><span class="line"></span><br><span class="line">%labels</span><br><span class="line">    Author GodloveD</span><br></pre></td></tr></table></figure>
+
+<p>To build a container from this definition file (assuming it is a file named lolcow.def), you would call build like so:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo singularity build lolcow.sif lolcow.def</span><br></pre></td></tr></table></figure>
+
+<p>In this example, the header tells Singularity to use a base Ubuntu 16.04 image from the Container Library.</p>
+<ul>
+<li><code>%post</code>：在创建容器时，base OS 安装后即在容器内执行，安装应用。</li>
+<li><code>%environment</code>：定义环境变量</li>
+<li><code>%runscript</code>：容器执行的动作</li>
+<li><code>%lables</code>：自定义元数据添加到容器</li>
+</ul>
+<p>但是我没有root权限，singularity给了一种解决办法，采用remote的方式</p>
+<h2 id="非root用户创建镜像：-Remote-Builder"><a href="#非root用户创建镜像：-Remote-Builder" class="headerlink" title="非root用户创建镜像： Remote Builder"></a>非root用户创建镜像： <a target="_blank" rel="noopener" href="https://cloud.sylabs.io/builder">Remote Builder</a></h2><p>我用github注册</p>
+<p>首先登陆</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity remote login</span><br></pre></td></tr></table></figure>
+
+<p>会有一个生成API密钥的网址，没有的话就去创建一个token，网站上说token要保存好哦，那我就保存了嘿</p>
+<p>然后上面那个<code>sudo</code>命令改为</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">singularity build --remote lolcow.sif lolcow.def</span><br></pre></td></tr></table></figure>
+
+<p>成功了！可以在 remote builder 里面 My Builds 找到它。</p>
+<p><img src="1612250113238.png"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity pull library://sisih/remote-builds/rb-6018ef829a193de1c6105db1:latest</span><br></pre></td></tr></table></figure>
+
+<h3 id="Add-signature"><a href="#Add-signature" class="headerlink" title="Add signature"></a>Add signature</h3><p>但这步骤看起来不是必须的</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ singularity key newpair</span><br><span class="line">Enter your name (e.g., John Doe) :</span><br><span class="line">Enter your email address (e.g., john.doe@example.com) : </span><br><span class="line">Enter optional comment (e.g., development keys) :</span><br><span class="line">Enter a passphrase :</span><br><span class="line">Retype your passphrase :</span><br><span class="line">Would you like to push it to the keystore? [Y,n] y</span><br><span class="line">Generating Entity and OpenPGP Key Pair... <span class="keyword">done</span></span><br><span class="line">Key successfully pushed to: https://keys.sylabs.io</span><br></pre></td></tr></table></figure>
+
+<p>注意邮箱不是任意填写的，可能是这个账号绑定的邮箱……总之填错了，它会提示你给的邮箱</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Failed to push newly created key to keystore: key server did not accept PGP key: entity *****: primary identity does not contain email <span class="string">&#x27;我的邮箱@zju.edu.cn&#x27;</span> (400 Bad Request)</span><br></pre></td></tr></table></figure>
+
+<p>查看 key list 然后 sign</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ singularity key list</span><br><span class="line">$ singularity sign --keyidx 4 rb-6018ef829a193de1c6105db1_latest.sif</span><br><span class="line">Signing image: rb-6018ef829a193de1c6105db1_latest.sif</span><br><span class="line">Enter key passphrase :</span><br><span class="line">Signature created and applied to rb-6018ef829a193de1c6105db1_latest.sif</span><br></pre></td></tr></table></figure>
+
+<p>然后再 push，但是不能 push 到原来远程build的临时容器当中，可以这样push到一个新的容器中（非remote-built，我default拼写错误请忽视呜呜）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  singularity push rb-6018ef829a193de1c6105db1_latest.sif library://sisih/defualt/<span class="built_in">test</span>:0.0.0</span><br></pre></td></tr></table></figure>
+
+<p>它在这里，大家应该都能访问看到 <a target="_blank" rel="noopener" href="https://cloud.sylabs.io/library/sisih/defualt/test">Sylabs Cloud</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity pull --arch amd64 library://sisih/defualt/<span class="built_in">test</span>:0.0.0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ singularity verify test_0.0.0.sif</span><br><span class="line">Verifying image: test_0.0.0.sif</span><br><span class="line">[LOCAL]   Signing entity: Sisi Huang &lt;3170103624@zju.edu.cn&gt;</span><br><span class="line">[LOCAL]   Fingerprint: 05C08210E309B5C025A54E7F28983F54A2001DA8</span><br><span class="line">Objects verified:</span><br><span class="line">ID  |GROUP   |LINK    |TYPE</span><br><span class="line">------------------------------------------------</span><br><span class="line">1   |1       |NONE    |Def.FILE</span><br><span class="line">2   |1       |NONE    |FS</span><br><span class="line">Container verified: test_0.0.0.sif</span><br></pre></td></tr></table></figure>
+
+<h2 id="镜像缓存"><a href="#镜像缓存" class="headerlink" title="镜像缓存"></a>镜像缓存</h2><p>查看已有cache</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ singularity cache list --verbose</span><br><span class="line">NAME                     DATE CREATED           SIZE             TYPE</span><br><span class="line">sha256.02ee8bf9dc335c2   2021-02-02 11:56:15    28.11 MB         library</span><br><span class="line">sha256.4d184900b2dc0cb   2021-02-02 14:26:12    97.99 MB         library</span><br><span class="line">sha256.e37e11f101a9db8   2021-02-02 11:07:21    83.79 MB         library</span><br></pre></td></tr></table></figure>
+
+<p>清除已有cache</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity cache clean</span><br></pre></td></tr></table></figure>
+
+
+<p>Reference<br><a target="_blank" rel="noopener" href="https://sylabs.io/guides/3.5/user-guide/quick_start.html">https://sylabs.io/guides/3.5/user-guide/quick_start.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/03/install-docker-on-Ubuntu/" rel="prev" title="docker安装">
+                  <i class="fa fa-chevron-left"></i> docker安装
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/03/Containerising-a-Pipeline/" rel="next" title="Containerising a Pipeline">
+                  Containerising a Pipeline <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

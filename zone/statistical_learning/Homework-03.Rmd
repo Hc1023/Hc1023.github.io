@@ -1,0 +1,291 @@
+---
+title: "Homework 3"
+author: "Huang Sisi"
+output: html_document
+---
+
+```{r setup, message = F, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(warn=-1)
+library(scales)
+```
+
+1.\ It was mentioned in the chapter that a cubic regression spline with one knot at $\xi$ can be obtained using a basis of the form $x, x^{2}, x^{3}$, $(x-\xi)_{+}^{3}$, where $(x-\xi)_{+}^{3}=(x-\xi)^{3}$ if $x>\xi$ and equals 0 otherwise. We will now show that a function of the form
+$$
+f(x)=\beta_{0}+\beta_{1} x+\beta_{2} x^{2}+\beta_{3} x^{3}+\beta_{4}(x-\xi)_{+}^{3}
+$$
+is indeed a cubic regression spline, regardless of the values of $\beta_{0}, \beta_{1}, \beta_{2}$, $\beta_{3}, \beta_{4}$
+
+(a) Find a cubic polynomial
+$$
+f_{1}(x)=a_{1}+b_{1} x+c_{1} x^{2}+d_{1} x^{3}
+$$
+such that $f(x)=f_{1}(x)$ for all $x \leq \xi$. Express $a_{1}, b_{1}, c_{1}, d_{1}$ in terms of $\beta_{0}, \beta_{1}, \beta_{2}, \beta_{3}, \beta_{4}$.
+
+    *Answer*. For $x \leq \xi$, $f(x)=\beta_{0}+\beta_{1} x+\beta_{2} x^{2}+\beta_{3} x^{3}$. So $a_1=\beta_{0}$, $b_1=\beta_{1}$, $c_{1}=\beta_{2}$, $d_{1}=\beta_{3}$.
+
+(b) Find a cubic polynomial
+$$
+f_{2}(x)=a_{2}+b_{2} x+c_{2} x^{2}+d_{2} x^{3}
+$$
+such that $f(x)=f_{2}(x)$ for all $x>\xi$. Express $a_{2}, b_{2}, c_{2}, d_{2}$ in terms of $\beta_{0}, \beta_{1}, \beta_{2}, \beta_{3}, \beta_{4}$. We have now established that $f(x)$ is a piecewise polynomial.
+
+    *Answer*. For $x \leq \xi$, $f(x)=(\beta_{0}-\beta_{4}\xi^3)+(\beta_{1}+3\beta_{4}\xi^2) x+(\beta_{2}-3\beta_{4}\xi) x^{2}+(\beta_{3}+\beta_{4}) x^{3}$. So $a_1=\beta_{0}-\beta_{4}\xi^3$, $b_1=\beta_{1}+3\beta_{4}\xi^2$, $c_{1}=\beta_{2}-3\beta_{4}\xi$, $d_{1}=\beta_{3}+\beta_{4}$.
+
+(c) Show that $f_{1}(\xi)=f_{2}(\xi)$. That is, $f(x)$ is continuous at $\xi$.
+
+(d) Show that $f_{1}^{\prime}(\xi)=f_{2}^{\prime}(\xi)$. That is, $f^{\prime}(x)$ is continuous at $\xi$.
+    
+(e) Show that $f_{1}^{\prime \prime}(\xi)=f_{2}^{\prime \prime}(\xi) .$ That is, $f^{\prime \prime}(x)$ is continuous at $\xi$.
+
+    *Answer for (c)(d)(e)*. $f_1(x) = \beta_{0}+\beta_{1} x+\beta_{2} x^{2}+\beta_{3} x^{3}$, $f_2(x) = \beta_{0}+\beta_{1} x+\beta_{2} x^{2}+\beta_{3} x^{3}+\beta_{4}(x-\xi)^{3}$. Let $h(x)=f_2(x)-f_1(x)=\beta_{4}(x-\xi)^{3}$, it's easy to see $h(\xi)=h'(\xi)=h''(\xi)=0$. So $f_{1}(\xi)=f_{2}(\xi),\ f'_{1}(\xi)=f'_{2}(\xi),\ f''_{1}(\xi)=f''_{2}(\xi)$.
+    
+Therefore, $f(x)$ is indeed a cubic spline.
+
+2.\ Suppose that a curve $\hat{g}$ is computed to smoothly fit a set of $n$ points using the following formula:
+$$
+\hat{g}=\arg \min _{g}\left(\sum_{i=1}^{n}\left(y_{i}-g\left(x_{i}\right)\right)^{2}+\lambda \int\left[g^{(m)}(x)\right]^{2} d x\right),
+$$
+where $g^{(m)}$ represents the $m$ th derivative of $g\left(\right.$ and $\left.g^{(0)}=g\right)$. Provide example sketches of $\hat{g}$ in each of the following scenarios.
+
+(a) $\lambda=\infty, m=0$.
+
+    *Answer*. $\hat{g}=0$.
+
+(b) $\lambda=\infty, m=1$.
+
+    *Answer*. $\hat{g}=\sum_i y_i/n$.
+
+(c) $\lambda=\infty, m=2$.
+
+    *Answer*. $\hat{g}\propto k_1x+k_0$.
+    
+(d) $\lambda=\infty, m=3$.
+
+    *Answer*. $\hat{g}\propto k_2x^2+k_1x+k_0$.
+
+(e) $\lambda=0, m=3$.
+
+    *Answer*. $\hat{g}=\sum_{i=1}^n y_i\frac{\prod_{j\neq i}(x-x_j)}{\prod_{j\neq i}(x_i-x_j)}$ (Interpolating spline).
+    
+    
+3.\ Suppose we fit a curve with basis functions $b_{1}(X)=X, b_{2}(X)=$ $(X-1)^{2} I(X \geq 1) .$ (Note that $I(X \geq 1)$ equals 1 for $X \geq 1$ and 0 otherwise.) We fit the linear regression model
+$$
+Y=\beta_{0}+\beta_{1} b_{1}(X)+\beta_{2} b_{2}(X)+\epsilon
+$$
+and obtain coefficient estimates $\hat{\beta}_{0}=1, \hat{\beta}_{1}=1, \hat{\beta}_{2}=-2 .$ Sketch the estimated curve between $X=-2$ and $X=2$. Note the intercepts, slopes, and other relevant information.
+
+```{r}
+x = seq(-2,2,0.2) 
+y = 1 + x + -2 * (x-1)^2 * I(x>1)
+plot(x, y, type = "l", lwd=2)
+abline(v = 1, lty = 3, lwd = 2, col = "darkgrey")
+
+grid(lty = 1, col = alpha("lightgray",0.4))
+text(0.5, 1, "y=1+x", cex=0.8)
+text(1.5, 1, "y=1+x-2 * (x-1)^2", cex=0.8)
+```
+
+5.\ Consider two curves, $\hat{g}_{1}$ and $\hat{g}_{2}$, defined by
+$$
+\begin{array}{l}
+\hat{g}_{1}=\arg \min _{g}\left(\sum_{i=1}^{n}\left(y_{i}-g\left(x_{i}\right)\right)^{2}+\lambda \int\left[g^{(3)}(x)\right]^{2} d x\right), \\
+\hat{g}_{2}=\arg \min _{g}\left(\sum_{i=1}^{n}\left(y_{i}-g\left(x_{i}\right)\right)^{2}+\lambda \int\left[g^{(4)}(x)\right]^{2} d x\right),
+\end{array}
+$$
+where $g^{(m)}$ represents the $m$ th derivative of $g$.
+
+(a) As $\lambda \rightarrow \infty$, will $\hat{g}_{1}$ or $\hat{g}_{2}$ have the smaller training RSS?
+
+    *Answer*. $\hat{g}_{2}$ may have smaller training RSS because its order is higher.
+
+(b) As $\lambda \rightarrow \infty$, will $\hat{g}_{1}$ or $\hat{g}_{2}$ have the smaller test RSS?
+
+    *Answer*. $\hat{g}_{1}$ may have smaller training RSS because $\hat{g}_{2}$ is more likely to overfit the training data.
+    
+(c) For $\lambda=0$, will $\hat{g}_{1}$ or $\hat{g}_{2}$ have the smaller training and test RSS?
+
+    *Answer*. There is no penalty, and $\hat{g}_{1}=\hat{g}_{2}$. So they will have the same training and test RSS.
+    
+6.\ In this exercise, you will further analyze the Wage data set considered throughout this chapter.
+
+(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree $d$ for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA? Make a plot of the resulting polynomial fit to the data.
+
+    *Answer*.
+    
+```{r}
+library(ISLR)
+library(boot)
+deltas <- {}
+for (i in 1:10) {
+    fit <- glm(wage ~ poly(age, i), data = Wage)
+    deltas[i] <- cv.glm(Wage, fit, K = 10)$delta[2]
+}
+# plot the delta values to see which produce the lowest MSE (delta). 
+# The first value of delta: standard k-fold estimate 
+# The second: bias corrected
+plot(1:10, deltas, xlab = "Degree", ylab = "CV MSE", type = "b")
+abline(h = min(deltas) + 0.2 * sd(deltas), col = "red", lty = 2)
+# choose degree of 3
+points(3, deltas[3], col = "#BC3C29FF", cex = 2, pch = 20)
+```
+
+The CV plot shows that MSE decreases rapidly when the degree goes from 1 to 2. Then the decreasing trend is not obvious. So we may choose the optimal degree 3. We can test the results of degrees from 1 to 6 using ANOVA.
+
+
+```{r}
+fit.1 = lm(wage~poly(age, 1), data=Wage)
+fit.2 = lm(wage~poly(age, 2), data=Wage)
+fit.3 = lm(wage~poly(age, 3), data=Wage)
+fit.4 = lm(wage~poly(age, 4), data=Wage)
+fit.5 = lm(wage~poly(age, 5), data=Wage)
+fit.6 = lm(wage~poly(age, 6), data=Wage)
+anova(fit.1, fit.2, fit.3, fit.4, fit.5, fit.6)
+```
+
+So the degrees $d\geq 3$ are insignificant. So $d=3$ is optimal. We can make a plot of the resulting polynomial fit to the data.
+
+```{r}
+attach(Wage)
+plot(age, wage, col = "darkgrey")
+x <- seq(min(age),max(age))
+pred <- predict(fit.3, newdata = list(age = x))
+lines(x, pred, col = "#BC3C29FF", lwd = 2)
+```
+
+(b) Fit a step function to predict wage using age, and perform crossvalidation to choose the optimal number of cuts. Make a plot of the fit obtained.
+
+    *Answer*.
+    
+```{r}
+deltas <- {}
+for (i in 2:10) {
+    Wage$cut.age <- cut(age, i)
+    fit <- glm(wage ~ cut.age, data = Wage)
+    deltas[i] <- cv.glm(Wage, fit, K = 10)$delta[2]
+}
+plot(2:10, deltas[-1], xlab = "Cuts", ylab = "CV MSE", type = "b")
+abline(h = min(deltas[-1]) + 0.2 * sd(deltas[-1]), col = "red", lty = 2)
+points(8, deltas[8], col = "#BC3C29FF", cex = 2, pch = 20)
+```
+
+The 8 cuts seems optimal. We can make a plot of the fit obtained.
+
+```{r}
+attach(Wage)
+plot(age, wage, col = "darkgrey")
+Wage$cut.age <- cut(age, 8)
+fit <- glm(wage ~ cut(age, 8), data = Wage)
+pred <- predict(fit, newdata = list(age = x))
+lines(x, pred, col = "#BC3C29FF", lwd = 2)
+```
+
+7.\ The Wage data set contains a number of other features not explored in this chapter, such as marital status (maritl), job class (jobclass), and others. Explore the relationships between some of these other predictors and wage, and use non-linear fitting techniques in order to fit flexible models to the data. Create plots of the results obtained, and write a summary of your findings.
+
+  *Answer*.
+
+```{r}
+par(mfrow = c(1, 2))
+boxplot(wage~maritl, data=Wage, pars  =  list(xaxt = "n"))
+text(1:5, par("usr")[3] - 17, labels = levels(Wage$maritl), 
+     cex = 0.75, srt = 30, pos = 1, xpd = TRUE)
+boxplot(wage~jobclass, data=Wage, cex.axis=0.75)
+```
+
+Married people seem to have higher wages, and the people doing informational jobs get higher wages. I will use generalized additive models `gam` to fit the data.
+
+```{r}
+library(gam)
+fit <- gam(wage ~ maritl + jobclass + education + 
+               lo(year, span = 0.7) + s(age, df = 5), data = Wage)
+par(mfrow = c(2, 3))
+plot(fit, se = T, col = "blue")
+```
+
+Apart from marital status and job class mentioned above, the wage increases with education and years. People in middle ages earn the most. 
+
+10.\ This question relates to the College data set.
+
+(a) Split the data into a training set and a test set. Using out-of-state tuition as the response and the other variables as the predictors, perform forward stepwise selection on the training set in order to identify a satisfactory model that uses just a subset of the predictors.
+
+    *Answer*. 
+```{r}
+library(leaps)
+set.seed(1)
+train <- sample(nrow(College), nrow(College)*0.5)
+College.train <- College[train, ]
+College.test <- College[-train, ]
+```
+One approach to implement forward stepwise selection is `stepAIC`.
+
+```{r}
+library(MASS)
+# Fit the full model 
+full.model <- lm(Outstate ~ ., data = College.train)
+# forward stepwise regression model
+step.model <- stepAIC(full.model, direction = "forward", trace = FALSE)
+summary(step.model)
+```
+
+From the p-value, we can choose 8 variables: `PrivateYes`, `Apps`, `Accept`, `Top10perc`, `Room.Board`, `perc.alumni`, `Expend`, `Grad.Rate`.
+
+Another approach is `regsubsets`.
+
+```{r}
+models <- regsubsets(Outstate ~ ., data = College.train, nvmax = 17,
+                     method = "forward")
+sum.models <- summary(models)
+par(mfrow = c(1, 3))
+cp <- sum.models$cp; bic <- sum.models$bic; adjr2 <- sum.models$adjr2
+plot(cp, xlab = "Number of variables", ylab = "Cp", type = "b")
+abline(h = min(cp) + 0.2 * sd(cp), col = "red", lty = 2)
+points(7, cp[7], col = "#BC3C29FF", cex = 2, pch = 20)
+plot(bic, xlab = "Number of variables", ylab = "BIC", type='b')
+abline(h = min(bic) + 0.2 * sd(bic), col = "red", lty = 2)
+points(7, bic[7], col = "#BC3C29FF", cex = 2, pch = 20)
+plot(adjr2, xlab = "Number of variables", ylab = "Adjusted R2", type = "b")
+abline(h = max(adjr2) - 0.2 * sd(adjr2), col = "red", lty = 2)
+points(7, adjr2[7], col = "#BC3C29FF", cex = 2, pch = 20)
+```
+
+`Cp`, `BIC` and `Adjusted R2` show 7 variables are optimal. They are `PrivateYes`, `Room.Board`, `Personal`, `PhD`, `perc.alumni`, `Expend`, `Grad.Rate`. 
+
+```{r}
+models <- regsubsets(Outstate ~ ., data = College, method = "forward")
+coeffs <- coef(models, id = 7)
+names(coeffs)
+```
+
+(b) Fit a GAM on the training data, using out-of-state tuition as the response and the features selected in the previous step as the predictors. Plot the results, and explain your findings.
+
+    *Answer*. 
+```{r}
+gam.fit <- gam(Outstate ~ Private + s(Room.Board, df = 2) + s(Personal, df = 2) + 
+                   s(PhD, df = 2) + s(perc.alumni, df = 2) + s(Expend, df = 5) + 
+                   s(Grad.Rate, df = 2), data=College.train)
+par(mfrow = c(3, 3))
+plot(gam.fit, se = T, col = "blue")
+```
+
+The out-of-state tuition of private universities is higher. It also increases with boarding rooms, Phds, alumni percentage, graduation rate. But it decreases with personals. As for expend, it increases with the expend rapidly initially, slows down, and decreases a little in the end.
+
+(c) Evaluate the model obtained on the test set, and explain the results obtained.
+
+    *Answer*.
+```{r}
+gam.pred = predict(gam.fit, College.test)
+gam.res = mean((College.test$Outstate - gam.pred)^2)
+gam.tot = mean((College.test$Outstate - mean(College.test$Outstate))^2)
+test.r2 = 1 - gam.res/gam.tot
+test.r2
+```
+
+7 variables explain 0.77 of the variance.
+
+(d) For which variables, if any, is there evidence of a non-linear relationship with the response?
+
+    *Answer*.
+```{r}
+summary(gam.fit)
+```
+`Anova for Nonparametric Effects` shows significant nonlinear relationship between out-of-state tuition and `expend`.

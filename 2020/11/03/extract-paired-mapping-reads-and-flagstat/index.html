@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="bwa和bowtie是常用的用于比对的软件，使用来看bwa mem比对的敏感度比bowtie更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。 提取双端比对序列只需要在用完相应的比对软件后，使用samtools view，-F选项删除flag对应的reads，flag&#x3D;4（0x4）代表这条read没有比对到参考序列上，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bwa or bowtie提取双端比对序列及flagstat">
+<meta property="og:url" content="https://hc1023.github.io/2020/11/03/extract-paired-mapping-reads-and-flagstat/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="bwa和bowtie是常用的用于比对的软件，使用来看bwa mem比对的敏感度比bowtie更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。 提取双端比对序列只需要在用完相应的比对软件后，使用samtools view，-F选项删除flag对应的reads，flag&#x3D;4（0x4）代表这条read没有比对到参考序列上，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-03T02:22:26.000Z">
+<meta property="article:modified_time" content="2020-11-03T02:38:13.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2020/11/03/extract-paired-mapping-reads-and-flagstat/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2020/11/03/extract-paired-mapping-reads-and-flagstat/","path":"2020/11/03/extract-paired-mapping-reads-and-flagstat/","title":"bwa or bowtie提取双端比对序列及flagstat"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>bwa or bowtie提取双端比对序列及flagstat | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%8F%96%E5%8F%8C%E7%AB%AF%E6%AF%94%E5%AF%B9%E5%BA%8F%E5%88%97"><span class="nav-number">1.</span> <span class="nav-text">提取双端比对序列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bwa-mem"><span class="nav-number">1.1.</span> <span class="nav-text">bwa mem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bowtie%E6%8F%90%E5%8F%96%E5%8F%8C%E7%AB%AF%E6%AF%94%E5%AF%B9%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.</span> <span class="nav-text">bowtie提取双端比对序列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#samtools-flagstat%E6%80%BB%E7%BB%93%E6%AF%94%E5%AF%B9%E7%BB%93%E6%9E%9C"><span class="nav-number">2.</span> <span class="nav-text">samtools flagstat总结比对结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bwa-mem%E6%95%8F%E6%84%9F%E5%BA%A6%E5%A4%A7%E5%A4%A7%E9%AB%98%E4%BA%8Ebowtie"><span class="nav-number">2.1.</span> <span class="nav-text">bwa mem敏感度大大高于bowtie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sam-bam%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E6%A0%87%E8%AE%B0%E5%9C%A8%E6%AF%94%E5%AF%B9%E5%AE%8C%E6%88%90%E4%B9%8B%E5%90%8E%E5%B7%B2%E7%BB%8F%E5%9B%BA%E5%AE%9A"><span class="nav-number">2.2.</span> <span class="nav-text">sam&#x2F;bam文件中的标记在比对完成之后已经固定</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/11/03/extract-paired-mapping-reads-and-flagstat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          bwa or bowtie提取双端比对序列及flagstat
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-11-03 10:22:26 / Modified: 10:38:13" itemprop="dateCreated datePublished" datetime="2020-11-03T10:22:26+08:00">2020-11-03</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>bwa和bowtie是常用的用于比对的软件，使用来看<code>bwa mem</code>比对的敏感度比<code>bowtie</code>更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。</p>
+<h2 id="提取双端比对序列"><a href="#提取双端比对序列" class="headerlink" title="提取双端比对序列"></a>提取双端比对序列</h2><p>只需要在用完相应的比对软件后，使用<code>samtools view</code>，<code>-F</code>选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，flag=8（0x8）代表这是单端比对上的read，12=4+8，因此使用<code>-F 12</code>可以保留双端比对上的序列。</p>
+<h3 id="bwa-mem"><a href="#bwa-mem" class="headerlink" title="bwa mem"></a>bwa mem</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bwa index <span class="variable">$ref</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># can map to more than one contig</span></span><br><span class="line">bwa mem -t 8 <span class="variable">$ref</span> <span class="variable">$InDir</span>/<span class="variable">$fq1</span> <span class="variable">$InDir</span>/<span class="variable">$fq2</span> &gt; out.sam</span><br><span class="line"></span><br><span class="line"><span class="comment"># `-q 30` reads mapping quality, `-F 12` paired-end,</span></span><br><span class="line"><span class="comment"># `-b` output bam, `-S` input format auto-detected</span></span><br><span class="line">samtools view -@8 -q 30 -bS out.sam &gt; out.bam</span><br><span class="line">samtools view -@8 -F 12 -b out.bam &gt; out2.bam</span><br></pre></td></tr></table></figure>
+
+<h3 id="bowtie提取双端比对序列"><a href="#bowtie提取双端比对序列" class="headerlink" title="bowtie提取双端比对序列"></a>bowtie提取双端比对序列</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bowtie2-build <span class="variable">$ref</span> index</span><br><span class="line">bowtie2 -p 8 -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/<span class="variable">$fq1</span> \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/<span class="variable">$fq2</span> -S out.sam</span><br><span class="line"></span><br><span class="line">samtools view -@8 -F 12 -bS out.sam &gt; out.bam</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="samtools-flagstat总结比对结果"><a href="#samtools-flagstat总结比对结果" class="headerlink" title="samtools flagstat总结比对结果"></a>samtools flagstat总结比对结果</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools flagstat out.bam</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>secondary：多重比对，有一个初始的比对，有0或多个secondary比对，在flag中表示为0x100</li>
+<li>supplementary：不具有较大重叠的多个比对结果，一个拆成多个，其中一个作为代表性比对，其他作为supplementary，在flag中表示为0x800</li>
+<li>duplicate：已标记的测序重复，一般需要软件进行标记类似于picard’s markDuplicates</li>
+<li>paired in sequencing：标记为pair</li>
+<li>properly paired：标记为pair且比对上</li>
+</ul>
+<p>例如以下两个结果，第一个read1和read2数目相等，而第二个结果read1和read2数目不等。这里都是100%比对上是因为看的是samtools view筛选过后的bam文件，里面的reads全是比对上的。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39584227 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">134327 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39584227 + 0 mapped (100.00% : N/A)</span><br><span class="line">39449900 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724950 + 0 read1</span><br><span class="line">19724950 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (99.67% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<h3 id="bwa-mem敏感度大大高于bowtie"><a href="#bwa-mem敏感度大大高于bowtie" class="headerlink" title="bwa mem敏感度大大高于bowtie"></a>bwa mem敏感度大大高于bowtie</h3><p>如此还可以顺便观察bwa mem和bowtie比对结果的差异，对于两份的病毒测序数据。</p>
+<p>bwa mem比对的结果：第一个样本99.59% ，第二个样本69.74%<br>bowtie比对的结果：第一个样本75.63% ，第二个样本48.42%</p>
+<p>更具体的，对于第一个样本，</p>
+<ul>
+<li>使用bwa mem</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bwa mem -t <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> <span class="variable">$ref</span> <span class="variable">$InDir</span>/<span class="variable">$fq1</span> <span class="variable">$InDir</span>/<span class="variable">$fq2</span> &gt; out_bwa.sam</span><br><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out_bwa.sam &gt; out_bwa.bam</span><br></pre></td></tr></table></figure>
+
+<p>flagstat</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;sam file&quot;</span></span><br><span class="line">samtools flagstat out_bwa.sam</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;======================&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;bam file&quot;</span></span><br><span class="line">samtools flagstat out_bwa.bam</span><br></pre></td></tr></table></figure>
+
+<p>结果，筛选前39732983 reads mapped (99.59%)，筛选后39715454 reads mapped。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">sam file</span><br><span class="line">39896565 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">135539 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39732983 + 0 mapped (99.59% : N/A)</span><br><span class="line">39761026 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19880513 + 0 read1</span><br><span class="line">19880513 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (98.89% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">147544 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br><span class="line">======================</span><br><span class="line">bam file</span><br><span class="line">39715454 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">126123 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39715454 + 0 mapped (100.00% : N/A)</span><br><span class="line">39589331 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19866816 + 0 read1</span><br><span class="line">19722515 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.32% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">147301 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用bowtie</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bowtie2-build <span class="variable">$ref</span> index</span><br><span class="line">bowtie2 -p <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/<span class="variable">$fq1</span> \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/<span class="variable">$fq2</span> -S out.sam</span><br></pre></td></tr></table></figure>
+
+<p>flagstat</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samtools flagstat out.sam</span><br></pre></td></tr></table></figure>
+
+<p>比对结果为30071380 mapped (75.63%)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39761026 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">0 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">30071380 + 0 mapped (75.63% : N/A)</span><br><span class="line">39761026 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19880513 + 0 read1</span><br><span class="line">19880513 + 0 read2</span><br><span class="line">25906438 + 0 properly paired (65.16% : N/A)</span><br><span class="line">29570050 + 0 with itself and mate mapped</span><br><span class="line">501330 + 0 singletons (1.26% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<h3 id="sam-bam文件中的标记在比对完成之后已经固定"><a href="#sam-bam文件中的标记在比对完成之后已经固定" class="headerlink" title="sam/bam文件中的标记在比对完成之后已经固定"></a>sam/bam文件中的标记在比对完成之后已经固定</h3><p>而从后面这个例子我们看到用完比对质量<code>-q 30</code>后，即便加上了pair筛选<code>-F 12</code>，结果read1和read2数目仍然不相等。这是因为sam/bam文件中的标记在比对完成之后就已经固定，不会在后期的筛选中发生变化，所以即便当比对质量筛选后read已经不再成对，其中的flag标记依旧代表着双端比对上。</p>
+<ul>
+<li>只进行双端比对筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -bS out.sam &gt; outF12.bam</span><br><span class="line">samtools flagstat outF12.bam &gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39584227 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">134327 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39584227 + 0 mapped (100.00% : N/A)</span><br><span class="line">39449900 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724950 + 0 read1</span><br><span class="line">19724950 + 0 read2</span><br><span class="line">39320644 + 0 properly paired (99.67% : N/A)</span><br><span class="line">39449900 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li> 只进行比对质量筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out.sam &gt; outq30.bam</span><br><span class="line">samtools flagstat outq30.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39715454 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">126123 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39715454 + 0 mapped (100.00% : N/A)</span><br><span class="line">39589331 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19866816 + 0 read1</span><br><span class="line">19722515 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.32% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">147301 + 0 singletons (0.37% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>质量筛选后进行双端比对筛选</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -b outq30.bam &gt; outq30F12.bam</span><br><span class="line">samtools flagstat outq30F12.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>质量筛选后进行双端比对筛选（利用管道无中间输出文件）</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -q 30 -bS out.sam\</span><br><span class="line">    | samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -b - &gt; outq30F12pipe.bam</span><br><span class="line">samtools flagstat outq30F12pipe.bam &gt;&gt; f.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">39567072 + 0 <span class="keyword">in</span> total (QC-passed reads + QC-failed reads)</span><br><span class="line">0 + 0 secondary</span><br><span class="line">125042 + 0 supplementary</span><br><span class="line">0 + 0 duplicates</span><br><span class="line">39567072 + 0 mapped (100.00% : N/A)</span><br><span class="line">39442030 + 0 paired <span class="keyword">in</span> sequencing</span><br><span class="line">19724374 + 0 read1</span><br><span class="line">19717656 + 0 read2</span><br><span class="line">39318491 + 0 properly paired (99.69% : N/A)</span><br><span class="line">39442030 + 0 with itself and mate mapped</span><br><span class="line">0 + 0 singletons (0.00% : N/A)</span><br><span class="line">0 + 0 with mate mapped to a different chr</span><br><span class="line">0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/14/crispr-cas-and-genome-editing/" rel="prev" title="CRISPR-Cas系统及基因编辑技术">
+                  <i class="fa fa-chevron-left"></i> CRISPR-Cas系统及基因编辑技术
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/03/install-docker-on-Ubuntu/" rel="next" title="docker安装">
+                  docker安装 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

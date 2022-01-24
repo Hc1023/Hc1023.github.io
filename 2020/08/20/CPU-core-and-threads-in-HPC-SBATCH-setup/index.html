@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPU, core and threads in HPC --SBATCH setup">
+<meta property="og:url" content="https://hc1023.github.io/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="使用的集群会有计算结点和登录结点。以lab的集群为例 12345[huangsisi@tc6000 ~]$ sinfoPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELISTsugon*       up   infinite      1   idle node1low          up   infinite      1   idle node1">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-20T13:27:45.000Z">
+<meta property="article:modified_time" content="2021-10-24T07:13:33.802Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/","path":"2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/","title":"CPU, core and threads in HPC --SBATCH setup"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CPU, core and threads in HPC --SBATCH setup | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sinfo%E4%BF%A1%E6%81%AF"><span class="nav-number">1.</span> <span class="nav-text">sinfo信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SBATCH-%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">SBATCH 参数设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8EUbuntu%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9F%A5%E7%9C%8B%E4%BF%A1%E6%81%AF%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">基于Ubuntu系统的查看信息方式</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/08/20/CPU-core-and-threads-in-HPC-SBATCH-setup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CPU, core and threads in HPC --SBATCH setup
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-08-20 21:27:45" itemprop="dateCreated datePublished" datetime="2020-08-20T21:27:45+08:00">2020-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-10-24 15:13:33" itemprop="dateModified" datetime="2021-10-24T15:13:33+08:00">2021-10-24</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>使用的集群会有计算结点和登录结点。以lab的集群为例</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo</span><br><span class="line">PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST</span><br><span class="line">sugon*       up   infinite      1   idle node1</span><br><span class="line">low          up   infinite      1   idle node1</span><br><span class="line">download     up   infinite      1   idle tc6000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-N</code> node oriented</li>
+<li><code>-l</code> 提供更多的信息：number of CPUs, memory, temporary disk (also called scratch space), node weight (an internal parameter specifying preferences in nodes for allocations when there are multiple possibilities), features of the nodes (such as processor type for instance) and the reason, if any, for which a node is down.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ sinfo -Nl</span><br><span class="line">Sun Aug 16 10:38:15 2020</span><br><span class="line">NODELIST   NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON</span><br><span class="line">node1          1    sugon*        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">node1          1       low        idle  144   4:18:2 206359        0      1   (null) none</span><br><span class="line">tc6000         1  download        idle   12   1:12:1  63889        0      1   (null) none</span><br></pre></td></tr></table></figure>
+
+<p>node1是计算结点（不连网），tc6000是登录结点（连网），sbatch递交作业后slurm是在计算结点进行工作调度。</p>
+<span id="more"></span>
+
+<h2 id="sinfo信息"><a href="#sinfo信息" class="headerlink" title="sinfo信息"></a>sinfo信息</h2><ul>
+<li>CPU, core and threads</li>
+</ul>
+<p>CPU的核数是指硬件上存在着几个核心，例如双核就是包括2个相对独立的CPU核心单元组。 线程数是一种逻辑的概念，是模拟出的CPU核心数。</p>
+<p>总核数 = 物理CPU个数 $\times$ 每个物理CPU的核数 (core)<br>总逻辑CPU数 = 物理CPU个数 $\times$ 每个物理CPU的核数 (core) $\times$ 线程数 (thread)</p>
+<ul>
+<li>tc6000</li>
+</ul>
+<p>12 logical CPUs = 1 physical CPU $\times$ 12 cores $\times$ 1 thread</p>
+<ul>
+<li>node1</li>
+</ul>
+<p>144 logical CPUs = 4 physical CPUs $\times$ 18 cores $\times$ 2 threads</p>
+<p>后续sbatch作业还需要node1的一些信息</p>
+<p>对于memory默认单位是Mb，对于node1，206359Mb相当于201G，啊但事实上我们有2T……大概是没有显示完全。</p>
+<blockquote>
+<p>感受下单位换算的数量级，一般来说如果看文件信息<code>ll</code>，不加<code>-h</code>给的是字节（byte）数。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1byte=8bit. 1KB=1024byte. </span><br><span class="line">1MB=1024KB=1,048,576byte. </span><br><span class="line">1GB=1024MB=1,073,741,824byte. </span><br><span class="line">1TB=1024GB=1,099,511,627,776byte</span><br></pre></td></tr></table></figure>
+
+<p>我们一共有3个分区，分别是<code>sugon</code>,<code>low</code>,<code>download</code>，是人为自定义的，我们一般把作业递交到<code>sugon</code>（打星号的是默认递交的分区）。</p>
+<blockquote>
+<p>A partition is a set of compute nodes (computers dedicated to … computing,) grouped logically. Typical examples include partitions dedicated to batch processing, debugging, post processing, or visualization.</p>
+</blockquote>
+<p>看一下运行时间限制，由于这个集群只有我们lab使用，所以是infinite，也太舒服了QVQ……</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sinfo --partition sugon</span><br><span class="line">PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST</span><br><span class="line">sugon*       up   infinite      1   idle node1</span><br></pre></td></tr></table></figure>
+
+<h2 id="SBATCH-参数设置"><a href="#SBATCH-参数设置" class="headerlink" title="SBATCH 参数设置"></a>SBATCH 参数设置</h2><p><a target="_blank" rel="noopener" href="http://ircc.fiu.edu/download/user-guides/Slurm_Cheat_Sheet.pdf">Slurm_Cheat_Sheet.pdf</a></p>
+<p>由上面的信息，我们可以更好的设置这些参数</p>
+<ul>
+<li><code>#SBATCH --partition</code> 工作分区，我们用<code>sugon</code> </li>
+<li><code>#SBATCH --nodelist</code>可以制定在哪个节点运行任务</li>
+<li><code>#SBATCH --exclude</code> 可以设置不放在某个节点跑任务，比如近期生研院集群似乎挂了的<code>cpu08</code> </li>
+<li><code>#SBATCH --nodes</code> 使用nodes数量，我们只有1个 </li>
+<li><code>#SBATCH --ntasks</code> tasks数量，可能分配给不同node</li>
+<li><code>#SBATCH --ntasks-per-node</code> 每个结点的tasks数量，由于我们只有1 node，所以<code>ntasks</code>和<code>ntasks-per-node</code>是相同的</li>
+<li><code>#SBATCH --cpus-per-task</code> 每个task使用的core的数量（默认 1 core per task），同一个task会在同一个node</li>
+<li><code>#SBATCH --mem</code> 这个作业要求的内存 (Specified in MB)</li>
+<li><code>#SBATCH --mem-per-cpu</code> 每个core要求的内存 (Specified in MB)</li>
+</ul>
+<p>在slurm中，一个任务（task）被理解为一个进程（process），一个多进程（multi-process）程序由多个任务组成。相反，多线程（multithreaded）程序只有一个任务，但这个任务使用多个logical CPU。</p>
+<p>更好的理解ntasks，参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/39186698/what-does-the-ntasks-or-n-tasks-does-in-slurm#:~:text=sbatch%20does%20not%20launch%20tasks,to%20provide%20for%20sufficient%20resources.">what-does-the-ntasks-or-n-tasks-does-in-slurm</a></p>
+<blockquote>
+<p>The <code>--ntasks</code> parameter is useful if you have commands that you want to run in parallel within the same batch script. This may be two separate commands separated by an <code>&amp;</code> or two commands used in a bash pipe <code>|</code>.</p>
+</blockquote>
+<p>例子1</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#SBATCH --ntasks=1</span></span><br><span class="line"></span><br><span class="line">srun sleep 10 &amp; </span><br><span class="line">srun sleep 12 &amp;</span><br><span class="line"><span class="built_in">wait</span></span><br></pre></td></tr></table></figure>
+
+<p>总共会用时22s，并有警告<em>Job step creation temporarily disabled, retrying</em>。但是如果<code>#SBATCH --ntasks=1</code>，两个task会同时进行，总共用时12s。</p>
+<p>例子2</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks=8</span></span><br><span class="line"><span class="comment">## more options</span></span><br><span class="line"><span class="built_in">echo</span> hello</span><br></pre></td></tr></table></figure>
+
+<p>上面这个脚本只会输出1行，但是后面使用<code>srun</code>以后，会输出8行。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks=8</span></span><br><span class="line"><span class="comment">## more options</span></span><br><span class="line">srun <span class="built_in">echo</span> hello</span><br></pre></td></tr></table></figure>
+
+<p>所以说如果我们是想比如说<code>samtools</code>可以使用更多的线程，应该修改的是<code>#SBATCH --cpus-per-task</code>，并且记得在后面修改samtools的线程参数，否则多余的线程就会被占着却不使用。</p>
+<ul>
+<li>多线程实例</li>
+</ul>
+<p>Use <code>$&#123;SLURM_CPUS_PER_TASK&#125;</code> variable to pass the number of cores in the job to commands that accept an argument for number of core, cpus or threads.</p>
+<p>For job arrays, the default file name is “slurm-%A_%a.out”, “%A” is replaced by the job ID and “%a” with the array index. For other jobs, the default file name is “slurm-%j.out”, where the “%j” is replaced by the job ID. </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --job-name=test</span></span><br><span class="line"><span class="comment">#SBATCH -o %x_%A.%a_%N.out</span></span><br><span class="line"><span class="comment">#SBATCH --account=huangsisi</span></span><br><span class="line"><span class="comment">#SBATCH --partition=sugon</span></span><br><span class="line"><span class="comment">#SBATCH --nodes=1</span></span><br><span class="line"><span class="comment">#SBATCH --tasks-per-node=1</span></span><br><span class="line"><span class="comment">#SBATCH --cpus-per-task=16</span></span><br><span class="line"><span class="comment">#SBATCH --mem-per-cpu=2000</span></span><br><span class="line"><span class="comment">#SBATCH --time=400:00:00</span></span><br><span class="line"><span class="comment">#SBATCH --mail-user=sisih@mit.edu</span></span><br><span class="line"><span class="comment">#SBATCH --mail-type=ALL</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> activate rna</span><br><span class="line"></span><br><span class="line">InDir=<span class="string">&quot;/public/home/shared_lab/first11/Fasta_file&quot;</span></span><br><span class="line"></span><br><span class="line">bowtie2-build NC_045512.2.fna index</span><br><span class="line">bowtie2 -p <span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/P3-VERO-P3-1-vero_L4_1.fq.gz \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/P3-VERO-P3-1-vero_L4_2.fq.gz -S out.sam</span><br><span class="line"></span><br><span class="line">samtools view -@<span class="variable">$&#123;SLURM_CPUS_PER_TASK&#125;</span> -F 12 -bS out.sam &gt;tmp.bam</span><br><span class="line"><span class="comment"># samtools sort -@$&#123;SLURM_CPUS_PER_TASK&#125; tmp.bam &gt; tmp.sort.bam</span></span><br><span class="line"><span class="comment"># bam to fastq</span></span><br><span class="line"><span class="comment"># samtools fastq has no thread argument</span></span><br><span class="line">samtools fastq -1 r1.fq -2 r2.fq -n tmp.bam</span><br><span class="line"><span class="comment">#  -1 FILE   write paired reads flagged READ1 to FILE</span></span><br><span class="line"><span class="comment">#  -2 FILE   write paired reads flagged READ2 to FILE</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="基于Ubuntu系统的查看信息方式"><a href="#基于Ubuntu系统的查看信息方式" class="headerlink" title="基于Ubuntu系统的查看信息方式"></a>基于Ubuntu系统的查看信息方式</h2><ul>
+<li>cpu全部信息</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less -SN /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看物理CPU个数</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">&quot;physical id&quot;</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">2</span><br><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">&quot;physical id&quot;</span> /proc/cpuinfo| sort -u</span><br><span class="line">physical id     : 0</span><br><span class="line">physical id     : 1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看每个物理CPU中core的个数</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">&quot;cpu cores&quot;</span> /proc/cpuinfo| uniq</span><br><span class="line">cpu cores       : 12</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">&#x27;core id&#x27;</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看逻辑CPU的个数</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[huangsisi@tc6000 ~]$ grep <span class="string">&quot;processor&quot;</span> /proc/cpuinfo| wc -l</span><br><span class="line">48</span><br></pre></td></tr></table></figure>
+
+<p>？怎么不太一致，看起来是</p>
+<p>48 logical CPUs = 2 physical CPUs $\times$ 12 cores $\times$ 2 threads</p>
+<p>我愿意相信这个信息比sinfo更准……好惊喜呀！</p>
+<p>下面到计算结点看看情况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 登录计算结点</span></span><br><span class="line">[huangsisi@tc6000 ~]$ ssh node1</span><br><span class="line">Last login: Mon Jul 27 15:31:57 2020</span><br><span class="line"><span class="comment"># 查看物理CPU个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">&quot;physical id&quot;</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">4</span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">&quot;physical id&quot;</span> /proc/cpuinfo| sort -u</span><br><span class="line">physical id     : 0</span><br><span class="line">physical id     : 1</span><br><span class="line">physical id     : 2</span><br><span class="line">physical id     : 3</span><br><span class="line"><span class="comment"># 查看每个物理CPU中core的个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">&quot;cpu cores&quot;</span> /proc/cpuinfo| uniq</span><br><span class="line">cpu cores       : 18</span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">&#x27;core id&#x27;</span> /proc/cpuinfo| sort -u| wc -l</span><br><span class="line">18</span><br><span class="line"><span class="comment"># 查看逻辑CPU的个数</span></span><br><span class="line">[huangsisi@node1 ~]$ grep <span class="string">&quot;processor&quot;</span> /proc/cpuinfo| wc -l</span><br><span class="line">144</span><br></pre></td></tr></table></figure>
+
+<p>node1和之前<code>sinfo</code>得到的信息一致。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/30/aspera-dowload-NCBI-database/" rel="prev" title="aspera下载NCBI数据">
+                  <i class="fa fa-chevron-left"></i> aspera下载NCBI数据
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/01/latex-bib-reference/" rel="next" title="LaTeX中使用bib插入参考文献">
+                  LaTeX中使用bib插入参考文献 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,219 @@
+---
+title: "Homework 2"
+author: "Huang Sisi"
+output: html_document
+---
+
+```{r setup, message = F, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(warn=-1)
+```
+
+
+2.\ It was stated in the text that classifying an observation to the class for which (4.12) is largest is equivalent to classifying an observation to the class for which (4.13) is largest. Prove that this is the case. In other words, under the assumption that the observations in the kth class are drawn from a $N(\mu_k, \sigma^2)$ distribution, the Bayes’ classifier assigns an observation to the class for which the discriminant function is maximized.
+
+*Proof*.
+For (4.12)
+\begin{equation}
+p_{k}(x)=\frac{\pi_{k} \frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{1}{2 \sigma^{2}}\left(x-\mu_{k}\right)^{2}\right)}{\sum_{l=1}^{K} \pi_{l} \frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{1}{2 \sigma^{2}}\left(x-\mu_{l}\right)^{2}\right)},
+\end{equation}
+the denominator is the same for all $k$. So maximizing (4.12) is equivalent to maximize the numerator. Take the $ln$ and get
+\begin{equation}\label{eq:2}
+-\frac{1}{2 \sigma^{2}}\left(x-\mu_{k}\right)^{2}+ln(\pi_k \frac{1}{\sqrt{2 \pi} \sigma} ).
+\end{equation}
+We could deliminate the terms that are invariant to $k$ and it is equivalent to maximize
+\begin{equation}
+x \cdot \frac{\mu_{k}}{\sigma^{2}}-\frac{\mu_{k}^{2}}{2 \sigma^{2}}+\ln \left(\pi_{k}\right).
+\end{equation}
+So it is equivalent to maximize (4.13) (multiply by $\log e$ )
+\begin{equation}
+\delta_{k}(x)=x \cdot \frac{\mu_{k}}{\sigma^{2}}-\frac{\mu_{k}^{2}}{2 \sigma^{2}}+\log \left(\pi_{k}\right).
+\end{equation}
+
+3.\ This problem relates to the QDA model, in which the observations within each class are drawn from a normal distribution with a classspecific mean vector and a class specific covariance matrix. We consider the simple case where $p=1 ;$ i.e. there is only one feature
+
+Suppose that we have $K$ classes, and that if an observation belongs to the $k$ th class then $X$ comes from a one-dimensional normal distribution, $X \sim N\left(\mu_{k}, \sigma_{k}^{2}\right) .$ Recall that the density function for the one-dimensional normal distribution is given in (4.11). Prove that in this case, the Bayes' classifier is not linear. Argue that it is in fact quadratic.
+    
+*Proof*.
+    Equation (\ref{eq:2}) should be
+    \begin{equation}
+    -\frac{1}{2 \sigma_k^{2}}\left(x-\mu_{k}\right)^{2}+ln(\pi_k \frac{1}{\sqrt{2 \pi} \sigma_k} ).
+    \end{equation}
+    The coefficient of quadratic term $x^2$ is $-\frac{1}{2 \sigma_k^{2}}$, which changes with $k$. So the corresponding discriminant function is quadratic.
+    
+4.\ When the number of features $p$ is large, there tends to be a deterioration in the performance of $\mathrm{KNN}$ and other local approaches that perform prediction using only observations that are near the test observation for which a prediction must be made. This phenomenon is known as the curse of dimensionality, and it ties into the fact that non-parametric approaches often perform poorly when $p$ is large. We will now investigate this curse.
+
+(a) Suppose that we have a set of observations, each with measurements on $p=1$ feature, $X$. We assume that $X$ is uniformly (evenly) distributed on $[0,1]$. Associated with each observation is a response value. Suppose that we wish to predict a test observation's response using only observations that are within $10 \%$ of the range of $X$ closest to that test observation. For instance, in order to predict the response for a test observation with $X=0.6$, we will use observations in the range $[0.55,0.65] .$ On average, what fraction of the available observations will we use to make the prediction?
+    
+    *Answer*. On average, it is 10\% if ignoring $x\in [0,0.05]\cup [0.95,1]$. (Or take the integration $2\times \int_{0}^{0.05} (x+0.05)\ dx + \int_{0.05}^{0.95} 0.1\ dx = 0.0975$. For simplicity we would not consider the marginal area in the following.) 
+    
+(b) Now suppose that we have a set of observations, each with measurements on $p=2$ features, $X_{1}$ and $X_{2}$. We assume that $\left(X_{1}, X_{2}\right)$ are uniformly distributed on $[0,1] \times[0,1] .$ We wish to predict a test observation's response using only observations that are within $10 \%$ of the range of $X_{1}$ and within $10 \%$ of the range of $X_{2}$ closest to that test observation. For instance, in order to predict the response for a test observation with $X_{1}=0.6$ and $X_{2}=0.35$, we will use observations in the range $[0.55,0.65]$ for $X_{1}$ and in the range $[0.3,0.4]$ for $X_{2} .$ On average, what fraction of the available observations will we use to make the prediction?
+    
+    *Answer*. It is 1\%.
+        
+(c) Now suppose that we have a set of observations on $p=100$ features. Again the observations are uniformly distributed on each feature, and again each feature ranges in value from 0 to $1 .$ We wish to predict a test observation's response using observations within the $10 \%$ of each feature's range that is closest to that test observation. What fraction of the available observations will we use to make the prediction?
+        
+    *Answer*. It is $0.1^{100}\approx 0$.
+        
+(d) Using your answers to parts (a)-(c), argue that a drawback of KNN when $p$ is large is that there are very few training observations "near" any given test observation.
+    
+    *Answer*. Because the fraction of the available observations decreases exponentially as $p$ grows linearly.
+    
+(e) Now suppose that we wish to make a prediction for a test observation by creating a $p$ -dimensional hypercube centered around the test observation that contains, on average, $10 \%$ of the training observations. For $p=1,2$, and 100, what is the length of each side of the hypercube? Comment on your answer.
+        
+    *Answer*. The length should be $0.10$, $0.1^{1/2}=0.32$, $0.1^{1/100}=0.98$. The length increases dramatically and even approximates to $1$ in each dimension when $p=100$. The observations in this hypercube are not "near" the test observation.
+        
+5.\ We now examine the differences between LDA and QDA.
+
+(a) If the Bayes decision boundary is linear, do we expect LDA or QDA to perform better on the training set? On the test set?
+        
+    *Answer*. If the Bayes decision boundary is linear, QDA performs better on the training set because it is more flexible with the quadratic term. But LDA performs better on the test set because the Bayes decision boundary is actually linear and QDA overfits.
+    
+(b) If the Bayes decision boundary is non-linear, do we expect LDA or QDA to perform better on the training set? On the test set?
+    
+    *Answer*. If the Bayes decision boundary is non-linear, QDA performs better both on the training set and the test set.
+        
+    
+(c) In general, as the sample size $n$ increases, do we expect the test prediction accuracy of QDA relative to LDA to improve, decline, or be unchanged? Why?
+        
+    *Answer*. In general, we expect the performance of QDA will improve because the variance is offset when $n$ is large and QDA is more flexible.
+    
+(d) True or False: Even if the Bayes decision boundary for a given problem is linear, we will probably achieve a superior test error rate using QDA rather than LDA because QDA is flexible enough to model a linear decision boundary. Justify your answer.
+    
+    *Answer*. False. Bayes decision boundary is actually linear and QDA may overfit if the sample size is not large enough. And the test error rate will be inferior.
+        
+9.\ This problem has to do with odds.
+
+(a) On average, what fraction of people with an odds of $0.37$ of defaulting on their credit card payment will in fact default?
+        
+    *Answer*. Denote the fraction $p$, then
+    \begin{equation}
+    \frac{p}{1-p} = 0.37.
+    \end{equation}
+    We get the fraction $p = 0.27$.
+    
+(b) Suppose that an individual has a $16 \%$ chance of defaulting on her credit card payment. What are the odds that she will default?
+    
+    *Answer*. $p=0.16$, then the odds $= \displaystyle\frac{p}{1-p} = 0.19$.
+    
+
+11.\ In this problem, you will develop a model to predict whether a given car gets high or low gas mileage based on the Auto data set.
+
+(a) Create a binary variable, `mpg01`, that contains a 1 if `mpg` contains a value above its median, and a 0 if `mpg` contains a value below its median. You can compute the median using the `median()` function. Note you may find it helpful to use the `data.frame()` function to create a single data set containing both `mpg01` and the other `Auto` variables.
+
+    ```{r}
+    library(ISLR)
+    attach(Auto)
+    mpg01 <- rep(0, length(mpg))
+    mpg01[mpg > median(mpg)] <- 1
+    dat <- data.frame(Auto, mpg01)
+    ```
+
+(b) Explore the data graphically in order to investigate the association between `mpg01` and the other features. Which of the other features seem most likely to be useful in predicting `mpg01`? Scatterplots and boxplots may be useful tools to answer this question. Describe your findings.
+
+    ```{r}
+    # explore correlation
+    cor(dat[,-9])
+    ```
+    
+    `mpg01` is positively correlated to acceleration, year and origin, and negatively correlated to cylinders, displacement, horsepower and weight.
+    
+    ```{r}
+    # scatterplots
+    # library(car)
+    # scatterplotMatrix(dat, main='scatterplot-Auto')
+    pairs(dat, main="Scatterplot-Auto", pch = 21, bg=c(1:nrow(dat)))
+    ```
+    
+    ```{r}
+    # boxplots
+    library(ggpubr)
+    # boxplot(cylinders ~ mpg01, data = dat)
+    p <- ggboxplot(dat, x = "mpg01", y = "weight",
+          color = "mpg01", palette = "jco",
+          add = "jitter")
+    #  Add p-value
+    p + stat_compare_means()
+    # Change method
+    # p + stat_compare_means(method = "t.test")
+    ```
+
+(c) Split the data into a training set and a test set.
+
+    ```{r}
+    # 70% for training and 30% for testing
+    percent <- 0.7
+    idx <- sort(sample(nrow(dat), nrow(dat)*percent))
+    train <- dat[idx,]
+    test <- dat[-idx,]
+    ```
+    
+(d) Perform LDA on the training data in order to predict mpg01 using the variables that seemed most associated with mpg01 in (b). What is the test error of the model obtained?
+
+    ```{r}
+    library(MASS)
+    fit.lda <- lda(mpg01 ~ cylinders + weight + displacement + horsepower, 
+                   data = dat, subset = idx)
+    fit.lda
+    ```
+    ```{r}
+    pred.lda = predict(fit.lda, test)
+    # mean(pred.lda$class != test$mpg01)
+    # Or we can use confusion matrix
+    conf <- table(list(predicted=pred.lda$class, observed=test$mpg01))
+    library(caret)
+    confusionMatrix(conf)
+    test_error <- as.numeric(1-confusionMatrix(conf)$overall["Accuracy"])
+    test_error
+    ```
+
+    On testing dataset, the test error is 11.02%.
+
+(e) Perform QDA on the training data in order to predict `mpg01` using the variables that seemed most associated with `mpg01` in (b). What is the test error of the model obtained?
+
+    ```{r}
+    fit.qda <- qda(mpg01 ~ cylinders + weight + displacement + horsepower, 
+                   data = dat, subset = idx)
+    fit.qda
+    ```
+    ```{r}
+    pred.qda = predict(fit.qda, test)
+    mean(pred.qda$class != test$mpg01)
+    ```
+    
+    On testing dataset, the test error is 10.17%.
+    
+(f) Perform logistic regression on the training data in order to predict `mpg01` using the variables that seemed most associated with `mpg01` in (b). What is the test error of the model obtained?
+
+    ```{r}
+    fit.glm <- glm(mpg01 ~ cylinders + weight + displacement + horsepower,
+                   data = dat, family = binomial, subset = idx)
+    summary(fit.glm)
+    ```
+    ```{r}
+    pred.glm = as.numeric(predict(fit.glm, test) > 0.5)
+    mean(pred.glm != test$mpg01)
+    ```
+    
+    On testing dataset, the test error is 11.02%.
+    
+(g) Perform KNN on the training data, with several values of $K$, in order to predict `mpg01`. Use only the variables that seemed most associated with `mpg01` in (b). What test errors do you obtain? Which value of $K$ seems to perform the best on this data set?
+
+    ```{r}
+    library(class)
+    knn.K <- function(k){
+        pred.knn <- knn(train[,c("cylinders", "weight", 
+                             "displacement", "horsepower")], 
+                    test[,c("cylinders", "weight", 
+                             "displacement", "horsepower")], 
+                    train$mpg01, k)
+        mean(pred.knn != test$mpg01)
+    }
+    for (k in c(1,5,10,20,50,100)){
+        # print(k)
+        # print(knn.K(k))
+        cat("Value K =", k, ": the test error for KNN is", knn.K(k), "\n")
+    }
+    ```
+    
+    By trying different $K$ values, the lowest test error is reached when $K=10$.

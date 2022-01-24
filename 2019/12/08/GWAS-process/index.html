@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="简要介绍抽了些时间走了一遍Human GWAS流程，主要包括以下几个步骤：  GWAS QC steps along with data visualization. Dealing with population stratification, using 1000 genomes as a reference. Association analyses of GWAS data. Polyge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Human GWAS">
+<meta property="og:url" content="https://hc1023.github.io/2019/12/08/GWAS-process/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="简要介绍抽了些时间走了一遍Human GWAS流程，主要包括以下几个步骤：  GWAS QC steps along with data visualization. Dealing with population stratification, using 1000 genomes as a reference. Association analyses of GWAS data. Polyge">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/miss.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/check.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/maf.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/HWE.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/HeteroRate.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/relate.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/PRS.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/PRS2.png">
+<meta property="article:published_time" content="2019-12-08T12:42:10.000Z">
+<meta property="article:modified_time" content="2019-12-25T10:03:39.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2019/12/08/GWAS-process/miss.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2019/12/08/GWAS-process/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2019/12/08/GWAS-process/","path":"2019/12/08/GWAS-process/","title":"Human GWAS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Human GWAS | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">简要介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GWAS"><span class="nav-number">3.</span> <span class="nav-text">GWAS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Step1-GWAS-QC-steps-along-with-data-visualization"><span class="nav-number">3.1.</span> <span class="nav-text">Step1: GWAS QC steps along with data visualization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Investigate-missingness-per-individual-and-per-SNP-and-make-histograms"><span class="nav-number">3.1.1.</span> <span class="nav-text">1: Investigate missingness per individual and per SNP and make histograms</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Check-for-sex-discrepancy"><span class="nav-number">3.1.2.</span> <span class="nav-text">2: Check for sex discrepancy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Generate-a-bfile-with-autosomal-%E5%B8%B8%E6%9F%93%E8%89%B2%E4%BD%93-SNPs-only-and-delete-SNPs-with-a-low-minor-allele-frequency-%E6%AC%A1%E8%A6%81%E7%AD%89%E4%BD%8D%E5%9F%BA%E5%9B%A0%E9%A2%91%E7%8E%87-MAF"><span class="nav-number">3.1.3.</span> <span class="nav-text">3: Generate a bfile with autosomal(常染色体) SNPs only and delete SNPs with a low minor allele frequency(次要等位基因频率) (MAF)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Delete-SNPs-which-are-not-in-Hardy-Weinberg-equilibrium-HWE-amp-Check-the-distribution-of-HWE-p-values-of-all-SNPs"><span class="nav-number">3.1.4.</span> <span class="nav-text">4: Delete SNPs which are not in Hardy-Weinberg equilibrium (HWE) &amp; Check the distribution of HWE p-values of all SNPs.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Generate-a-plot-of-the-distribution-of-the-heterozygosity-rate-%E6%9D%82%E5%90%88%E7%8E%87%E5%88%86%E5%B8%83%E7%9A%84%E5%9B%BE-of-your-subjects-amp-remove-individuals-with-a-heterozygosity-rate-deviating-more-than-3-sd-from-the-mean"><span class="nav-number">3.1.5.</span> <span class="nav-text">5: Generate a plot of the distribution of the heterozygosity rate(杂合率分布的图) of your subjects &amp; remove individuals with a heterozygosity rate deviating more than 3 sd from the mean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Analyse-cryptic-relatedness"><span class="nav-number">3.1.6.</span> <span class="nav-text">6: Analyse cryptic relatedness</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dealing-with-population-stratification%EF%BC%88%E4%BA%BA%E5%8F%A3%E5%88%86%E5%B1%82%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">Dealing with population stratification（人口分层）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Download-1000-Genomes-data"><span class="nav-number">3.2.1.</span> <span class="nav-text">1: Download 1000 Genomes data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-QC-on-1000-Genomes-data"><span class="nav-number">3.2.2.</span> <span class="nav-text">2: QC on 1000 Genomes data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Merge-the-HapMap-and-1000-Genomes-data-sets"><span class="nav-number">3.2.3.</span> <span class="nav-text">3: Merge the HapMap and 1000 Genomes data sets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MDS-plot"><span class="nav-number">3.2.4.</span> <span class="nav-text">MDS-plot</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step3-Association-analyses-of-GWAS-data"><span class="nav-number">3.3.</span> <span class="nav-text">Step3: Association analyses of GWAS data</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Assoc"><span class="nav-number">3.3.1.</span> <span class="nav-text">Assoc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multiple-testing"><span class="nav-number">3.3.2.</span> <span class="nav-text">Multiple testing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Generate-Manhattan-and-QQ-plots"><span class="nav-number">3.3.3.</span> <span class="nav-text">Generate Manhattan and QQ plots</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step4-Polygenic-risk-score-PRS-analyses"><span class="nav-number">3.4.</span> <span class="nav-text">Step4: Polygenic risk score (PRS) analyses</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2019/12/08/GWAS-process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Human GWAS
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-12-08 20:42:10" itemprop="dateCreated datePublished" datetime="2019-12-08T20:42:10+08:00">2019-12-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2019-12-25 18:03:39" itemprop="dateModified" datetime="2019-12-25T18:03:39+08:00">2019-12-25</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="简要介绍"><a href="#简要介绍" class="headerlink" title="简要介绍"></a>简要介绍</h2><p>抽了些时间走了一遍Human GWAS流程，主要包括以下几个步骤：</p>
+<ul>
+<li>GWAS QC steps along with data visualization.</li>
+<li>Dealing with population stratification, using 1000 genomes as a reference.</li>
+<li>Association analyses of GWAS data.</li>
+<li>Polygenic risk score (PRS) analyses.</li>
+</ul>
+<span id="more"></span>
+
+<blockquote>
+<p>In <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Genetics" title="Genetics">genetics</a>, a <strong>genome-wide association study</strong> (<strong>GWA study</strong>, or <strong>GWAS</strong>), also known as <strong>whole genome association study</strong> (<strong>WGA study</strong>, or <strong>WGAS</strong>), is an <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Observational_study" title="Observational study">observational study</a> of a genome-wide set of <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism" title="Single-nucleotide polymorphism">genetic variants</a> in different individuals to see if any variant is associated with a trait.</p>
+</blockquote>
+<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
+<li>Linux computer</li>
+</ul>
+<p>见<a href="https://hc1023.github.io/2019/11/27/VMlinux/#more">Windows安装虚拟机</a></p>
+<ul>
+<li>open-source programming language R</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install r-base</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>open-source whole genome association analysis toolset PLINK version 1.07<br>但是之前说了这个操作系统依旧是白纸，所以以下</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python</span><br></pre></td></tr></table></figure>
+<p>自然可以安装Python3，Ubuntu默认安装Python2，现在诸多apps依旧基于Python2，接下来装Tkinter</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-tk</span><br></pre></td></tr></table></figure>
+<p>安装setuptools</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-setuptools</span><br></pre></td></tr></table></figure>
+<p>安装plink</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python -m easy_install -f http://math.uic.edu/t3m/plink plink</span><br></pre></td></tr></table></figure>
+<p>也许是由于我的系统是刚装的少了些配置抑或是某些原因，我最后是在官网上直接下了一个并放到当前路径下操作的，环境还没配置好我没有加入环境变量，所以我后面用<code>plink</code>命令时实际均为<code>./plink</code>，但是我在代码里面依旧用<code>plink</code></p>
+<p>好了，那下面就开始GWAS流程啦！</p>
+<h2 id="GWAS"><a href="#GWAS" class="headerlink" title="GWAS"></a>GWAS</h2><h3 id="Step1-GWAS-QC-steps-along-with-data-visualization"><a href="#Step1-GWAS-QC-steps-along-with-data-visualization" class="headerlink" title="Step1: GWAS QC steps along with data visualization"></a>Step1: GWAS QC steps along with data visualization</h3><h4 id="1-Investigate-missingness-per-individual-and-per-SNP-and-make-histograms"><a href="#1-Investigate-missingness-per-individual-and-per-SNP-and-make-histograms" class="headerlink" title="1: Investigate missingness per individual and per SNP and make histograms"></a>1: Investigate missingness per individual and per SNP and make histograms</h4><p>下载测试数据freely available HapMap data: hapmap3_r3_b36_fwd.consensus.qc.：<a target="_blank" rel="noopener" href="http://hapmap.ncbi.nlm.nih.gov/downloads/genotypes/2010-05_phaseIII/plink_format/">http://hapmap.ncbi.nlm.nih.gov/downloads/genotypes/2010-05_phaseIII/plink_format/</a> </p>
+<ul>
+<li>计算样本缺失率和位点缺失率</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_1 --missing  </span><br></pre></td></tr></table></figure>
+<p>生成plink.imiss 和 plink.lmiss 两个文件，分别存储了the proportion of missing SNPs per individual 和 the proportion of missing individuals per SNP.</p>
+<ul>
+<li>用R将缺失结果可视化</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">indmiss&lt;-read.table(file=<span class="string">&quot;plink.imiss&quot;</span>, header=<span class="literal">TRUE</span>)</span><br><span class="line">snpmiss&lt;-read.table(file=<span class="string">&quot;plink.lmiss&quot;</span>, header=<span class="literal">TRUE</span>)</span><br><span class="line">hist(indmiss[,<span class="number">6</span>],main=<span class="string">&quot;Histogram individual missingness&quot;</span>) </span><br><span class="line">hist(snpmiss[,<span class="number">5</span>],main=<span class="string">&quot;Histogram SNP missingness&quot;</span>)  </span><br></pre></td></tr></table></figure>
+
+<p><img src="miss.png"></p>
+<ul>
+<li>删除高缺失的SNPs and individuals</li>
+</ul>
+<p>Delete SNPs with missingness &gt;0.2.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_1 --geno 0.2 --make-bed --out HapMap_3_r3_2</span><br></pre></td></tr></table></figure>
+<p>Delete individuals with missingness &gt;0.2.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_2 --mind 0.2 --make-bed --out HapMap_3_r3_3</span><br></pre></td></tr></table></figure>
+<p>事实上由上图表可见我们将阈值定在0.2在这个数据集中不会删除任何SNPs or individuals. 但是作为练习我们可以先从不那么严格的阈值开始质控XD</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Delete SNPs with missingness &gt;0.02.</span></span><br><span class="line">plink --bfile HapMap_3_r3_3 --geno 0.02 --make-bed --out HapMap_3_r3_4</span><br><span class="line"><span class="comment"># Delete individuals with missingness &gt;0.02.</span></span><br><span class="line">plink --bfile HapMap_3_r3_4 --mind 0.02 --make-bed --out HapMap_3_r3_5</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-Check-for-sex-discrepancy"><a href="#2-Check-for-sex-discrepancy" class="headerlink" title="2: Check for sex discrepancy"></a>2: Check for sex discrepancy</h4><p>先验确定为女性的受试者的F值必须&lt;0.2，先验确定为男性的受试者的F值必须&gt; 0.8。 该F值基于X染色体近交（纯合）估计。不满足这些要求的主题会被PLINK标记为“问题”。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_5 --check-sex </span><br></pre></td></tr></table></figure>
+<p>生成plink.sexcheck</p>
+<ul>
+<li>可视化sex-check results</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gender &lt;- read.table(<span class="string">&quot;plink.sexcheck&quot;</span>, header=<span class="built_in">T</span>,as.is=<span class="built_in">T</span>)</span><br><span class="line">male=subset(gender, gender$PEDSEX==<span class="number">1</span>)</span><br><span class="line">hist(male[,<span class="number">6</span>],main=<span class="string">&quot;Men&quot;</span>,xlab=<span class="string">&quot;F&quot;</span>)</span><br><span class="line">female=subset(gender, gender$PEDSEX==<span class="number">2</span>)</span><br><span class="line">hist(female[,<span class="number">6</span>],main=<span class="string">&quot;Women&quot;</span>,xlab=<span class="string">&quot;F&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="check.png"></p>
+<p>检查发现有一位女性有问题，F值偏离正常范围</p>
+<ul>
+<li>Delete individuals with sex discrepancy.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&quot;PROBLEM&quot;</span> plink.sexcheck| awk <span class="string">&#x27;&#123;print$1,$2&#125;&#x27;</span>&gt; sex_discrepancy.txt</span><br><span class="line"><span class="comment"># This command generates a list of individuals with the status PROBLEM.</span></span><br><span class="line">plink --bfile HapMap_3_r3_5 --remove sex_discrepancy.txt --make-bed --out HapMap_3_r3_6 </span><br><span class="line"><span class="comment"># This command removes the list of individuals with the status PROBLEM.</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Generate-a-bfile-with-autosomal-常染色体-SNPs-only-and-delete-SNPs-with-a-low-minor-allele-frequency-次要等位基因频率-MAF"><a href="#3-Generate-a-bfile-with-autosomal-常染色体-SNPs-only-and-delete-SNPs-with-a-low-minor-allele-frequency-次要等位基因频率-MAF" class="headerlink" title="3: Generate a bfile with autosomal(常染色体) SNPs only and delete SNPs with a low minor allele frequency(次要等位基因频率) (MAF)"></a>3: Generate a bfile with autosomal(常染色体) SNPs only and delete SNPs with a low minor allele frequency(次要等位基因频率) (MAF)</h4><ul>
+<li>仅选择常染色体SNP（即从1号到22号染色体）</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123; if ($1 &gt;= 1 &amp;&amp; $1 &lt;= 22) print $2 &#125;&#x27;</span> HapMap_3_r3_6.bim &gt; snp_1_22.txt</span><br><span class="line">plink --bfile HapMap_3_r3_6 --extract snp_1_22.txt --make-bed --out HapMap_3_r3_7</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>生成MAF分布图</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">maf_freq &lt;- read.table(<span class="string">&quot;MAF_check.frq&quot;</span>, header =<span class="literal">TRUE</span>, as.is=<span class="built_in">T</span>)</span><br><span class="line">hist(maf_freq[,<span class="number">5</span>],main = <span class="string">&quot;MAF distribution&quot;</span>, xlab = <span class="string">&quot;MAF&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="maf.png"></p>
+<ul>
+<li>去除MAF频率低的SNP</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_7 --maf 0.05 --make-bed --out HapMap_3_r3_8</span><br><span class="line"><span class="comment"># A conventional MAF threshold for a regular GWAS is between 0.01 or 0.05, depending on sample size.</span></span><br></pre></td></tr></table></figure>
+<p>After frequency and genotyping pruning, there are 1073226 SNPs</p>
+<h4 id="4-Delete-SNPs-which-are-not-in-Hardy-Weinberg-equilibrium-HWE-amp-Check-the-distribution-of-HWE-p-values-of-all-SNPs"><a href="#4-Delete-SNPs-which-are-not-in-Hardy-Weinberg-equilibrium-HWE-amp-Check-the-distribution-of-HWE-p-values-of-all-SNPs" class="headerlink" title="4: Delete SNPs which are not in Hardy-Weinberg equilibrium (HWE) &amp; Check the distribution of HWE p-values of all SNPs."></a>4: Delete SNPs which are not in Hardy-Weinberg equilibrium (HWE) &amp; Check the distribution of HWE p-values of all SNPs.</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_8 --hardy</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>选择HWE p值低于0.00001的SNP，可以放大严重偏离的SNP</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123; if ($9 &lt;0.00001) print $0 &#125;&#x27;</span> plink.hwe&gt;plinkzoomhwe.hwe</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hwe&lt;-read.table (file=<span class="string">&quot;plink.hwe&quot;</span>, header=<span class="literal">TRUE</span>)</span><br><span class="line">hist(hwe[,<span class="number">9</span>],main=<span class="string">&quot;Histogram HWE&quot;</span>)</span><br><span class="line">hwe_zoom&lt;-read.table (file=<span class="string">&quot;plinkzoomhwe.hwe&quot;</span>, header=<span class="literal">TRUE</span>)</span><br><span class="line">hist(hwe_zoom[,<span class="number">9</span>],main=<span class="string">&quot;Histogram HWE: strongly deviating SNPs only&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="HWE.png"></p>
+<p>默认情况下，plink中的–hwe选项仅过滤control。因此，我们使用两个步骤，首先对control使用严格的HWE阈值，然后对案例数据使用较不严格的阈值。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_8 --hwe 1e-6 --make-bed --out HapMap_hwe_filter_step1</span><br></pre></td></tr></table></figure>
+
+<p>案例的HWE阈值仅过滤掉与HWE极为偏离的SNP。第二个HWE步骤仅关注案例，因为在control中，所有HWE p值&lt;hwe 1e-6的SNP已被删除</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_hwe_filter_step1 --hwe 1e-10 --hwe-all --make-bed --out HapMap_3_r3_9</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-Generate-a-plot-of-the-distribution-of-the-heterozygosity-rate-杂合率分布的图-of-your-subjects-amp-remove-individuals-with-a-heterozygosity-rate-deviating-more-than-3-sd-from-the-mean"><a href="#5-Generate-a-plot-of-the-distribution-of-the-heterozygosity-rate-杂合率分布的图-of-your-subjects-amp-remove-individuals-with-a-heterozygosity-rate-deviating-more-than-3-sd-from-the-mean" class="headerlink" title="5: Generate a plot of the distribution of the heterozygosity rate(杂合率分布的图) of your subjects &amp; remove individuals with a heterozygosity rate deviating more than 3 sd from the mean"></a>5: Generate a plot of the distribution of the heterozygosity rate(杂合率分布的图) of your subjects &amp; remove individuals with a heterozygosity rate deviating more than 3 sd from the mean</h4><p>对一组高度不相关的SNP执行杂合性检查。<br>因此，要生成（高度）不相关相关的SNP的列表，我们排除高反转区域（inversion.txt [高LD区域]），并使用–indep-pairwise命令修剪SNP.<br>参数<code>50 5 0.2</code>分别代表：窗口大小，每一步移动窗口的SNP数量以及同时在所有其他SNP上回归的SNP的多重相关系数。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_9 --exclude inversion.txt --range --indep-pairwise 50 5 0.2 --out indepSNP</span><br><span class="line">plink --bfile HapMap_3_r3_9 --extract indepSNP.prune.in --het --out R_check</span><br></pre></td></tr></table></figure>
+<p>R_check包含修剪的数据集</p>
+<ul>
+<li>绘制杂合率分布图</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">het &lt;- read.table(<span class="string">&quot;R_check.het&quot;</span>, head=<span class="literal">TRUE</span>)</span><br><span class="line">het$HET_RATE = (het$<span class="string">&quot;N.NM.&quot;</span> - het$<span class="string">&quot;O.HOM.&quot;</span>)/het$<span class="string">&quot;N.NM.&quot;</span></span><br><span class="line">hist(het$HET_RATE, xlab=<span class="string">&quot;Heterozygosity Rate&quot;</span>, ylab=<span class="string">&quot;Frequency&quot;</span>, main= <span class="string">&quot;Heterozygosity Rate&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="HeteroRate.png"></p>
+<p>以下代码生成了一个列表存储在fail-het-qc.txt，这些列表与杂合率均值的偏差超过3个标准差</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">het &lt;- read.table(<span class="string">&quot;R_check.het&quot;</span>, head=<span class="literal">TRUE</span>)</span><br><span class="line">het$HET_RATE = (het$<span class="string">&quot;N.NM.&quot;</span> - het$<span class="string">&quot;O.HOM.&quot;</span>)/het$<span class="string">&quot;N.NM.&quot;</span></span><br><span class="line">het_fail = subset(het, (het$HET_RATE &lt; mean(het$HET_RATE)-<span class="number">3</span>*sd(het$HET_RATE)) | (het$HET_RATE &gt; mean(het$HET_RATE)+<span class="number">3</span>*sd(het$HET_RATE)));</span><br><span class="line">het_fail$HET_DST = (het_fail$HET_RATE-mean(het$HET_RATE))/sd(het$HET_RATE);</span><br><span class="line">write.table(het_fail, <span class="string">&quot;fail-het-qc.txt&quot;</span>, row.names=<span class="literal">FALSE</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当使用我们的示例数据/ HapMap数据时，此列表包含2个个体（两个个体的杂合率偏离均值超过3个SD）。通过从文件中删除所有引号并仅选择前两列，使该文件与PLINK兼容。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">&#x27;s/&quot;// g&#x27;</span> fail-het-qc.txt | awk <span class="string">&#x27;&#123;print$1, $2&#125;&#x27;</span>&gt; het_fail_ind.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除杂合率异常值</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_9 --remove het_fail_ind.txt --make-bed --out HapMap_3_r3_10</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-Analyse-cryptic-relatedness"><a href="#6-Analyse-cryptic-relatedness" class="headerlink" title="6: Analyse cryptic relatedness"></a>6: Analyse cryptic relatedness</h4><p>假设随机样本，我们将排除pihat阈值高于0.2的所有个体</p>
+<ul>
+<li>检查pihat&gt; 0.2的个人之间的关系</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_10 --extract indepSNP.prune.in --genome --min 0.2 --out pihat_min0.2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>已知HapMap数据集包含父子关系，以下命令将使用z值专门显示这些父子关系。</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123; if ($8 &gt;0.9) print $0 &#125;&#x27;</span> pihat_min0.2.genome&gt;zoom_pihat.genome</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>生成图以评估关系类型</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">relatedness = read.table(<span class="string">&quot;pihat_min0.2.genome&quot;</span>, header=<span class="built_in">T</span>)</span><br><span class="line">par(pch=<span class="number">16</span>, cex=<span class="number">1</span>)</span><br><span class="line">with(relatedness,plot(Z0,Z1, xlim=<span class="built_in">c</span>(<span class="number">0</span>,<span class="number">1</span>), ylim=<span class="built_in">c</span>(<span class="number">0</span>,<span class="number">1</span>), type=<span class="string">&quot;n&quot;</span>))</span><br><span class="line">with(subset(relatedness,RT==<span class="string">&quot;PO&quot;</span>) , points(Z0,Z1,col=<span class="number">4</span>))</span><br><span class="line">with(subset(relatedness,RT==<span class="string">&quot;UN&quot;</span>) , points(Z0,Z1,col=<span class="number">3</span>))</span><br><span class="line">legend(<span class="number">1</span>,<span class="number">1</span>, xjust=<span class="number">1</span>, yjust=<span class="number">1</span>, legend=levels(relatedness$RT), pch=<span class="number">16</span>, col=<span class="built_in">c</span>(<span class="number">4</span>,<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">relatedness_zoom = read.table(<span class="string">&quot;zoom_pihat.genome&quot;</span>, header=<span class="built_in">T</span>)</span><br><span class="line">par(pch=<span class="number">16</span>, cex=<span class="number">1</span>)</span><br><span class="line">with(relatedness_zoom,plot(Z0,Z1, xlim=<span class="built_in">c</span>(<span class="number">0</span>,<span class="number">0.02</span>), ylim=<span class="built_in">c</span>(<span class="number">0.98</span>,<span class="number">1</span>), type=<span class="string">&quot;n&quot;</span>))</span><br><span class="line">with(subset(relatedness_zoom,RT==<span class="string">&quot;PO&quot;</span>) , points(Z0,Z1,col=<span class="number">4</span>))</span><br><span class="line">with(subset(relatedness_zoom,RT==<span class="string">&quot;UN&quot;</span>) , points(Z0,Z1,col=<span class="number">3</span>))</span><br><span class="line">legend(<span class="number">0.02</span>,<span class="number">1</span>, xjust=<span class="number">1</span>, yjust=<span class="number">1</span>, legend=levels(relatedness$RT), pch=<span class="number">16</span>, col=<span class="built_in">c</span>(<span class="number">4</span>,<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">relatedness = read.table(<span class="string">&quot;pihat_min0.2.genome&quot;</span>, header=<span class="built_in">T</span>)</span><br><span class="line">hist(relatedness[,<span class="number">10</span>],main=<span class="string">&quot;Histogram relatedness&quot;</span>, xlab= <span class="string">&quot;Pihat&quot;</span>)  </span><br></pre></td></tr></table></figure>
+
+<p><img src="relate.png"></p>
+<p>生成的图表明Hapmap数据中显示了大量的相关个体（PO =亲子后代，UN =不相关的个体），这符合数据集的构造。<br>通常应使用特定的基于家庭的方法来分析基于家庭的数据。 这里我们将随机总体样本中的相关性视为隐秘的相关性，并旨在从数据集中删除所有“关联性”。为了证明大多数相关性是由于父母后代所致，我们仅包括创始人（数据集中没有父母的个人）。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_10 --filter-founders --make-bed --out HapMap_3_r3_11</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>现在，我们将再次寻找pihat&gt; 0.2的个体</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_11 --extract indepSNP.prune.in --genome --min 0.2 --out pihat_min0.2_in_founders</span><br></pre></td></tr></table></figure>
+
+<p>文件’pihat_min0.2_in_founders.genome’显示，在排除所有非创始人之后，HapMap数据中仅剩下1个pihat大于0.2的个人对。根据Z值，这可能是完整的同胞或DZ双胞胎对。 值得注意的是，他们在HapMap数据中没有获得相同的家庭身份（FID）。</p>
+<ul>
+<li>对于pihat&gt; 0.2的每对“相关”个体，我们建议删除the lowest call rate个体</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_11 --missing</span><br></pre></td></tr></table></figure>
+
+<p>使用UNIX文本编辑器（例如vi（m））检查“相关对”中哪个call rate最高。<br>生成Pihat大于0.2的个人的FID和IID列表，以检查哪个call rate较低。<br>数据集中，个体13291 NA07045的call rate较低。<br>如下操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi 0.2_low_call_rate_pihat.txt</span><br><span class="line">i </span><br><span class="line">13291  NA07045</span><br><span class="line"># Press esc on keyboard!</span><br><span class="line">:x</span><br><span class="line"># Press enter on keyboard</span><br></pre></td></tr></table></figure>
+
+<p>如果有多个“相关”对，可以使用与单独的“相关”对相同的方法扩展上面生成的列表。</p>
+<ul>
+<li>删除该个体</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_11 --remove 0.2_low_call_rate_pihat.txt --make-bed --out HapMap_3_r3_12</span><br></pre></td></tr></table></figure>
+
+<p>至此， I have conducted a proper genetic QC yeah!<br>下一步将需要在质控阶段生成的这些文件</p>
+<ul>
+<li>The bfile HapMap_3_r3_12 (i.e., HapMap_3_r3_12.fam,HapMap_3_r3_12.bed, and HapMap_3_r3_12.bim</li>
+<li>indepSNP.prune.in</li>
+</ul>
+<h3 id="Dealing-with-population-stratification（人口分层）"><a href="#Dealing-with-population-stratification（人口分层）" class="headerlink" title="Dealing with population stratification（人口分层）"></a>Dealing with population stratification（人口分层）</h3><p>Step1末尾生成的bfile（HapMap_3_r3_12）使用1000个基因组计划中的数据进行种群分层检查。 具有非欧洲种族背景的个人将被删除。此外将生成一个协变量文件，以帮助调整欧洲受试者中剩余的人口分层。</p>
+<p>这里我就理论上过一遍了，1000个基因组(&gt;60 gigabyte)我的小电脑和学校这个网络哪里顶得住哟，我又不是在服务器上做的……</p>
+<h4 id="1-Download-1000-Genomes-data"><a href="#1-Download-1000-Genomes-data" class="headerlink" title="1: Download 1000 Genomes data"></a>1: Download 1000 Genomes data</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20100804/ALL.2of4intersection.20100804.genotypes.vcf.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将vcf转换为Plink格式</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --vcf ALL.2of4intersection.20100804.genotypes.vcf.gz --make-bed --out ALL.2of4intersection.20100804.genotypes</span><br></pre></td></tr></table></figure>
+<p>文件“ ALL.2of4intersection.20100804.genotypes.bim”包含不带rs标识符的SNP，这些SNP用<code>.</code>表示。 </p>
+<ul>
+<li>查看此文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zmore ALL.2of4intersection.20100804.genotypes.vcf.gz</span><br></pre></td></tr></table></figure>
+
+<p>为了便于实践将为缺少rs-identifier的SNP分配唯一的标识符</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile ALL.2of4intersection.20100804.genotypes --set-missing-var-ids @:<span class="comment">#[b37]\$1,\$2 --make-bed --out ALL.2of4intersection.20100804.genotypes_no_missing_IDs</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-QC-on-1000-Genomes-data"><a href="#2-QC-on-1000-Genomes-data" class="headerlink" title="2: QC on 1000 Genomes data"></a>2: QC on 1000 Genomes data</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Remove variants based on missing genotype data.</span></span><br><span class="line">plink --bfile ALL.2of4intersection.20100804.genotypes_no_missing_IDs --geno 0.2 --allow-no-sex --make-bed --out 1kG_MDS</span><br><span class="line"><span class="comment"># Remove individuals based on missing genotype data.</span></span><br><span class="line">plink --bfile 1kG_MDS --mind 0.2 --allow-no-sex --make-bed --out 1kG_MDS2</span><br><span class="line"><span class="comment"># Remove variants based on missing genotype data.</span></span><br><span class="line">plink --bfile 1kG_MDS2 --geno 0.02 --allow-no-sex --make-bed --out 1kG_MDS3</span><br><span class="line"><span class="comment"># Remove individuals based on missing genotype data.</span></span><br><span class="line">plink --bfile 1kG_MDS3 --mind 0.02 --allow-no-sex --make-bed --out 1kG_MDS4</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Remove variants based on MAF.</span></span><br><span class="line">plink --bfile 1kG_MDS4 --maf 0.05 --allow-no-sex --make-bed --out 1kG_MDS5</span><br><span class="line"><span class="comment"># Extract the variants present in HapMap dataset from the 1000 genomes dataset.</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print$2&#125;&#x27;</span> HapMap_3_r3_12.bim &gt; HapMap_SNPs.txt</span><br><span class="line">plink --bfile 1kG_MDS5 --extract HapMap_SNPs.txt --make-bed --out 1kG_MDS6</span><br><span class="line"><span class="comment"># Extract the variants present in 1000 Genomes dataset from the HapMap dataset.</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print$2&#125;&#x27;</span> 1kG_MDS6.bim &gt; 1kG_MDS6_SNPs.txt</span><br><span class="line">plink --bfile HapMap_3_r3_12 --extract 1kG_MDS6_SNPs.txt --recode --make-bed --out HapMap_MDS</span><br><span class="line"><span class="comment"># The datasets now contain the exact same variants.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>数据集必须具有相同build，更改1000 Genomes数据build</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;print$2,$4&#125;&#x27;</span> HapMap_MDS.map &gt; buildhapmap.txt</span><br></pre></td></tr></table></figure>
+<p>buildhapmap.txt每行包含一个SNP-id和物理位置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile 1kG_MDS6 --update-map buildhapmap.txt --make-bed --out 1kG_MDS7</span><br><span class="line"><span class="comment"># 1kG_MDS7 and HapMap_MDS now have the same build.</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Merge-the-HapMap-and-1000-Genomes-data-sets"><a href="#3-Merge-the-HapMap-and-1000-Genomes-data-sets" class="headerlink" title="3: Merge the HapMap and 1000 Genomes data sets"></a>3: Merge the HapMap and 1000 Genomes data sets</h4><p>在将1000个基因组数据与HapMap数据合并之前，我们要确保文件可合并，为此，我们执行3个步骤：<br>1）确保参考基因组在HapMap和1000个基因组计划数据集中相似。<br>2）解决链问题。<br>3）删除在前两个步骤之后数据集仍然不同的SNP。</p>
+<p>主要完成的事情是比较两个数据集并确保它们对应</p>
+<ul>
+<li> set reference genome </li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;print$2,$5&#125;&#x27;</span> 1kG_MDS7.bim &gt; 1kg_ref-list.txt</span><br><span class="line">plink --bfile HapMap_MDS --reference-allele 1kg_ref-list.txt --make-bed --out HapMap-adj</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Resolve strand issues</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Check for potential strand issues.</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print$2,$5,$6&#125;&#x27;</span> 1kG_MDS7.bim &gt; 1kGMDS7_tmp</span><br><span class="line">awk <span class="string">&#x27;&#123;print$2,$5,$6&#125;&#x27;</span> HapMap-adj.bim &gt; HapMap-adj_tmp</span><br><span class="line">sort 1kGMDS7_tmp HapMap-adj_tmp |uniq -u &gt; all_differences.txt</span><br><span class="line"><span class="comment"># 1624 differences between the files, some of these might be due to strand issues.</span></span><br></pre></td></tr></table></figure>
+
+<p>翻转SNP以解决链问题，打印SNP标识符并删除重复项。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;print$1&#125;&#x27;</span> all_differences.txt | sort -u &gt; flip_list.txt</span><br></pre></td></tr></table></figure>
+
+<p>生成812个SNP的文件， 这些是两个文件之间不对应的SNP，翻转812个非对应的SNP。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap-adj --flip flip_list.txt --reference-allele 1kg_ref-list.txt --make-bed --out corrected_hapmap</span><br></pre></td></tr></table></figure>
+
+<p>翻转后，检查仍然有问题的SNP。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;print$2,$5,$6&#125;&#x27;</span> corrected_hapmap.bim &gt; corrected_hapmap_tmp</span><br><span class="line">sort 1kGMDS7_tmp corrected_hapmap_tmp |uniq -u  &gt; uncorresponding_SNPs.txt</span><br><span class="line"><span class="comment"># This file demonstrates that there are 84 differences between the files</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Remove problematic SNPs from HapMap and 1000 Genomes</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;print$1&#125;&#x27;</span> uncorresponding_SNPs.txt | sort -u &gt; SNPs_for_exlusion.txt</span><br><span class="line"><span class="comment"># The command above generates a list of the 42 SNPs which caused the 84 differences between the HapMap and the 1000 Genomes data sets after flipping and setting of the reference genome.</span></span><br><span class="line"><span class="comment"># Remove the 42 problematic SNPs from both datasets.</span></span><br><span class="line">plink --bfile corrected_hapmap --exclude SNPs_for_exlusion.txt --make-bed --out HapMap_MDS2</span><br><span class="line">plink --bfile 1kG_MDS7 --exclude SNPs_for_exlusion.txt --make-bed --out 1kG_MDS8</span><br><span class="line"><span class="comment"># Merge HapMap with 1000 Genomes Data.</span></span><br><span class="line">plink --bfile HapMap_MDS2 --bmerge 1kG_MDS8.bed 1kG_MDS8.bim 1kG_MDS8.fam --allow-no-sex --make-bed --out MDS_merge2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对由1000个基因组数据锚定的HapMap-CEU数据执行多维标度分析（multidimensional scaling ,MDS）</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Using a set of pruned SNPs</span></span><br><span class="line">plink --bfile MDS_merge2 --extract indepSNP.prune.in --genome --out MDS_merge2</span><br><span class="line">plink --bfile MDS_merge2 --read-genome MDS_merge2.genome --cluster --mds-plot 10 --out MDS_merge2</span><br></pre></td></tr></table></figure>
+
+<h4 id="MDS-plot"><a href="#MDS-plot" class="headerlink" title="MDS-plot"></a>MDS-plot</h4><ul>
+<li>下载包含1000个基因组数据集的种群信息的文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20100804/20100804.ALL.panel</span><br><span class="line"><span class="comment"># The file 20100804.ALL.panel contains population codes of the individuals of 1000 genomes.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将人口代码转换为超级人口代码（即AFR，AMR，ASN和EUR）</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;print$1,$1,$2&#125;&#x27;</span> 20100804.ALL.panel &gt; race_1kG.txt</span><br><span class="line">sed <span class="string">&#x27;s/JPT/ASN/g&#x27;</span> race_1kG.txt&gt;race_1kG2.txt</span><br><span class="line">sed <span class="string">&#x27;s/ASW/AFR/g&#x27;</span> race_1kG2.txt&gt;race_1kG3.txt</span><br><span class="line">sed <span class="string">&#x27;s/CEU/EUR/g&#x27;</span> race_1kG3.txt&gt;race_1kG4.txt</span><br><span class="line">sed <span class="string">&#x27;s/CHB/ASN/g&#x27;</span> race_1kG4.txt&gt;race_1kG5.txt</span><br><span class="line">sed <span class="string">&#x27;s/CHD/ASN/g&#x27;</span> race_1kG5.txt&gt;race_1kG6.txt</span><br><span class="line">sed <span class="string">&#x27;s/YRI/AFR/g&#x27;</span> race_1kG6.txt&gt;race_1kG7.txt</span><br><span class="line">sed <span class="string">&#x27;s/LWK/AFR/g&#x27;</span> race_1kG7.txt&gt;race_1kG8.txt</span><br><span class="line">sed <span class="string">&#x27;s/TSI/EUR/g&#x27;</span> race_1kG8.txt&gt;race_1kG9.txt</span><br><span class="line">sed <span class="string">&#x27;s/MXL/AMR/g&#x27;</span> race_1kG9.txt&gt;race_1kG10.txt</span><br><span class="line">sed <span class="string">&#x27;s/GBR/EUR/g&#x27;</span> race_1kG10.txt&gt;race_1kG11.txt</span><br><span class="line">sed <span class="string">&#x27;s/FIN/EUR/g&#x27;</span> race_1kG11.txt&gt;race_1kG12.txt</span><br><span class="line">sed <span class="string">&#x27;s/CHS/ASN/g&#x27;</span> race_1kG12.txt&gt;race_1kG13.txt</span><br><span class="line">sed <span class="string">&#x27;s/PUR/AMR/g&#x27;</span> race_1kG13.txt&gt;race_1kG14.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建数据的racefile</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;print$1,$2,&quot;OWN&quot;&#125;&#x27;</span> HapMap_MDS.fam&gt;racefile_own.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Concatenate racefiles</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat race_1kG14.txt racefile_own.txt | sed -e <span class="string">&#x27;1i\FID IID race&#x27;</span> &gt; racefile.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>生成人口分层图</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">data&lt;- read.table(file=<span class="string">&quot;MDS_merge2.mds&quot;</span>,header=<span class="literal">TRUE</span>)</span><br><span class="line">race&lt;- read.table(file=<span class="string">&quot;racefile.txt&quot;</span>,header=<span class="literal">TRUE</span>)</span><br><span class="line">datafile&lt;- merge(data,race,by=<span class="built_in">c</span>(<span class="string">&quot;IID&quot;</span>,<span class="string">&quot;FID&quot;</span>))</span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:nrow(datafile))</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (datafile[i,<span class="number">14</span>]==<span class="string">&quot;EUR&quot;</span>) &#123;plot(datafile[i,<span class="number">4</span>],datafile[i,<span class="number">5</span>],type=<span class="string">&quot;p&quot;</span>,xlim=<span class="built_in">c</span>(-<span class="number">0.1</span>,<span class="number">0.2</span>),ylim=<span class="built_in">c</span>(-<span class="number">0.15</span>,<span class="number">0.1</span>),xlab=<span class="string">&quot;MDS Component 1&quot;</span>,ylab=<span class="string">&quot;MDS Component 2&quot;</span>,pch=<span class="number">1</span>,cex=<span class="number">0.5</span>,col=<span class="string">&quot;green&quot;</span>)&#125;</span><br><span class="line">par(new=<span class="built_in">T</span>)</span><br><span class="line"><span class="keyword">if</span> (datafile[i,<span class="number">14</span>]==<span class="string">&quot;ASN&quot;</span>) &#123;plot(datafile[i,<span class="number">4</span>],datafile[i,<span class="number">5</span>],type=<span class="string">&quot;p&quot;</span>,xlim=<span class="built_in">c</span>(-<span class="number">0.1</span>,<span class="number">0.2</span>),ylim=<span class="built_in">c</span>(-<span class="number">0.15</span>,<span class="number">0.1</span>),xlab=<span class="string">&quot;MDS Component 1&quot;</span>,ylab=<span class="string">&quot;MDS Component 2&quot;</span>,pch=<span class="number">1</span>,cex=<span class="number">0.5</span>,col=<span class="string">&quot;red&quot;</span>)&#125;</span><br><span class="line">par(new=<span class="built_in">T</span>)</span><br><span class="line"><span class="keyword">if</span> (datafile[i,<span class="number">14</span>]==<span class="string">&quot;AMR&quot;</span>) &#123;plot(datafile[i,<span class="number">4</span>],datafile[i,<span class="number">5</span>],type=<span class="string">&quot;p&quot;</span>,xlim=<span class="built_in">c</span>(-<span class="number">0.1</span>,<span class="number">0.2</span>),ylim=<span class="built_in">c</span>(-<span class="number">0.15</span>,<span class="number">0.1</span>),xlab=<span class="string">&quot;MDS Component 1&quot;</span>,ylab=<span class="string">&quot;MDS Component 2&quot;</span>,pch=<span class="number">1</span>,cex=<span class="number">0.5</span>,col=<span class="number">470</span>)&#125;</span><br><span class="line">par(new=<span class="built_in">T</span>)</span><br><span class="line"><span class="keyword">if</span> (datafile[i,<span class="number">14</span>]==<span class="string">&quot;AFR&quot;</span>) &#123;plot(datafile[i,<span class="number">4</span>],datafile[i,<span class="number">5</span>],type=<span class="string">&quot;p&quot;</span>,xlim=<span class="built_in">c</span>(-<span class="number">0.1</span>,<span class="number">0.2</span>),ylim=<span class="built_in">c</span>(-<span class="number">0.15</span>,<span class="number">0.1</span>),xlab=<span class="string">&quot;MDS Component 1&quot;</span>,ylab=<span class="string">&quot;MDS Component 2&quot;</span>,pch=<span class="number">1</span>,cex=<span class="number">0.5</span>,col=<span class="string">&quot;blue&quot;</span>)&#125;</span><br><span class="line">par(new=<span class="built_in">T</span>)</span><br><span class="line"><span class="keyword">if</span> (datafile[i,<span class="number">14</span>]==<span class="string">&quot;OWN&quot;</span>) &#123;plot(datafile[i,<span class="number">4</span>],datafile[i,<span class="number">5</span>],type=<span class="string">&quot;p&quot;</span>,xlim=<span class="built_in">c</span>(-<span class="number">0.1</span>,<span class="number">0.2</span>),ylim=<span class="built_in">c</span>(-<span class="number">0.15</span>,<span class="number">0.1</span>),xlab=<span class="string">&quot;MDS Component 1&quot;</span>,ylab=<span class="string">&quot;MDS Component 2&quot;</span>,pch=<span class="number">3</span>,cex=<span class="number">0.7</span>,col=<span class="string">&quot;black&quot;</span>)&#125;</span><br><span class="line">par(new=<span class="built_in">T</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">abline(v=-<span class="number">0.035</span>,lty=<span class="number">3</span>)</span><br><span class="line">abline(h=<span class="number">0.035</span>,lty=<span class="number">3</span>)</span><br><span class="line">legend(<span class="string">&quot;topright&quot;</span>, pch=<span class="built_in">c</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">3</span>),<span class="built_in">c</span>(<span class="string">&quot;EUR&quot;</span>,<span class="string">&quot;ASN&quot;</span>,<span class="string">&quot;AMR&quot;</span>,<span class="string">&quot;AFR&quot;</span>,<span class="string">&quot;OWN&quot;</span>),col=<span class="built_in">c</span>(<span class="string">&quot;green&quot;</span>,<span class="string">&quot;red&quot;</span>,<span class="number">470</span>,<span class="string">&quot;blue&quot;</span>,<span class="string">&quot;black&quot;</span>),bty=<span class="string">&quot;o&quot;</span>,cex=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>排除种族离群值</li>
+</ul>
+<p>在HapMap数据中选择低于临界值的个人。 截止水平不是固定的阈值，而是必须根据前两个维度的可视化确定。 为了排除种族离群值，需要围绕感兴趣的人群设置阈值。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123; if ($4 &lt;-0.04 &amp;&amp; $5 &gt;0.03) print $1,$2 &#125;&#x27;</span> MDS_merge2.mds &gt; EUR_MDS_merge2</span><br></pre></td></tr></table></figure>
+
+<p>在HapMap数据中提取这些人</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_12 --keep EUR_MDS_merge2 --make-bed --out HapMap_3_r3_13</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根据MDS创建协变量</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_13 --extract indepSNP.prune.in --genome --out HapMap_3_r3_13</span><br><span class="line">plink --bfile HapMap_3_r3_13 --read-genome HapMap_3_r3_13.genome --cluster --mds-plot 10 --out HapMap_3_r3_13_mds</span><br><span class="line"><span class="comment"># Change the format of the .mds file into a plink covariate file.</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print$1, $2, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13&#125;&#x27;</span> HapMap_3_r3_13_mds.mds &gt; covar_mds.txt</span><br></pre></td></tr></table></figure>
+
+<p>covar_mds.txt中的值将用作协变量，以针对剩余的种群分层进行调整，接下来将进行全基因组关联分析。</p>
+<p>需要用到的文件</p>
+<ul>
+<li>HapMap_3_r3_13 (the bfile, i.e., HapMap_3_r3_13.bed,HapMap_3_r3_13.bim,and HapMap_3_r3_13.fam</li>
+<li>covar_mds.txt</li>
+</ul>
+<h3 id="Step3-Association-analyses-of-GWAS-data"><a href="#Step3-Association-analyses-of-GWAS-data" class="headerlink" title="Step3: Association analyses of GWAS data"></a>Step3: Association analyses of GWAS data</h3><h4 id="Assoc"><a href="#Assoc" class="headerlink" title="Assoc"></a>Assoc</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">plink --bfile HapMap_3_r3_13 --assoc --out assoc_results</span><br></pre></td></tr></table></figure>
+<p>注意-assoc选项不允许校正协变量，例如主成分（PC）/ MDS成分，这使其不太适合进行关联分析。</p>
+<p>我们将使用10个主成分作为协变量进行logistic analysis</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plink --bfile HapMap_3_r3_13 --covar covar_mds.txt --logistic --hide-covar --out logistic_results</span><br></pre></td></tr></table></figure>
+
+<p>注意使用选项-hide-covar仅显示输出文件中SNP的加法结果。</p>
+<p>删除NA值，这些值可能会在以后的步骤中生成图时出现问题。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;!/&#x27;</span>NA<span class="string">&#x27;/&#x27;</span> logistic_results.assoc.logistic &gt; logistic_results.assoc_2.logistic</span><br></pre></td></tr></table></figure>
+
+<p>从这些GWAS分析获得的结果将在最后一步中可视化，这还将显示该数据集是否包含任何全基因组范围内的重要SNP。</p>
+<p>注意如果采用定量结果度量，则应将选项–logistic替换为–linear。 对于定量结果度量，也可以使用–assoc选项（如前所述，该选项不允许使用协变量）。</p>
+<h4 id="Multiple-testing"><a href="#Multiple-testing" class="headerlink" title="Multiple testing"></a>Multiple testing</h4><p>在传统的全基因组范围内的重要意义阈值5.0E-8之外，方法很多。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#adjust</span></span><br><span class="line">plink --bfile HapMap_3_r3_13 -assoc --adjust --out adjusted_assoc_results</span><br><span class="line"><span class="comment"># This file gives a Bonferroni corrected p-value, along with FDR and others.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## Permutation</span></span><br><span class="line"><span class="comment"># This is a computational intensive step.</span></span><br><span class="line"><span class="comment"># The reduce computational time we only perform this test on a subset of the SNPs from chromosome 22.</span></span><br><span class="line"><span class="comment"># The EMP2 collumn provides the for multiple testing corrected p-value.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate subset of SNPs</span></span><br><span class="line">awk <span class="string">&#x27;&#123; if ($4 &gt;= 21595000 &amp;&amp; $4 &lt;= 21605000) print $2 &#125;&#x27;</span> HapMap_3_r3_13.bim &gt; subset_snp_chr_22.txt</span><br><span class="line"><span class="comment"># Filter your bfile based on the subset of SNPs generated in the step above.</span></span><br><span class="line">plink --bfile HapMap_3_r3_13 --extract subset_snp_chr_22.txt --make-bed --out HapMap_subset_for_perm</span><br><span class="line"><span class="comment"># Perform 1000000 perrmutations.</span></span><br><span class="line">plink --bfile HapMap_subset_for_perm --assoc --mperm 1000000 --out subset_1M_perm_result</span><br><span class="line"></span><br><span class="line"><span class="comment"># Order your data, from lowest to highest p-value.</span></span><br><span class="line">sort -gk 4 subset_1M_perm_result.assoc.mperm &gt; sorted_subset.txt</span><br><span class="line"><span class="comment"># Check ordered permutation results</span></span><br><span class="line">head sorted_subset.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="Generate-Manhattan-and-QQ-plots"><a href="#Generate-Manhattan-and-QQ-plots" class="headerlink" title="Generate Manhattan and QQ plots"></a>Generate Manhattan and QQ plots</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">install.packages(<span class="string">&quot;qqman&quot;</span>,repos=<span class="string">&quot;http://cran.cnr.berkeley.edu/&quot;</span>,lib=<span class="string">&quot;~&quot;</span> ) <span class="comment"># location of installation can be changed but has to correspond with the library location </span></span><br><span class="line">library(<span class="string">&quot;qqman&quot;</span>,lib.loc=<span class="string">&quot;~&quot;</span>)  </span><br><span class="line">results_log &lt;- read.table(<span class="string">&quot;logistic_results.assoc_2.logistic&quot;</span>, head=TRUE)</span><br><span class="line">jpeg(<span class="string">&quot;Logistic_manhattan.jpeg&quot;</span>)</span><br><span class="line">manhattan(results_log,chr=<span class="string">&quot;CHR&quot;</span>,bp=<span class="string">&quot;BP&quot;</span>,p=<span class="string">&quot;P&quot;</span>,snp=<span class="string">&quot;SNP&quot;</span>, main = <span class="string">&quot;Manhattan plot: logistic&quot;</span>)</span><br><span class="line">dev.off()</span><br><span class="line"></span><br><span class="line">results_as &lt;- read.table(<span class="string">&quot;assoc_results.assoc&quot;</span>, head=TRUE)</span><br><span class="line">jpeg(<span class="string">&quot;assoc_manhattan.jpeg&quot;</span>)</span><br><span class="line">manhattan(results_as,chr=<span class="string">&quot;CHR&quot;</span>,bp=<span class="string">&quot;BP&quot;</span>,p=<span class="string">&quot;P&quot;</span>,snp=<span class="string">&quot;SNP&quot;</span>, main = <span class="string">&quot;Manhattan plot: assoc&quot;</span>)</span><br><span class="line">dev.off()  </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">install.packages(<span class="string">&quot;qqman&quot;</span>,repos=<span class="string">&quot;http://cran.cnr.berkeley.edu/&quot;</span>,lib=<span class="string">&quot;~&quot;</span> ) <span class="comment"># location of installation can be changed but has to correspond with the library location </span></span><br><span class="line">library(<span class="string">&quot;qqman&quot;</span>,lib.loc=<span class="string">&quot;~&quot;</span>) </span><br><span class="line">results_log &lt;- read.table(<span class="string">&quot;logistic_results.assoc_2.logistic&quot;</span>, head=TRUE)</span><br><span class="line">jpeg(<span class="string">&quot;QQ-Plot_logistic.jpeg&quot;</span>)</span><br><span class="line">qq(results_log<span class="variable">$P</span>, main = <span class="string">&quot;Q-Q plot of GWAS p-values : log&quot;</span>)</span><br><span class="line">dev.off()</span><br><span class="line"></span><br><span class="line">results_as &lt;- read.table(<span class="string">&quot;assoc_results.assoc&quot;</span>, head=TRUE)</span><br><span class="line">jpeg(<span class="string">&quot;QQ-Plot_assoc.jpeg&quot;</span>)</span><br><span class="line">qq(results_as<span class="variable">$P</span>, main = <span class="string">&quot;Q-Q plot of GWAS p-values : log&quot;</span>)</span><br><span class="line">dev.off()</span><br></pre></td></tr></table></figure>
+
+<h3 id="Step4-Polygenic-risk-score-PRS-analyses"><a href="#Step4-Polygenic-risk-score-PRS-analyses" class="headerlink" title="Step4: Polygenic risk score (PRS) analyses"></a>Step4: Polygenic risk score (PRS) analyses</h3><ul>
+<li>使用PRSice执行简单的多基因风险评分分析</li>
+</ul>
+<p>进入<a target="_blank" rel="noopener" href="http://prsice.info/">http://prsice.info</a><br>同样在网站中找到对应linux系统的下载地址然后右键复制链接地址进行wget</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/choishingwan/PRSice/releases/download/2.2.11/PRSice_linux.nightly.zip</span><br></pre></td></tr></table></figure>
+
+<p>解压康康有哪些文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sisi@sisi-VirtualBox:~/Desktop/plink1$ unzip PRSice_linux.nightly.zip </span><br><span class="line">Archive:  PRSice_linux.nightly.zip</span><br><span class="line">  inflating: PRSice.R                </span><br><span class="line">  inflating: TOY_BASE_GWAS.assoc     </span><br><span class="line">  inflating: TOY_TARGET_DATA.bed     </span><br><span class="line">  inflating: TOY_TARGET_DATA.bim     </span><br><span class="line">  inflating: TOY_TARGET_DATA.fam     </span><br><span class="line">  inflating: PRSice_linux   </span><br></pre></td></tr></table></figure>
+<p>安装必需的包</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rscript -e <span class="string">&#x27;install.packages(c(&quot;batch&quot;,&quot;fmsb&quot;,&quot;gtx&quot;, &quot;plyr&quot;, &quot;ggplot2&quot;),repos=&quot;http://cran.rstudio.com/&quot;)&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>emmm安装失败了报错为lib is not writable<br>解决方案：键入以下命令to add yourself to the group called <code>staff</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -a -G staff sisi</span><br></pre></td></tr></table></figure>
+<p>重新执行安装包的代码，done<br> Rscript PRSice.R [options] -b TOY_BASE_GWAS.assoc -t TOY_TARGET_DATA –prsice ./</p>
+<p>下进行多基因风险评分(PRS)分析可参照<a target="_blank" rel="noopener" href="http://www.prsice.info/step_by_step/">http://www.prsice.info/step_by_step/</a></p>
+<ul>
+<li>图表解释</li>
+</ul>
+<p>第一幅图显示了基于SNP的模型目标样本中p值低于基本样本中特定阈值的预测值。 另外对于每个模型相应的原假设提供p值。 如图S1所示，使用p值高达0.45的SNP的模型在p值为的目标样本中实现了最高的预测值。 但是，与多样本样本的多基因风险评分分析相比，预测值通常相对较低（Nagelkerke约为5％）。 文本文件包含每个p值阈值的确切值。 </p>
+<p><img src="PRS.png"></p>
+<p>第二幅图显示了许多不同的p值阈值，黑色的预测效果（$R^2$）的p值以及绿色的汇总趋势线。</p>
+<p><img src="PRS2.png"></p>
+<p>这里面具体怎么算的我没时间仔细研究了……以后再说吧……<br>参见 <a target="_blank" rel="noopener" href="http://www.prsice.info/step_by_step/#output-of-results">http://www.prsice.info/step_by_step/#output-of-results</a></p>
+<p>reference: <a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pubmed/29484742">https://www.ncbi.nlm.nih.gov/pubmed/29484742</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/27/VMlinux/" rel="prev" title="Windows安装虚拟机">
+                  <i class="fa fa-chevron-left"></i> Windows安装虚拟机
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/13/cluster-PCA/" rel="next" title="聚类分析和主成分分析">
+                  聚类分析和主成分分析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

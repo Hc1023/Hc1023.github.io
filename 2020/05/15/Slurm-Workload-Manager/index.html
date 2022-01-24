@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="SLURM: Simple Linux Utility for Resource Managementa free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters. Key functions">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Slurm Workload Manager">
+<meta property="og:url" content="https://hc1023.github.io/2020/05/15/Slurm-Workload-Manager/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="SLURM: Simple Linux Utility for Resource Managementa free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters. Key functions">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2020/05/15/Slurm-Workload-Manager/0515.png">
+<meta property="article:published_time" content="2020-05-15T05:16:46.000Z">
+<meta property="article:modified_time" content="2020-08-22T05:41:10.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="learning_notes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2020/05/15/Slurm-Workload-Manager/0515.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2020/05/15/Slurm-Workload-Manager/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2020/05/15/Slurm-Workload-Manager/","path":"2020/05/15/Slurm-Workload-Manager/","title":"Slurm Workload Manager"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Slurm Workload Manager | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SLURM-Simple-Linux-Utility-for-Resource-Management"><span class="nav-number">1.</span> <span class="nav-text">SLURM: Simple Linux Utility for Resource Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contents-of-a-batch-script"><span class="nav-number">2.</span> <span class="nav-text">contents of a batch script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#submit-the-job"><span class="nav-number">3.</span> <span class="nav-text">submit the job</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/05/15/Slurm-Workload-Manager/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Slurm Workload Manager
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-05-15 13:16:46" itemprop="dateCreated datePublished" datetime="2020-05-15T13:16:46+08:00">2020-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-08-22 13:41:10" itemprop="dateModified" datetime="2020-08-22T13:41:10+08:00">2020-08-22</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="SLURM-Simple-Linux-Utility-for-Resource-Management"><a href="#SLURM-Simple-Linux-Utility-for-Resource-Management" class="headerlink" title="SLURM: Simple Linux Utility for Resource Management"></a>SLURM: Simple Linux Utility for Resource Management</h2><p>a free and open-source job schedular for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters.</p>
+<p>Key functions:</p>
+<ul>
+<li>allocating exclusive and/or non-exclusive access to resources (computer nodes).</li>
+<li>providing a framework for starting, executing, and monitoring work on a set of allocated nodes.</li>
+<li>arbitrating contention for resources by managing a queue of pending jobs.</li>
+</ul>
+<span id="more"></span>
+
+<p><strong>slurmctld</strong>: centralized manager, monitor resources and work.<br><strong>slurmd</strong>: compared to a remote shell – it waits for work, executes that work, return status, and waits for more work.<br><strong>slurmdbd</strong>: Slurm DataBase Daemon, record accounting information for multiple Slurm-managed clusters in a single database.</p>
+<p><img src="0515.png"></p>
+<ul>
+<li>sbatch – Submit script for later execution (batch mode)</li>
+<li>salloc – Create job allocaton and start a shell to use it (interactive mode)</li>
+<li>srun – Create a job allocation (if needed) and launch a job step (typically an MPI job)</li>
+<li>sattach – Connect stdin/out/err for an existing job or job step</li>
+</ul>
+<h2 id="contents-of-a-batch-script"><a href="#contents-of-a-batch-script" class="headerlink" title="contents of a batch script"></a>contents of a batch script</h2><ol>
+<li>SBATCH directives</li>
+<li>Environment setup</li>
+<li>Cpy data to scratch (for heavy IO loads)</li>
+<li>Run your job (MPI if need be)</li>
+<li>Copy data from scratch</li>
+<li>Remove  temporary files and scratch data</li>
+</ol>
+<p>For e.g. myjob.slurm</p>
+<ul>
+<li>SBATCH directives</li>
+</ul>
+<p>first line: tell how to run the script</p>
+<p><a target="_blank" rel="noopener" href="https://slurm.schedmd.com/sbatch.html">https://slurm.schedmd.com/sbatch.html</a></p>
+<ul>
+<li>nodes partition</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sinfo</span><br><span class="line"><span class="comment"># CPU Memory...</span></span><br><span class="line">sinfo -Nl</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>what jobs are running</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squeue</span><br></pre></td></tr></table></figure>
+
+<p>–time: time running<br>-N –nodes: number of nodes<br>-n –ntasks: number of tasks<br>-p –partition: request a specfic partition for the resource allocation.<br>-o –output: connect the batch script;s standard output to the file.<br>-e -error: connect the batch script’s standard eroor directly to the file.<br>–mem: specify the real memory required per node.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH -p defq</span></span><br><span class="line"><span class="comment">#SBATCH -n 4</span></span><br><span class="line"><span class="comment">#SBATCH --time=48:00:00</span></span><br><span class="line"><span class="comment">#SBATCH -o masterout.txt</span></span><br><span class="line"><span class="comment">#SBATCH -e mastererr.txt</span></span><br><span class="line"><span class="comment">#SBATCH --mem=40000</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Environment setup</li>
+</ul>
+<p>add modules</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module add c3ddb/bamtools/2.4.0</span><br><span class="line">module add c3ddb/bcftools/1.2</span><br><span class="line">module add c3ddb/bowtie2/2.2.6</span><br><span class="line">module add c3ddb/htslib/1.2.1</span><br><span class="line">module add c3ddb/samtools/1.2</span><br><span class="line">module add c3ddb/sickle/1.33</span><br><span class="line">module add c3ddb/samtools/1.2</span><br><span class="line">module add mit/matlab/2015b</span><br><span class="line">module add c3ddb/dindel-tgi</span><br></pre></td></tr></table></figure>
+
+<p>Also we can <code>source activate $env</code>.</p>
+<ul>
+<li>Run job</li>
+</ul>
+<p>the following is a matlab script</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">matlab -r build_experiment_directories</span><br></pre></td></tr></table></figure>
+
+<p>Tips: attach job id: <code>%j</code>, <code>$SLURM_JOB_ID</code>, e.g.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#SBATCH -o qe-%j</span></span><br><span class="line">NAME=...</span><br><span class="line">DATADIR=...</span><br><span class="line">SCRATCH=...</span><br><span class="line">mkdir -p <span class="variable">$SCRATCH</span></span><br><span class="line"><span class="comment"># mkdir -p, make sure the directory exists, including the parent directory</span></span><br><span class="line">mpirun -np <span class="variable">$SLURM_NTASKS</span> pw.x -inp <span class="variable">$DATADIR</span>/<span class="variable">$NAME</span>.<span class="keyword">in</span> &gt; <span class="variable">$DATADIR</span>/<span class="variable">$NAME</span>.<span class="variable">$SLURM_JOB_ID</span>.out</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Use array to submit and manage collections of similar jobs quickly and easily</li>
+</ul>
+<p><code>SLURM_ARRAY_TASK_ID</code> will be set to the job array index value. <code>SLURM_ARRAY_TASK_COUNT</code> will be set to the number of tasks in the job array.</p>
+<p>E.g.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#SBATCH --array=1-50</span></span><br><span class="line"></span><br><span class="line">sample=$(sed -n <span class="variable">$&#123;SLURM_ARRAY_TASK_ID&#125;</span>p <span class="variable">$&#123;lsDir&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="submit-the-job"><a href="#submit-the-job" class="headerlink" title="submit the job"></a>submit the job</h2><p>So, in shell, run the commad: <code>sbatch myjob.slurm</code>. Submit the job and see the job state.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squeue -u username</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Job state codes</li>
+</ul>
+<p>PD: pending. Job is awaiting resource allocation.<br>R: running. Job currently has an allocation.<br>CG: Job is in the process of completing. Some processes on some nodes may still be active.</p>
+<p>You don’t immediately see the output files because there is slight delay between the file systems being written to and then updating on the client.</p>
+<ul>
+<li>cancel the job</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scancel jobid</span><br></pre></td></tr></table></figure>
+
+<p>If not in slurm, just <code>kill jobid</code>.</p>
+<ul>
+<li>look up job info</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sacct -j jobid</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在.bashrc自定义一下命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> sa=<span class="string">&#x27;sacct --format=JobName,JobID,reqmem,maxrss,elapsed,state,reqcpu,ncpus,ExitCode&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>如此使用<code>sa -j jobid</code>输出上述相关信息（JobName,JobID,reqmem,maxrss,elapsed,state,reqcpu,ncpus,ExitCode）。</p>
+<p><a target="_blank" rel="noopener" href="https://slurm.schedmd.com/">https://slurm.schedmd.com/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/learning-notes/" rel="tag"># learning_notes</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/13/reading-SNP-calling-from-HTS/" rel="prev" title="Reading--SNP calling from HTS">
+                  <i class="fa fa-chevron-left"></i> Reading--SNP calling from HTS
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/16/tex-spell-check/" rel="next" title="Tex语法检查">
+                  Tex语法检查 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

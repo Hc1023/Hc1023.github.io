@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows安装虚拟机">
+<meta property="og:url" content="https://hc1023.github.io/2019/11/27/VMlinux/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2019/11/27/VMlinux/1.png">
+<meta property="article:published_time" content="2019-11-27T13:05:22.000Z">
+<meta property="article:modified_time" content="2021-01-31T11:02:32.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2019/11/27/VMlinux/1.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2019/11/27/VMlinux/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2019/11/27/VMlinux/","path":"2019/11/27/VMlinux/","title":"Windows安装虚拟机"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Windows安装虚拟机 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDVirtualBox%E5%92%8CLinux-ISO"><span class="nav-number">1.</span> <span class="nav-text">下载VirtualBox和Linux ISO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%8A%E5%AE%89%E8%A3%85Linux"><span class="nav-number">2.</span> <span class="nav-text">在虚拟机上安装Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu"><span class="nav-number">3.</span> <span class="nav-text">Install &amp; Use VirtualBox Guest Additions on Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-number">3.1.</span> <span class="nav-text">几个重要的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-VirtualBox-Guest-Addition-features-%E9%85%8D%E7%BD%AE"><span class="nav-number">3.2.</span> <span class="nav-text">Using VirtualBox Guest Addition features 配置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2019/11/27/VMlinux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows安装虚拟机
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-27 21:05:22" itemprop="dateCreated datePublished" datetime="2019-11-27T21:05:22+08:00">2019-11-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-01-31 19:02:32" itemprop="dateModified" datetime="2021-01-31T19:02:32+08:00">2021-01-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Windows操作系统，想用Linux操作命令完成一些数据分析工作。本来想着或可用windows的shell代替，不妨在Windows的cmd或powershell中把要装的软件装上就好了，岂料我要装的东西不支持Windows我倒，行吧那就装个虚拟机吧，卑微的小电脑又要装新东西了。</p>
+<span id="more"></span>
+
+<h2 id="下载VirtualBox和Linux-ISO"><a href="#下载VirtualBox和Linux-ISO" class="headerlink" title="下载VirtualBox和Linux ISO"></a>下载VirtualBox和Linux ISO</h2><p>首先到官网上下载VirtualBox和Linux ISO（这里选择Ubuntu）<br>VirtualBox,  free and open source virtualization software from Oracle. download <a target="_blank" rel="noopener" href="https://www.virtualbox.org/">https://www.virtualbox.org/</a><br>Ubuntu Linux, ISO file of the Linux distribution. download <a target="_blank" rel="noopener" href="https://ubuntu.com/desktop">https://ubuntu.com/desktop</a></p>
+<p>这里强烈建议到网络好一些的地方，大概科学上网可以快很多。</p>
+<p>先安装virtualbox，各步骤可见 <a target="_blank" rel="noopener" href="https://itsfoss.com/install-linux-in-virtualbox/">https://itsfoss.com/install-linux-in-virtualbox/</a></p>
+<p>大概唯一需要在对话框中操作的步骤是去掉勾选<code>download updates while installing Ubuntu</code></p>
+<h2 id="在虚拟机上安装Linux"><a href="#在虚拟机上安装Linux" class="headerlink" title="在虚拟机上安装Linux"></a>在虚拟机上安装Linux</h2><p>打开VirtualBox，点击<code>New</code>，自己取一个名字，type选<code>Linux</code>，version选<code>Ubuntu(64bit)</code><br>容易发现version选项都只有32bit，这是因为BIOS中virtualization is blocked on your system。在Windows中打开BIOS，一按下开机键立刻按<code>F1</code>/<code>F2</code>/<code>F12</code>，打开BIOS，在<code>configuration</code>中找到<code>Virtualization Technology</code>改为<code>Enabled</code>.</p>
+<ul>
+<li>Allocate RAM to the virtual OS 在我的电脑属性中看到我的电脑内存8G，所以我给它2G</li>
+<li>Create a virtual disk 10G</li>
+<li> VDI file type</li>
+<li>Dynamically allocated</li>
+</ul>
+<p>设置好后<code>Start</code>，选择前面下载的iso文件，启动后点击<code>install Ubuntu</code>，然后看自己的感觉按照提示继续就好了。安装系统的时候会比较耗时吧耐心等待……官网上说10-15min，大概在国外 是。。</p>
+<p>安装完成后restart，yeah！Linux系统安装完成，这时可以把之前自己电脑上下载的那个iso文件拖进回收站了…</p>
+<h2 id="Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu"><a href="#Install-amp-Use-VirtualBox-Guest-Additions-on-Ubuntu" class="headerlink" title="Install &amp; Use VirtualBox Guest Additions on Ubuntu"></a>Install &amp; Use VirtualBox Guest Additions on Ubuntu</h2><p>安装使用 VirtualBox Guest Additions，可以使guest and host systems联系更紧密使用更方便。</p>
+<ul>
+<li>Host &amp; Guest system<br>Host system is your actual operating system installed on your physical system.<br>Guest system is the virtual machine you have installed inside your host operating system.</li>
+</ul>
+<h3 id="几个重要的功能"><a href="#几个重要的功能" class="headerlink" title="几个重要的功能"></a>几个重要的功能</h3><ul>
+<li><strong>鼠标指针集成</strong>: You no longer need to press any key to “free” the cursor from the Guest OS.</li>
+<li><strong>共享剪贴板</strong>: With the Guest Additions installed, you can copy-paste between the guest and the host operating systems.</li>
+<li><strong>拖放文件</strong>: You can also drag and drop files between the host and the guest OS.</li>
+<li><strong>共享文件夹</strong>: My favorite feature; this feature allows you to exchange files between the host and the guest. You can tell VirtualBox to treat a certain host directory as a shared folder, and the program will make it available to the guest operating system as a network share, irrespective of whether guest actually has a network.</li>
+<li><strong>调整虚拟机窗口大小和分辨率</strong></li>
+</ul>
+<p>更多可见 <a target="_blank" rel="noopener" href="https://itsfoss.com/virtualbox-guest-additions-ubuntu/">https://itsfoss.com/virtualbox-guest-additions-ubuntu/</a></p>
+<p>点击<code>devices</code>，点击<code>Insert Guest Additions CD image…</code>，大概极有可能遇到（因为我遇到了） Could not mount the media/drive……报错。退出系统，打开 <code>settings</code>，in the Storage tab, click the little CD symbol and select ‘remove disk…’ 重新启动重复报错前的操作就可以成功Mount了！（重启万能</p>
+<p>然后打开<code>terminal</code>，还要安装一些包，能用<code>sudo</code>真实太爽了，我就是管理员，再也不用去征求什么管理员权限了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install build-essential dkms linux-headers-generic </span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rcvboxadd setup</span><br></pre></td></tr></table></figure>
+
+<h3 id="Using-VirtualBox-Guest-Addition-features-配置"><a href="#Using-VirtualBox-Guest-Addition-features-配置" class="headerlink" title="Using VirtualBox Guest Addition features 配置"></a>Using VirtualBox Guest Addition features 配置</h3><p><strong>重启后再配置</strong></p>
+<ul>
+<li>配置拖放任何文件<br>top menu -&gt; Devices -&gt;Drag and Drop -&gt; Bidirectional</li>
+</ul>
+<p>这个功能在一些版本的VirtualBox里可能不起作用，解决办法是改成单向host to guest，拖到文件夹里（2020.1.31）</p>
+<ul>
+<li><p>配置共享剪贴板<br>top menu -&gt; Devices -&gt; Shared Clipboard -&gt; Bidirectional</p>
+</li>
+<li><p>更改虚拟屏幕分辨率</p>
+<p>top menu -&gt; View -&gt; Virtual Screen 1 -&gt; …</p>
+</li>
+</ul>
+<p>至此接下来就可以开始自由发挥，开始在终端敲命令啦！</p>
+<p><img src="1.png"></p>
+<p>reference:<br><a target="_blank" rel="noopener" href="https://itsfoss.com/install-linux-in-virtualbox/">https://itsfoss.com/install-linux-in-virtualbox/</a><br><a target="_blank" rel="noopener" href="https://itsfoss.com/virtualbox-guest-additions-ubuntu/">https://itsfoss.com/virtualbox-guest-additions-ubuntu/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/22/Discriminant-Analysis/" rel="prev" title="判别分析1">
+                  <i class="fa fa-chevron-left"></i> 判别分析1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/08/GWAS-process/" rel="next" title="Human GWAS">
+                  Human GWAS <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

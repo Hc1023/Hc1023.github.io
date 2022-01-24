@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="SPAdes的原理部分之前已经写过了，见de Bruijn graph。 SPAdes takes as input paired-end reads, mate-pairs and single (unpaired) reads in FASTA and FASTQ. 进行assembly后输出fastq文件，推荐scaffold作为结果文件。 SPAdes 有以下几个模块：    BayesH">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SPAdes(assembly)">
+<meta property="og:url" content="https://hc1023.github.io/2020/03/08/spades/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="SPAdes的原理部分之前已经写过了，见de Bruijn graph。 SPAdes takes as input paired-end reads, mate-pairs and single (unpaired) reads in FASTA and FASTQ. 进行assembly后输出fastq文件，推荐scaffold作为结果文件。 SPAdes 有以下几个模块：    BayesH">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2020/03/08/spades/0815.png">
+<meta property="article:published_time" content="2020-03-08T13:11:24.000Z">
+<meta property="article:modified_time" content="2020-08-15T09:01:04.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2020/03/08/spades/0815.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2020/03/08/spades/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2020/03/08/spades/","path":"2020/03/08/spades/","title":"SPAdes(assembly)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SPAdes(assembly) | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E7%9B%AE%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">结果目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E7%82%B9%E7%BB%8F%E9%AA%8C"><span class="nav-number">3.</span> <span class="nav-text">一点经验</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/03/08/spades/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SPAdes(assembly)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-03-08 21:11:24" itemprop="dateCreated datePublished" datetime="2020-03-08T21:11:24+08:00">2020-03-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-08-15 17:01:04" itemprop="dateModified" datetime="2020-08-15T17:01:04+08:00">2020-08-15</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>SPAdes的原理部分之前已经写过了，见<a href="https://hc1023.github.io/2020/02/25/de-Bruijn-graph/">de Bruijn graph</a>。</p>
+<p>SPAdes takes as input paired-end reads, mate-pairs and single (unpaired) reads in FASTA and FASTQ. 进行assembly后输出fastq文件，推荐scaffold作为结果文件。</p>
+<p>SPAdes 有以下几个模块：</p>
+<ul>
+<li>  BayesHammer – 矫正Illumina reads的读取错误，该工具在single cell和标准数据集上均能很好地工作。</li>
+<li>  IonHammer – 矫正IonTorrent data的读取错误，同样在两种数据集上良好工作。</li>
+<li>  SPAdes – iterative short-read genome assembly module 迭代短读基因组组装模块； 根据读取的长度和数据集类型自动选择K的值。</li>
+<li>  MismatchCorrector – 改善contigs和scaffolds的错配mismatch和短插入缺失indel率；这个模块使用BWA工具。MismatchCorrector默认关闭，我们可以开启它（建议）。</li>
+</ul>
+<span id="more"></span>
+
+<p>建议SPAdes与BayesHammer/IonHammer同时使用，得到高质量的assembly. 但是也可以单独使用SPAdes assembly或矫正模块。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Performs read error correction only.</span></span><br><span class="line">--only-error-correction</span><br><span class="line"><span class="comment"># Runs assembly module only.</span></span><br><span class="line">--only-assembler</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spades.py [options] -o &lt;output_dir&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>paired-end reads</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--pe&lt;#&gt;-1 &lt;file_name&gt;</span><br><span class="line">    File with left reads for paired-end library number &lt;#&gt; (&lt;#&gt; = 1,2,..,9).</span><br><span class="line"></span><br><span class="line">--pe&lt;#&gt;-2 &lt;file_name&gt;</span><br><span class="line">    File with right reads for paired-end library number &lt;#&gt; (&lt;#&gt; = 1,2,..,9).</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spades.py --pe1-1 H11_01_1.fastq \</span><br><span class="line">    --pe1-2 H11_01_2.fastq -o spades_test</span><br></pre></td></tr></table></figure>
+
+<p>观察一下它的运行过程（还挺耗时的），摘取了一些INFO，其实可以直接看spades.log</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">======= SPAdes pipeline started. Log can be found here: /home/ubuntu/users/sisih/data/spades_test/spades.log</span><br><span class="line">===== Read error correction started.</span><br><span class="line">== Running <span class="built_in">read</span> error correction tool: /home/ubuntu/anaconda2/envs/sisih0228/share/spades-3.12.0-1/bin/spades-hammer /home/ubuntu/users/sisih/data/spades_test/corrected/configs/config.info</span><br><span class="line">=== ITERATION 0 begins ===</span><br><span class="line">General</span><br><span class="line">K-mer Splitting</span><br><span class="line">K-mer Index Building</span><br><span class="line">K-mer Counting</span><br><span class="line">Hamming Subclustering</span><br><span class="line">……</span><br><span class="line">== Compressing corrected reads (with pigz)</span><br><span class="line">===== Read error correction finished. </span><br><span class="line">===== Assembling started.</span><br><span class="line">== Running assembler: K21</span><br><span class="line">General</span><br><span class="line">K-mer Index Building </span><br><span class="line">DeBruijnExtensionIndexBu (kmer_extension_index_build:  99)   Building k-mer extensions from k+1-mers</span><br><span class="line">Early tip clipping</span><br><span class="line">UnbranchingPathExtractor</span><br><span class="line">Extracting unbranching paths</span><br><span class="line">Collecting perfect loops</span><br><span class="line">StageManager</span><br><span class="line">Simplification</span><br><span class="line">== Running assembler: K33</span><br><span class="line">……</span><br><span class="line">DistanceEstimator</span><br><span class="line">PairInfoImprover</span><br><span class="line">PEResolver</span><br><span class="line">OverlapRemover</span><br><span class="line">(这些INFO似乎是在K77 assembling才看到)</span><br><span class="line">===== Assembling finished. Used k-mer sizes: 21, 33, 55, 77</span><br><span class="line">======= SPAdes pipeline finished.</span><br></pre></td></tr></table></figure>
+
+<p>大概是这样……没有使用MismatchCorrector，但是有读取的矫正（hammer）。</p>
+<p>run assembler with <code>--careful</code> option to minimize number of mismatches in the final contigs.</p>
+<p>尝试减少不匹配和插入缺失的数量。 还运行MismatchCorrector –一种后处理工具，该工具使用BWA工具（随SPAdes一起提供）。 仅在组装小型基因组时才建议使用此选项。 强烈建议不要将其用于大中型真核基因组。 请注意，metaSPAdes和rnaSPAdes不支持此选项。</p>
+<ul>
+<li>Multi-cell data set with read length 2x150</li>
+</ul>
+<p>Do not turn off SPAdes error correction (BayesHammer module), which is included in SPAdes default pipeline.</p>
+<p>If you have enough coverage (50x+), then you may want to try to set k-mer lengths of 21, 33, 55, 77 (selected by default for reads with length 150bp).</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spades.py -k 21,33,55,77 --careful &lt;your reads&gt; -o spades_output</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Multi-cell data set with read lengths 2 x 250</li>
+</ul>
+<p>Do not turn off SPAdes error correction (BayesHammer module), which is included in SPAdes default pipeline.</p>
+<p>By default we suggest to increase k-mer lengths in increments of 22 until the k-mer length reaches 127. The exact length of the k-mer depends on the coverage: k-mer length of 127 corresponds to 50x k-mer coverage and higher. For read length 250bp SPAdes automatically chooses K values equal to 21, 33, 55, 77, 99, 127.</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spades.py -k 21,33,55,77,99,127 --careful &lt;your reads&gt; -o spades_output</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Single-cell data set with read lengths 2 x 150 or 2 x 250</li>
+</ul>
+<p>The default k-mer lengths are recommended. For single-cell data sets SPAdes selects k-mer sizes 21, 33 and 55.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spades.py -k 21,33,55 --careful --pe1-1 H11_01_1.fastq \</span><br><span class="line">    --pe1-2 H11_01_2.fastq -o spades_output</span><br></pre></td></tr></table></figure>
+
+<p>log文件最后果然多了一步Mismatch correction</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(sisih0228) ubuntu@ip-10-0-1-105:~/users/sisih/data$ less spades_output/spades.log |grep =====</span><br><span class="line">======= SPAdes pipeline started. Log can be found here: /home/ubuntu/users/sisih/data/spades_output/spades.log</span><br><span class="line">===== Read error correction started.</span><br><span class="line">===== Read error correction finished.</span><br><span class="line">===== Assembling started.</span><br><span class="line">===== Assembling finished. Used k-mer sizes: 21, 33, 55</span><br><span class="line">===== Mismatch correction started.</span><br><span class="line">===== Mismatch correction finished.</span><br><span class="line">======= SPAdes pipeline finished.</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果目录"><a href="#结果目录" class="headerlink" title="结果目录"></a>结果目录</h2><p>SPAdes stores all output files in <code>&lt;output_dir&gt; </code>, which is set by the user. </p>
+<ul>
+<li>  <code>&lt;output_dir&gt;/corrected/</code> directory contains reads corrected by BayesHammer in <code>*.fastq.gz</code> files; if compression is disabled, reads are stored in uncompressed <code>*.fastq</code> files   </li>
+<li>  <code>&lt;output_dir&gt;/scaffolds.fasta</code> contains resulting scaffolds (<strong>recommended for use as resulting sequences</strong>) </li>
+<li>  <code>&lt;output_dir&gt;/contigs.fasta</code> contains resulting contigs</li>
+<li>  <code>&lt;output_dir&gt;/assembly_graph.gfa</code> contains SPAdes assembly graph and scaffolds paths in GFA 1.0 format</li>
+<li>  <code>&lt;output_dir&gt;/assembly_graph.fastg</code> contains SPAdes assembly graph in FASTG format</li>
+<li>  <code>&lt;output_dir&gt;/contigs.paths</code> contains paths in the assembly graph corresponding to contigs.fasta (see details below)</li>
+<li>  <code>&lt;output_dir&gt;/scaffolds.paths</code> contains paths in the assembly graph corresponding to scaffolds.fasta.</li>
+</ul>
+<p>Contigs/scaffolds names in SPAdes output FASTA files have the following format:<br><code>&gt;NODE_3_length_237403_cov_243.207</code><br>Here <code>3</code> is the number of the contig/scaffold, <code>237403</code> is the sequence length in nucleotides and <code>243.207</code> is the k-mer coverage for the last (largest) k value used. Note that the k-mer coverage is always lower than the read (per-base) coverage.</p>
+<blockquote>
+<p>A scaffold is a portion of the genome sequence reconstructed from end-sequenced whole-genome shotgun clones. Scaffolds are composed of contigs and gaps. A contig is a contiguous length of genomic sequence in which the order of bases is known to a high confidence level. Gaps occur where reads from the two sequenced ends of at least one fragment overlap with other reads in two different contigs (as long as the arrangement is otherwise consistent with the contigs being adjacent). Since the lengths of the fragments are roughly known, the number of bases between contigs can be estimated.</p>
+</blockquote>
+<p><img src="0815.png"></p>
+<h2 id="一点经验"><a href="#一点经验" class="headerlink" title="一点经验"></a>一点经验</h2><p>scaffolds.fasta和contigs.fasta同时存在时推荐使用scaffolds.fasta，其包括了contigs和gaps（应该会用N代替）。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ less -S contigs.fasta |grep NNN|wc -l</span><br><span class="line">0</span><br><span class="line">$ less -S scaffolds.fasta |grep NNN|wc -l</span><br><span class="line">467</span><br></pre></td></tr></table></figure>
+
+<p>但是scaffolds.fasta并不会每一份结果都有，如果fastq reads pair数目比较少就会没有，观察了一下20000 reads就没有，2000 reads可能contigs也没了。两者再文件大小上差不多，行数上也差不多。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ wc -l contigs.fasta</span><br><span class="line">89450 contigs.fasta</span><br><span class="line">$ wc -l scaffolds.fasta</span><br><span class="line">88872 scaffolds.fasta</span><br><span class="line">$ ls -lh contigs.fasta</span><br><span class="line">-rw-rw-r-- 1 ubuntu ubuntu 5.2M Aug 15 07:54 contigs.fasta</span><br><span class="line">$ ls -lh scaffolds.fasta</span><br><span class="line">-rw-rw-r-- 1 ubuntu ubuntu 5.2M Aug 15 07:55 scaffolds.fasta</span><br></pre></td></tr></table></figure>
+
+
+
+<p>references:<br>1.SPAdes manual <a target="_blank" rel="noopener" href="http://cab.spbu.ru/files/release3.13.0/manual.html">http://cab.spbu.ru/files/release3.13.0/manual.html</a><br>2.SPAdes: A New Genome Assembly Algorithm and Its Applications to Single-Cell Sequencing <a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/</a><br>3.[Scaffold - JGI Genome Portal](<a target="_blank" rel="noopener" href="https://mycocosm.jgi.doe.gov/help/scaffolds.jsf#:~:text=A">https://mycocosm.jgi.doe.gov/help/scaffolds.jsf#:~:text=A</a> scaffold is a portion,to a high confidence level.)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/03/08/paired-end-sequencing/" rel="prev" title="Illumina Sequencing (paired-end)">
+                  <i class="fa fa-chevron-left"></i> Illumina Sequencing (paired-end)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/03/08/bowtie2/" rel="next" title="Bowtie2(alignment)">
+                  Bowtie2(alignment) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

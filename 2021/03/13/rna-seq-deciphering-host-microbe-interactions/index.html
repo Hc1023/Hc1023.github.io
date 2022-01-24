@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="RNA-seq技术以其单核苷酸水平的高分辨力成为研究宿主-微生物相互作用的主要技术，从而提高对其生理后果和作用机制的认识； 根据真核生物和细菌的转录组特征的共性和差异比较了两者 RNA-seq 方案，进而从宏转录组学、互作转录组学等方面概述了跨物种 RNA-seq 方法； 同时单细胞RNA-seq技术进入感染生物学领域，从单细胞水平来理解细胞异质性的决定作用； 未来转录组学或将与功能基因组学等数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rna-seq deciphering host-microbe interactions">
+<meta property="og:url" content="https://hc1023.github.io/2021/03/13/rna-seq-deciphering-host-microbe-interactions/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="RNA-seq技术以其单核苷酸水平的高分辨力成为研究宿主-微生物相互作用的主要技术，从而提高对其生理后果和作用机制的认识； 根据真核生物和细菌的转录组特征的共性和差异比较了两者 RNA-seq 方案，进而从宏转录组学、互作转录组学等方面概述了跨物种 RNA-seq 方法； 同时单细胞RNA-seq技术进入感染生物学领域，从单细胞水平来理解细胞异质性的决定作用； 未来转录组学或将与功能基因组学等数">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-13T13:29:45.000Z">
+<meta property="article:modified_time" content="2021-03-13T13:55:20.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta property="article:tag" content="reading">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2021/03/13/rna-seq-deciphering-host-microbe-interactions/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2021/03/13/rna-seq-deciphering-host-microbe-interactions/","path":"2021/03/13/rna-seq-deciphering-host-microbe-interactions/","title":"rna-seq deciphering host-microbe interactions"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>rna-seq deciphering host-microbe interactions | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E6%A0%B8%E7%94%9F%E7%89%A9%E5%92%8C%E7%BB%86%E8%8F%8C%E7%9A%84%E8%BD%AC%E5%BD%95%E7%BB%84%E7%89%B9%E5%BE%81"><span class="nav-number">1.</span> <span class="nav-text">真核生物和细菌的转录组特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%86%E8%8F%8C%E4%B8%8E%E7%9C%9F%E6%A0%B8%E7%94%9F%E7%89%A9-RNA-seq-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E6%AF%94%E8%BE%83"><span class="nav-number">2.</span> <span class="nav-text">细菌与真核生物 RNA-seq 工作流程比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BD%AC%E5%BD%95%E7%BB%84%E5%9B%BA%E5%AE%9A%E3%80%81%E7%BB%86%E8%83%9E%E8%A3%82%E8%A7%A3%E5%92%8C-RNA-%E6%8F%90%E5%8F%96"><span class="nav-number">2.1.</span> <span class="nav-text">1 转录组固定、细胞裂解和 RNA 提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A0%B8%E7%B3%96%E8%80%97%E5%B0%BD"><span class="nav-number">2.2.</span> <span class="nav-text">2 核糖耗尽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-cDNA-%E6%96%87%E5%BA%93%E7%9A%84%E5%88%B6%E5%A4%87%E5%92%8C%E6%B5%8B%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">3 cDNA 文库的制备和测序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AF%BB%E5%AF%B9%E9%BD%90%EF%BC%8C%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%8C%E9%87%8F%E5%8C%96%E5%92%8C%E5%8A%9F%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">2.4.</span> <span class="nav-text">4 读对齐，归一化，量化和功能分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%86%E8%8F%8C-RNA-seq-%E5%9C%A8%E4%BD%93%E5%86%85%E8%BD%AC%E5%BD%95%E7%BB%84%E5%AD%A6%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">细菌 RNA-seq 在体内转录组学中的应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E7%89%A9%E7%A7%8D-RNA-seq-%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">跨物种 RNA-seq 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Metatranscriptics"><span class="nav-number">4.1.</span> <span class="nav-text">Metatranscriptics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dual-RNA-seq"><span class="nav-number">4.2.</span> <span class="nav-text">Dual RNA-seq</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Triple-RNA-seq"><span class="nav-number">4.3.</span> <span class="nav-text">Triple RNA-seq</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-%E2%80%98omni-RNA-seq%E2%80%99-%E6%96%B9%E6%B3%95%E7%9A%84%E6%8E%A2%E8%AE%A8"><span class="nav-number">4.4.</span> <span class="nav-text">关于 ‘omni-RNA-seq’ 方法的探讨</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E7%BB%86%E8%83%9E-RNA-seq"><span class="nav-number">5.</span> <span class="nav-text">单细胞 RNA-seq</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9C%9F%E6%A0%B8%E7%BB%86%E8%83%9E-scRNA-seq"><span class="nav-number">5.1.</span> <span class="nav-text">真核细胞 scRNA-seq</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%86%E8%8F%8C-scRNA-seq"><span class="nav-number">5.2.</span> <span class="nav-text">细菌 scRNA-seq</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%EF%BC%9A%E5%BE%AE%E7%94%9F%E7%89%A9%E7%96%BE%E7%97%85%E6%B2%BB%E7%96%97"><span class="nav-number">6.</span> <span class="nav-text">未来：微生物疾病治疗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2021/03/13/rna-seq-deciphering-host-microbe-interactions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          rna-seq deciphering host-microbe interactions
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-03-13 21:29:45 / Modified: 21:55:20" itemprop="dateCreated datePublished" datetime="2021-03-13T21:29:45+08:00">2021-03-13</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li>RNA-seq技术以其单核苷酸水平的高分辨力成为研究宿主-微生物相互作用的主要技术，从而提高对其生理后果和作用机制的认识；</li>
+<li>根据真核生物和细菌的转录组特征的共性和差异比较了两者 RNA-seq 方案，进而从宏转录组学、互作转录组学等方面概述了跨物种 RNA-seq 方法；</li>
+<li>同时单细胞RNA-seq技术进入感染生物学领域，从单细胞水平来理解细胞异质性的决定作用；</li>
+<li>未来转录组学或将与功能基因组学等数据结合，对抗传染病和微生物疾病。</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="真核生物和细菌的转录组特征"><a href="#真核生物和细菌的转录组特征" class="headerlink" title="真核生物和细菌的转录组特征"></a>真核生物和细菌的转录组特征</h2><p>尽管经过了20亿年的分离进化，原核生物和真核生物之间还是分享了基本的 RNA 类别。核糖体 RNA (Ribosomal RNAs，RNAs)在核糖体中具有高度的支架作用和酶促作用，占细菌和真核细胞 RNA 含量的80% 以上(在快速生长的细胞中大于95%)。转移 RNA (tRNA)分子将 RNA 语言(核糖核酸酶)翻译为蛋白质信息(氨基酸链) ，通常对细胞 RNA 含量贡献10% 。mRNAs 占细胞转录组总数的5% 。</p>
+<p>细菌基因的平均长度为1kb，然而，它们通常被转录为多顺反子，从而形成跨越多个基因的长 mRNAs。</p>
+<p>真核编码转录本是作为带有内含子和外显子的前体合成的，在细胞核中进行剪接(内含子去除) ，然后输出到细胞质中。成熟的人类 mRNAs 的平均长度约为3kb，由于哺乳动物中只存在单顺反子，所以极长的编码转录本(大于10kb)非常罕见。</p>
+<ul>
+<li><p>转录本差异</p>
+</li>
+<li><p>RNA 含量差异</p>
+</li>
+</ul>
+<p>这些定性和定量转录组的差异反映在当前细菌和哺乳动物标准 RNA-seq 方案中。</p>
+<h2 id="细菌与真核生物-RNA-seq-工作流程比较"><a href="#细菌与真核生物-RNA-seq-工作流程比较" class="headerlink" title="细菌与真核生物 RNA-seq 工作流程比较"></a>细菌与真核生物 RNA-seq 工作流程比较</h2><p>Rna seq 实验的标准步骤是从生物样本中提纯核酸，对污染的基因组 DNA 进行酶消化，去除丰富但信息量较小的 rRNA，将剩余的转录本转化为 cDNA，对 cDNA 片段进行高通量测序，将测序结果与参考基因组序列比对，并对映射到个体基因特征的片段进行定量。</p>
+<p>目前细菌和真核表达谱的标准都是使用 Illumina 公司技术的“短读”合成测序</p>
+<h3 id="1-转录组固定、细胞裂解和-RNA-提取"><a href="#1-转录组固定、细胞裂解和-RNA-提取" class="headerlink" title="1 转录组固定、细胞裂解和 RNA 提取"></a>1 转录组固定、细胞裂解和 RNA 提取</h3><ul>
+<li>由于转录组是出了名的不稳定，在这种情况下，RNA 的组成应该借助固定剂来保持，以阻止从头转录和 RNA 衰变。</li>
+<li>原核细胞和真核细胞的物理化学性质有很大的不同，仔细评估跨物种转录组学的裂解效率，有效和均匀地分解样品中的所有细胞类型，同时仍然足够温和，不降解细胞 RNAs。</li>
+<li>裂解物准备好-&gt;下游RNA 分离技术</li>
+</ul>
+<h3 id="2-核糖耗尽"><a href="#2-核糖耗尽" class="headerlink" title="2 核糖耗尽"></a>2 核糖耗尽</h3><ul>
+<li><p>在细菌中，rRNA 通常在 cDNA 文库产生之前或期间被主动去除。</p>
+</li>
+<li><p>在真核生物 RNA-seq 中，rna 一般是通过选择性启动多腺苷酸转录本的 cDNA 来间接耗尽的</p>
+</li>
+</ul>
+<h3 id="3-cDNA-文库的制备和测序"><a href="#3-cDNA-文库的制备和测序" class="headerlink" title="3 cDNA 文库的制备和测序"></a>3 cDNA 文库的制备和测序</h3><ul>
+<li>细菌 RNA-seq 中，RNA 适配器通常连接到所获得的 RNA 片段的3′端，然后通过适配器特异性引物(如流行的 NEBNext 小型 RNA 文库预备装置; 新英格兰生物实验室)作为反转录锚</li>
+<li>真核生物 mRNA 表达谱的构建通常包括增加多腺苷酸转录本，然后通过随机引发(例如 TruSeq 的受体 mRNA 试剂盒; Illumina)使 RNA 片段化和 RT</li>
+</ul>
+<p>测序深度的要求也取决于 RNA-seq 实验的预期结果。尽管精确绘制转录本边界、操作子或选择性剪接结构和对低丰度转录本进行定量需要较高的测序深度，但大多数细菌和真核生物的 rna seq 研究实质上是差异表达分析，因此测序强度要小得多。</p>
+<h3 id="4-读对齐，归一化，量化和功能分析"><a href="#4-读对齐，归一化，量化和功能分析" class="headerlink" title="4 读对齐，归一化，量化和功能分析"></a>4 读对齐，归一化，量化和功能分析</h3><ul>
+<li>由于剪接是真核生物独有的分子过程，原核生物 RNA-seq 的标准读比对，节省计算量和时间，而真核生物的比对过程则依赖于剪接序列</li>
+<li>归一化</li>
+<li>功能分析：<ul>
+<li>差异表达分析：DESeq2、 edgeR52和 limma/vom。</li>
+<li>全局通路分析：基因本体论(GO)或京都基因和基因组百科全书(KEGG)。</li>
+<li>此外，对于小鼠或人类 RNA-seq 数据的分析，还存在更精确的数据库，专门研究例如代谢或免疫相关基因组。</li>
+</ul>
+</li>
+</ul>
+<h2 id="细菌-RNA-seq-在体内转录组学中的应用"><a href="#细菌-RNA-seq-在体内转录组学中的应用" class="headerlink" title="细菌 RNA-seq 在体内转录组学中的应用"></a>细菌 RNA-seq 在体内转录组学中的应用</h2><p>为了充分利用宿主和微生物的全局表达数据，需要高分辨率的转录组图谱。然而，小鼠和人类的转录组已经很好地注释了多年，细致的转录组图谱没有给予大多数细菌。相反，细菌转录组通常是基于计算机搜索长度大于100个氨基酸的潜在开放阅读框(orf)而注释，但可能缺少短的开放阅读框、非翻译区(UTRs)或非编码 RNA 基因。</p>
+<p>研究细菌病原体在<strong>宿主机体内</strong>的基因表达成为必要</p>
+<p>丰富细菌转录本，“杂交选择”是指将复杂的 cDNA 样本与物种特异性的生物素化探针进行孵化，以捕获并丰富远离宿主 cDNA 背景的感兴趣的 cDNA -&gt; 设计捕获探针</p>
+<h2 id="跨物种-RNA-seq-方法"><a href="#跨物种-RNA-seq-方法" class="headerlink" title="跨物种 RNA-seq 方法"></a>跨物种 RNA-seq 方法</h2><p>研究微生物与其他微生物或与宿主细胞的联系</p>
+<h3 id="Metatranscriptics"><a href="#Metatranscriptics" class="headerlink" title="Metatranscriptics"></a>Metatranscriptics</h3><p>基于测序的细菌群落结构分析始于宏基因组学：16S rDNA 序列分析(16S profiling) ，基因组 DNA shotgun 测序。然而，某个微生物物种或某个基因的丰度并不一定与该物种或基因在联合体中的功能贡献相关。</p>
+<p>metatranscriptomics ：对微生物内部相互作用的功能研究</p>
+<p>得到的 DNA 和 RNA 测序数据是分开处理的，然后用宏基因组数据来归一化metatranscriptomic reads。</p>
+<p>两种方法：参考基因组分类法，从头基因组组装基因组分类法de novo metagenome-assembled genomes (MAGs)</p>
+<ul>
+<li>基于参考基因组的分类器：HUMAnN2、 Kaiju87或 Kraken2。群落成员物种基本上是预先确定的，只有它们的相对丰度是未知的，例如在人类肠道微生物区系。</li>
+<li>群落中的细菌种类位置，优先采用MAGs 的新分类学分类法</li>
+</ul>
+<p>对健康人体肠道微生物组的比较研究表明，与metagenomic对应部分相比，metatranscriptomic对应部分的个体化程度通常较低。而纵向分析显示，随着时间的推移，个体的metatranscriptome比metagenome变化更大，这表明微生物基因表达受到环境和营养波动的积极调节。人类肠道微生物群的组成(metagenomics)和功能(metatranscriptomics)变化也与传染病的结果有关。</p>
+<h3 id="Dual-RNA-seq"><a href="#Dual-RNA-seq" class="headerlink" title="Dual RNA-seq"></a>Dual RNA-seq</h3><p>Dual RNA-seq 同时测量基因在(细胞内或细胞外)细菌和被感染的宿主细胞或组织中的表达。</p>
+<p>一般来说，来自被感染的寄主组织或器官的整体 RNA-seq 数据很难分析，因为改变的转录丰度代表了差异表达基因的总和和寄主细胞类型组成的改变。尽管如此，双 RNA-seq 已经成功地用于其中一些感染模型。</p>
+<p>当测序大量组织样本，细胞类型特异性基因表达可能会丢失在平均表达谱。两种方式提高分辨率: 在测序之前，通过分离感染组织和隔离预先确定的细胞类型，或者在测序之后，利用细胞类型特定标记对异质数据进行去计算处理。</p>
+<h3 id="Triple-RNA-seq"><a href="#Triple-RNA-seq" class="headerlink" title="Triple RNA-seq"></a>Triple RNA-seq</h3><h3 id="关于-‘omni-RNA-seq’-方法的探讨"><a href="#关于-‘omni-RNA-seq’-方法的探讨" class="headerlink" title="关于 ‘omni-RNA-seq’ 方法的探讨"></a>关于 ‘omni-RNA-seq’ 方法的探讨</h3><p>总的来说，在过去的5年里，多生物体 rna seq 方法的普及程度有了巨大的提高。虽然 metatranscriptics 和dual RNA-seq 正在成为现代感染生物学的常规技术，跨物种 RNA-seq 的发展将继续考虑更多的相互作用和复杂的相互作用网络。对产生的数据进行适当的分析需要复杂的生物信息学工具，并应随后进行试验，以探索预测的多物种相互作用节点的因果关系和功能结果。在这些努力的同时，感染研究领域目前正在被单细胞转录组学的引入所动摇。</p>
+<h2 id="单细胞-RNA-seq"><a href="#单细胞-RNA-seq" class="headerlink" title="单细胞 RNA-seq"></a>单细胞 RNA-seq</h2><p>超越批量分析的新的转录组学方法来捕获和理解细胞异质性如何决定宿主-微生物相互作用的结果。</p>
+<h3 id="真核细胞-scRNA-seq"><a href="#真核细胞-scRNA-seq" class="headerlink" title="真核细胞 scRNA-seq"></a>真核细胞 scRNA-seq</h3><p>细胞类型特异性基因表达特征和细胞组成变化有一个全面的图谱，单细胞数据集为研究不同宿主细胞类型的异质性提供了丰富的资源。</p>
+<p>局限性：</p>
+<ul>
+<li>体内 scRNA-seq 组织分离过程中空间信息的丢失 -&gt; NICHE-seq</li>
+<li>依赖于寡核苷酸启动的 RT，从而丢失了许多非多聚腺苷酸化 RNA 类的信息，最重要的是小型真核 RNA -&gt; Small-seq 方法</li>
+</ul>
+<h3 id="细菌-scRNA-seq"><a href="#细菌-scRNA-seq" class="headerlink" title="细菌 scRNA-seq"></a>细菌 scRNA-seq</h3><p>由于细菌细胞含有的 RNA19只有femtogram量，即比典型的真核细胞少100倍以上，因此需要一个灵敏的 cDNA 合成和扩增方案。目前大多数真核细胞 scRNA-seq 检测下限是每个细胞10份转录本，而细菌 scRNA-seq 协议必须考虑更低的平均拷贝数(每个细胞0.4份)。</p>
+<p>细菌 mRNAs (半衰期在微小范围内，而真核生物的半衰期在数小时内)的内在不稳定性。</p>
+<p>功能性细菌转录本上缺少poly A尾阻碍了基于 oligo (dT)的 RT 引发。</p>
+<p>以上问题 -&gt; 测序方法改进：期望 MATQ-seq、 PETRI-seq 和 microSPLiT 三个方案中步骤的技术改进和自动化将有助于细菌 scRNA-seq 成为在感染环境中研究微生物病原体的一种广泛使用的方法。</p>
+<p>-&gt; 感染生物学</p>
+<h2 id="未来：微生物疾病治疗"><a href="#未来：微生物疾病治疗" class="headerlink" title="未来：微生物疾病治疗"></a>未来：微生物疾病治疗</h2><p>在寻求理解宿主-微生物相互作用引起的基因表达变化的过程中，RNA-seq 已经成为一种核心方法学。</p>
+<p>虽然感染生物学的蛋白质中心史倾向于将 RNA-seq 研究的重点放在 mRNA 表达水平上，但人们越来越重视许多非编码转录本，这些转录本可能在感染的任何一方，即微生物和宿主发生变化。</p>
+<p>RNA 修饰是扩展 RNA 序列分析种间相互作用范围的另一个方面。</p>
+<p>时间和空间分辨率也必将进一步提高。新转录跟踪技术与 scRNA-seq 技术相结合，提供了病毒攻击的早期细胞反应的细粒度时间图像; 它也可以直接应用于感染细菌细胞的细胞。</p>
+<p>RNA-seq 的最终目标是同时描述和关联单个感染宿主细胞和病原体的基因表达变化。</p>
+<p>任何转录组学方法的一个重要的内在警告是，mRNA 水平可能不一定与分别编码的蛋白质的丰度相关。</p>
+<p>在蛋白质水平验证 rna-seq 具有重要性：蛋白质定量，范围从低通量(对于选定的关键因子，采用 western blot 或流式细胞术)到中通量(多重 ELISA 或‘免疫 pcr’与寡核苷酸结合的抗体)到高通量。</p>
+<p>将宿主-微生物转录组学与这些功能基因组学的数据结合起来，最终将得到可检验的假设，并提出 RNA 分子可以作为未来的生物标志物或药物靶点，用于对抗传染病和微生物疾病。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>Westermann, Alexander J., and Jörg Vogel. “Cross-species RNA-seq for deciphering host–microbe interactions.” <em>Nature Reviews Genetics</em> (2021): 1-18.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+              <a href="/tags/reading/" rel="tag"># reading</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/07/SNP-calling-using-VARSCAN/" rel="prev" title="SNP calling using VARSCAN">
+                  <i class="fa fa-chevron-left"></i> SNP calling using VARSCAN
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/21/from-Bayes-to-computational-biology/" rel="next" title="from Bayes to computational biology">
+                  from Bayes to computational biology <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

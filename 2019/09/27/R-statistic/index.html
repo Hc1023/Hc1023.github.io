@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="憨憨地承认这篇文章大量引用jimmy老师博客憨憨.jpg 基础概念需要掌握R内置数据集及R包数据集    内置数据集：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;dZPbCXccTzuj0KkOL7R31g   airway 数据集 https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;FTdOyxvlS4L-zL3inHTtZg  理解 定性变量（qualitative variabl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="R统计基础">
+<meta property="og:url" content="https://hc1023.github.io/2019/09/27/R-statistic/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="憨憨地承认这篇文章大量引用jimmy老师博客憨憨.jpg 基础概念需要掌握R内置数据集及R包数据集    内置数据集：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;dZPbCXccTzuj0KkOL7R31g   airway 数据集 https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;FTdOyxvlS4L-zL3inHTtZg  理解 定性变量（qualitative variabl">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/27/R-statistic/0924-2.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/27/R-statistic/0924-3.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/09/27/R-statistic/0924-4.png">
+<meta property="article:published_time" content="2019-09-27T07:00:16.000Z">
+<meta property="article:modified_time" content="2019-10-01T14:41:41.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="R">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2019/09/27/R-statistic/0924-2.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2019/09/27/R-statistic/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2019/09/27/R-statistic/","path":"2019/09/27/R-statistic/","title":"R统计基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>R统计基础 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E7%9F%A9%E9%98%B5%E7%9B%B8%E5%85%B3"><span class="nav-number">2.</span> <span class="nav-text">表达矩阵相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E6%A3%80%E9%AA%8C%E7%9B%B8%E5%85%B3"><span class="nav-number">3.</span> <span class="nav-text">统计检验相关</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2019/09/27/R-statistic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          R统计基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-27 15:00:16" itemprop="dateCreated datePublished" datetime="2019-09-27T15:00:16+08:00">2019-09-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2019-10-01 22:41:41" itemprop="dateModified" datetime="2019-10-01T22:41:41+08:00">2019-10-01</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>憨憨地承认这篇文章大量引用jimmy老师博客<br>憨憨.jpg</p>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>需要掌握R内置数据集及R包数据集</p>
+<ul>
+<li>  内置数据集：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/dZPbCXccTzuj0KkOL7R31g">https://mp.weixin.qq.com/s/dZPbCXccTzuj0KkOL7R31g</a></li>
+<li>  airway 数据集 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/FTdOyxvlS4L-zL3inHTtZg">https://mp.weixin.qq.com/s/FTdOyxvlS4L-zL3inHTtZg</a></li>
+</ul>
+<p>理解 定性变量（qualitative variable） 和 定量变量(quantitative variable)</p>
+<p>定量数据的<strong>集中趋势</strong>指标主要是：<code>众数、分位数和平均数</code></p>
+<p>定量数据的<strong>离散趋势</strong>指标主要是：<code>极差，方差和标准差，标准分数，相对离散系数（变异系数），偏态系数与峰态系数</code></p>
+<span id="more"></span>
+
+<p>Q1: 载入R中自带的数据集 iris，指出其每列是定性还是定量数据</p>
+<p>第1-4列为定量数据，第5列为定性数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data(&quot;iris&quot;)</span><br><span class="line">str(iris)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x27;data.frame&#x27;:	150 obs. of  5 variables:</span><br><span class="line"> $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...</span><br><span class="line"> $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...</span><br><span class="line"> $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...</span><br><span class="line"> $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...</span><br><span class="line"> $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</span><br></pre></td></tr></table></figure>
+
+<p>Q2: 对数据集 iris的所有定量数据列计算集中趋势指标：<code>众数、分位数和平均数</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">data=iris[,1:4]</span><br><span class="line"># 众数</span><br><span class="line">for (j in 1:4)&#123;</span><br><span class="line">  coldata&lt;-table(data[,j])</span><br><span class="line">  a=which(coldata==max(coldata))# 所有众数</span><br><span class="line">  print(paste(&quot;the mode is&quot;,names(a)))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第三列有两个众数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[1] &quot;the mode is 5&quot;</span><br><span class="line">[1] &quot;the mode is 3&quot;</span><br><span class="line">[1] &quot;the mode is 1.4&quot; &quot;the mode is 1.5&quot;</span><br><span class="line">[1] &quot;the mode is 0.2&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 分位数和平均数</span><br><span class="line">apply(data,2,summary)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">        Sepal.Length Sepal.Width Petal.Length Petal.Width</span><br><span class="line">Min.        4.300000    2.000000        1.000    0.100000</span><br><span class="line">1st Qu.     5.100000    2.800000        1.600    0.300000</span><br><span class="line">Median      5.800000    3.000000        4.350    1.300000</span><br><span class="line">Mean        5.843333    3.057333        3.758    1.199333</span><br><span class="line">3rd Qu.     6.400000    3.300000        5.100    1.800000</span><br><span class="line">Max.        7.900000    4.400000        6.900    2.500000</span><br></pre></td></tr></table></figure>
+
+<p>Q3:对数据集 iris的所有定性数据列计算水平及频次</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; table(iris[,5])</span><br><span class="line">    setosa versicolor  virginica </span><br><span class="line">        50         50         50 </span><br></pre></td></tr></table></figure>
+
+<p>Q4:对数据集 iris的所有定量数据列计算离散趋势指标：方差和标准差等</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; apply(data, 2, var)</span><br><span class="line">Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span><br><span class="line">   0.6856935    0.1899794    3.1162779    0.5810063 </span><br><span class="line">&gt; apply(data, 2, sd)</span><br><span class="line">Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span><br><span class="line">   0.8280661    0.4358663    1.7652982    0.7622377</span><br></pre></td></tr></table></figure>
+
+<p>Q5:计算数据集 iris的前两列变量的相关性，提示cor函数可以选择3种methods</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; cor(iris[,1:2],method =&quot;pearson&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length    1.0000000  -0.1175698</span><br><span class="line">Sepal.Width    -0.1175698   1.0000000</span><br><span class="line">&gt; cor(iris[,1:2],method =&quot;spearman&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length    1.0000000  -0.1667777</span><br><span class="line">Sepal.Width    -0.1667777   1.0000000</span><br><span class="line">&gt; cor(iris[,1:2],method =&quot;kendall&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length   1.00000000 -0.07699679</span><br><span class="line">Sepal.Width   -0.07699679  1.00000000</span><br></pre></td></tr></table></figure>
+
+<p>Q6:对数据集iris的所有定量数据列内部zcore标准化，并计算标准化后每列的平均值和标准差</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; newdata&lt;-apply(data, 2, scale)</span><br><span class="line">&gt; apply(newdata, 2, mean)</span><br><span class="line"> Sepal.Length   Sepal.Width  Petal.Length   Petal.Width </span><br><span class="line">-4.484318e-16  2.034094e-16 -2.895326e-17 -3.663049e-17 </span><br><span class="line">&gt; apply(newdata, 2, sd)</span><br><span class="line">Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span><br><span class="line">           1            1            1            1 </span><br></pre></td></tr></table></figure>
+<p>将每一列标准化为均值为0，标准差为1的数据</p>
+<p>Q7:计算列内部zcore标准化后 iris的前两列变量的相关性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; cor(newdata[,1:2],method =&quot;pearson&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length    1.0000000  -0.1175698</span><br><span class="line">Sepal.Width    -0.1175698   1.0000000</span><br><span class="line">&gt; cor(newdata[,1:2],method =&quot;spearman&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length    1.0000000  -0.1667777</span><br><span class="line">Sepal.Width    -0.1667777   1.0000000</span><br><span class="line">&gt; cor(newdata[,1:2],method =&quot;kendall&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length   1.00000000 -0.07699679</span><br><span class="line">Sepal.Width   -0.07699679  1.00000000</span><br></pre></td></tr></table></figure>
+<p>与Q5对比，标准化前后相关性不发生改变</p>
+<p>Q8: 根据数据集 iris的第五列拆分数据集后重复上面的Q2到Q7问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&gt; data(&quot;iris&quot;)</span><br><span class="line">&gt; iris_sp&lt;-split(x = iris, f = iris$Species)</span><br><span class="line">&gt; i=1 # 以第一个Species为例</span><br><span class="line">&gt; iris1=iris_sp[[i]]</span><br><span class="line">&gt; data=iris1[,1:4]</span><br><span class="line">&gt; # 2</span><br><span class="line">&gt; # 众数</span><br><span class="line">&gt; for (j in 1:4)&#123;</span><br><span class="line">+   coldata&lt;-table(data[,j])</span><br><span class="line">+   a=which(coldata==max(coldata))</span><br><span class="line">+   as.numeric(names(a))</span><br><span class="line">+   print(paste(&quot;the mode is&quot;,names(a)))</span><br><span class="line">+ &#125;</span><br><span class="line">[1] &quot;the mode is 5&quot;   &quot;the mode is 5.1&quot;</span><br><span class="line">[1] &quot;the mode is 3.4&quot;</span><br><span class="line">[1] &quot;the mode is 1.4&quot; &quot;the mode is 1.5&quot;</span><br><span class="line">[1] &quot;the mode is 0.2&quot;</span><br><span class="line">&gt; # 分位数和平均数</span><br><span class="line">&gt; apply(data,2,summary)</span><br><span class="line">        Sepal.Length Sepal.Width Petal.Length Petal.Width</span><br><span class="line">Min.           4.300       2.300        1.000       0.100</span><br><span class="line">1st Qu.        4.800       3.200        1.400       0.200</span><br><span class="line">Median         5.000       3.400        1.500       0.200</span><br><span class="line">Mean           5.006       3.428        1.462       0.246</span><br><span class="line">3rd Qu.        5.200       3.675        1.575       0.300</span><br><span class="line">Max.           5.800       4.400        1.900       0.600</span><br><span class="line">&gt; # 3</span><br><span class="line">&gt; table(iris1[,5])</span><br><span class="line"></span><br><span class="line">    setosa versicolor  virginica </span><br><span class="line">        50          0          0 </span><br><span class="line">&gt; View(iris1)</span><br><span class="line">&gt; # 4</span><br><span class="line">&gt; apply(data, 2, var)</span><br><span class="line">Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span><br><span class="line">  0.12424898   0.14368980   0.03015918   0.01110612 </span><br><span class="line">&gt; apply(data, 2, sd)</span><br><span class="line">Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span><br><span class="line">   0.3524897    0.3790644    0.1736640    0.1053856 </span><br><span class="line">&gt; # 5</span><br><span class="line">&gt; cor(iris1[,1:2],method =&quot;pearson&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length    1.0000000   0.7425467</span><br><span class="line">Sepal.Width     0.7425467   1.0000000</span><br><span class="line">&gt; cor(iris1[,1:2],method =&quot;kendall&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length     1.000000    0.597253</span><br><span class="line">Sepal.Width      0.597253    1.000000</span><br><span class="line">&gt; cor(iris1[,1:2],method =&quot;spearman&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length    1.0000000   0.7553375</span><br><span class="line">Sepal.Width     0.7553375   1.0000000</span><br></pre></td></tr></table></figure>
+<p>发现两列有正相关性，相比之前接近于0的相关性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 6</span><br><span class="line">&gt; newdata&lt;-apply(data, 2, scale)</span><br><span class="line">&gt; apply(newdata, 2, mean)</span><br><span class="line"> Sepal.Length   Sepal.Width  Petal.Length   Petal.Width </span><br><span class="line">-6.822689e-16  1.828572e-16  1.282318e-16  1.243016e-16 </span><br><span class="line">&gt; apply(newdata, 2, sd)</span><br><span class="line">Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span><br><span class="line">           1            1            1            1 </span><br><span class="line">&gt; # 7</span><br><span class="line">&gt; cor(newdata[,1:2],method =&quot;pearson&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length    1.0000000   0.7425467</span><br><span class="line">Sepal.Width     0.7425467   1.0000000</span><br><span class="line">&gt; cor(newdata[,1:2],method =&quot;kendall&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length     1.000000    0.597253</span><br><span class="line">Sepal.Width      0.597253    1.000000</span><br><span class="line">&gt; cor(newdata[,1:2],method =&quot;spearman&quot; )</span><br><span class="line">             Sepal.Length Sepal.Width</span><br><span class="line">Sepal.Length    1.0000000   0.7553375</span><br><span class="line">Sepal.Width     0.7553375   1.0000000</span><br></pre></td></tr></table></figure>
+<p>Q9:载入R中自带的数据集 mtcars，重复上面的Q1到Q7个问题<br>Q10: 载入r包airway并且通过assay函数拿到其表达矩阵后计算每列之间的相关性</p>
+<p>方法同样，可以看看airway这个数据集。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&gt; rm(list=ls())</span><br><span class="line">&gt; options(stringsAsFactors = F)</span><br><span class="line">&gt; library(airway)</span><br><span class="line">&gt; data(airway)</span><br><span class="line">&gt; # 这里需要自行学习bioconductor里面的RangedSummarizedExperiment对象</span><br><span class="line">&gt; airway</span><br><span class="line">class: RangedSummarizedExperiment </span><br><span class="line">dim: 64102 8 </span><br><span class="line">metadata(1): &#x27;&#x27;</span><br><span class="line">assays(1): counts</span><br><span class="line">rownames(64102): ENSG00000000003 ENSG00000000005 ... LRG_98</span><br><span class="line">  LRG_99</span><br><span class="line">rowData names(0):</span><br><span class="line">colnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521</span><br><span class="line">colData names(9): SampleName cell ... Sample BioSample</span><br><span class="line">&gt; RNAseq_expr=assay(airway)</span><br><span class="line">&gt; colnames(RNAseq_expr)</span><br><span class="line">[1] &quot;SRR1039508&quot; &quot;SRR1039509&quot; &quot;SRR1039512&quot; &quot;SRR1039513&quot; &quot;SRR1039516&quot;</span><br><span class="line">[6] &quot;SRR1039517&quot; &quot;SRR1039520&quot; &quot;SRR1039521&quot;</span><br><span class="line">&gt; RNAseq_expr[1:4,1:4]</span><br><span class="line">                SRR1039508 SRR1039509 SRR1039512 SRR1039513</span><br><span class="line">ENSG00000000003        679        448        873        408</span><br><span class="line">ENSG00000000005          0          0          0          0</span><br><span class="line">ENSG00000000419        467        515        621        365</span><br><span class="line">ENSG00000000457        260        211        263        164</span><br><span class="line">&gt; # RNAseq_expr 是一个数值型矩阵，属于连续性变量，可以探索众数、分位数和平均数 ，极差，方差和标准差等统计学指标</span><br><span class="line">&gt; RNAseq_gl=colData(airway)[,3]</span><br><span class="line">&gt; table(RNAseq_gl)</span><br><span class="line">RNAseq_gl</span><br><span class="line">  trt untrt </span><br><span class="line">    4     4 </span><br></pre></td></tr></table></figure>
+
+<h2 id="表达矩阵相关"><a href="#表达矩阵相关" class="headerlink" title="表达矩阵相关"></a>表达矩阵相关</h2><p>首先了解各种统计分布：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uly4jlQomk9LZlHyknkNdg">https://mp.weixin.qq.com/s/uly4jlQomk9LZlHyknkNdg</a> 在R语言的实现方式。</p>
+<p>Q1: 把RNAseq_expr第一列全部加1后取log2后计算平均值和标准差</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tmp=log2(RNAseq_expr[,1]+1)# 记得 +1 哦，因为很多是0</span><br><span class="line">mean(tmp)</span><br><span class="line">sd(tmp)</span><br></pre></td></tr></table></figure>
+
+<p>Q2: 根据上一步得到平均值和标准差生成同样个数的随机的正态分布数值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a=rnorm(length(tmp),mean = mean(tmp),sd = sd(tmp))</span><br><span class="line">a=sort(a)</span><br><span class="line">plot(a)</span><br><span class="line">points(sort(tmp))</span><br></pre></td></tr></table></figure>
+
+<p>Q3: 删除RNAseq_expr第一列低于5的数据后，重复Q1和Q2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tmp=RNAseq_expr[,1]</span><br><span class="line">tmp=tmp[tmp&gt;5]</span><br><span class="line">tmp=log2(tmp)</span><br><span class="line">a=rnorm(length(tmp),mean = mean(tmp),sd = sd(tmp))</span><br><span class="line">a=sort(a)</span><br><span class="line">plot(a)</span><br><span class="line">points(sort(tmp))</span><br></pre></td></tr></table></figure>
+
+<p>Q4: 基于Q3对RNAseq_expr的第一列和第二列进行T检验</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">x=RNAseq_expr[,1]</span><br><span class="line">x=x[x&gt;5]</span><br><span class="line">x=log2(x)</span><br><span class="line"></span><br><span class="line">y=RNAseq_expr[,2]</span><br><span class="line">y=y[y&gt;5]</span><br><span class="line">y=log2(y)</span><br><span class="line"></span><br><span class="line">t.test(x,y)</span><br></pre></td></tr></table></figure>
+<p>若取$\alpha=0.05$来作为显著性水平，那么两列数据有显著性不同。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	Welch Two Sample t-test</span><br><span class="line"></span><br><span class="line">data:  x and y</span><br><span class="line">t = 2.8841, df = 34335, p-value = 0.003928</span><br><span class="line">alternative hypothesis: true difference in means is not equal to 0</span><br><span class="line">95 percent confidence interval:</span><br><span class="line"> 0.02800383 0.14680584</span><br><span class="line">sample estimates:</span><br><span class="line">mean of x mean of y </span><br><span class="line"> 7.651705  7.564300 </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">library(ggpubr)</span><br><span class="line">df=data.frame(value=c(x,y),</span><br><span class="line"> group=c(rep(&#x27;x&#x27;,length(x)),rep(&#x27;y&#x27;,length(y))))</span><br><span class="line">ggboxplot(df, y = &quot;value&quot;, x = &quot;group&quot;)</span><br></pre></td></tr></table></figure>
+<p><img src="0924-2.png"></p>
+<p>Q5: 取RNAseq_expr行之和最大的那一行根据分组矩阵进行T检验</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pos=which.max(rowSums(RNAseq_expr))</span><br><span class="line">t.test(RNAseq_expr[pos,]~RNAseq_gl)</span><br><span class="line">pos</span><br></pre></td></tr></table></figure>
+
+<p>Q6: 取RNAseq_expr的MAD最大的那一行根据分组矩阵进行T检验</p>
+<p>对于单变量数据集$X=(X_1,X_2,…,X_n)$ ，MAD(Median Absolute Deviation)定义为数据点到中位数的绝对偏差的中位数：<br>$$MAD=median(|X_i-median(X)|)$$</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pos=which.max(apply(RNAseq_expr,1,mad))</span><br><span class="line">t.test(RNAseq_expr[pos,]~RNAseq_gl)</span><br><span class="line">pos</span><br></pre></td></tr></table></figure>
+
+<p>Q7: 对RNAseq_expr全部加1后取log2后重复Q5和Q6</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RNAseq_expr=log2(RNAseq_expr+1)</span><br><span class="line">pos=which.max(rowSums(RNAseq_expr))</span><br><span class="line">pos</span><br><span class="line">t.test(RNAseq_expr[pos,]~RNAseq_gl)</span><br><span class="line">pos=which.max(apply(RNAseq_expr,1,mad))</span><br><span class="line">pos</span><br><span class="line">t.test(RNAseq_expr[pos,]~RNAseq_gl)</span><br></pre></td></tr></table></figure>
+<p>看看是不是基因变化了，统计结果也变化了<br>A：是的！而且，mad表示的是一个基因在不同样本中变化的情况，而mad大的基因也未必有显著差异，在前一问中p值比较大，这问中p值就小了有显著性差异。</p>
+<p>Q8: 取RNAseq_expr矩阵的MAD最高的100行，对列和行分别进行层次聚类</p>
+<p>Hierarchical Clustering: Hierarchical cluster analysis on a set of dissimilarities and methods for analyzing it.<br>hclust(d, method = “complete”, members = NULL)<br>d: a dissimilarity structure as produced by dist.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cg=names(tail(sort(apply(RNAseq_expr,1,mad)),100))</span><br><span class="line">dat=RNAseq_expr[cg,]</span><br><span class="line">plot(hclust(dist(t(dat))))</span><br><span class="line">colnames(dat)</span><br><span class="line">RNAseq_gl</span><br><span class="line">plot(hclust(dist( dat )))</span><br></pre></td></tr></table></figure>
+<p>检查一下聚类结果跟样本的处理信息是否能对应<br><img src="0924-3.png"></p>
+<p>Q9: 取RNAseq_expr矩阵的SD最高的100行，对列和行分别进行层次聚类</p>
+<p>将Q8中的<code>mad</code>改为<code>sd</code>即可</p>
+<p>Q10: 对Q8矩阵按照行和列分别归一化并且热图可视化<br>scale: scale is generic function whose default method centers and/or scales the <strong>columns</strong> of a numeric matrix.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cg=names(tail(sort(apply(RNAseq_expr,1,mad)),100))</span><br><span class="line">dat=RNAseq_expr[cg,]</span><br><span class="line">pheatmap::pheatmap(scale(dat))</span><br><span class="line">pheatmap::pheatmap(t(scale(t(dat))))</span><br></pre></td></tr></table></figure>
+<p><img src="0924-4.png"></p>
+<h2 id="统计检验相关"><a href="#统计检验相关" class="headerlink" title="统计检验相关"></a>统计检验相关</h2><p>这里需要对前面的RNAseq_expr矩阵进行一定程度的过滤，主要是过滤那些每一列都为0的行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e1=RNAseq_expr[apply(RNAseq_expr,1,function(x) sum(x&gt;0)&gt;1),] </span><br></pre></td></tr></table></figure>
+<p>上面的 e1 矩阵下面的习题就用得到。</p>
+<p>Q1: 对e1每一行独立根据分组矩阵进行T检验，检查为什么有些行T检验失败</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apply(e1, 1, function(x)&#123;</span><br><span class="line"> t.test(x~RNAseq_gl)$p.value</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error in t.test.default(x = c(SRR1039509 = 1L, SRR1039513 = 1L, SRR1039517 = 1L,  : </span><br><span class="line"> data are essentially constant </span><br></pre></td></tr></table></figure>
+<p>Q2: 找出T检验失败的行并且从e1矩阵剔除掉</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">e1_a=e1[,RNAseq_gl==&#x27;trt&#x27;]</span><br><span class="line">e1_b=e1[,RNAseq_gl==&#x27;untrt&#x27;]</span><br><span class="line">a_filter=apply(e1_a, 1,function(x) sd(x)&gt;0)</span><br><span class="line">b_filter=apply(e1_b, 1,function(x) sd(x)&gt;0)</span><br><span class="line">table(a_filter,b_filter)</span><br><span class="line">e1=e1[a_filter | b_filter,]</span><br></pre></td></tr></table></figure>
+<p>注意什么时候可以应用t检验，以下同样失败</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bl &lt;- c(140, 138, 150, 148, 135)</span><br><span class="line">fu &lt;- c(138, 136, 148, 146, 133)</span><br><span class="line">t.test(fu, bl, alternative = &quot;two.sided&quot;, paired = TRUE)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>So this means that as far as statistics go, there’s no need for fancy t.test and its a certainty that for each subject there would be a -2 reduction in the fu compared to the bl?</p>
+</blockquote>
+<p>Q3: 对过滤后的e1矩阵进行每一行独立根据分组矩阵进行T检验</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apply(e1, 1, function(x)&#123;</span><br><span class="line">  t.test(x~RNAseq_gl)$p.value</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>成功</p>
+<p>Q4: 对e1矩阵进行加1后log2的归一化命名为e2再对每一行独立根据分组矩阵进行T检验</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">e2=log2(e1+1)</span><br><span class="line">apply(e2, 1, function(x)&#123;</span><br><span class="line">  t.test(x~RNAseq_gl)$p.value</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>Q5: 对e1,e2的T检验P值做相关性分析</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">p1=apply(e1, 1, function(x)&#123;</span><br><span class="line">  t.test(x~RNAseq_gl)$p.value</span><br><span class="line">&#125;) </span><br><span class="line">e2=log2(e1+1)</span><br><span class="line">p2=apply(e2, 1, function(x)&#123;</span><br><span class="line">  t.test(x~RNAseq_gl)$p.value</span><br><span class="line">&#125;) </span><br><span class="line">plot(p1,p2)</span><br><span class="line">cor(p1,p2)</span><br></pre></td></tr></table></figure>
+<p>如果生物信息学领域，这样的简单T检验是有很多不合理的地方，比如文库大小，比如基因表达量分布等等。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/R/" rel="tag"># R</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/23/linux-vcf/" rel="prev" title="Linux --vcf格式文件处理">
+                  <i class="fa fa-chevron-left"></i> Linux --vcf格式文件处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/30/R-intro/" rel="next" title="R初步接触">
+                  R初步接触 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

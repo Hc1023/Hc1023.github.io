@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Keypoints全基因组关联研究Genome-wide association studies (GWAS) 在人类基因组数据分析中非常成功。微生物全基因组可用性的提高为微生物GWAS提供了机会。最初的微生物GWAS已成功识别出一系列细菌，病毒和原生动物在强烈选择下的性状变异，例如耐药性。微生物GWAS存在一些挑战，这些挑战可能会阻碍在适度选择条件下鉴定变体identifying variant">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Microbial GWAS">
+<meta property="og:url" content="https://hc1023.github.io/2019/12/18/Microbial-GWAS/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="Keypoints全基因组关联研究Genome-wide association studies (GWAS) 在人类基因组数据分析中非常成功。微生物全基因组可用性的提高为微生物GWAS提供了机会。最初的微生物GWAS已成功识别出一系列细菌，病毒和原生动物在强烈选择下的性状变异，例如耐药性。微生物GWAS存在一些挑战，这些挑战可能会阻碍在适度选择条件下鉴定变体identifying variant">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/18/Microbial-GWAS/1218.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/18/Microbial-GWAS/1218-2.png">
+<meta property="article:published_time" content="2019-12-18T15:09:52.000Z">
+<meta property="article:modified_time" content="2020-05-13T15:39:53.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="reading">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2019/12/18/Microbial-GWAS/1218.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2019/12/18/Microbial-GWAS/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2019/12/18/Microbial-GWAS/","path":"2019/12/18/Microbial-GWAS/","title":"Microbial GWAS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Microbial GWAS | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Keypoints"><span class="nav-number">1.</span> <span class="nav-text">Keypoints</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-and-methodology-of-GWAS"><span class="nav-number">2.</span> <span class="nav-text">Data and methodology of GWAS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adapting-GWAS-to-microbial-variants"><span class="nav-number">3.</span> <span class="nav-text">Adapting GWAS to microbial variants</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Confounding-factors-in-microbial-GWAS"><span class="nav-number">4.</span> <span class="nav-text">Confounding factors in microbial GWAS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multiple-testing-and-replication"><span class="nav-number">5.</span> <span class="nav-text">Multiple testing and replication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Power-polygenicity-and-heritability"><span class="nav-number">6.</span> <span class="nav-text">Power, polygenicity and heritability</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2019/12/18/Microbial-GWAS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Microbial GWAS
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-12-18 23:09:52" itemprop="dateCreated datePublished" datetime="2019-12-18T23:09:52+08:00">2019-12-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-05-13 23:39:53" itemprop="dateModified" datetime="2020-05-13T23:39:53+08:00">2020-05-13</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Keypoints"><a href="#Keypoints" class="headerlink" title="Keypoints"></a>Keypoints</h2><p>全基因组关联研究Genome-wide association studies (GWAS) 在人类基因组数据分析中非常成功。微生物全基因组可用性的提高为微生物GWAS提供了机会。<br>最初的微生物GWAS已成功识别出一系列细菌，病毒和原生动物在强烈选择下的性状变异，例如耐药性。<br>微生物GWAS存在一些挑战，这些挑战可能会阻碍在适度选择条件下鉴定变体identifying variants。主要挑战是由于选择和复杂的重组模式selection and complex recombination patterns.，导致微生物种群分层population stratification增加。<br>专门针对微生物GWAS的需求量身定制的新型软件将大大加快该领域的发展。特别是，多基因方法polygenic methods的应用尚未在微生物中进行评估。<br>令人兴奋的未来研究领域是在同一样本中生成宿主和微生物基因组数据the generation of host and microbial genomics data within the same samples。这将允许对基因组进行基因组分析genome-to-genome analyses，以测试宿主与微生物之间的相互作用。</p>
+<span id="more"></span>
+
+<h2 id="Data-and-methodology-of-GWAS"><a href="#Data-and-methodology-of-GWAS" class="headerlink" title="Data and methodology of GWAS"></a>Data and methodology of GWAS</h2><ul>
+<li><p>postulation: many high-frequency but low-effect variants contribute to disease risk</p>
+</li>
+<li><p>Each SNP is analysed, usually through linear or logistic regression, to determine whether one allele is significantly associated with the phenotype</p>
+</li>
+</ul>
+<p>通过回归的方法建立SNP和phenotype的correlation</p>
+<ul>
+<li>Owing to the co-inheritance of segments of the genome over generations, correlations (known as linkage disequilibrium (LD)) exist between genetic variants that are in close proximity. </li>
+</ul>
+<p>在紧密接近的遗传变异之间存在相关性（称为连锁不平衡（LD））通过包括单个近端SNP来“标记”局部遗传变异，并根据已知的相关性推算未直接进行基因分型的其他SNP。</p>
+<ul>
+<li>Differences between human GWAS and microbial GWAS</li>
+</ul>
+<p>主要不同在于the source of the genomic data</p>
+<p>与人类GWAS的数据来自SNP基因分型芯片SNP genotyping chips不同，几乎所有微生物的基因组数据都来自测序sequencing</p>
+<p>这影响了GWAS的多个方面，特别是SNP调用SNP calling，因为在微生物测序数据中检测到的SNP不仅将是双等位基因bi-allelic，而且还将是三等位基因和四等位基因tri-allelic and quad-allelic。这使变体调用variant calling，数据存储和分析变得复杂。在微生物GWAS中，将基因座与参考基因组匹配Matching loci to a reference genome的重要性也越来越高，以确保每个样品在同一位置调用SNP并在研究中进行比较。测序还会影响过滤SNP和单个样品必须采取的质量控制步骤quality control steps 。由于与研究中的样本数量相比，SNP数量众多，因此进行质量控制以优先排除低质量的SNP——去除具有较低次要等位基因频率low minor allele frequency，满足Hardy–Weinberg equilibrium。</p>
+<h2 id="Adapting-GWAS-to-microbial-variants"><a href="#Adapting-GWAS-to-microbial-variants" class="headerlink" title="Adapting GWAS to microbial variants"></a>Adapting GWAS to microbial variants</h2><p>在微生物GWAS中始终不可能仅关注SNP的作用</p>
+<ul>
+<li>微生物GWAS需要测试SNP与基因存在之间的这种差异</li>
+</ul>
+<p>例如，在细菌中，重组可以引入新基因。</p>
+<p><strong>analysis of copy number variants (CNVs)</strong></p>
+<p>CNV是基因组部分的大型重复或缺失。</p>
+<p>变体对该负担的贡献可以通过其预测的功能影响来加权。使用将多个遗传变异的影响合并为一个变量的定量负担，可能会提供用于分析微生物GWAS中基因存在与否以及稀有变异的统计方法。</p>
+<p><strong>analysing k-mers15</strong></p>
+<p>k-mers的好处是它们同时捕获共同的变异和基因存在。</p>
+<ul>
+<li>Within-host diversity will lead to non-discrete SNP calling</li>
+</ul>
+<p>宿主内的多样性将导致非离散SNP调用，等位基因的频率反映宿主细胞内微生物序列上的频率，而不是等位基因的存在与否。尽管测试等位基因频率与表型之间的线性关联具有务实意义，但也存在<strong>非线性效应</strong>的可能性。</p>
+<ul>
+<li>lineage effects谱系效应</li>
+</ul>
+<p>微生物的谱系或亚型可能是感兴趣的遗传单位，既可以是单独的，也可以是单个SNP或k-mers的作用之外的遗传单位。</p>
+<h2 id="Confounding-factors-in-microbial-GWAS"><a href="#Confounding-factors-in-microbial-GWAS" class="headerlink" title="Confounding factors in microbial GWAS"></a>Confounding factors in microbial GWAS</h2><p>main challenge: identifying seemingly causal variants that are in fact false positives due to <strong>population structure &amp; multiple testing</strong></p>
+<p>假阳性的因果变异</p>
+<ul>
+<li>population structure</li>
+</ul>
+<p>人群结构混淆，GWAS将识别出仅能反映祖先而不是疾病生物学信息的预测性SNP。为了避免这个问题，人类GWAS通常将招募活动限制在族裔同质的人群ethnically homogeneous groups中。即使在相对同质的人口中，也会存在一些人口结构。这些人口分层的微妙影响通过主成分分析principal component analysis得以纠正。</p>
+<ul>
+<li>homologous recombination同源重组</li>
+</ul>
+<p>在细菌和病毒中，通过替换短序列区块the replacement of short sequence blocks而不是沿着整个染色体的多次交换multiple crossovers along the whole chromosome。</p>
+<p>这意味着远距离LD在微生物基因组中的分解方式有所不同，即使区域内的短距离LD减少了，长距离LD的变体也会相互保留。 这种长距离LD可能使因果变异的识别成为问题。</p>
+<p>Methods that are designed for analysing historically ethnically mixed, or ‘admixed’, human populations may be helpful in this case, because they make use of recombination patterns to identify associated loci.</p>
+<ul>
+<li>microbial population structure can represent selection on the phenotype of interest</li>
+</ul>
+<p>微生物种群结构可以代表对目标表型的选择，例如抗生素耐药性。考虑到跨微生物重组和选择频率的差异，随之而来的种群结构很可能从纯粹的克隆到近乎泛滥。此外，成功谱系的迅速传播可能会暂时减少它们与其他物种的重组。在选择力强的微生物中，最好在不同时间在单个宿主内使用重复的样品，例如比较预处理和后处理序列。</p>
+<p>但是，这种方法不适用于纵向表型 longitudinal phenotypes，例如发展疾病症状所花费的时间，或在进化速率较低的微生物中。 在这些研究中，使用混合模型说明相关性或谱系效应，或基于系统发育结构识别基因组选择信号的方法，可能比典型的GWAS回归方法更具吸引力。</p>
+<p> In these studies, methods that use mixed models to account for relatedness or lineage effects, or to identify signals of selection across the genome based on phylogenetic structure, may have more traction than typical GWAS regression methods.</p>
+<h2 id="Multiple-testing-and-replication"><a href="#Multiple-testing-and-replication" class="headerlink" title="Multiple testing and replication"></a>Multiple testing and replication</h2><ul>
+<li>testing hundreds of thousands of SNPs leads to tens of thousands of SNPs being significant at P &lt; 0.05 by chance alone.</li>
+</ul>
+<p>被认为具有统计学意义的关联的标准截止值为P = 0.05，这表示随机发生的可能性为5％。但是，测试成千上万的SNP会导致成千上万的SNP仅凭偶然机会在P &lt;0.05时有意义。为了说明测试的数量，SNP必须通过全基因组范围内的显着性临界值才能被认为具有显着性。在人类中，这通常是P &lt;5E-824，这大约等于早期GWAS中分析的SNP数量的Bonferroni校正（多次测试校正）。但是，它继续用于更密集的基因分型和估算研究中。通过更深的基因分型或估算，GWAS中包含的其他SNP与已知的高LD处于较高的LD，因此SNP之间的相关性减少了进行的独立测试的数量。因此，了解SNP之间的LD水平对于计算正确的全基因组意义阈值很重要。即使严格限制了全基因组的重要性，确定关联是否代表假阳性仍然是有问题的。</p>
+<ul>
+<li>replication in an independent cohort</li>
+</ul>
+<p>在独立队列中进行复制。<br>This is both to avoid false positives and to accurately estimate the effect size of the SNP. </p>
+<p>复制期间不存在发现偏差，因此复制队列中的效应大小将更准确地反映真实效应。<br>replication does not require the association of a SNP to reach genome-wide significance in the replication cohort, but to pass a P value threshold based on the number of SNPs brought forward for replication.<br>meta-analysis of the P values of a SNP in both the discovery and the replication cohorts should surpass genome-wide significance in order for a SNP to be considered a true positive.</p>
+<p>However, microbial GWAS may be less reliant on replication than human GWAS given that suspected causal variants can be validated in vitro.<br>One important area of research is the development of methods to identify and correct for epistasis. </p>
+<ul>
+<li>可视化全基因组关联研究（GWAS）的结果</li>
+</ul>
+<p><img src="1218.png"></p>
+<p><strong>Manhattan plot</strong>：绘制每个变量的P值与其位置的关系（见图a）</p>
+<p>x轴表示基因组位置。 y轴是-log（P值）。使用对数标度，以使最重要的单核苷酸多态性（SNP）的值高于大多数非重要SNP的值。在y轴上使用参考线来反映全基因组范围的重要性，偶尔使用第二条线代表“建议意义”阈值。由于对连锁不平衡（LD）的期望，通常将单个高度重要的SNP本身解释为基因分型错误。在人类研究中，LD中具有真正因果变异的重要SNP列可见，尽管这种期望取决于生物体的LD。</p>
+<p><strong>quantile-quantile (QQ) plot</strong>：将研究中观察到的-log（P值）的分布（y轴）与零假设（x轴；见图b）下的预期分布进行比较</p>
+<p>Departure of observed SNP P values from the y = x reference line may reflect systematic inflation in the test statistics owing to population stratification. However, departure from this line is also expected for a truly polygenic trait, as many causal SNPs may not yet have reached genome-wide significance owing to a lack of power. This will lead to an excess of low P values across all SNPs. </p>
+<h2 id="Power-polygenicity-and-heritability"><a href="#Power-polygenicity-and-heritability" class="headerlink" title="Power, polygenicity and heritability"></a>Power, polygenicity and heritability</h2><p>The problem of missing heritability persisted, leading to a move away from single SNP analyses and towards polygenic methods.</p>
+<p>PRSs are based on the assumption that many SNPs with small effect sizes will fail the stringent cut-off that is used for genome-wide significance; however, together their cumulative effect could explain a large amount of the variance in risk. </p>
+<p>定义每个SNP的“风险”等位基因和效应大小，而不管P值是否显着。在复制队列中，将单个样本携带的“风险”等位基因的数量相加为一个分数（PRS），每个等位基因均按其效应大小加权。然后计算由PRS预测的病例控制状态的变化。通常使用不同的P值阈值来定义几个PRS，以包含来自发现GWAS的SNP，例如，使用P &lt;0.001，P &lt;0.05，P &lt;0.2和P &lt;0.5的SNP来获得四个分数。随着包含更多的SNP，将更有可能包含所有具有真正作用的SNP。但是，包含更多的SNP也会增加SNP的数量，但没有真正的效果，因此会增加噪声，这会导致解释的变化量达到平稳。与单个SNP的结果相比，PRS最终提供了更强大的预测工具。因此，PRS可能是将微生物GWAS的结果快速转化为临床预测的关键，甚至在不了解各个风险变量的作用之前。</p>
+<p><img src="1218-2.png"></p>
+<p>由图可以看出，识别出的SNP数量随样本数量呈指数增加，并且在每个阶段，PRS都比单独使用重要的SNP提供更好的预测。 但是，即使在相当大的GWAS中，“遗传力缺失”的挑战仍在继续，其方差解释仍低于GREML和双胞胎研究得出的遗传力估计值。</p>
+<p>这是后期做的一点补充。</p>
+<p>关于lineage effects，我暂时理解的是相对于SNPs or k‑mers更宏观的一个整体效应，以下原文</p>
+<blockquote>
+<p>In this case, entire lineages, such as viral subtypes, might differ in phenotype. Thus, the lineage or subtype of the microorganism might be the genetic unit of interest, either alone or in addition to the<br>effects of individual SNPs or k‑mers.</p>
+</blockquote>
+<p>关于 non-discrete SNP calling和frequency，应该就是说SNP的频率不代表存在缺失，反映等位基因的存在频率。目测就是多等位基因的意思吧…以下原文</p>
+<blockquote>
+<p>Withinhost diversity will lead to non-discrete SNP calling, where the frequency of an allele reflects its frequency on microbial sequences within the host, rather than the presence or absence of an allele.</p>
+</blockquote>
+<p>references:<br>1.Microbial genome-wide association studies: lessons from human GWAS <a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pubmed/27840430">https://www.ncbi.nlm.nih.gov/pubmed/27840430</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/reading/" rel="tag"># reading</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/13/cluster-PCA/" rel="prev" title="聚类分析和主成分分析">
+                  <i class="fa fa-chevron-left"></i> 聚类分析和主成分分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/19/multi-Discriminant/" rel="next" title="判别分析2">
+                  判别分析2 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

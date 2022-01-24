@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="参考 https:&#x2F;&#x2F;pawseysc.github.io&#x2F;containers-bioinformatics-workshop&#x2F;5.build&#x2F;index.html 本文利用docker搭建镜像，然后通过singularity pull转化到singularity镜像格式。 目标：搭建容器镜像  RStudio 镜像 Conda 镜像 自己编译软件的镜像  使用 Docker（更好的兼容性）Do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building Containers">
+<meta property="og:url" content="https://hc1023.github.io/2021/02/14/Building-Containers/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="参考 https:&#x2F;&#x2F;pawseysc.github.io&#x2F;containers-bioinformatics-workshop&#x2F;5.build&#x2F;index.html 本文利用docker搭建镜像，然后通过singularity pull转化到singularity镜像格式。 目标：搭建容器镜像  RStudio 镜像 Conda 镜像 自己编译软件的镜像  使用 Docker（更好的兼容性）Do">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-02-14T14:32:24.000Z">
+<meta property="article:modified_time" content="2021-07-14T09:10:29.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2021/02/14/Building-Containers/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2021/02/14/Building-Containers/","path":"2021/02/14/Building-Containers/","title":"Building Containers"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Building Containers | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RStudio%E9%95%9C%E5%83%8F"><span class="nav-number">1.</span> <span class="nav-text">RStudio镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E8%BD%AF%E4%BB%B6%E9%95%9C%E5%83%8F%EF%BC%9Asamtools%E4%B8%BA%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">编译软件镜像：samtools为例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%89%88%EF%BC%9A%E5%AE%89%E8%A3%85%E5%B7%A5%E5%85%B7%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">第一版：安装工具依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%89%88%EF%BC%9A%E5%AE%89%E8%A3%85samtools"><span class="nav-number">2.2.</span> <span class="nav-text">第二版：安装samtools</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%89%88-amp-amp-%E5%9C%A8%E7%9B%B8%E5%90%8C%E6%96%87%E4%BB%B6%E5%A4%B9%E6%89%A7%E8%A1%8C"><span class="nav-number">2.3.</span> <span class="nav-text">第三版: &amp;&amp;在相同文件夹执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%89%88%EF%BC%9A%E6%89%BE%E5%88%B0samtools%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">2.4.</span> <span class="nav-text">第四版：找到samtools可执行文件，添加环境变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conda%E9%95%9C%E5%83%8F"><span class="nav-number">3.</span> <span class="nav-text">Conda镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E4%BA%AB%E8%BD%AC%E6%8D%A2%E9%95%9C%E5%83%8F"><span class="nav-number">4.</span> <span class="nav-text">分享转换镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E9%95%9C%E5%83%8F%E5%88%B0-Docker-hub"><span class="nav-number">4.1.</span> <span class="nav-text">上传镜像到 Docker hub</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E5%88%B0Singularity%E9%95%9C%E5%83%8F%E6%A0%BC%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">转换到Singularity镜像格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2021/02/14/Building-Containers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Building Containers
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-02-14 22:32:24" itemprop="dateCreated datePublished" datetime="2021-02-14T22:32:24+08:00">2021-02-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-07-14 17:10:29" itemprop="dateModified" datetime="2021-07-14T17:10:29+08:00">2021-07-14</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>参考 <a target="_blank" rel="noopener" href="https://pawseysc.github.io/containers-bioinformatics-workshop/5.build/index.html">https://pawseysc.github.io/containers-bioinformatics-workshop/5.build/index.html</a></p>
+<p>本文利用docker搭建镜像，然后通过singularity pull转化到singularity镜像格式。</p>
+<p><strong>目标：搭建容器镜像</strong></p>
+<ul>
+<li>RStudio 镜像</li>
+<li>Conda 镜像</li>
+<li>自己编译软件的镜像</li>
+</ul>
+<p>使用 Docker（更好的兼容性）Dockerfile</p>
+<ul>
+<li><code>FROM</code>：选择base image</li>
+<li><code>RUN</code>：执行命令</li>
+<li><code>ENV</code>：定义环境变量</li>
+</ul>
+<p>关键步骤</p>
+<ul>
+<li><code>docker build</code>：搭建镜像</li>
+<li><code>docker run</code>：测试调试</li>
+<li><code>docker tag</code>：命名</li>
+<li><code>docker push</code>：分享到公共注册列表（public registry）</li>
+<li><code>singularity pull docker-daemon</code>：Singularity转到线下使用</li>
+</ul>
+<span id="more"></span>
+
+<p>The best place to find useful base image is the <a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a> online registry. Here is a non-comprehensive list of potentially useful base images (the version tags are not necessarily the most recent ones):</p>
+<ul>
+<li>OS images, such as <code>ubuntu:18.4</code>, <code>debian:buster</code> and <code>centos:7</code>;</li>
+<li>R images, in particular the <code>rocker/</code> repository by the <a target="_blank" rel="noopener" href="https://www.rocker-project.org/">Rocker project</a>:<ul>
+<li>Base R: <code>rocker/r-ver:3.6.1</code>;</li>
+<li>RStudio: <code>rocker/rstudio:3.6.1</code>;</li>
+<li>Tidyverse+RStudio: <code>rocker/tidyverse:3.6.1</code>;</li>
+</ul>
+</li>
+<li>Python images, such as <code>python:3.8</code> and <code>python:3.8-slim</code> (a lightweight version);</li>
+<li>Conda images by <a target="_blank" rel="noopener" href="https://www.anaconda.com/">Anaconda</a>, such as <code>continuumio/miniconda3:4.8.2</code>;</li>
+<li>Jupyter images, in particular the<code> jupyter/</code> repository by Jupyter Docker Stacks<br>(unfortunately making extensive use of the <code>latest</code> tag), for instance:<ul>
+<li>Base Jupyter: <code>jupyter/base-notebook:latest</code>;</li>
+<li>Jupyter with scientific Python packages: <code>jupyter/scipy-notebook:latest</code>;</li>
+<li><em>Data science</em> Jupyter, including Python, scientific Python packages, R, Tidyverse and more: <code>jupyter/datascience-notebook:latest</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="RStudio镜像"><a href="#RStudio镜像" class="headerlink" title="RStudio镜像"></a>RStudio镜像</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /home/sisih/work/containers-bioinformatics-workshop/exercises/build/r-ggtree</span><br></pre></td></tr></table></figure>
+
+<p>根据前文我们需要R和Tidyverse</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FROM rocker/tidyverse:3.6.1</span><br></pre></td></tr></table></figure>
+
+<p>如果Rshell需要安装包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">R -e &#x27;BiocManager::install(&quot;ggtree&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>将其写入Dockerfile</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM rocker/tidyverse:3.6.1</span><br><span class="line"></span><br><span class="line">RUN R -e &#x27;BiocManager::install(&quot;ggtree&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>创建镜像，remember we’re running from the directory where the Dockerfile is (<code>.</code>).</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build -t ggtree:2.0.4 .</span><br></pre></td></tr></table></figure>
+
+<p>测试安装，显示<code>ggtree</code>版本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run ggtree:2.0.4 R -e <span class="string">&#x27;packageVersion(&quot;ggtree&quot;)&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; packageVersion(<span class="string">&quot;ggtree&quot;</span>)</span><br><span class="line">[1] ‘2.0.4’</span><br></pre></td></tr></table></figure>
+
+<p>成功啦！</p>
+<p>查看已有镜像</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker image ls</span><br><span class="line">REPOSITORY         TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">ggtree             2.0.4     eaef5bae8e39   5 days ago      2.11GB</span><br><span class="line">hello-world        latest    bf756fb1ae65   13 months ago   13.3kB</span><br><span class="line">rocker/tidyverse   3.6.1     5c4c75978566   13 months ago   2.1GB</span><br></pre></td></tr></table></figure>
+
+<p>顺带，如果想删除（因为缓存的镜像多了十分占用存储空间）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi &lt;your-image-id&gt;</span><br></pre></td></tr></table></figure>
+
+<p>也可以删除多个</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi &lt;your-image-id&gt; &lt;your-image-id&gt; ...</span><br></pre></td></tr></table></figure>
+
+<p>一次性删除所有镜像</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi $(docker images -q)</span><br></pre></td></tr></table></figure>
+
+<p>搭建镜像的时候会有依赖，所以需要强制，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker rmi -f 378dc77b6f16</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译软件镜像：samtools为例"><a href="#编译软件镜像：samtools为例" class="headerlink" title="编译软件镜像：samtools为例"></a>编译软件镜像：samtools为例</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ../compile-samtools</span><br></pre></td></tr></table></figure>
+
+<p>假设已知如何在Ubuntu上安装samtools（人工编译）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Install apt dependencies</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get -y install \</span><br><span class="line">  gcc \</span><br><span class="line">  libbz2-dev \</span><br><span class="line">  libcurl4-openssl-dev \</span><br><span class="line">  liblzma-dev \</span><br><span class="line">  libncurses5-dev \</span><br><span class="line">  libncursesw5-dev \</span><br><span class="line">  make \</span><br><span class="line">  perl \</span><br><span class="line">  tar \</span><br><span class="line">  vim \</span><br><span class="line">  wget \</span><br><span class="line">  zlib1g-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># Build samtools</span></span><br><span class="line">mkdir /build</span><br><span class="line"><span class="built_in">cd</span> /build</span><br><span class="line"></span><br><span class="line">wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2</span><br><span class="line">tar -vxjf samtools-1.9.tar.bz2</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> samtools-1.9</span><br><span class="line">./configure --prefix=/apps</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> htslib-1.9</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>apt</code>：Ubuntu package manager。使用<code>\</code>增强可读性</li>
+<li><code>/build</code>：创建build目录</li>
+<li>下载并解压</li>
+<li>配置编译samtools（指定安装路径为<code>/apps</code>）</li>
+<li>编译htslib (a companion library)</li>
+</ul>
+<p>到docker hub上找到Ubuntu最新版本 <a target="_blank" rel="noopener" href="https://hub.docker.com/_/ubuntu?tab=tags&amp;page=1&amp;ordering=last_updated">https://hub.docker.com/_/ubuntu?tab=tags&amp;page=1&amp;ordering=last_updated</a></p>
+<p>使用base image：<code>ubuntu:1=20.04</code></p>
+<h4 id="第一版：安装工具依赖"><a href="#第一版：安装工具依赖" class="headerlink" title="第一版：安装工具依赖"></a>第一版：安装工具依赖</h4><p>参考脚本<code>install_samtools.sh</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:20.04</span><br><span class="line"></span><br><span class="line">RUN apt-get update</span><br><span class="line">RUN apt-get -y install \</span><br><span class="line">      gcc \</span><br><span class="line">      libbz2-dev \</span><br><span class="line">      libcurl4-openssl-dev \</span><br><span class="line">      liblzma-dev \</span><br><span class="line">      libncurses5-dev \</span><br><span class="line">      libncursesw5-dev \</span><br><span class="line">      make \</span><br><span class="line">      perl \</span><br><span class="line">      tar \</span><br><span class="line">      vim \</span><br><span class="line">      wget \</span><br><span class="line">      zlib1g-dev</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build -t sam:1 .</span><br></pre></td></tr></table></figure>
+
+<p>共3步（对应3个RUN）</p>
+<h4 id="第二版：安装samtools"><a href="#第二版：安装samtools" class="headerlink" title="第二版：安装samtools"></a>第二版：安装samtools</h4><p>直接复制后文</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[..]</span><br><span class="line"></span><br><span class="line">RUN mkdir /build</span><br><span class="line">RUN <span class="built_in">cd</span> /build</span><br><span class="line">RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2</span><br><span class="line">RUN tar -vxjf samtools-1.9.tar.bz2</span><br><span class="line">RUN <span class="built_in">cd</span> samtools-1.9</span><br><span class="line">RUN ./configure --prefix=/apps</span><br><span class="line">RUN make</span><br><span class="line">RUN make install</span><br><span class="line">RUN <span class="built_in">cd</span> htslib-1.9</span><br><span class="line">RUN make</span><br><span class="line">RUN make install</span><br></pre></td></tr></table></figure>
+
+<p>build</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build -t sam:2 .</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>由于上一步<code>docker build</code>的<code>layer caching</code>，<code>apt</code>命令立刻完成执行</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Step 1/14 : FROM ubuntu:20.04</span><br><span class="line"> ---&gt; f63181f19b2f</span><br><span class="line">Step 2/14 : RUN apt-get update</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; c04e12e376bf</span><br><span class="line">Step 3/14 : RUN apt-get -y install       gcc       libbz2-dev       libcurl4-openssl-dev       liblzma-dev       libncurses5-dev       libncursesw5-dev       make       perl       tar       vim       wget       zlib1g-dev</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 79b0541592e2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>14步</li>
+<li>第9步报错</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> ---&gt; eb81517ddecb</span><br><span class="line">Step 8/14 : RUN <span class="built_in">cd</span> samtools-1.9</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> 2109f8f2da98</span><br><span class="line">Removing intermediate container 2109f8f2da98</span><br><span class="line"> ---&gt; 8d4795073cdc</span><br><span class="line">Step 9/14 : RUN ./configure --prefix=/apps</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> 5bf3b2a258f5</span><br><span class="line">/bin/sh: 1: ./configure: not found</span><br><span class="line">The <span class="built_in">command</span> <span class="string">&#x27;/bin/sh -c ./configure --prefix=/apps&#x27;</span> returned a non-zero code: 127</span><br></pre></td></tr></table></figure>
+
+<p> 每一个RUN都会建一个临时的中间container</p>
+<p>根据脚本<code>./configure</code>理应在<code>/build/samtools-1.9</code>但是却没有找到</p>
+<p>为了了解发生甚么事情，在镜像构建的最后一步中使用docker run和交互式shell的标志-it打开一个交互式shell。这是有效调试映像构建过程的好方法。</p>
+<h4 id="第三版-amp-amp-在相同文件夹执行"><a href="#第三版-amp-amp-在相同文件夹执行" class="headerlink" title="第三版: &amp;&amp;在相同文件夹执行"></a>第三版: <code>&amp;&amp;</code>在相同文件夹执行</h4><p>在每个步骤的末尾，均以—&gt;开头的行打印字母数字镜像ID。 在失败步骤（9/14）之前获取镜像ID：5bf3b2a258f5 于是执行bash命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run -it 8d4795073cdc bash</span><br></pre></td></tr></table></figure>
+
+<p>进入中间镜像启动的容器中，查看目录</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls /build</span></span><br></pre></td></tr></table></figure>
+
+<p>发现是空的</p>
+<p>查看当前目录</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls /</span></span><br><span class="line">bin    dev   lib    libx32  opt   run                   sbin  tmp</span><br><span class="line">boot   etc   lib32  media   proc  samtools-1.9          srv   usr</span><br><span class="line">build  home  lib64  mnt     root  samtools-1.9.tar.bz2  sys   var</span><br></pre></td></tr></table></figure>
+
+<p>发现<code>samtools-1.9.tar.bz2</code>和<code>samtools-1.9</code>都在根目录，而在Dockerfile中我们期望它们在<code>/build</code>目录下</p>
+<p><code>exit</code>或按<code>Ctrl-D</code>来关闭容器交互式shell</p>
+<p>Docker构建：每次发出新的RUN指令时，命令都是从根目录<code>/</code>执行的，而不是像常规Linux shell从最后一个活动目录执行的。</p>
+<p>解决办法：将需要从同一目录执行的bash命令打包到同一条RUN指令中。 使用Linux语法<code>&amp;&amp;</code>连接它们。注意这仅在前一个命令成功结束（没有错误）的情况下，shell（或此处的Docker）才会执行下一条命令。 例如：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RUN <span class="built_in">cd</span> /build &amp;&amp; \</span><br><span class="line">    wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2</span><br></pre></td></tr></table></figure>
+
+<p>修改Dockerfile</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[..]</span><br><span class="line"></span><br><span class="line">RUN mkdir /build</span><br><span class="line">RUN <span class="built_in">cd</span> /build &amp;&amp; \</span><br><span class="line">    wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 &amp;&amp; \</span><br><span class="line">    tar -vxjf samtools-1.9.tar.bz2 &amp;&amp; \</span><br><span class="line">    <span class="built_in">cd</span> samtools-1.9 &amp;&amp; \</span><br><span class="line">    ./configure --prefix=/apps &amp;&amp; \</span><br><span class="line">    make &amp;&amp; \</span><br><span class="line">    make install &amp;&amp; \</span><br><span class="line">    <span class="built_in">cd</span> htslib-1.9 &amp;&amp; \</span><br><span class="line">    make &amp;&amp; \</span><br><span class="line">    make install</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build -t sam:3 .</span><br></pre></td></tr></table></figure>
+
+<p>在容器镜像中成功编译<code>samtools</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Successfully built 177fe64fbc1d</span><br><span class="line">Successfully tagged sam:3</span><br></pre></td></tr></table></figure>
+
+<p>测试执行容器镜像中的<code>samtools</code>，使用<code>docker run</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run sam:3 samtools</span><br><span class="line">docker: Error response from daemon: OCI runtime create failed: container_linux.go:370: starting container process caused: <span class="built_in">exec</span>: <span class="string">&quot;samtools&quot;</span>: executable file not found <span class="keyword">in</span> <span class="variable">$PATH</span>: unknown.</span><br></pre></td></tr></table></figure>
+
+<p>报错：在<code>$PATH</code>中找不到<code>samtools</code>可执行文件</p>
+<h4 id="第四版：找到samtools可执行文件，添加环境变量"><a href="#第四版：找到samtools可执行文件，添加环境变量" class="headerlink" title="第四版：找到samtools可执行文件，添加环境变量"></a>第四版：找到samtools可执行文件，添加环境变量</h4><p>再一次打开交互shell，这次<code>docker run -it</code>直接查看镜像<code>sam:3</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run -it sam:3 bash</span><br></pre></td></tr></table></figure>
+
+<p>从<code>./configure --prefix=/apps</code>知道将软件包安装在<code>/apps</code>下</p>
+<p>使用<code>ls</code>检查该目录，例如查找子目录<code>bin</code>，这是可执行文件的常用位置。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run -it sam:3 bash</span><br><span class="line">root@2f0ea0b9beba:/<span class="comment"># ls /apps</span></span><br><span class="line">bin  include  lib  share</span><br><span class="line">root@2f0ea0b9beba:/<span class="comment"># ls /apps/bin/</span></span><br><span class="line">ace2sam        interpolate_sam.pl  plot-bamstats          soap2sam.pl</span><br><span class="line">bgzip          maq2sam-long        psl2sam.pl             tabix</span><br><span class="line">blast2sam.pl   maq2sam-short       sam2vcf.pl             varfilter.py</span><br><span class="line">bowtie2sam.pl  md5fa               samtools               wgsim</span><br><span class="line">export2sam.pl  md5sum-lite         samtools.pl            wgsim_eval.pl</span><br><span class="line">htsfile        novo2sam.pl         seq_cache_populate.pl  zoom2sam.pl</span><br></pre></td></tr></table></figure>
+
+<p>耶！<code>/apps/bin/</code>目录有可执行文件，包括<code>samtools</code></p>
+<p>键入<code>quit</code>或按键<code>Ctrl-D</code>关闭交互进程</p>
+<p>于是最后一步将<code>/apps/bin/</code>目录加入<code>$PATH</code></p>
+<p>如果在Dockerfile写入<code>RUN export PATH=/apps/bin:$PATH</code>，同样在该步RUN结束后就会失效了（类似之前目录的问题），正确方法是申明Docker特有的环境变量<code>ENV</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[..]</span><br><span class="line"></span><br><span class="line">ENV PATH=/apps/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>最后一次……</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build -t sam:4 .</span><br></pre></td></tr></table></figure>
+
+<p>因为环境变量前面的步骤都cached，所以非常快。测试</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run sam:4 samtools</span><br><span class="line"></span><br><span class="line">Program: samtools (Tools <span class="keyword">for</span> alignments <span class="keyword">in</span> the SAM format)</span><br><span class="line">Version: 1.9 (using htslib 1.9)</span><br><span class="line"></span><br><span class="line">Usage:   samtools &lt;<span class="built_in">command</span>&gt; [options]</span><br></pre></td></tr></table></figure>
+
+<p>成功啦！</p>
+<h3 id="Conda镜像"><a href="#Conda镜像" class="headerlink" title="Conda镜像"></a>Conda镜像</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ../conda-samtools</span><br></pre></td></tr></table></figure>
+
+<p>docker hub找到miniconda <a target="_blank" rel="noopener" href="https://hub.docker.com/r/continuumio/miniconda3/tags?page=1&amp;ordering=last_updated">https://hub.docker.com/r/continuumio/miniconda3/tags?page=1&amp;ordering=last_updated</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM continuumio/miniconda3:4.8.2</span><br><span class="line"></span><br><span class="line">RUN conda install -y -c bioconda samtools=1.9</span><br></pre></td></tr></table></figure>
+
+<p>注意加<code>-y</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build -t samconda:1 .</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Successfully built 672d5f0e8429</span><br><span class="line">Successfully tagged samconda:1</span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run samconda:1 samtools</span><br><span class="line"></span><br><span class="line">Program: samtools (Tools <span class="keyword">for</span> alignments <span class="keyword">in</span> the SAM format)</span><br><span class="line">Version: 1.9 (using htslib 1.9)</span><br><span class="line"></span><br><span class="line">Usage:   samtools &lt;<span class="built_in">command</span>&gt; [options]</span><br></pre></td></tr></table></figure>
+
+<p>成功啦！</p>
+<h3 id="分享转换镜像"><a href="#分享转换镜像" class="headerlink" title="分享转换镜像"></a>分享转换镜像</h3><h4 id="上传镜像到-Docker-hub"><a href="#上传镜像到-Docker-hub" class="headerlink" title="上传镜像到 Docker hub"></a>上传镜像到 Docker hub</h4><p>首先一定要<strong>记得登录</strong>！！</p>
+<p>否则在后续<code>docker push</code>操作后会报错</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">denied requested access to the resource is denied</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker login</span><br><span class="line">username: sisih</span><br><span class="line">password : secret~</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">WARNING! Your password will be stored unencrypted <span class="keyword">in</span> /root/.docker/config.json.</span><br><span class="line">Configure a credential helper to remove this warning. See</span><br><span class="line">https://docs.docker.com/engine/reference/commandline/login/<span class="comment">#credentials-store</span></span><br><span class="line"></span><br><span class="line">Login Succeeded</span><br></pre></td></tr></table></figure>
+
+<p>这意味着下一次不用再登录了</p>
+<p>为镜像命名一个新名称，其中包括我们的Docker Hub帐户，使用<code>docker tag</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker tag sam:4 sisih/test-samtools:1.9</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>docker push</code>上传新命名的镜像</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker push sisih/test-samtools:1.9</span><br><span class="line">The push refers to repository [docker.io/sisih/test-samtools]</span><br><span class="line">f049843be2d1: Pushed </span><br><span class="line">9e67c05ad194: Pushed </span><br><span class="line">432cb97b4f75: Pushed </span><br><span class="line">ef88f84d30ae: Pushed </span><br><span class="line">02473afd360b: Mounted from library/ubuntu </span><br><span class="line">dbf2c0f42a39: Mounted from library/ubuntu </span><br><span class="line">9f32931c9d28: Mounted from library/ubuntu </span><br><span class="line">1.9: digest: sha256:0f842cb99ed65158157fdbec4d0f4744e4dd34e6cf4da41624b4a9a44fa956f2 size: 1786</span><br></pre></td></tr></table></figure>
+
+<p>嘻嘻成功啦</p>
+<p>欢迎来我的主页康康 <a target="_blank" rel="noopener" href="https://hub.docker.com/u/sisih">sisih’s Profile (docker.com)</a></p>
+<h4 id="转换到Singularity镜像格式"><a href="#转换到Singularity镜像格式" class="headerlink" title="转换到Singularity镜像格式"></a>转换到Singularity镜像格式</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity pull docker://sisih/test-samtools:1.9</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO:    Creating SIF file...</span><br></pre></td></tr></table></figure>
+
+<p>有了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">best_practices  install_samtools.sh  test-samtools-1.9.sif</span><br><span class="line">Dockerfile      solutions</span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ singularity <span class="built_in">exec</span> test-samtools_1.9.sif samtools</span><br></pre></td></tr></table></figure>
+
+<p>成功！</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>编译好的镜像根目录是read only的，所以如果想对此操作，可以把内部的文件复制出来。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/14/Singularity-Install/" rel="prev" title="失败人士的Singularity安装失败经历">
+                  <i class="fa fa-chevron-left"></i> 失败人士的Singularity安装失败经历
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/07/SNP-calling-using-VARSCAN/" rel="next" title="SNP calling using VARSCAN">
+                  SNP calling using VARSCAN <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,216 @@
+---
+title: "Homework 4: Diffusion of Tetracycline"
+author: "Sisi Huang"
+output: html_document
+---
+
+```{r setup, message = F, include=FALSE}
+options(warn=-1)
+library(tidyverse)
+library(DAAG)
+library(ggpubr)
+```
+
+We continue examining the diffusion of tetracycline among doctors in Illinois in the early 1950s, building on our work in lab 6.  You will need the data sets `ckm_nodes.csv` and `ckm_network.dat` from the labs.
+
+```{r}
+ckm_nodes <- read.csv("data/ckm_nodes.csv", header=T, sep = ",")
+ckm_net <- read.table("./data/ckm_network.dat")
+```
+
+1. Clean the data to eliminate doctors for whom we have no adoption-date information, as in the labs.  Only use this cleaned data in the rest of the assignment.
+
+```{r}
+idx <- !is.na(ckm_nodes$adoption_date)
+ckm_nodes <- ckm_nodes %>% filter(!is.na(adoption_date))
+ckm_net <- ckm_net[idx,idx]
+```
+
+2. Create a new data frame which records, for every doctor, for every month, whether that doctor began prescribing tetracycline that month, whether they had adopted tetracycline before that month, the number of their contacts who began prescribing strictly _before_ that month, and the number of their contacts who began prescribing in that month or earlier.  Explain why the dataframe should have 6 columns, and 2125 rows.  Try not to use any loops.
+
+* There are 6 variables, so the dataframe has 6 columns.
+
+* For every doctor, for every month $\Rightarrow$ 125 doctors $\times$ 17 months  = 2125, so the datafram has 2125 rows.
+
+```{r}
+df <- data.frame(doctor = rownames(ckm_nodes)) %>% 
+    slice(rep(1:n(), each = 17)) %>%
+    mutate(month = rep(1:17,length.out=n()))
+df <- df %>% mutate(prescribe_that_month = as.numeric(ckm_nodes[doctor,2]==month),
+                    prescribe_before = as.numeric(ckm_nodes[doctor,2]<month))
+
+# df <- mutate(df, contacts_before = 
+#                  sum(ckm_nodes[unlist(ckm_net[as.numeric(doctor),]) == 1, 2] 
+#                      < as.numeric(month)))
+
+f <- function(x){
+    return(sum(ckm_nodes[ckm_net[as.numeric(x[1]),] == 1, 2] < as.numeric(x[2])))
+}
+
+df <- df %>% mutate(contacts_str_before = apply(df, 1, f))
+
+f <- function(x){
+    return(sum(ckm_nodes[ckm_net[as.numeric(x[1]),] == 1, 2] <= as.numeric(x[2])))
+}
+
+df <- df %>% mutate(contacts_in_before = apply(df, 1, f))
+
+```
+
+3.  Let
+    \[
+    p_k = \Pr(\text{A doctor starts prescribing tetracycline this month} \mid \\
+    \text{Number of doctor's contacts prescribing before this month}=k)
+    \]
+    and
+   \[
+     q_k = \Pr(\text{A doctor starts prescribing tetracycline this month} \mid \\ \text{Number of doctor's contacts prescribing this month}=k)
+    \]
+   We suppose that $p_k$ and $q_k$ are the same for all months.
+     a. Explain why there should be no more than $21$ values of $k$ for which we can estimate $p_k$ and $q_k$ directly from the data.
+    ```{r}
+    max(apply(ckm_net, 1, sum))
+    ```
+     Because the maximum of the contacts of a doctor is 20, so the possible values of $k$ are from 0 to 20, the number of which is no more than $21$.
+    
+     b. Create a vector of estimated $p_k$ probabilities, using the data frame from (2).  Plot the probabilities against the number of prior-adoptee contacts $k$.
+     
+     **Attention**: There can be different understanding as for the expression *the number of prior-adoptee contacts $k$*. Intuitively, it could just mean $k$ that is from 0 to 20 and I heard many classmates did it like this. But the ambiguity lies in c that says *the number of prior-or-contemporary-adoptee contacts $k$* while $k$ should just stand for contemporary-adoptee contacts in $q_k$. So another sensible explaination is that we should calculate the number of doctors whose prior-adoptee or prior-or-contemporary-adoptee contacts number equals $k$. From my perspective, I prefer the latter interpretation, and besides this calculation is used in the last problem. Anyway, I plot both of the understandings.
+     
+    ```{r}
+    p.vec <- vector(mode = "numeric",length = 21)
+    k.vec <- p.vec
+    for(k in 0:20){
+        idx <- df$contacts_str_before == k
+        k.vec[k+1] <- sum(idx)
+        if(k.vec[k+1] == 0){
+            p.vec[k+1] <- NA
+            next
+        } 
+        dfk <- df[idx,]
+        p1 <- sum(dfk$prescribe_that_month == 1)
+        p.vec[k+1] <- p1/k.vec[k+1]
+    }
+    k <- c(0:20)
+    par(mfrow=c(1,2))
+    plot(k.vec,p.vec, xlab="num k", ylab="p")
+    plot(k,p.vec, xlab="k", ylab="p")
+    ```      
+
+     
+     
+    c. Create a vector of estimated $q_k$ probabilities, using the data frame from (2). Plot the probabilities against the number of prior-or-contemporary-adoptee contacts $k$.
+    ```{r}
+    p.vec2 <- vector(mode = "numeric",length = 21)
+    k.vec2 <- p.vec2
+    for(k in 0:20){
+        idx <- (df$contacts_in_before - df$contacts_str_before) == k
+        k.vec2[k+1] <- sum(idx)
+        if(k.vec2[k+1] == 0){
+            p.vec2[k+1] <- NA
+            next
+        } 
+        dfk <- df[idx,]
+        p1 <- sum(dfk$prescribe_that_month == 1)
+        p.vec2[k+1] <- p1/k.vec2[k+1]
+    }
+    k <- c(0:20)
+    par(mfrow=c(1,2))
+    plot(k.vec2 + k.vec, p.vec2, xlab="num k", ylab="q")
+    plot(k, p.vec2, xlab="k", ylab="q")
+    ```
+
+4. Because it only conditions on information from the previous month, $p_k$ is a little easier to interpret than $q_k$.  It is the probability per month that a doctor adopts tetracycline, if they have exactly $k$ contacts who had already adopted tetracycline.
+    a. Suppose $p_k = a + bk$.  This would mean that each friend who adopts the new drug increases the probability of adoption by an equal amount.  Estimate this model by least squares, using the values you constructed in (3b).  Report the parameter estimates.
+    
+    ```{r}
+    df.p <- data.frame(k = 0:20, p = p.vec)
+    m.1 <- lm(p ~ k, data = df.p)
+    summary(m.1)
+    ```
+    ```
+   Estimate Std. Error t value Pr(>|t|)    
+a  0.0569324  0.0090507   6.290 1.45e-05 ***
+b -0.0037997  0.0009184  -4.137 0.000877 ***
+    ```
+    b. Suppose $p_k = e^{a+bk}/(1+e^{a+bk})$.  Explain, in words, what this model would imply about the impact of adding one more adoptee friend on a given doctor's probability of adoption.  (You can suppose that $b > 0$, if that makes it easier.)  Estimate the model by least squares, using the values you constructed in (3b).
+    
+    It is a logistic curve. Suppose $b>0$. As $k$ grows, the initial stage of growth is approximately exponential (geometric); then, as saturation begins, the growth slows to linear (arithmetic), and at maturity, growth stops.
+    
+    ```{r}
+    # logistic.nls
+    f <- function(k,a,b){
+        return(exp(a+b*k)/(1+exp(a+b*k)))
+    }
+    m.2 <- nls(p ~ f(k, a, b), data = df.p, start = list(a = 0, b = -0.2))
+    
+    # logistic.lm --convert to ak+b = f(p)
+    m.3 <- lm(p.log ~ k, df.p %>%
+                  mutate(p.log = ifelse(p==0, log(0.0001/(1-0.0001)), log(p/(1-p)))))
+    # m.4 <- glm(p ~ k, df.p, family = "binomial") 
+    # maybe type = 'response' in prediction could work for glm
+    
+    summary(m.2)
+    ```
+    c. Plot the values from (3b) along with the estimated curves from (4a) and (4b).  (You should have one plot, with $k$ on the horizontal axis, and probabilities on the vertical axis .)  Which model do you prefer, and why?
+    
+    ```{r}
+    m1 = predict(m.1, newdata=data.frame(k=c(0:20)))
+    m2 = predict(m.2, newdata=data.frame(k=c(0:20)))
+    df.p <- mutate(df.p, linear = m1, logistic = m2)
+    t = predict(m.3, newdata=data.frame(k=c(0:20)))
+    m3 = exp(t)/(1+exp(t))
+    df.p <- mutate(df.p, linear = m1, logistic = m2, logistic.2 = m3)
+    # na.omit(df.p) %>% ggplot(aes(x = k)) + geom_line(aes(y = p)) + 
+    # geom_line(aes(y = predict.a)) + geom_line(aes(y = predict.b))
+    
+    df.tidy <- df.p %>% gather(model, res, -k) %>% na.omit()
+    df.tidy %>% ggplot() + geom_point(aes(x = k, y = res, color = model), size = 3) +
+          geom_line(aes(x = k, y = res, color = model), size = 1) +
+          labs(y = "Probability",
+               title = "Prediction of linear and logistic models")
+    ```
+    
+    The linear model is the worst. I use two methods to establish the logistic model and I think green line `logistic` using function `nls()` looks better on the whole. Because `logistic.2` seems a little overfitting in the tail part.
+
+_For quibblers, pedants, and idle hands itching for work to do_: The $p_k$ values from problem 3 aren't all equally precise, because they come from different numbers of observations.  Also, if each doctor with $k$ adoptee contacts is independently deciding whether or not to adopt with probability $p_k$, then the variance in the number of adoptees will depend on $p_k$.  Say that the actual proportion who decide to adopt is $\hat{p}_k$.  A little probability (exercise!) shows that in this situation, $\mathbb{E}[\hat{p}_k] = p_k$, but that $\mathrm{Var}[\hat{p}_k] = p_k(1-p_k)/n_k$, where $n_k$ is the number of doctors in that situation.  (We estimate probabilities more precisely when they're really extreme [close to 0 or 1], and/or we have lots of observations.)  We can estimate that variance as $\hat{V}_k = \hat{p}_k(1-\hat{p}_k)/n_k$.  Find the $\hat{V}_k$, and then re-do the estimation in (4a) and (4b) where the squared error for $p_k$ is divided by $\hat{V}_k$.  How much do the parameter estimates change?  How much do the plotted curves in (4c) change?
+
+**Probability exercise**: Assume there are $n_k$ observations $x_1,x_2,...,x_{n_k}$. And $x_i = 1$ if the doctor adopts in month $k$, while $x_i = 0$ on the other side. So $x_i\in\lbrace 0,1\rbrace$. The distribution is determined by $P(x_i=1)=p_k$ and $P(x_i=0)=1-p_k$. It is exactly a binomial distribution. So $E(x_i) = p_k$ and $Var(x_i) = p_k(1-p_k)$.
+
+We can see that the proportion $\hat p_k = \displaystyle\frac{x_1+x_2+...+x_{n_k}}{n_k}$. Therefore, $\mathbb E(\hat p) = \displaystyle\frac{n\cdot E(x_i)}{n} = p_k$ and $Var(\hat  p) = \displaystyle\frac{1}{n_k^2}\cdot n_k\cdot Var(x_i) = p_k(1-p_k)/n_k$.
+
+```{r}
+idx <- !(is.na(p.vec) | p.vec == 0)
+wt <- p.vec*(1-p.vec)/k.vec
+# We can only take data!=0 because we just can't get p=0 more precisely
+# and thus the variance of that is meaningless.
+m.w1 <- lm(p ~ k, data = df.p[idx,], weight = 1/wt[idx])
+summary(m.w1)
+
+m.w2 <- nls(p ~ f(k, a, b), data = df.p[idx,], 
+            start = list(a = 0, b = -0.2), weight = 1/wt[idx])
+summary(m.w2)
+```
+**The change of parameters**:
+
+|Parameters|Linear   | Linear.weight| Logistic |Logistic.weight  | 
+|----| ------------ | ------------ |-------------- |--------------- | 
+|a| 0.0569324  |0.068669    | -2.56508 | -2.48943|
+|b| -0.0037997 |-0.008548   | -0.17051 |-0.23754|
+
+
+```{r}
+w1 = predict(m.w1, newdata=data.frame(k=c(0:20)))
+w2 = predict(m.w2, newdata=data.frame(k=c(0:20)))
+
+df.w <- data.frame(k = 0:20, p = p.vec)
+df.w <- mutate(df.w, linear = w1, logistic = w2)
+dft <- df.w %>% gather(model, res, -k) %>% na.omit()
+dft %>% ggplot() + geom_point(aes(x = k, y = res, color = model), size = 3) +
+      geom_line(aes(x = k, y = res, color = model), size = 1) +
+      labs(y = "Probability",
+           title = "Prediction of linear and logistic models with weight")
+
+```
+
+**The change of plots**: Both curves are more fitting when $k$ is small and seem to somehow neglect the dots in the middle-top. From my analysis, the reason is that smaller samples cause larger estimated variances, which reduce the weight of these points. And there are more observations when $k$ is small, which adds to the weight.

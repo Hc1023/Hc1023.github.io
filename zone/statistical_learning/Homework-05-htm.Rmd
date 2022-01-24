@@ -1,0 +1,109 @@
+---
+title: "Homework 5: Pareto and Kuznets on the Grand Tour"
+author: "Sisi Huang"
+output: html_document
+---
+
+```{r setup, message = F, include=FALSE}
+options(warn=-1)
+library(tidyverse)
+library(DAAG)
+library(ggpubr)
+library(latex2exp)
+```
+
+We continue working with the World Top Incomes Database [https://wid.world], and the Pareto distribution, as in the lab.  We also continue to practice working with data frames, manipulating data from one format to another, and writing functions to automate repetitive tasks.
+
+We saw in the lab that if the upper tail of the income distribution followed a perfect Pareto distribution, then
+\begin{eqnarray}
+\label{eqn:1percent-vs-0.1-percent}
+\left(\frac{P99}{P99.9}\right)^{-a+1}  & = & 10\\
+\left(\frac{P99.5}{P99.9}\right)^{-a+1} & = & 5\\
+\left(\frac{P99}{P99.5}\right)^{-a+1} & = & 2
+\label{eqn:1percent-vs-0.5-percent}
+\end{eqnarray}
+We could estimate the Pareto exponent by solving any one of these equations for $a$; in lab we used
+\begin{equation}
+a = 1 - \frac{\log{10}}{\log{(P99/P99.9)}} ~,
+\label{eqn:exponent-from-quantile-ratio}
+\end{equation}
+
+Because of measurement error and sampling noise, we can't find find one value of $a$ which will work for all three equations \eqref{eqn:1percent-vs-0.1-percent}--\eqref{eqn:1percent-vs-0.5-percent}.  Generally, trying to make all three equations come close to balancing gives a better estimate of $a$ than just solving one of them.  (This is analogous to finding the slope and intercept of a regression line by trying to come close to all the points in a scatterplot, and not just running a line through two of them.)
+
+
+1. We estimate $a$ by minimizing
+\[
+\left(\left(\frac{P99}{P99.9}\right)^{-a+1} - 10\right)^2 + \left(\left(\frac{P99.5}{P99.9}\right)^{-a+1} - 5\right)^2 +  \left(\left(\frac{P99}{P99.5}\right)^{-a+1} - 2\right)^2
+\]
+Write a function, `percentile_ratio_discrepancies`, which takes as inputs `P99`, `P99.5`, `P99.9` and `a`, and returns the value of the expression above.  Check that when `P99=1e6`, `P99.5=2e6`, `P99.9=1e7` and `a=2`, your function returns `0`.
+
+```{r}
+percentile_ratio_discrepancies <- function(P99, P99.5, P99.9, a){
+    x1 <- (P99/P99.9)^(-a+1)-10
+    x2 <- (P99.5/P99.9)^(-a+1)-5
+    x3 <- (P99/P99.5)^(-a+1)-2
+    return(x1^2+x2^2+x3^2)
+}
+
+P99=1e6; P99.5=2e6; P99.9=1e7; a=2
+percentile_ratio_discrepancies(P99, P99.5, P99.9, a)
+
+```
+
+2. Write a function, `exponent.multi_ratios_est`, which takes as inputs `P99`, `P99.5`, `P99.9`, and estimates `a`.  It should minimize your `percentile_ratio_discrepancies` function.  The starting value for the minimization should come from \eqref{eqn:exponent-from-quantile-ratio}.  Check that when `P99=1e6`, `P99.5=2e6` and `P99.9=1e7`, your function returns an `a` of 2.
+
+```{r}
+exponent.multi_ratios_est <- function(P99, P99.5, P99.9){
+    P99 = as.numeric(P99); P99.5 = as.numeric(P99.5); P99.9 = as.numeric(P99.9)
+    a = 1 - log(10)/log(P99/P99.9)
+    a.est <- function(a){
+        return(percentile_ratio_discrepancies(P99, P99.5, P99.9, a))
+    }
+    return(nlm(a.est, a)$estimate)
+}
+
+exponent.multi_ratios_est(P99, P99.5, P99.9)
+```
+
+
+3. Write a function which uses  `exponent.multi_ratios_est` to estimate $a$ for the US for every year from 1913 to 2012.  (There are many ways you could do this, including loops.)  Plot the estimates; make sure the labels of the plot are appropriate.
+
+```{r}
+wtid <- read.csv("data/wtid-report.csv", header=T)
+t <- tbl_df(wtid[,c(2,5:7)])
+a.hat <- apply(t,1,function(x){
+    P99 <- x[2]; P99.5 <- x[3]; P99.9 <- x[4]
+    return(exponent.multi_ratios_est(P99, P99.5, P99.9))
+ })
+t <- mutate(t, a.hat)
+ggplot(t, aes(x = Year, y = a.hat)) + geom_point(size = 3) + geom_line(size = 1) + 
+    labs(y = TeX('$\\hat{a}$'), 
+         title = TeX('Estimate $a$ for the US for every year from 1913 to 2012'))
+```
+```{r, echo=FALSE}
+# wtid.a <- t %>% mutate(esta = exponent.multi_ratios_est(P99.income.threshold, 
+#                                               P99.5.income.threshold, 
+#                                               P99.9.income.threshold))
+# wtid.a <- wtid[1,c(2,5:7)] %>% mutate(esta = exponent.multi_ratios_est(P99.income.threshold, 
+#                                               P99.5.income.threshold, 
+#                                               P99.9.income.threshold))
+# wtid.a <- wtid[2,c(2,5:7)] %>% mutate(esta = exponent.multi_ratios_est(P99.income.threshold, 
+#                                               P99.5.income.threshold, 
+#                                               P99.9.income.threshold))
+# wtid.a <- wtid[1:2,c(2,5:7)] %>% mutate(esta = exponent.multi_ratios_est(P99.income.threshold, 
+#                                               P99.5.income.threshold, 
+#                                               P99.9.income.threshold))
+```
+
+4. Use \eqref{eqn:exponent-from-quantile-ratio} to estimate $a$ for the US for every year.  Make a scatter-plot of these estimates against those from problem 3.  If they are identical or completely independent, something is wrong with at least one part of your code.  Otherwise, can you say anything about how the two estimates compare?
+
+```{r}
+t <- mutate(t, estimate2 = 1 - log(10)/log(P99.income.threshold/P99.9.income.threshold))
+ggplot(t, aes(x = a.hat, y = estimate2)) + geom_point() +
+    labs(x = "estimate_1", y = "estimate_2", 
+         title = "Scatter-plot of the estimates")
+cor(t$a.hat, t$estimate2)
+```
+They are highly correlated, which means the start value \eqref{eqn:exponent-from-quantile-ratio} is just around the minimum point.
+
+

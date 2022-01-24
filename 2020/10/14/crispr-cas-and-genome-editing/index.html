@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="2020年的诺贝尔化学奖颁发给了法国生物化学家埃马纽埃尔·卡彭蒂耶（Emmanuelle Charpentier）、美国生物学家詹妮弗·杜德纳（Jennifer Doudna），以表彰认可她们在新一代基因编辑技术的重要贡献。CRISPR-Cas9基因编辑技术能对DNA进行定点切割，显著提升了基因编辑效率，是生物医学领域最重要的新兴技术之一。本篇文章的理论部分主要参考2016年发表在Annual R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CRISPR-Cas系统及基因编辑技术">
+<meta property="og:url" content="https://hc1023.github.io/2020/10/14/crispr-cas-and-genome-editing/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="2020年的诺贝尔化学奖颁发给了法国生物化学家埃马纽埃尔·卡彭蒂耶（Emmanuelle Charpentier）、美国生物学家詹妮弗·杜德纳（Jennifer Doudna），以表彰认可她们在新一代基因编辑技术的重要贡献。CRISPR-Cas9基因编辑技术能对DNA进行定点切割，显著提升了基因编辑效率，是生物医学领域最重要的新兴技术之一。本篇文章的理论部分主要参考2016年发表在Annual R">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-14T12:50:21.000Z">
+<meta property="article:modified_time" content="2020-10-22T01:15:30.000Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生物">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2020/10/14/crispr-cas-and-genome-editing/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2020/10/14/crispr-cas-and-genome-editing/","path":"2020/10/14/crispr-cas-and-genome-editing/","title":"CRISPR-Cas系统及基因编辑技术"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CRISPR-Cas系统及基因编辑技术 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/10/14/crispr-cas-and-genome-editing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CRISPR-Cas系统及基因编辑技术
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-14 20:50:21" itemprop="dateCreated datePublished" datetime="2020-10-14T20:50:21+08:00">2020-10-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-10-22 09:15:30" itemprop="dateModified" datetime="2020-10-22T09:15:30+08:00">2020-10-22</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>2020年的诺贝尔化学奖颁发给了法国生物化学家埃马纽埃尔·卡彭蒂耶（Emmanuelle Charpentier）、美国生物学家詹妮弗·杜德纳（Jennifer Doudna），以表彰认可她们在新一代基因编辑技术的重要贡献。<strong>CRISPR-Cas9基因编辑技术</strong>能对DNA进行定点切割，显著提升了基因编辑效率，是生物医学领域最重要的新兴技术之一。本篇文章的理论部分主要参考2016年发表在Annual Review of Ecology, Evolution, and Systematics的综述文章Evolution and Ecology of CRISPR介绍CRISPR-Cas系统[1]，并借此希望对基因编辑技术能有更深刻的认识。</p>
+<span id="more"></span>
+
+<p><strong>CRISPR (clustered regularly interspaced short palindromic repeats)-Cas (CRISPR-associated) system是一种原核适应性免疫系统，可针对病毒和质粒等寄生性可移动遗传元件的传染提供一种保护机制。</strong>这个免疫系统其实是编码在原核基因上的一段序列，由<strong>CRISPR序列</strong>和<strong>Cas基因</strong>组成。其中，CRISPR序列构成原核适应性免疫系统的遗传记忆，为一些<strong>重复片段（repeats）</strong>中间插入可变序列<strong>间隔子（spacers）</strong>，这些间隔子对应着病毒等可移动遗传元件的序列。而Cas基因编码Cas蛋白，它们在CRISPR-Cas免疫应答过程中发挥了重要作用。</p>
+<p><strong>CRISPR-Cas免疫应答分为三个阶段：外源DNA俘获（adaption），crRNA合成（expression）和靶向干扰（interference）。</strong>在第一阶段，Cas蛋白俘获外来侵染物如病毒等的DNA序列片段，并将其整合到宿主DNA中成为CRISPR序列中的间隔子。其后第二阶段，当有曾经来侵染过或基因序列片段相近的外源物入侵时，CRISPR基因座可被转录为前体CRISPR RNA（crRNA），该前体crRNA被加工成成熟的crRNA。而在最后一阶段，其对应转录的crRNA-Cas复合物结合外源物相应序列并切割互补核酸，或对其进行标记从而被效应Cas核酸酶破坏。</p>
+<p>CRISPR-Cas系统极为多样，主要根据其组成的cas蛋白种类不同，在2016年的这篇综述中分为2类（class）、6种类型（type）和19种亚型（subtype），但是相信随着近年来大量研究的跟进应该还不止。其多样性的本质可能是由于快速进化和广泛的水平基因转移（HGT）。</p>
+<p>根据以上的阐述，我们可以知道CRISPR-Cas系统本身是原核生物个体中发现的一种适应性免疫系统，然而在这中间，<strong>type 2系统和Cas9蛋白由于它们在基因编辑中的应用受到了人们更多的关注</strong>。对单个Cas效应蛋白而不是多亚基crRNA-Cas复合物的需求，使type 2系统特别适合于基因组编辑技术。<strong>卡彭蒂耶和杜德纳研究组</strong>通过细胞体外试管实验发现负责DNA切割的tracrRNA–crRNA–Cas9效应子复合体，并于2012年在Science发表重要论文A programmable dual-RNA-guided DNA endonuclease in adaptive bacterial immunity[2]。<strong>张锋研究组</strong>亦在2011年开始进行人体细胞的CRISPR基因编辑研究，最终实现基因编辑在人类细胞中的应用，并于2013年在Science发表论文Multiplex Genome Engineering Using CRISPR/Cas Systems。</p>
+<p>基因编辑技术旨在修改活体DNA序列，自1970年开始的基因工程可以将新的遗传信息插入宿主基因，然而缺乏专门靶向针对和修复突变序列的技术上可行的方法[4]。而通过利用CRISPR-Cas系统的定位干扰，可以实现精确靶向基因组特定位点基因的修改、插入、删除或替换。如上所述的免疫应答的第三阶段，<strong>Cas9核酸酶由短RNA指导，在人和小鼠细胞的内源性基因组位点诱导精确切割。Cas9也可以转化为切口酶，以最小的诱变活性促进同源性导向的修复。最后，可以将多个引导序列编码到单个CRISPR序列中作为间隔子，以便能够同时编辑哺乳动物基因组中的多个位点。由此，CRISPR-Cas9基因编辑技术作为一种RNA引导的核酸酶技术，具有易编程性和广泛适用性。</strong>[3]</p>
+<p>通过科学合理地利用新一代基因编辑技术，人类文明将走向一个崭新的台阶。</p>
+<p>参考文献<br>[1] Westra, Edze R., et al. “Evolution and ecology of CRISPR.” Annual Review of Ecology, Evolution, and Systematics 47 (2016): 307-331.<br>[2] Jinek, Martin, et al. “A programmable dual-RNA–guided DNA endonuclease in adaptive bacterial immunity.” science 337.6096 (2012): 816-821.<br>[3] Cong, Le, et al. “Multiplex genome engineering using CRISPR/Cas systems.” Science 339.6121 (2013): 819-823.<br>[4] Woolf, Tod M. “Therapeutic repair of mutated nucleic acid sequences.” Nature biotechnology 16.4 (1998): 341-344.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E7%89%A9/" rel="tag"># 生物</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/18/github-trick-gitignore/" rel="prev" title="github使用.gitignore指定不同步文件">
+                  <i class="fa fa-chevron-left"></i> github使用.gitignore指定不同步文件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/03/extract-paired-mapping-reads-and-flagstat/" rel="next" title="bwa or bowtie提取双端比对序列及flagstat">
+                  bwa or bowtie提取双端比对序列及flagstat <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

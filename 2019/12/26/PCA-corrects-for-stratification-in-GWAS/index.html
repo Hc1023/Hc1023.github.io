@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="种群分层Population stratification（由于系统的血统差异systematic ancestry differences而导致cases与controls之间的等位基因频率差异allele frequency differences）可能导致疾病研究中的虚假关联。此文介绍了一种方法，可以在全基因组范围内显式检测和校正群体分层。使用主成分分析（PCA）来显式地建模cases与co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PCA corrects for stratification in GWAS">
+<meta property="og:url" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="种群分层Population stratification（由于系统的血统差异systematic ancestry differences而导致cases与controls之间的等位基因频率差异allele frequency differences）可能导致疾病研究中的虚假关联。此文介绍了一种方法，可以在全基因组范围内显式检测和校正群体分层。使用主成分分析（PCA）来显式地建模cases与co">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/F1.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/T1-1.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/sF1.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/T1-2.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/T1-3.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/F2.png">
+<meta property="og:image" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/T2.png">
+<meta property="article:published_time" content="2019-12-26T13:24:58.000Z">
+<meta property="article:modified_time" content="2021-10-24T07:17:08.847Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="reading">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/F1.png">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/","path":"2019/12/26/PCA-corrects-for-stratification-in-GWAS/","title":"PCA corrects for stratification in GWAS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PCA corrects for stratification in GWAS | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#New-method-EIGENSTRAT"><span class="nav-number">1.</span> <span class="nav-text">New method EIGENSTRAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results-Simulated-disease-studies-amp-European-America-data-sets"><span class="nav-number">2.</span> <span class="nav-text">Results: Simulated disease studies &amp; European America data sets</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simulated-disease-studies"><span class="nav-number">2.1.</span> <span class="nav-text">Simulated disease studies</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#moderate-ancestry-differences"><span class="nav-number">2.1.1.</span> <span class="nav-text">moderate ancestry differences</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#more-extreme-ancestry-differences"><span class="nav-number">2.1.2.</span> <span class="nav-text">more extreme ancestry differences</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Admixed-population"><span class="nav-number">2.1.3.</span> <span class="nav-text">Admixed population</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#variables-of-interest"><span class="nav-number">2.1.4.</span> <span class="nav-text">variables of interest</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#European-America-data-sets"><span class="nav-number">2.2.</span> <span class="nav-text">European America data sets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion-amp-Discussion"><span class="nav-number">3.</span> <span class="nav-text">Conclusion &amp; Discussion</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2019/12/26/PCA-corrects-for-stratification-in-GWAS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PCA corrects for stratification in GWAS
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-12-26 21:24:58" itemprop="dateCreated datePublished" datetime="2019-12-26T21:24:58+08:00">2019-12-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-10-24 15:17:08" itemprop="dateModified" datetime="2021-10-24T15:17:08+08:00">2021-10-24</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>种群分层Population stratification（由于系统的血统差异systematic ancestry differences而导致cases与controls之间的等位基因频率差异allele frequency differences）可能导致疾病研究中的虚假关联。<br>此文介绍了一种方法，可以在全基因组范围内显式检测和校正群体分层。使用<strong>主成分分析（PCA）</strong>来显式地建模cases与controls之间的祖先差异。 所得的校正特定于候选标记candidate marker在整个祖先群体中的频率变化，从而最大程度地减少了虚假关联minimizing spurious associations，同时使检测真正关联的能力最大化maximizing power to detect true associations。</p>
+<span id="more"></span>
+
+<h2 id="New-method-EIGENSTRAT"><a href="#New-method-EIGENSTRAT" class="headerlink" title="New method EIGENSTRAT"></a>New method EIGENSTRAT</h2><ul>
+<li>genomic control &amp; structured association</li>
+</ul>
+<p>分层效应与样本数量成正比，因此分层将成为未来大规模关联研究中一个日益严重的问题。处理分层的两种主要方法是<strong>基因组控制genomic control</strong>和<strong>结构化关联structured association</strong>。</p>
+<p>1.基因组控制通过调整每个标记处的关联统计数据以统一的总体膨胀因子inflation factor来校正分层。<br>通过基因组控制施加的统一调节可能在祖先群体中具有异常强的分化的标志物上是不够的，而在没有这种分化的标志物上可能是多余的，从而导致能力丧失。<br>2.结构化关联使用诸如STRUCTURE之类的程序将样本分配给离散的亚群，然后在每个集群中汇总关联的证据。<br>在大型数据集上的计算成本很高，个体对集群的分配对集群的数量高度敏感。</p>
+<ul>
+<li>EIGENSTRAT</li>
+</ul>
+<p>eigenvector, stratification<br>Step1: 主成分分析应用于基因型数据，以推断遗传变异的连续轴continuous axes 。变化轴将数据缩减为少量维，从而描述了尽可能多的变化，它们被定义为样本协方差矩阵的最大特征向量。<br>在样本之间存在先祖差异的数据集中，变化轴通常具有地理解释：例如，描述欧洲西北偏东南部的轴的值将逐渐从西北欧的正值到中部的接近零欧洲，东南欧为负数。<br>Step2: 计算线性回归的残差，通过沿每个轴的祖先数量连续调整基因型和表型。removing all correlations to ancestry.（这一步是怎么做的我还不太清楚，因为之前接触过的主成分分析是用来降维的，但这里是把一个主成分给抽掉的样子，就是把主成分的那个方向对基因型作预测，然后用回归系数把那部分拉掉）<br>Step3:  使用祖先调整ancestry-adjusted的基因型和表型来计算关联统计量。</p>
+<p><img src="F1.png"></p>
+<p>（a）将主成分分析应用于基因型数据，以推断遗传变异的连续轴； 此处显示了一个变化轴。<br>（b）候选SNP的基因型和表型通过沿每个轴的祖先数量进行连续调整，从而消除了与祖先的所有相关性。<br>（c）血统调整后，候选SNP的基因型与表型之间的关联统计显示无显着关联。</p>
+<h2 id="Results-Simulated-disease-studies-amp-European-America-data-sets"><a href="#Results-Simulated-disease-studies-amp-European-America-data-sets" class="headerlink" title="Results: Simulated disease studies & European America data sets"></a>Results: Simulated disease studies &amp; European America data sets</h2><h3 id="Simulated-disease-studies"><a href="#Simulated-disease-studies" class="headerlink" title="Simulated disease studies"></a>Simulated disease studies</h3><p>模拟疾病研究比较结构化关联方法和基因组控制方法。</p>
+<h4 id="moderate-ancestry-differences"><a href="#moderate-ancestry-differences" class="headerlink" title="moderate ancestry differences"></a>moderate ancestry differences</h4><p>Discrete subpopulations with moderate ancestry differences between cases and controls.<br>500个病例和500个对照的100,000个随机SNP生成了数据，其中60％的病例和40％的对照是从种群1采样的，其余病例和对照是从种群2采样的。</p>
+<p>使用主成分分析来推断100,000个随机SNP的十个独立数据集中的每一个的连续变化的正交轴）。由于数据仅包含总体结构的一个附加维度，因此希望仅关注变化的top axis。但是，为了测试EIGENSTRAT对使用的变化轴数的敏感性，实际上推断出变化的前十个轴。检查了变异的top axis是否准确地跟踪了种群1与种群2的隶属关系，发现沿top axis的坐标与样本中的种群隶属关系相关，为99.9％；其余的轴是采样的假象。</p>
+<p>文章模拟了三种候选SNP，以比较不同分层校正方法的有效性。<br>第一类（与疾病无关联的随机SNP）<br>第二类（分化的SNP，无关联）<br>该类别是由以前对乳糖酶（LCT）基因中SNP的研究所激发的，这表明由于分层，与欧美裔美国人的身高表型存在虚假联系。<br>第三类（因果单核苷酸多态性 causal SNPs）<br>使用FST = 0.01的Balding-Nichols模型和因果等位基因相对风险为1.5的乘性疾病风险模型。</p>
+<p>对于100,000个随机SNP的十个数据集的每一个，文章在三个类别中的每个类别中模拟了1,000,000个候选SNP，并使用以下三种方法计算了关联统计量：<br>（i）无分层校正的Armitage trend <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.462ex" xmlns="http://www.w3.org/2000/svg" width="2.404ex" height="2.348ex" role="img" focusable="false" viewBox="0 -833.9 1062.6 1037.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D712" d="M576 -125Q576 -147 547 -175T487 -204H476Q394 -204 363 -157Q334 -114 293 26L284 59Q283 58 248 19T170 -66T92 -151T53 -191Q49 -194 43 -194Q36 -194 31 -189T25 -177T38 -154T151 -30L272 102L265 131Q189 405 135 405Q104 405 87 358Q86 351 68 351Q48 351 48 361Q48 369 56 386T89 423T148 442Q224 442 258 400Q276 375 297 320T330 222L341 180Q344 180 455 303T573 429Q579 431 582 431Q600 431 600 414Q600 407 587 392T477 270Q356 138 353 134L362 102Q392 -10 428 -89T490 -168Q504 -168 517 -156T536 -126Q539 -116 543 -115T557 -114T571 -115Q576 -118 576 -125Z"></path></g><g data-mml-node="mn" transform="translate(659,363) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g></g></g></svg></mjx-container>；<br>（ii）Genetic control使用随机SNP来推断inflation factor；<br>（iii）EIGENSTRAT使用随机SNP来推断十个变化轴。</p>
+<p>P值&lt;0.0001统计显著</p>
+<p>模拟结果表明，相对于基因组控制，EIGENSTRAT通过对病例和对照的祖先进行显式建模，可以达到同等或更低的假阳性关联率，并能够以更高的灵敏度检测出真实的关联。</p>
+<p>1.对于随机候选SNP，对于P &lt;0.0001的临界值，两种方法都将误报率降低到期望值。<br>2.对于高度分化的候选SNP，基因组控制可能会产生假阳性，而EIGENSTRAT仍能完美地校正分层。<br>3.因果疾病SNP，EIGENSTRAT具有更高的功效（几乎等同于未经分层的统计数据）：49％比基因组对照的30％.</p>
+<p>再次证实，基因组控制的统一调节在显示祖先群体间异常强的分化的标记物上是不足的，而在没有这种分化的标记物上是多余的。</p>
+<p><img src="T1-1.png"></p>
+<p>EIGENSTRAT模拟的一个可能问题沿变化的前十个轴调整了血统。由于此数据集仅包含一个额外的人口结构维度，因此希望仅关注变化的top axis。<br>在每个SNP类别中，对于K = 1、2、5或10，结果实际上是相同的。这意味着，只要有足够的轴数，EIGENSTRAT的结果对使用的变化轴数并不敏感。因为轴是正交的。更为严格的方法是将K设置为具有统计意义的有效变化轴数。</p>
+<p><img src="sF1.png"></p>
+<h4 id="more-extreme-ancestry-differences"><a href="#more-extreme-ancestry-differences" class="headerlink" title="more extreme ancestry differences"></a>more extreme ancestry differences</h4><p>Discrete subpopulations with more extreme ancestry differences between cases and controls.<br>从种群1抽样了50％的cases和0％的control，其余cases和control抽样自种群2。也就是说种群1没有对照。</p>
+<p>1.对于随机候选SNP，分层比以前更严重，但仍可以通过基因组控制和EIGENSTRAT进行完美校正。<br>2.对于高度分化的SNP，现在可以保证分层产生假阳性关联，而基因组控制无法纠正这种错误关联，而EIGENSTRAT可以再次实现完美的分层校正。<br>3.对于因果SNP，基因组控制几乎失去所有能力，而EIGENSTRAT则损失部分能力。</p>
+<p><img src="T1-2.png"></p>
+<p>再一次证实基因组控制的上述缺陷：异常强的分化的标记上是不够的，而在没有这种分化的标记上是多余的。</p>
+<p>进一步检查了EIGENSTRAT所获得的功效，并确定其与仅使用人口250例病例和500个对照来计算未经校正的χ2统计量所获得的功效相同。直观地，EIGENSTRAT的血统调整有效地从种群中移除了250例病例。但是请注意！这并没有消除在设计疾病研究时仔细匹配病例和对照的必要性：在当前示例中，一组更紧密匹配的500例病例和500个对照将具有更好的检测真实关联的能力。</p>
+<h4 id="Admixed-population"><a href="#Admixed-population" class="headerlink" title="Admixed population"></a>Admixed population</h4><p>Admixed population with ancestry differences between cases and controls based on ancestry risk <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex" xmlns="http://www.w3.org/2000/svg" width="1.02ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 451 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container></p>
+<p>抽样个体，种群1中的祖先比例为<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.023ex" xmlns="http://www.w3.org/2000/svg" width="1.197ex" height="1.02ex" role="img" focusable="false" viewBox="0 -441 529 451"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g></g></g></svg></mjx-container>且种群2中的祖先比例为<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex" xmlns="http://www.w3.org/2000/svg" width="5.094ex" height="1.692ex" role="img" focusable="false" viewBox="0 -666 2251.4 748"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(722.2,0)"><path data-c="2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></g><g data-mml-node="mi" transform="translate(1722.4,0)"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g></g></g></svg></mjx-container>，<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex" xmlns="http://www.w3.org/2000/svg" width="10.476ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 4630.2 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g><g data-mml-node="mo" transform="translate(806.8,0)"><path data-c="223C" d="M55 166Q55 241 101 304T222 367Q260 367 296 349T362 304T421 252T484 208T554 189Q616 189 655 236T694 338Q694 350 698 358T708 367Q722 367 722 334Q722 260 677 197T562 134H554Q517 134 481 152T414 196T355 248T292 293T223 311Q179 311 145 286Q109 257 96 218T80 156T69 133Q55 133 55 166Z"></path></g><g data-mml-node="mi" transform="translate(1862.6,0)"><path data-c="1D448" d="M107 637Q73 637 71 641Q70 643 70 649Q70 673 81 682Q83 683 98 683Q139 681 234 681Q268 681 297 681T342 682T362 682Q378 682 378 672Q378 670 376 658Q371 641 366 638H364Q362 638 359 638T352 638T343 637T334 637Q295 636 284 634T266 623Q265 621 238 518T184 302T154 169Q152 155 152 140Q152 86 183 55T269 24Q336 24 403 69T501 205L552 406Q599 598 599 606Q599 633 535 637Q511 637 511 648Q511 650 513 660Q517 676 519 679T529 683Q532 683 561 682T645 680Q696 680 723 681T752 682Q767 682 767 672Q767 650 759 642Q756 637 737 637Q666 633 648 597Q646 592 598 404Q557 235 548 205Q515 105 433 42T263 -22Q171 -22 116 34T60 167V183Q60 201 115 421Q164 622 164 628Q164 635 107 637Z"></path></g><g data-mml-node="mo" transform="translate(2629.6,0)"><path data-c="5B" d="M118 -250V750H255V710H158V-210H255V-250H118Z"></path></g><g data-mml-node="mn" transform="translate(2907.6,0)"><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path></g><g data-mml-node="mo" transform="translate(3407.6,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="mn" transform="translate(3852.2,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(4352.2,0)"><path data-c="5D" d="M22 710V750H159V-250H22V-210H119V710H22Z"></path></g></g></g></svg></mjx-container> ；病例/对照状态疾病风险比<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex" xmlns="http://www.w3.org/2000/svg" width="2.054ex" height="1.552ex" role="img" focusable="false" viewBox="0 -674.8 908.1 685.8"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(484,363) scale(0.707)"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g></g></g></g></svg></mjx-container>，based on ancestry risk <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex" xmlns="http://www.w3.org/2000/svg" width="1.02ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 451 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container>.</p>
+<p>r = 2和r = 3的结果记录在表。 EIGENSTRAT再次比基因组控制更有效地校正了高度分化的SNP的分层，并在因果SNP上获得了更高的功效。</p>
+<p><img src="T1-3.png"></p>
+<p>但是，即使EIGENSTRAT也会在因果SNP上产生轻微能力损失：因为其祖先推论非常精确，top axis与<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex" xmlns="http://www.w3.org/2000/svg" width="1.02ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 451 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container>的任何一个值的真实祖先都相关为99.8％，作者猜测测这种能力缺陷可能是由于不完美的cases和controls的匹配，类似于前一种情况。</p>
+<h4 id="variables-of-interest"><a href="#variables-of-interest" class="headerlink" title="variables of interest"></a>variables of interest</h4><ul>
+<li>样本数（N）</li>
+</ul>
+<p>尝试更改样本N的数量，N分别为100、200、500和1000时进行模拟，each yielded a top axis of variation that is 99.9% correlated to population membership across samples.<br>有效的分层校正对样本数量不敏感。</p>
+<ul>
+<li>随机SNP数量（M）</li>
+</ul>
+<p>将注意力集中在高度分化的候选SNP上，它们极有可能产生假阳性关联。发现当M &lt;5000时，EIGENSTRAT很难推断出完全准确的变化轴，从而导致分层校正不完全。另一方面，即使变异轴的推断略有误差，随机候选SNP的分层校正对于M≥200也有效。</p>
+<ul>
+<li>FST值&lt;0.01</li>
+</ul>
+<p>高度分化的SNP进行完全分层校正：FST = 0.005，20,000 SNP； FST=0.002，50,000 SNP；FST=0.001，100,000 SNP. 因此，即使在高度分化的SNP的情况下，对具有数十万个SNP的美籍美国人进行基因组扫描也将能够检测并校正在紧密相关的欧洲人群中的分层。</p>
+<p>由于计算量大，无法将结构化关联方法structured association method包括在上述比较中。因此，作者通过复制数据量小得多的模拟比较了EIGENSTRAT，基因组控制和结构化关联。这三种方法在校正随机候选SNP的分层方面均取得了相似的成功，而EIGENSTRAT在检测因果SNP的真实关联时，具有优于基因组控制或结构化关联的强大能力。</p>
+<h3 id="European-America-data-sets"><a href="#European-America-data-sets" class="headerlink" title="European America data sets"></a>European America data sets</h3><p>作为正在进行的疾病研究的一部分，作者将该方法应用于在Affymetrix平台上进行基因分型的488个美国人的数据集，该平台包含116,204个SNP。主成分分析表明存在十个具有统计意义的轴（每个轴P &lt;0.01）。图中显示了前两个轴（每个轴P &lt;10^-12）。有趣的是，观察到了连续和离散的遗传效应。 基于其与乳糖酶持久性的相关性，假设第一个轴反映了西北欧洲和东南欧洲之间的遗传变异，第二个轴将两个东南亚亚群分开。</p>
+<p><img src="F2.png"></p>
+<p>作者对乳糖酶持久性表型进行了关联研究。之所以选择这种表型，是因为它与欧洲内部血统相关联，并且可以从数据中推断出来，因为它与LCT基因的基因型100％相关。<br>尽管与该表型完美相关的SNP不是基因分型的116,204个SNP中的一个，但附近的SNP rs3769005已被分型，并且与HapMap31的欧洲样本中的完美相关SNP有90％的相关性。因此，可以从该SNP处的基因型以合理的准确性推断出乳糖酶持久性表型。如预期的那样，第2号染色体上的大量SNP显示出高度显著的关联，反映了发生在LCT基因上的强选择性扫描strong selective sweep。因此，将随后的分析仅限于2号染色体外的SNP。4个SNP显示出显著的相关性，这可能是由于分层。</p>
+<p><img src="T2.png"></p>
+<p>首先尝试使用genomic control校正分层。将未经校正的<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.462ex" xmlns="http://www.w3.org/2000/svg" width="2.404ex" height="2.348ex" role="img" focusable="false" viewBox="0 -833.9 1062.6 1037.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D712" d="M576 -125Q576 -147 547 -175T487 -204H476Q394 -204 363 -157Q334 -114 293 26L284 59Q283 58 248 19T170 -66T92 -151T53 -191Q49 -194 43 -194Q36 -194 31 -189T25 -177T38 -154T151 -30L272 102L265 131Q189 405 135 405Q104 405 87 358Q86 351 68 351Q48 351 48 361Q48 369 56 386T89 423T148 442Q224 442 258 400Q276 375 297 320T330 222L341 180Q344 180 455 303T573 429Q579 431 582 431Q600 431 600 414Q600 407 587 392T477 270Q356 138 353 134L362 102Q392 -10 428 -89T490 -168Q504 -168 517 -156T536 -126Q539 -116 543 -115T557 -114T571 -115Q576 -118 576 -125Z"></path></g><g data-mml-node="mn" transform="translate(659,363) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g></g></g></svg></mjx-container>统计量除以全基因组膨胀因子为λ= 1.43，最上面的SNP仍然显著关联。然后运行EIGENSTRAT，均未报告显著关联。<br>值得注意的是，EIGENSTRAT推断的变异的上轴与四个最初相关的SNP和乳糖酶持久性表型都密切相关，大概是因为西北欧洲和东南欧之间的乳糖酶持久性不同。 因此，沿该轴进行校正可解决虚假关联。</p>
+<p>在上面的分析中，EIGENSTRAT用于推断变异轴的SNP集包括感兴趣的候选SNP。这就提出了一个问题，即是否可以通过包含这些SNP来使变异轴偏倚。通过排除候选SNP研究，结果基本上没有变化。表明在推断大型数据集的变化轴时，该方法对于包含或排除候选SNP具有鲁棒性。</p>
+<p>测试需要多少个随机SNP才能有效地进行分层校正。所需的SNP数量大于在FST = 0.01的模拟中确定的数量。猜测由于欧美人是混合人群，因此有效FST可能小于0.01。</p>
+<h2 id="Conclusion-amp-Discussion"><a href="#Conclusion-amp-Discussion" class="headerlink" title="Conclusion & Discussion"></a>Conclusion &amp; Discussion</h2><p>EIGENSTRAT通过主成分分析，沿连续的变化轴显式建模cases和control之间的祖先差异。在模拟和真实数据集上的表现优于主流方法，并且可以轻松地用于具有成千上万个标记的疾病研究。</p>
+<p>尽管EIGENSTRAT是纠正分层的一种强大而强大的方法，但它不是万能药，研究人员应遵循精心进行实验设计的原则，在最大程度上匹配cases和control的祖先和实验室治疗。如果违反这些原则导致cases和control之间存在strong bias，则EIGENSTRAT可能会发现这种bias，但势必能力下降。</p>
+<p>虽然此文研究重点是祖先效应，但最近的一项研究表明，样本之间实验室处理的差异是一个普遍存在的问题，通常会超过人口分层的影响。确实，在此处描述的欧美数据集中，变化的前两个轴描述了祖先效应，但是在第三个轴中检测到了样品之间实验室处理差异的细微证据。 EIGENSTRAT明确解决这种细微影响的能力令人鼓舞。</p>
+<p>reference: Principal components analysis corrects for stratification in genome-wide association studies <a target="_blank" rel="noopener" href="https://www.nature.com/articles/ng1847">https://www.nature.com/articles/ng1847</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/reading/" rel="tag"># reading</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/25/Factor-analysis/" rel="prev" title="因子分析">
+                  <i class="fa fa-chevron-left"></i> 因子分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/31/Hashing/" rel="next" title="Hashing">
+                  Hashing <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

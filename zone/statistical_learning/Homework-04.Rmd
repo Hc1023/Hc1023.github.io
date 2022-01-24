@@ -1,0 +1,578 @@
+---
+title: "Homework 4"
+author: "Huang Sisi"
+output: html_document
+---
+
+```{r setup, message = F, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(warn=-1)
+library(latex2exp)
+```
+
+## Chapter 8
+
+3.\ Consider the Gini index, classification error, and entropy in a simple classification setting with two classes. Create a single plot that displays each of these quantities as a function of $\hat{p}_{m 1}$. The $x$ axis should display $\hat{p}_{m 1}$, ranging from 0 to 1, and the $y$ -axis should display the value of the Gini index, classification error, and entropy.
+
+  *Answer*. Gini index: 
+  
+\begin{equation}
+G_m = \sum_{k=1}^K\hat{p}_{m k}(1-\hat{p}_{m k}).
+\end{equation}
+  
+Classification error: 
+
+\begin{equation}
+C_m = 1-max\{\hat{p}_{m k}\}.
+\end{equation}  
+
+Cross entropy:
+
+\begin{equation}
+D_{m}=-\sum_{k=1}^{K} \hat{p}_{m k} \log \hat{p}_{m k}.
+\end{equation} 
+  
+```{r}
+p = seq(0,1,0.02)
+G = 2*p*(1-p)
+C = 1-pmax(p,1-p)
+D = -(p*log(p)+(1-p)*log(1-p))
+plot(p, G, type = "l", ylim = c(0,1), lwd=2, 
+     xlab = TeX('$\\hat{p}_{m 1}$'), ylab = "Score")
+lines(p, C, type = "l", col = 'blue', lwd=2)
+lines(p, D, type = "l", col = 'red', lwd=2)
+legend(x='topleft', legend=c('Gini index','Classification error','Cross entropy'),
+       col=c('black','blue','red'), lty=1, lwd=2, bty="n")
+```
+  
+4.\ This question relates to the plots in Figure $8.12$.
+
+(a) Sketch the tree corresponding to the partition of the predictor space illustrated in the left-hand panel of Figure 8.12. The numbers inside the boxes indicate the mean of $Y$ within each region.
+
+```
+                  X1<1
+                 ___|___
+                |       |
+              X2<1      5
+             ___|___
+            |       |
+          X1<0      15
+         ___|___
+        |       |
+        3     X2<0
+             ___|___
+            |       |
+            10      0
+```
+
+(b) Create a diagram similar to the left-hand panel of Figure $8.12$, using the tree illustrated in the right-hand panel of the same figure. You should divide up the predictor space into the correct regions, and indicate the mean for each region.
+
+```{r}
+plot(NA, NA, xlim = c(-1, 2), ylim = c(0, 3), xlab = "X1", ylab = "X2")
+lines(x = c(-1, 2), y = c(1, 1))
+lines(x = c(1, 1), y = c(0, 1))
+lines(x = c(-1, 2), y = c(2, 2))
+lines(x = c(0, 0), y = c(1, 2))
+text(x = 0, y = 0.5, labels = '-1.8')
+text(x = 1.5, y = 0.5, labels = '0.63')
+text(x = -0.5, y = 1.5, labels = '-1.06')
+text(x = 1, y = 1.5, labels = '0.21')
+text(x = 0.5, y = 2.5, labels = '2.49')
+```
+
+7.\ In the lab, we applied random forests to the `Boston` data using `mtry=6` and using `ntree=25` and `ntree=500`. Create a plot displaying the test error resulting from random forests on this data set for a more combrehensive range of values for `mtry` and `ntree`. You can model your plot after Figure 8.10. Describe the results obtained.
+
+```{r}
+library(MASS)
+library(randomForest)
+set.seed(1)
+train = sample(nrow(Boston), nrow(Boston)/2)
+X.train = Boston[train, -ncol(Boston)]
+X.test = Boston[-train, -ncol(Boston)]
+Y.train = Boston[train, ncol(Boston)]
+Y.test = Boston[-train, ncol(Boston)]
+
+p = ncol(Boston) - 1 # 13
+p.2 = p/2 # 6.5
+p.sq = sqrt(p) # 3.6
+p1 = 1
+p2 = 2
+p3 = 5
+p4 = 8
+p5 = 10
+p.vec <- c(1,2,sqrt(p),5,p/2,8,10,p)
+
+plot(NA, NA, xlim = c(1,500), ylim = c(18,45), xlab = "Number of Trees", ylab = "Test MSE")
+for (i in 1:length(p.vec)) {
+  set.seed(3)
+  rf = randomForest(X.train, Y.train, X.test, Y.test, mtry = p.vec[i], ntree = 500)
+  lines(1:500, rf$test$mse, col = i, type = "l")
+}
+
+legend("topright", c("m=p","m=10","m=8","m=p/2","m=5", TeX('$m=\\sqrt{p}$'),"m=2","m=1"), 
+       col = rev(1:length(p.vec)), cex = 1, lty = 1)
+```
+
+Results: `mtry` around $\sqrt{p}$ is the best. The MSE reduces as we add more trees and becomes stable when the number of trees is over 100.
+
+8.\ In the lab, a classification tree was applied to the `Carseats` data set after converting `Sales` into a qualitative response variable. Now we will seek to predict `Sales` using regression trees and related approaches, treating the response as a quantitative variable.
+
+(a) Split the data set into a training set and a test set.
+
+
+```{r}
+library(ISLR)
+set.seed(1)
+train=sample(nrow(Carseats),nrow(Carseats)/2)
+XY.train = Carseats[train, ]
+XY.test = Carseats[-train, ]
+```
+
+(b) Fit a regression tree to the training set. Plot the tree, and interpret the results. What test MSE do you obtain?
+
+```{r}
+library(tree)
+tree.carseats = tree(Sales ~ ., data = XY.train)
+summary(tree.carseats)
+plot(tree.carseats)
+text(tree.carseats, pretty = 0)
+```
+
+The most important factors are `ShelveLoc` and `Price`. Variables actually used in tree construction are `ShelveLoc`, `Price`, `Age`, `Advertising`, `CompPrice` and `US`. There are 18 terminal nodes.
+
+```{r}
+tree.pred=predict(tree.carseats,Carseats[-train,])
+mean((tree.pred-Carseats[-train,'Sales'])^2)
+```
+(c) Use cross-validation in order to determine the optimal level of tree complexity. Does pruning the tree improve the test MSE?
+
+```{r}
+set.seed(21)
+cv.carseats=cv.tree(tree.carseats) 
+plot(cv.carseats, type = "b")
+# Best size = 8
+abline(h = min(cv.carseats$dev) + 0.2 * sd(cv.carseats$dev), col = "red", lty = 2)
+points(cv.carseats$size[which.min(cv.carseats$dev)], min(cv.carseats$dev), 
+       col = "#BC3C29FF", cex = 2, pch = 20)
+```
+
+```{r}
+prune.carseats = prune.tree(tree.carseats, best = 8)
+plot(prune.carseats)
+text(prune.carseats, pretty = 0)
+```
+
+```{r}
+tree.pred=predict(prune.carseats,Carseats[-train,])
+mean((tree.pred-Carseats[-train,'Sales'])^2)
+```
+
+In this case, pruning the tree increase the test MSE.
+
+(d) Use the bagging approach in order to analyze this data. What test MSE do you obtain? Use the `importance()` function to determine which variables are most important.
+
+```{r}
+# bagging approach: randomForest
+p <- ncol(XY.train)-1
+# here the effect of sqrt is worse
+set.seed(21)
+rf.carseats = randomForest(Sales ~ ., data = XY.train, 
+                            mtry = p, ntree = 500, importance = T)
+rf.pred = predict(rf.carseats, XY.test)
+mean((XY.test$Sales - rf.pred)^2)
+```
+The test MSE is 2.60.
+
+```{r}
+plot(rf.carseats)
+```
+
+```{r}
+importance(rf.carseats)
+```
+
+```{r}
+varImpPlot(rf.carseats)
+```
+
+The most important variables to predict `Sales` are `Price` and `ShelveLoc`.
+
+(e) Use random forests to analyze this data. What test MSE do you obtain? Use the `importance()` function to determine which variables are most important. Describe the effect of $m$, the number of variables considered at each split, on the error rate obtained.
+
+```{r}
+set.seed(21)
+rf.carseats = randomForest(Sales ~ ., data = XY.train, 
+                           mtry = sqrt(p), ntree = 500, importance = T)
+rf.pred = predict(rf.carseats, XY.test)
+mean((XY.test$Sales - rf.pred)^2)
+```
+
+In this case, `sqrt` works worse for mtry.
+
+9.\ This problem involves the `OJ` data set which is part of the `ISLR` package.
+
+(a) Create a training set containing a random sample of 800 observations, and a test set containing the remaining observations.
+
+```{r}
+library(ISLR)
+set.seed(10)
+
+train = sample(nrow(OJ), 800)
+OJ.train = OJ[train, ]
+OJ.test = OJ[-train, ]
+```
+
+(b) Fit a tree to the training data, with `Purchase` as the response and the other variables as predictors. Use the `summary()` function to produce summary statistics about the tree, and describe the results obtained. What is the training error rate? How many terminal nodes does the tree have?
+
+```{r}
+library(tree)
+tree.OJ = tree(Purchase ~ ., data = OJ.train)
+summary(tree.OJ)
+```
+
+The tree contains 3 variables: `LoyalCH`, `DiscMM`, `PriceDiff`. The training error rate is 0.1755. The tree contains 7 terminal nodes.
+
+(c) Type in the name of the tree object in order to get a detailed text output. Pick one of the terminal nodes, and interpret the information displayed.
+
+```{r}
+tree.OJ
+```
+
+Pick the terminal node 7) as an example. There are 265 samples in the subtree below this node. The deviance for all samples below this node is 103.700. If `LoyalCH`>0.48 and `LoyalCH`>0.76, the prediction of `Purchase` by this node is CH because about 95.1% of samples take `Purchase` as CH.
+
+(d) Create a plot of the tree, and interpret the results.
+
+```{r}
+plot(tree.OJ)
+text(tree.OJ, pretty = 0)
+```
+
+The variable `LoyalCH` is the most decisive. If `LoyalCH`<0.48, the predictions are all MM (I do not know why the nodes are further divided. It may be due to the different prediction probabilities). And if `LoyalCH`>0.76, the prediction is CH. If `LoyalCH`<0.76, there are subtrees predicted by `PriceDiff` and `DiscMM`.
+
+(e) Predict the response on the test data, and produce a confusion matrix comparing the test labels to the predicted test labels. What is the test error rate?
+
+```{r}
+pred.OJ = predict(tree.OJ, OJ.test, type = "class")
+table(OJ.test$Purchase, pred.OJ)
+```
+
+(f) Apply the `cv.tree()` function to the training set in order to determine the optimal tree size.
+
+```{r}
+set.seed(1)
+cv.OJ = cv.tree(tree.OJ)
+```
+
+(g) Produce a plot with tree size on the $x$ -axis and cross-validated classification error rate on the $y$ -axis.
+
+```{r}
+plot(cv.OJ, type = "b")
+abline(h = min(cv.OJ$dev) + 0.2 * sd(cv.OJ$dev), col = "red", lty = 2)
+points(cv.OJ$size[which.min(cv.OJ$dev)], min(cv.OJ$dev), 
+       col = "#BC3C29FF", cex = 2, pch = 20)
+```
+
+
+(h) Which tree size corresponds to the lowest cross-validated classification error rate?
+
+```{r}
+s <- cv.OJ$size[which.min(cv.OJ$dev)]
+s
+```
+
+The tree size 4 corresponds to the lowest cross-validated classification error rate.
+
+(i) Produce a pruned tree corresponding to the optimal tree size obtained using cross-validation. If cross-validation does not lead to selection of a pruned tree, then create a pruned tree with five terminal nodes.
+
+```{r}
+prune.OJ = prune.tree(tree.OJ, best = s)
+plot(prune.OJ)
+text(prune.OJ, pretty = 0)
+```
+
+(j) Compare the training error rates between the pruned and unpruned trees. Which is higher?
+
+```{r}
+summary(prune.OJ)
+```
+
+The training error for pruned tree becomes higher.
+
+(k) Compare the test error rates between the pruned and unpruned trees. Which is higher?
+
+```{r}
+# Unpruned
+# pred.OJ = predict(tree.OJ, OJ.test, type = "class")
+sum(OJ.test$Purchase != pred.OJ)/length(pred.OJ)
+```
+
+```{r}
+# Pruned
+pred.prune.OJ = predict(prune.OJ, OJ.test, type = "class")
+sum(OJ.test$Purchase != pred.prune.OJ)/length(pred.OJ)
+```
+
+In this case the error rate for pruned tree is also higher.
+
+10.\ We now use boosting to predict `Salary` in the `Hitters` data set.
+
+(a) Remove the observations for whom the salary information is unknown, and then log-transform the salaries.
+
+```{r}
+hitters <- Hitters
+hitters = hitters[-which(is.na(hitters$Salary)), ]
+hitters$Salary = log(hitters$Salary)
+```
+
+(b) Create a training set consisting of the first 200 observations, and a test set consisting of the remaining observations.
+
+```{r}
+train.hitters = hitters[1:200,]
+test.hitters = hitters[-c(1:200),]
+```
+
+(c) Perform boosting on the training set with 1,000 trees for a range of values of the shrinkage parameter $\lambda$. Produce a plot with different shrinkage values on the $x$-axis and the corresponding training set MSE on the $y$-axis.
+
+```{r}
+library(gbm)
+lambdas <- 10^seq(-10, -0.2, by = 0.1)
+err.train <- {}
+err.test <- {}
+for (lambda in lambdas) {
+  boost.hitters <- gbm(Salary ~ ., data = train.hitters, distribution = "gaussian", 
+                       n.trees = 1000, shrinkage = lambda)
+  pred.hitters.train <- predict(boost.hitters, train.hitters, n.trees = 1000)
+  pred.hitters.test <- predict(boost.hitters, test.hitters, n.trees = 1000)
+  err.train <- c(err.train, mean((train.hitters$Salary-pred.hitters.train)^2))
+  err.test <- c(err.test, mean((test.hitters$Salary-pred.hitters.test)^2)) 
+}
+```
+
+```{r}
+plot(lambdas, err.train, type = "b", xlab = "Shrinkage", ylab = "Train MSE", pch = 20)
+```
+
+(d) Produce a plot with different shrinkage values on the $x$-axis and the corresponding test set MSE on the $y$-axis.
+
+```{r}
+plot(lambdas, err.test, type = "b", xlab = "Shrinkage", ylab = "Test MSE", pch = 20)
+```
+
+(e) Compare the test MSE of boosting to the test MSE that results from applying two of the regression approaches seen in Chapters 3 and 6 .
+
+- Test MSE of boosting
+
+```{r}
+lambdas[which.min(err.test)]
+min(err.test)
+```
+
+- Test MSE of linear regression
+
+```{r}
+lm.hitters = lm(Salary ~ ., data = train.hitters)
+lm.pred = predict(lm.hitters, test.hitters)
+mean((test.hitters$Salary - lm.pred)^2)
+```
+
+- Test MSE of $L^2$ Regularization
+
+`glmnet` solves the problem
+\begin{equation}
+\min _{\beta_{0}, \beta} \frac{1}{N} \sum_{i=1}^{N} w_{i} l\left(y_{i}, \beta_{0}+\beta^{T} x_{i}\right)+\lambda\left[(1-\alpha)\|\beta\|_{2}^{2} / 2+\alpha\|\beta\|_{1}\right]
+\end{equation}
+
+```{r}
+library(glmnet)
+x = model.matrix(Salary ~ ., data = train.hitters)
+x.test = model.matrix(Salary ~ ., data = test.hitters)
+lasso.hitters = glmnet(x, train.hitters$Salary, alpha = 0, lambda = 0.05)
+lasso.pred = predict(lasso.hitters, s=0.05, newx = x.test)
+mean((test.hitters$Salary - lasso.pred)^2)
+```
+
+We can see the test MSE of boosting is the minimum, compared to the approach of linear regression and simple regularization.
+
+(f) Which variables appear to be the most important predictors in the boosted model?
+
+```{r}
+bestboost.hitters <- gbm(Salary ~ ., data = train.hitters, distribution = "gaussian", 
+                         n.trees = 1000, shrinkage = lambdas[which.min(err.test)])
+summary(bestboost.hitters)
+```
+`CAtBat` is the most important predictor.
+
+
+(g) Now apply bagging to the training set. What is the test set MSE for this approach?
+
+```{r}
+set.seed(1)
+rf.hitters = randomForest(Salary ~ ., data = train.hitters, ntree = 500)
+rf.pred = predict(rf.hitters, test.hitters)
+mean((test.hitters$Salary - rf.pred)^2)
+```
+
+The test set MSE is 0.21, less than boosting.
+
+## Chapter 9
+
+1.\ This problem involves hyperplanes in two dimensions.
+
+(a) Sketch the hyperplane $1+3 X_{1}-X_{2}=0$. Indicate the set of points for which $1+3 X_{1}-X_{2}>0$, as well as the set of points for which $1+3 X_{1}-X_{2}<0$
+
+(b) On the same plot, sketch the hyperplane $-2+X_{1}+2 X_{2}=0$. Indicate the set of points for which $-2+X_{1}+2 X_{2}>0$, as well as the set of points for which $-2+X_{1}+2 X_{2}<0$.
+
+```{r}
+x1 <- seq(-2,2,0.2)
+x2a <- 3*x1+1
+x2b <- -0.5*x1+1
+plot(x1, x2a, type = 'l', ylab = 'x2')
+lines(x1, x2b, col = 'blue')
+for(i in seq(-2,2,length.out = 50)){
+  p <- data.frame(rep(i,30),seq(-6,8,length.out = 30))
+  points(p, col=ifelse(1+3*p[,1]-p[,2]>0,'orange','purple'), 
+         pch=ifelse(-2+p[,1]+2*p[,2]>0,'.','+'))
+}
+text(c(1.2), c(3), "1+3*x1-x2=0")
+text(c(-1), c(2.5), "-2+x1+2*x2=0", col = 'blue')
+```
+
+The hyperplane $1+3 X_{1}-X_{2}=0$ is drawn in black line. The set of points for which $1+3 X_{1}-X_{2}>0$ is in orange, and the set of points for which $1+3 X_{1}-X_{2}<0$ is in purple.
+
+The hyperplane $-2+X_{1}+2X_{2}=0$ is drawn in blue line. The set of points for which $-2+X_{1}+2 X_{2}>0$ is `.`, and the set of points for which $-2+X_{1}+2 X_{2}<0$ is `+`.
+
+2.\ We have seen that in $p=2$ dimensions, a linear decision boundary takes the form $\beta_{0}+\beta_{1} X_{1}+\beta_{2} X_{2}=0$. We now investigate a non-linear decision boundary.
+
+(a) Sketch the curve
+$$
+\left(1+X_{1}\right)^{2}+\left(2-X_{2}\right)^{2}=4
+$$
+
+(b) On your sketch, indicate the set of points for which
+$$
+\left(1+X_{1}\right)^{2}+\left(2-X_{2}\right)^{2}>4
+$$
+as well as the set of points for which
+$$
+\left(1+X_{1}\right)^{2}+\left(2-X_{2}\right)^{2} \leq 4
+$$
+```{r}
+plot(NA, NA, xlim = c(-4, 2), ylim = c(-1, 5), asp = 1, xlab = "X1", ylab = "X2")
+symbols(c(-1), c(2), circles = c(2), add = TRUE, inches = FALSE)
+for(i in seq(-7,5,length.out = 50)){
+  p <- data.frame(rep(i,30),seq(-1,5,length.out = 30))
+  points(p, col=ifelse((1+p[,1])^2+(2-p[,2])^2>4,'blue','red'), pch='.')
+}
+text(c(2.5), c(0.5), TeX('$(1+X_{1})^{2}+(2-X_{2})^{2} = 4$'))
+```
+The set of points for which $\left(1+X_{1}\right)^{2}+\left(2-X_{2}\right)^{2}>4$ is in blue, and the set of points for which $\left(1+X_{1}\right)^{2}+\left(2-X_{2}\right)^{2}\leq 4$ is in red.
+
+(c) Suppose that a classifier assigns an observation to the blue class if
+$$
+\left(1+X_{1}\right)^{2}+\left(2-X_{2}\right)^{2}>4
+$$
+and to the red class otherwise. To what class is the observation (0,0) classified? (-1,1)? (2,2)? (3,8)?
+
+```{r}
+plot(NA, NA, xlim = c(-4, 2), ylim = c(-1, 8), asp = 1, xlab = "X1", ylab = "X2")
+symbols(c(-1), c(2), circles = c(2), add = TRUE, inches = FALSE)
+for(i in seq(-10,9,length.out = 50)){
+  p <- data.frame(rep(i,30),seq(-1,9,length.out = 30))
+  points(p, col=ifelse((1+p[,1])^2+(2-p[,2])^2>4,'blue','red'), pch='.')
+}
+text(c(3), c(4), TeX('$(1+X_{1})^{2}+(2-X_{2})^{2} = 4$'))
+points(0, 0, pch=16, col='blue')
+points(-1, 1, pch=16, col='red')
+points(2, 2, pch=16, col='blue')
+points(3, 8, pch=16, col='blue')
+```
+
+The observation (-1,1) is classified to red class. The observations (0,0), (2,2) and (3,8) are classified to blue class.
+
+(d) Argue that while the decision boundary in (c) is not linear in terms of $X_{1}$ and $X_{2}$, it is linear in terms of $X_{1},\ X_{1}^{2},\ X_{2}$, and $X_{2}^{2}$
+
+  *Answer*. It is the linear combination of these terms
+$$
+(1+X_{1})^{2}+(2-X_{2})^{2} > 4 \iff x_1^2+2x_1+x_2^2-4x_2>-1.
+$$
+
+3.\ Here we explore the maximal margin classifier on a toy data set.
+
+(a) We are given $n=7$ observations in $p=2$ dimensions. For each observation, there is an associated class label. Sketch the observations.
+
+```{r}
+dat <- data.frame(X1=c(3,2,4,1,2,4,4), X2=c(4,2,4,4,1,3,1), Y=c(rep('Red',4), rep('Blue',3)))
+plot(dat[,c("X1", "X2")], xlim=c(0,5), ylim=c(0,5), col=dat[,c("Y")])
+```
+
+(b) Sketch the optimal separating hyperplane, and provide the equation for this hyperplane (of the form (9.1)).
+
+  *Answer*. The maximal margin is between (2,1), (4,3) and (2,2), (4,4). The line will go through (2,1.5) and (4,3.5), that is,
+$$
+0.5-X_1+X_2=0.
+$$
+
+```{r}
+plot(dat[,c("X1", "X2")], xlim=c(0,5), ylim=c(0,5), col=dat[,c("Y")])
+abline(-0.5,1)
+text(c(3),c(1.8),TeX('$0.5-X_{1}+X_{2}=0$'))
+```
+
+(c) Describe the classification rule for the maximal margin classifier. It should be something along the lines of "Classify to Red if $\beta_{0}+\beta_{1} X_{1}+\beta_{2} X_{2}>0$, and classify to Blue otherwise." Provide the values for $\beta_{0},\ \beta_{1}$, and $\beta_{2}$.
+
+  *Answer*. $\beta_0=0.5,\ \beta_1=-1,\ \beta_2=1$. Classify to Red if $0.5-X_1+X_2>0$, and classify to Blue otherwise.
+
+(d) On your sketch, indicate the margin for the maximal margin hyperplane.
+
+```{r}
+min(abs(0.5-dat$X1+dat$X2))  # Margin
+```
+
+```{r}
+plot(dat[,c("X1", "X2")], xlim=c(0,5), ylim=c(0,5), col=dat[,c("Y")])
+abline(-0.5,1)
+abline(-1,1,lty=2)
+abline(0,1,lty=2)
+text(c(3),c(1.8),TeX('$0.5-X_{1}+X_{2}=0$'))
+```
+
+(e) Indicate the support vectors for the maximal margin classifier.
+
+  *Answer*. The support vectors are (2,1), (4,3) and (2,2), (4,4).
+
+```{r}
+plot(dat[,c("X1", "X2")], xlim=c(0,5), ylim=c(0,5), col=dat[,c("Y")])
+abline(-0.5,1)
+abline(-1,1,lty=2)
+abline(0,1,lty=2)
+points(dat[abs(0.5-dat$X1+dat$X2)==0.5,c("X1", "X2")], pch=16,
+       col=dat[abs(0.5-dat$X1+dat$X2)==0.5,c("Y")])
+text(c(3),c(1.8),TeX('$0.5-X_{1}+X_{2}=0$'))
+```
+
+(f) Argue that a slight movement of the seventh observation would not affect the maximal margin hyperplane.
+
+  *Answer*. Because the seventh observation is not support vector, the slight movement will not affect the maximal margin hyperplane.
+
+(g) Sketch a hyperplane that is not the optimal separating hyperplane, and provide the equation for this hyperplane.
+
+```{r}
+plot(dat[,c("X1", "X2")], xlim=c(0,5), ylim=c(0,5), col=dat[,c("Y")])
+abline(-0.5,1)
+abline(-1,1,lty=2)
+abline(0,1,lty=2)
+abline(-0.8,1,col='purple')
+mar <- min(abs(0.8-dat$X1+dat$X2))  # Margin
+abline(-0.8+mar,1,lty=2,col='purple')
+abline(-0.8-mar,1,lty=2,col='purple')
+text(c(1.4),c(1.5),TeX('$0.5-X_{1}+X_{2}=0$'))
+text(c(3.3),c(1.8),TeX('$0.8-X_{1}+X_{2}=0$'),col='purple')
+```
+
+(h) Draw an additional observation on the plot so that the two classes are no longer separable by a hyperplane.
+
+```{r}
+plot(dat[,c("X1", "X2")], xlim=c(0,5), ylim=c(0,5), col=dat[,c("Y")])
+points(1.5, 4, col='blue')
+```
+
