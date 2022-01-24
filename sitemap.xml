@@ -2,15 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://hc1023.github.io/2022/01/24/blast/</loc>
-    
-    <lastmod>2022-01-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://hc1023.github.io/2019/08/07/hello-world/</loc>
     
     <lastmod>2022-01-24</lastmod>
@@ -344,7 +335,7 @@
   </url>
   
   <url>
-    <loc>https://hc1023.github.io/categories/index.html</loc>
+    <loc>https://hc1023.github.io/tags/index.html</loc>
     
     <lastmod>2021-10-23</lastmod>
     
@@ -353,7 +344,7 @@
   </url>
   
   <url>
-    <loc>https://hc1023.github.io/tags/index.html</loc>
+    <loc>https://hc1023.github.io/categories/index.html</loc>
     
     <lastmod>2021-10-23</lastmod>
     
@@ -767,13 +758,6 @@
 
   
   <url>
-    <loc>https://hc1023.github.io/tags/%E6%95%B0%E5%AD%A6/</loc>
-    <lastmod>2022-01-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hc1023.github.io/tags/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2022-01-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -782,6 +766,20 @@
   
   <url>
     <loc>https://hc1023.github.io/tags/%E7%94%9F%E4%BF%A1/</loc>
+    <lastmod>2022-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hc1023.github.io/tags/%E6%95%B0%E5%AD%A6/</loc>
+    <lastmod>2022-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hc1023.github.io/tags/reading/</loc>
     <lastmod>2022-01-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -803,13 +801,6 @@
   
   <url>
     <loc>https://hc1023.github.io/tags/R/</loc>
-    <lastmod>2022-01-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://hc1023.github.io/tags/reading/</loc>
     <lastmod>2022-01-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
