@@ -29,7 +29,7 @@
 <meta property="og:description" content="今天是除夕，新年快乐呀！ 本文讲述了 blast 从建库到分析的全过程，并包括中间可能会遇到的一些问题和操作。 Step 0: install blastBLAST 包括：makeblastdb, blastn, blastp, blastx, tblastn, tblastx 等。 1conda install -c bioconda blast     Program query databa">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-01-31T04:39:37.000Z">
-<meta property="article:modified_time" content="2022-01-31T06:54:12.865Z">
+<meta property="article:modified_time" content="2022-01-31T07:03:48.326Z">
 <meta property="article:author" content="Huang Sisi">
 <meta property="article:tag" content="生信">
 <meta name="twitter:card" content="summary">
@@ -239,7 +239,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2022-01-31 12:39:37 / Modified: 14:54:12" itemprop="dateCreated datePublished" datetime="2022-01-31T12:39:37+08:00">2022-01-31</time>
+      <time title="Created: 2022-01-31 12:39:37 / Modified: 15:03:48" itemprop="dateCreated datePublished" datetime="2022-01-31T12:39:37+08:00">2022-01-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -317,8 +317,10 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -n 1p dr.fsa           </span><br><span class="line">&gt;CP009803.1|CM002272.1|CP029339.1</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>把 <code>｜</code> 换成 <code>_</code><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/原字符串/替换字符串/g&#x27;</span> filename</span><br><span class="line"><span class="comment"># mac unix + &#x27;&#x27;</span></span><br><span class="line">sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;s/|/_/g&#x27;</span> dr.fsa </span><br></pre></td></tr></table></figure></li>
+<li>把 <code>｜</code> 换成 <code>_</code></li>
 </ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/原字符串/替换字符串/g&#x27;</span> filename</span><br><span class="line"><span class="comment"># mac unix + &#x27;&#x27;</span></span><br><span class="line">sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;s/|/_/g&#x27;</span> dr.fsa </span><br></pre></td></tr></table></figure>
+
 <p>结尾加<code>g</code>：替换每一行匹配的每个字符，否则只替换匹配到的第一个</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;s/|/_/g&#x27;</span> dr.fsa</span><br><span class="line">sed -n 1p dr.fsa          </span><br><span class="line">&gt;CP009803.1_CM002272.1_CP029339.1</span><br></pre></td></tr></table></figure>
 
