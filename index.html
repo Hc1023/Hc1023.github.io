@@ -272,7 +272,7 @@ mjx-container[display="true"] + br {
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">80</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -413,6 +413,131 @@ mjx-container[display="true"] + br {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2022/01/31/blast/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/31/blast/" class="post-title-link" itemprop="url">blast --从建库到分析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-01-31 12:39:37 / Modified: 14:54:12" itemprop="dateCreated datePublished" datetime="2022-01-31T12:39:37+08:00">2022-01-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天是除夕，新年快乐呀！</p>
+<p>本文讲述了 blast 从建库到分析的全过程，并包括中间可能会遇到的一些问题和操作。</p>
+<h2 id="Step-0-install-blast"><a href="#Step-0-install-blast" class="headerlink" title="Step 0: install blast"></a>Step 0: install blast</h2><p>BLAST 包括：makeblastdb, blastn, blastp, blastx, tblastn, tblastx 等。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c bioconda blast</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>Program</th>
+<th>query</th>
+<th>database</th>
+<th>alignment level</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>blastn</code></td>
+<td>nucleotide</td>
+<td>nucleotide</td>
+<td>nucleotide</td>
+</tr>
+<tr>
+<td><code>blastp</code></td>
+<td>peptide</td>
+<td>peptide</td>
+<td>peptide</td>
+</tr>
+<tr>
+<td><code>blastx</code></td>
+<td>nucleotide</td>
+<td>peptide</td>
+<td>peptide</td>
+</tr>
+<tr>
+<td><code>tblastn</code></td>
+<td>peptide</td>
+<td>nucleotide</td>
+<td>peptide</td>
+</tr>
+<tr>
+<td><code>tblastx</code></td>
+<td>nucleotide</td>
+<td>nucleotide</td>
+<td>peptide</td>
+</tr>
+</tbody></table>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/31/blast/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2021/12/09/download-ref-from-NCBI/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -436,9 +561,15 @@ mjx-container[display="true"] + br {
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-12-09 21:03:14 / Modified: 21:32:26" itemprop="dateCreated datePublished" datetime="2021-12-09T21:03:14+08:00">2021-12-09</time>
+      <time title="Created: 2021-12-09 21:03:14" itemprop="dateCreated datePublished" datetime="2021-12-09T21:03:14+08:00">2021-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-01-31 14:55:57" itemprop="dateModified" datetime="2022-01-31T14:55:57+08:00">2022-01-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1237,90 +1368,6 @@ mjx-container[display="true"] + br {
 <li>顺便还有一招就是直接放pdf：<a href="https://hc1023.github.io/zone/statistical_learning/test.pdf">https://hc1023.github.io/zone/statistical_learning/test.pdf</a></li>
 </ul>
 <p>但是手机上点击链接需要下载，PC端看也是很不错的，这比较适合放CV。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2021/05/26/openSSL-err/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="Huang Sisi">
-      <meta itemprop="description" content="No boundaries, no restrictions">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/26/openSSL-err/" class="post-title-link" itemprop="url">OpenSSL err</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-26 10:59:40" itemprop="dateCreated datePublished" datetime="2021-05-26T10:59:40+08:00">2021-05-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2021-05-29 11:24:22" itemprop="dateModified" datetime="2021-05-29T11:24:22+08:00">2021-05-29</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>近段时间使用<code>git</code>总是碰到类似于连接不上的问题。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal: unable to access <span class="string">&#x27;https://github.com/Hc1023/Hc1023.github.io.git/&#x27;</span>: OpenSSL SSL_read: Connection was reset, errno 10054</span><br></pre></td></tr></table></figure>
-
-<p>生活不容易，我也不知道自己做错了什么。于是现在就通过代理</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy http://userName:password@proxyaddress:port</span><br><span class="line">git config --global https.proxy http://userName:password@proxyaddress:port</span><br></pre></td></tr></table></figure>
-
-<p>可以检查一下自己的设置</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list | grep proxy</span><br></pre></td></tr></table></figure>
-
-<p>也可以重新<code>unset</code>，等到又连接不上的时候，再如上设置代理呜呜</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br></pre></td></tr></table></figure>
-
-
-
 
       
     </div>

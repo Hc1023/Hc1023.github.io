@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="今天是除夕，新年快乐呀！ 本文讲述了 blast 从建库到分析的全过程，并包括中间可能会遇到的一些问题和操作。 Step 0: install blastBLAST 包括：makeblastdb, blastn, blastp, blastx, tblastn, tblastx 等。 1conda install -c bioconda blast     Program query databa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="blast --从建库到分析">
+<meta property="og:url" content="https://hc1023.github.io/2022/01/31/blast/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="今天是除夕，新年快乐呀！ 本文讲述了 blast 从建库到分析的全过程，并包括中间可能会遇到的一些问题和操作。 Step 0: install blastBLAST 包括：makeblastdb, blastn, blastp, blastx, tblastn, tblastx 等。 1conda install -c bioconda blast     Program query databa">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-31T04:39:37.000Z">
+<meta property="article:modified_time" content="2022-01-31T06:54:12.865Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="生信">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2022/01/31/blast/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2022/01/31/blast/","path":"2022/01/31/blast/","title":"blast --从建库到分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>blast --从建库到分析 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-0-install-blast"><span class="nav-number">1.</span> <span class="nav-text">Step 0: install blast</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-1-build-database"><span class="nav-number">2.</span> <span class="nav-text">Step 1: build database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-2-blastn-%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">Step 2: blastn 测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-3-blast"><span class="nav-number">4.</span> <span class="nav-text">Step 3: blast</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-4-%E5%88%86%E6%9E%90%E5%87%86%E5%A4%87"><span class="nav-number">5.</span> <span class="nav-text">Step 4: 分析准备</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2022/01/31/blast/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          blast --从建库到分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-01-31 12:39:37 / Modified: 14:54:12" itemprop="dateCreated datePublished" datetime="2022-01-31T12:39:37+08:00">2022-01-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>今天是除夕，新年快乐呀！</p>
+<p>本文讲述了 blast 从建库到分析的全过程，并包括中间可能会遇到的一些问题和操作。</p>
+<h2 id="Step-0-install-blast"><a href="#Step-0-install-blast" class="headerlink" title="Step 0: install blast"></a>Step 0: install blast</h2><p>BLAST 包括：makeblastdb, blastn, blastp, blastx, tblastn, tblastx 等。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c bioconda blast</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>Program</th>
+<th>query</th>
+<th>database</th>
+<th>alignment level</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>blastn</code></td>
+<td>nucleotide</td>
+<td>nucleotide</td>
+<td>nucleotide</td>
+</tr>
+<tr>
+<td><code>blastp</code></td>
+<td>peptide</td>
+<td>peptide</td>
+<td>peptide</td>
+</tr>
+<tr>
+<td><code>blastx</code></td>
+<td>nucleotide</td>
+<td>peptide</td>
+<td>peptide</td>
+</tr>
+<tr>
+<td><code>tblastn</code></td>
+<td>peptide</td>
+<td>nucleotide</td>
+<td>peptide</td>
+</tr>
+<tr>
+<td><code>tblastx</code></td>
+<td>nucleotide</td>
+<td>nucleotide</td>
+<td>peptide</td>
+</tr>
+</tbody></table>
+<span id="more"></span>
+
+<h2 id="Step-1-build-database"><a href="#Step-1-build-database" class="headerlink" title="Step 1: build database"></a>Step 1: build database</h2><p>NCBI 手册上说，<br>The <code>makeblastdb</code> application produces BLAST databases from FASTA files.<br>Assigning a unique identifier to every sequence:</p>
+<ul>
+<li>begin with “&gt;”</li>
+<li>not use “|” in the indentifier</li>
+</ul>
+<p>在现有需要建库的 reads 的 fa 文件中，它的 id 长下面这样</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -n 1p dr.fsa           </span><br><span class="line">&gt;CP009803.1|CM002272.1|CP029339.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>把 <code>｜</code> 换成 <code>_</code><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/原字符串/替换字符串/g&#x27;</span> filename</span><br><span class="line"><span class="comment"># mac unix + &#x27;&#x27;</span></span><br><span class="line">sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;s/|/_/g&#x27;</span> dr.fsa </span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>结尾加<code>g</code>：替换每一行匹配的每个字符，否则只替换匹配到的第一个</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;s/|/_/g&#x27;</span> dr.fsa</span><br><span class="line">sed -n 1p dr.fsa          </span><br><span class="line">&gt;CP009803.1_CM002272.1_CP029339.1</span><br></pre></td></tr></table></figure>
+
+<p>尝试建库 <code>makeblastdb</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">makeblastdb -<span class="keyword">in</span> dr.fsa -dbtype nucl -out dr -parse_seqids</span><br></pre></td></tr></table></figure>
+
+<p>但是报错：id 太长了……</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BLAST Database creation error: Near line 17, the <span class="built_in">local</span> id is too long.  Its length is 87 but the maximum allowed <span class="built_in">local</span> id length is 50.  Please find and correct all <span class="built_in">local</span> ids that are too long.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>决定把 <code>_</code> 及之后的都删掉</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/\_.*//&#x27;</span> dr.fsa</span><br></pre></td></tr></table></figure>
+
+<p>再次建库</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">makeblastdb -<span class="keyword">in</span> dr.fsa -dbtype nucl -out dr -parse_seqids</span><br></pre></td></tr></table></figure>
+
+<p>报错：需要 id unique……</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BLAST Database creation error: Error: Duplicate seq_ids are found: </span><br><span class="line">GB|CP021130.1</span><br><span class="line">make a unique identifier <span class="keyword">for</span> each sequence</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>bash 命令，使得 id unique</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;if ($0~/^&gt;/) &#123;h[$1]++; $1=$1&quot;_&quot; h[$1]&#125; print&#125;&#x27;</span> dr.fsa &gt; dr.fa</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>建库</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">makeblastdb -<span class="keyword">in</span> dr.fa -dbtype nucl -out repeats -parse_seqids</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-in</code> 建库输入的fasta序列</li>
+<li><code>-dbtype</code> 序列类型，<code>nucl</code>为核酸，<code>prot</code>为蛋白</li>
+<li><code>-title</code> 数据库名字</li>
+<li><code>-parse_seqids</code> 推荐加上，似乎跟版本有关</li>
+<li><code>-out</code> 数据库名，blast+搜索时用到的<code>-db</code>的参数</li>
+<li><code>-logfile</code> 日志文件，默认输出到屏幕</li>
+</ul>
+<p>建库完成，日志信息如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Building a new DB, current time: 01/25/2022 16:46:10</span><br><span class="line">New DB name:   [我的目录]/repeats</span><br><span class="line">New DB title:  dr.fa</span><br><span class="line">Sequence <span class="built_in">type</span>: Nucleotide</span><br><span class="line">Keep MBits: T</span><br><span class="line">Maximum file size: 1000000000B</span><br><span class="line">Adding sequences from FASTA; added 26958 sequences <span class="keyword">in</span> 0.460787 seconds.</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step-2-blastn-测试"><a href="#Step-2-blastn-测试" class="headerlink" title="Step 2: blastn 测试"></a>Step 2: blastn 测试</h2><ul>
+<li>查看信息</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blastdbcmd -db repeats -dbtype nucl -info</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>blastn 比对（query 序列为 q.fa），其他 programs 类似</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blastn -db repeats -query q.fa &gt; q.txt</span><br><span class="line">blastn -db repeats -query q.fa -outfmt 6 &gt; qf6.txt</span><br></pre></td></tr></table></figure>
+
+<p>由于序列比较短，the results got many ‘no hits found’.</p>
+<p><code>-stask blastn-short</code> may help</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blastn -task blastn-short -db repeats -query q.fa -outfmt 6 &gt; qqf6.txt</span><br></pre></td></tr></table></figure>
+
+<p>但是结果也太多了，设置筛选条件 <code>-evalue</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blastn -task blastn-short -db repeats -query q.fa -outfmt 6 -evalue 0.01 &gt; qqf6.txt</span><br></pre></td></tr></table></figure>
+
+<p>但是对于完全匹配的输出也很多，而且我希望能按照 e-value 排序，使用 <code>-max_target_seqs</code> 输出 e-value 最小的几条序列。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blastn -task blastn-short -db repeats -query q.fa -outfmt 6 -evalue 0.01 -max_target_seqs 5 &gt; qqqf6.txt</span><br></pre></td></tr></table></figure>
+
+<p>直接 1 条也行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blastn -task blastn-short -db repeats -query q.fa -outfmt 0 -max_target_seqs 1 &gt; qqq.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step-3-blast"><a href="#Step-3-blast" class="headerlink" title="Step 3: blast"></a>Step 3: blast</h2><p>用 python 从一份 <code>csv</code> 表格中准备比对序列</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">arr = pd.read_csv(<span class="string">&#x27;../01_train_test/archaeal.csv&#x27;</span>)</span><br><span class="line">file = open(<span class="string">&quot;../01_train_test/archaeal.txt&quot;</span>,<span class="string">&quot;w&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(0,arr.shape[0]):</span><br><span class="line">    file.write(<span class="string">&#x27;&gt;&#x27;</span> + arr.iloc[i][<span class="string">&quot;contig&quot;</span>] +<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    file.write(arr.iloc[i][<span class="string">&quot;repeats&quot;</span>] +<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>make a unique identifier for each sequence</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;if ($0~/^&gt;/) &#123;h[$1]++; $1=$1&quot;_&quot; h[$1]&#125; print&#125;&#x27;</span> archaeal.txt &gt; archaeal.fa</span><br></pre></td></tr></table></figure>
+
+<p>但其实，一开始就可以用 python 处理 unique id，例如</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">newlist = []</span><br><span class="line">mylist = <span class="built_in">list</span>(arr[<span class="string">&#x27;contig&#x27;</span>])</span><br><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(mylist):</span><br><span class="line">    count = mylist[:i].count(v)</span><br><span class="line">    newlist.append(v + <span class="string">&#x27;_&#x27;</span> + <span class="built_in">str</span>(count + <span class="number">1</span>))</span><br><span class="line">arr[<span class="string">&#x27;contigs&#x27;</span>] = newlist</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>短序列比对 <code>blastn -task blastn-short</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blastn -task blastn-short -db repeats -query archaeal.fa -outfmt 6 -max_target_seqs 5 &gt; blast_archaeal.txt</span><br></pre></td></tr></table></figure>
+
+<p>结果的每一列分别对应：qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CP000742_1	CP009501.1_2	95.455	22	1	0	13	34	25	4	1.67e-04	36.2</span><br><span class="line">CP000742_1	AP021879.1_7	95.455	22	1	0	13	34	25	4	1.67e-04	36.2</span><br><span class="line">CP000742_1	AP021876.1_10	95.455	22	1	0	13	34	25	4	1.67e-04	36.2</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>qseqid</code> query or source (e.g., gene) sequence id</li>
+<li><code>sseqid</code> subject or target (e.g., reference genome) sequence id</li>
+<li><code>pident</code> percentage of identical matches</li>
+<li><code>length</code> alignment length (sequence overlap)</li>
+<li><code>mismatch</code> number of mismatches</li>
+<li><code>gapopen</code> number of gap openings</li>
+<li><code>qstart</code> start of alignment in query</li>
+<li><code>qend</code> end of alignment in query</li>
+<li><code>sstart</code> start of alignment in subject</li>
+<li><code>send</code> end of alignment in subject</li>
+<li><code>evalue</code> expect value</li>
+<li><code>bitscore</code> bit score</li>
+</ol>
+<h2 id="Step-4-分析准备"><a href="#Step-4-分析准备" class="headerlink" title="Step 4: 分析准备"></a>Step 4: 分析准备</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">data = pd.read_csv(<span class="string">&#x27;../01_train_test/blast_archaeal.txt&#x27;</span>, sep=<span class="string">&quot;\t&quot;</span>, header = <span class="literal">None</span>)</span><br><span class="line">data.columns = [<span class="string">&quot;qseqid&quot;</span>, <span class="string">&quot;sseqid&quot;</span>, <span class="string">&quot;pident&quot;</span>, <span class="string">&quot;length&quot;</span>, <span class="string">&quot;mismatch&quot;</span>,\</span><br><span class="line">                <span class="string">&quot;gapopen&quot;</span>, <span class="string">&quot;qstart&quot;</span>, <span class="string">&quot;qend&quot;</span>, <span class="string">&quot;sstart&quot;</span>, <span class="string">&quot;send&quot;</span>, <span class="string">&quot;evalue&quot;</span>, <span class="string">&quot;bitscore&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可以只留下 evalue 最小的一项</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.drop_duplicates(subset=<span class="string">&#x27;qseqid&#x27;</span>, keep=<span class="string">&quot;first&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后这个表格就可以做后面的任意分析操作了～</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E4%BF%A1/" rel="tag"># 生信</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/09/download-ref-from-NCBI/" rel="prev" title="从NCBI批量下载指定参考序列">
+                  <i class="fa fa-chevron-left"></i> 从NCBI批量下载指定参考序列
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
