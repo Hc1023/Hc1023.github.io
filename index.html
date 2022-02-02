@@ -272,7 +272,7 @@ mjx-container[display="true"] + br {
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -413,6 +413,94 @@ mjx-container[display="true"] + br {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2022/02/02/github-connection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/02/github-connection/" class="post-title-link" itemprop="url">github connection timed out</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-02-02 21:06:47 / Modified: 21:24:11" itemprop="dateCreated datePublished" datetime="2022-02-02T21:06:47+08:00">2022-02-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在执行 <code>hexo -d</code> 的时候，这个报错不陌生吧……</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Failed to connect to github.com port 443: Timed out</span><br></pre></td></tr></table></figure>
+
+<p>github 连接超时。</p>
+<p>曾经在 windows 电脑上，这个办法还挺有用……就是在 <code>git config</code> 上面倒腾来倒腾去……</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy http://[github username]:[github passwords]@127.0.0.1:1080</span><br><span class="line">git config --global https.proxy http://[github username]:[github passwords]@127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br></pre></td></tr></table></figure>
+
+<p>这个办法非常不稳定，能不能解决都是概率问题……<br>如今发现，最稳定的方式是配置 github 远程仓库的地址为 ssh 的地址。</p>
+<p>查看 ssh 是否成功连接 github</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(base) huangsisi@huangsisis-Air hexo-22 % ssh -T git@github.com</span><br><span class="line">Hi Hc1023! You<span class="string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+
+<p>这样子表示是成功连接的，否则需要进行密钥配置。修改博客根目录的配置文件如下，<strong>repo 不要用 https 开头的！</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: git@github.com:[USERNAME]/[USERNAME].github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2022/02/02/happy-2022/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -438,7 +526,7 @@ mjx-container[display="true"] + br {
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2022-02-02 19:30:41 / Modified: 20:07:49" itemprop="dateCreated datePublished" datetime="2022-02-02T19:30:41+08:00">2022-02-02</time>
+      <time title="Created: 2022-02-02 19:30:41 / Modified: 21:06:05" itemprop="dateCreated datePublished" datetime="2022-02-02T19:30:41+08:00">2022-02-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1250,104 +1338,6 @@ mjx-container[display="true"] + br {
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2021/06/13/Statistical-learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="Huang Sisi">
-      <meta itemprop="description" content="No boundaries, no restrictions">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/13/Statistical-learning/" class="post-title-link" itemprop="url">R与统计学习基础</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-13 10:44:07" itemprop="dateCreated datePublished" datetime="2021-06-13T10:44:07+08:00">2021-06-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2021-07-08 13:08:47" itemprop="dateModified" datetime="2021-07-08T13:08:47+08:00">2021-07-08</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>R练习</p>
-<ul>
-<li>文件读取，vector, list, dataframe基本操作，plot <a href="https://hc1023.github.io/zone/statistical_learning/Homework-01-htm.html">hw01</a></li>
-<li>数据清洗，ggplot，tidyverse <a href="https://hc1023.github.io/zone/statistical_learning/Homework-02-htm.html">hw02</a></li>
-<li>回归拟合，参数估计，nlm <a href="https://hc1023.github.io/zone/statistical_learning/Homework-03-htm.html">hw03</a></li>
-<li>回归 nls，lm，预测 predict <a href="https://hc1023.github.io/zone/statistical_learning/Homework-04-htm.html">hw04</a></li>
-<li>估计方程的解 <a href="https://hc1023.github.io/zone/statistical_learning/Homework-05-htm.html">hw05</a></li>
-</ul>
-<p>统计学习基础</p>
-<ul>
-<li><a href="https://hc1023.github.io/zone/statistical_learning/regression-analysis.html">回归分析</a></li>
-<li><a href="https://hc1023.github.io/zone/statistical_learning/regression-methods-decision-tree-ensemble-learning.html">回归方法、决策树和合奏学习</a></li>
-<li><a href="https://hc1023.github.io/zone/statistical_learning/SVM.html">支持向量机</a></li>
-<li><a href="https://hc1023.github.io/zone/statistical_learning/regularization.html">正则化</a></li>
-<li><a href="https://hc1023.github.io/zone/statistical_learning/neural-network.html">人工神经网络</a></li>
-<li><a href="https://hc1023.github.io/zone/statistical_learning/deep-learning.html">深度神经网络</a></li>
-<li><a href="https://hc1023.github.io/zone/statistical_learning/cluster-analysis.html">聚类分析</a></li>
-</ul>
-<p>R统计学习练习（ISLR习题，不一定是实现）</p>
-<ul>
-<li>线性回归 <a href="https://hc1023.github.io/zone/statistical_learning/Homework-01.html">hw01</a></li>
-<li>LDA，KNN <a href="https://hc1023.github.io/zone/statistical_learning/Homework-02.html">hw02</a></li>
-<li>正则化，广义线性回归glm，广义加性模型gam，forward stepwise selection <a href="https://hc1023.github.io/zone/statistical_learning/Homework-03.html">hw03</a></li>
-<li>决策树，随机森林，boosting（gbm），SVM <a href="https://hc1023.github.io/zone/statistical_learning/Homework-04.html">hw04</a></li>
-<li>聚类 <a href="https://hc1023.github.io/zone/statistical_learning/Homework-05.html">hw05</a></li>
-</ul>
-<p>如果是因为课程资料而点进来的伙伴，我其实没去上课QVQ，仅供参考。</p>
-<p>随附准备过的 <a href="https://hc1023.github.io/zone/statistical_learning/%E7%BB%9F%E8%AE%A1%E5%8F%8D%E9%97%AE%E9%A2%98%E8%AE%B2%E4%B9%89.html">统计反问题讲义</a></p>
-
       
     </div>
 
