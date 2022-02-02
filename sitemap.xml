@@ -353,6 +353,15 @@
   </url>
   
   <url>
+    <loc>https://hc1023.github.io/archives/index.html</loc>
+    
+    <lastmod>2021-10-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://hc1023.github.io/tags/index.html</loc>
     
     <lastmod>2021-10-23</lastmod>
@@ -363,15 +372,6 @@
   
   <url>
     <loc>https://hc1023.github.io/categories/index.html</loc>
-    
-    <lastmod>2021-10-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://hc1023.github.io/archives/index.html</loc>
     
     <lastmod>2021-10-23</lastmod>
     
@@ -797,13 +797,6 @@
   </url>
   
   <url>
-    <loc>https://hc1023.github.io/tags/reading/</loc>
-    <lastmod>2022-02-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hc1023.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -825,7 +818,7 @@
   </url>
   
   <url>
-    <loc>https://hc1023.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://hc1023.github.io/tags/reading/</loc>
     <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -833,6 +826,13 @@
   
   <url>
     <loc>https://hc1023.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2022-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hc1023.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
