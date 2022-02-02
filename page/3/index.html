@@ -272,7 +272,7 @@ mjx-container[display="true"] + br {
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -312,6 +312,82 @@ mjx-container[display="true"] + br {
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/11/03/extract-paired-mapping-reads-and-flagstat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/11/03/extract-paired-mapping-reads-and-flagstat/" class="post-title-link" itemprop="url">bwa or bowtie提取双端比对序列及flagstat</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-11-03 10:22:26 / Modified: 10:38:13" itemprop="dateCreated datePublished" datetime="2020-11-03T10:22:26+08:00">2020-11-03</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>bwa和bowtie是常用的用于比对的软件，使用来看<code>bwa mem</code>比对的敏感度比<code>bowtie</code>更高（可能是高很多），而且有一段read比对到多段contigs (primary and supplementary) 的功能。</p>
+<h2 id="提取双端比对序列"><a href="#提取双端比对序列" class="headerlink" title="提取双端比对序列"></a>提取双端比对序列</h2><p>只需要在用完相应的比对软件后，使用<code>samtools view</code>，<code>-F</code>选项删除flag对应的reads，flag=4（0x4）代表这条read没有比对到参考序列上，flag=8（0x8）代表这是单端比对上的read，12=4+8，因此使用<code>-F 12</code>可以保留双端比对上的序列。</p>
+<h3 id="bwa-mem"><a href="#bwa-mem" class="headerlink" title="bwa mem"></a>bwa mem</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bwa index <span class="variable">$ref</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># can map to more than one contig</span></span><br><span class="line">bwa mem -t 8 <span class="variable">$ref</span> <span class="variable">$InDir</span>/<span class="variable">$fq1</span> <span class="variable">$InDir</span>/<span class="variable">$fq2</span> &gt; out.sam</span><br><span class="line"></span><br><span class="line"><span class="comment"># `-q 30` reads mapping quality, `-F 12` paired-end,</span></span><br><span class="line"><span class="comment"># `-b` output bam, `-S` input format auto-detected</span></span><br><span class="line">samtools view -@8 -q 30 -bS out.sam &gt; out.bam</span><br><span class="line">samtools view -@8 -F 12 -b out.bam &gt; out2.bam</span><br></pre></td></tr></table></figure>
+
+<h3 id="bowtie提取双端比对序列"><a href="#bowtie提取双端比对序列" class="headerlink" title="bowtie提取双端比对序列"></a>bowtie提取双端比对序列</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bowtie2-build <span class="variable">$ref</span> index</span><br><span class="line">bowtie2 -p 8 -x index \</span><br><span class="line">   -1 <span class="variable">$InDir</span>/<span class="variable">$fq1</span> \</span><br><span class="line">   -2 <span class="variable">$InDir</span>/<span class="variable">$fq2</span> -S out.sam</span><br><span class="line"></span><br><span class="line">samtools view -@8 -F 12 -bS out.sam &gt; out.bam</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/03/extract-paired-mapping-reads-and-flagstat/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1087,88 +1163,8 @@ mjx-container[display="true"] + br {
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2020/07/14/an-interpretation-to-A-D-test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="Huang Sisi">
-      <meta itemprop="description" content="No boundaries, no restrictions">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/07/14/an-interpretation-to-A-D-test/" class="post-title-link" itemprop="url">an interpretation of A-D test</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2020-07-14 23:37:42" itemprop="dateCreated datePublished" datetime="2020-07-14T23:37:42+08:00">2020-07-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2021-10-24 15:11:44" itemprop="dateModified" datetime="2021-10-24T15:11:44+08:00">2021-10-24</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>The article is credited to and written by <strong>Zengxiao Ye</strong>, who introduced to me this intriguing, innovative and intuitive interpretation of A-D test.</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/14/an-interpretation-to-A-D-test/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>

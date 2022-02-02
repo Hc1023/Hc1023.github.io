@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://hc1023.github.io/2022/02/02/happy-2022/</loc>
+    
+    <lastmod>2022-02-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://hc1023.github.io/2022/01/31/blast/</loc>
     
     <lastmod>2022-01-31</lastmod>
@@ -760,7 +769,7 @@
 
   <url>
     <loc>https://hc1023.github.io/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -768,98 +777,98 @@
   
   <url>
     <loc>https://hc1023.github.io/tags/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E7%94%9F%E4%BF%A1/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E6%95%B0%E5%AD%A6/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/reading/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E7%BB%9F%E8%AE%A1/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/R/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/learning-notes/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/Linux/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E7%94%9F%E7%89%A9/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/tags/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -868,14 +877,14 @@
   
   <url>
     <loc>https://hc1023.github.io/categories/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hc1023.github.io/categories/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2022-01-31</lastmod>
+    <lastmod>2022-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
