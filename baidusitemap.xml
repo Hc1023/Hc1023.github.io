@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://hc1023.github.io/2021/12/06/docker-on-mac/</loc>
+    <lastmod>2022-03-05</lastmod>
+  </url>
+  <url>
     <loc>https://hc1023.github.io/2022/02/02/github-connection/</loc>
     <lastmod>2022-02-02</lastmod>
   </url>
@@ -19,10 +23,6 @@
   <url>
     <loc>https://hc1023.github.io/2020/09/04/conda-setup/</loc>
     <lastmod>2021-12-22</lastmod>
-  </url>
-  <url>
-    <loc>https://hc1023.github.io/2021/12/06/docker-on-mac/</loc>
-    <lastmod>2021-12-06</lastmod>
   </url>
   <url>
     <loc>https://hc1023.github.io/2021/10/28/ssh/</loc>

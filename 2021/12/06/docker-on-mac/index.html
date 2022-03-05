@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://hc1023.github.io/2021/12/06/docker-on-mac/docker.png">
 <meta property="og:image" content="https://hc1023.github.io/2021/12/06/docker-on-mac/dockermount.png">
 <meta property="article:published_time" content="2021-12-06T13:19:42.000Z">
-<meta property="article:modified_time" content="2021-12-06T13:29:31.666Z">
+<meta property="article:modified_time" content="2022-03-05T05:39:28.467Z">
 <meta property="article:author" content="Huang Sisi">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://hc1023.github.io/2021/12/06/docker-on-mac/docker.png">
@@ -239,9 +239,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-12-06 21:19:42 / Modified: 21:29:31" itemprop="dateCreated datePublished" datetime="2021-12-06T21:19:42+08:00">2021-12-06</time>
+      <time title="Created: 2021-12-06 21:19:42" itemprop="dateCreated datePublished" datetime="2021-12-06T21:19:42+08:00">2021-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-03-05 13:39:28" itemprop="dateModified" datetime="2022-03-05T13:39:28+08:00">2022-03-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,7 +269,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>mac上也要开始使用docker啦，docker的设计也太可爱了吧，贴贴。 Windows用Ubuntu虚拟机的安装见之前的博文<a href="https://hc1023.github.io/2021/02/03/install-docker-on-ubuntu/">docker安装(21-02-03)</a>，转眼已经10个月了嘛。</p>
+        <p>mac上也要开始使用docker啦，docker的设计也太可爱了吧，贴贴。 Windows用Ubuntu虚拟机的安装见之前的博文<a href="https://hc1023.github.io/2021/02/03/install-docker-on-Ubuntu/">docker安装(21-02-03)</a>，转眼已经10个月了嘛。</p>
 <span id="more"></span>
 
 <p>首先，注意到<a target="_blank" rel="noopener" href="https://docs.docker.com/desktop/mac/install/">官网</a>下载，注意不要选错芯片嗷，不然可能出现如下报错（仿佛暴露了什么……）。</p>
@@ -289,7 +295,7 @@
 </ul>
 <h2 id="容器镜像"><a href="#容器镜像" class="headerlink" title="容器镜像"></a>容器镜像</h2><p>运行容器时，它使用隔离的文件系统。此自定义文件系统由<strong>容器镜像</strong>提供。由于镜像包含容器的文件系统，它必须包含运行应用程序所需的一切——所有依赖项、配置、脚本、二进制文件等。镜像还包含容器的其他配置，例如环境变量、要运行的默认命令、和其他元数据。</p>
 <p><img src="docker.png"></p>
-<p>其它一些基础操作，见<a href="https://hc1023.github.io/2021/02/14/building-containers/">Building Containers(20-02-14)</a></p>
+<p>其它一些基础操作，见<a href="https://hc1023.github.io/2021/02/14/Building-Containers/">Building Containers(20-02-14)</a></p>
 <h2 id="路径挂载"><a href="#路径挂载" class="headerlink" title="路径挂载"></a>路径挂载</h2><p>默认情况下，在容器内创建的所有文件都存储在可写容器层上。 这意味着当该容器不再存在时数据不会持久化。</p>
 <p><img src="dockermount.png"></p>
 <ul>
