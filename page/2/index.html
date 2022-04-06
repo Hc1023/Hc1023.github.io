@@ -48,7 +48,119 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-</head>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="headband"></div>
@@ -160,7 +272,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -200,6 +312,95 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2021/08/15/Estimating-dnds/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/15/Estimating-dnds/" class="post-title-link" itemprop="url">Estimating dN/dS</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-08-15 11:53:47" itemprop="dateCreated datePublished" datetime="2021-08-15T11:53:47+08:00">2021-08-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-10-23 21:46:18" itemprop="dateModified" datetime="2021-10-23T21:46:18+08:00">2021-10-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Estimate the Numbers of Synonymous and Nonsynonymous Nucleotide Substitutions</p>
+<p>同义（synonymous）突变：silent<br>非同义（nonsynonymous）突变：核苷酸改变<br>由于同义突变的频率远高于非同义突变的频率，且对于不同基因相似，同义替换可用作确定密切相关物种进化时间的分子钟。</p>
+<ul>
+<li>当每个密码子的突变数量只有一个，同义突变和非同义突变的数量只需要通过计数可得。</li>
+<li>但是如果一个密码子中有两个或三个位点发生突变，区分同义突变和非同义突变就不是那么容易，存在不同的突变路径。<ul>
+<li>Perler et al. (1980)统计方法，不同进化路径赋予相同权值；</li>
+<li>Miyata and Yasunaga (1980) and Li et al. (1985)更复杂的方法，相对于amino acid-altering substitutions，赋予包含silent substitutions的进化路径更大的权值。</li>
+</ul>
+</li>
+</ul>
+<p>但以上方法都有些复杂，以下先介绍 <strong>Nei and Gojobori (1986)</strong> 无权值方法(unweighted version of Miyata and Yasunaga’s)能对同义突变和非同义突变的数量达到同样准确的估计。进一步，当每个位点的核苷酸替代数量相对较少时，有一个更粗糙的方法能给出足够准确的估计。</p>
+<p>但是单一利用核苷酸替代或氨基酸替代信息会造成一些问题，因此介绍 <strong>Codon-based model (Goldman and Yang 1994)</strong> 以及 <strong>Poisson framework: dNdScv (Inigo Martincorena et al. 2017)</strong>.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/15/Estimating-dnds/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -954,113 +1155,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/02/03/Containerising-a-Pipeline/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2021/02/03/singularity-quick-start/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="Huang Sisi">
-      <meta itemprop="description" content="No boundaries, no restrictions">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hc's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/03/singularity-quick-start/" class="post-title-link" itemprop="url">Singularity Quick Start</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-02-03 21:21:26" itemprop="dateCreated datePublished" datetime="2021-02-03T21:21:26+08:00">2021-02-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2021-02-16 15:47:02" itemprop="dateModified" datetime="2021-02-16T15:47:02+08:00">2021-02-16</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Singularity: building a root file system that runs on any other Linux system where Singularity is installed.</p>
-<p>Commands</p>
-<ul>
-<li>build：建立一个Singularity容器（container）</li>
-<li>capability：管理容器上的Linux功能</li>
-<li>exec：在容器中执行命令</li>
-<li>help：命令帮助</li>
-<li>inspect：显示容器元数据（metadata）</li>
-<li>instance：管理在背景运行的容器</li>
-<li>keys：管理OpenPGP密钥</li>
-<li>pull：从URI拉下容器</li>
-<li>push：推容器到URI库（library）</li>
-</ul>
-<blockquote>
-<p>URI stands for <strong>Uniform Resource Identifier</strong>, and it’s the official name for those things you see all the time on the Web that begin ‘ http: ‘ or ‘ mailto: ‘</p>
-</blockquote>
-<ul>
-<li>run：在容器中启动运行脚本</li>
-<li>run-help：容器帮助</li>
-<li>search：搜索库</li>
-<li>shell：在容器中运行Bourne shell</li>
-</ul>
-<blockquote>
-<p>A <strong>Bourne shell</strong> (sh) is a UNIX <strong>shell</strong> or command processor that is used for scripting.</p>
-</blockquote>
-<ul>
-<li>sign：将加密签名附加到容器</li>
-<li>verify：验证容器加密签名</li>
-<li>version：应用版本</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/02/03/singularity-quick-start/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

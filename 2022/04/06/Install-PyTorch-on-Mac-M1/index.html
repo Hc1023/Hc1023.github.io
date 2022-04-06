@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpeg">
+  <link rel="mask-icon" href="/images/favicon.jpeg" color="#222">
+  <meta name="google-site-verification" content="k6DpQ18iYt6OkDbAzpaogHDiffDlR-MP0FIFP9M1dXo">
+  <meta name="baidu-site-verification" content="code-Hpn6nthL0z">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hc1023.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Mac M1 的兼容性问题还是要多多完善啊……QVQ 打工人着实不容易了。要干的事情可真真真多呀，我这么愚钝哪里学得了这么多！ 现在常用的两种深度学习框架：Tensorflow 和 PyTorch  Tensorflow 更偏向于工业界应用 PyTorch 更适用于研究  两者在M1上都有兼容问题，总之能折腾出来就行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Install PyTorch on Mac M1">
+<meta property="og:url" content="https://hc1023.github.io/2022/04/06/Install-PyTorch-on-Mac-M1/index.html">
+<meta property="og:site_name" content="Hc&#39;s Blog">
+<meta property="og:description" content="Mac M1 的兼容性问题还是要多多完善啊……QVQ 打工人着实不容易了。要干的事情可真真真多呀，我这么愚钝哪里学得了这么多！ 现在常用的两种深度学习框架：Tensorflow 和 PyTorch  Tensorflow 更偏向于工业界应用 PyTorch 更适用于研究  两者在M1上都有兼容问题，总之能折腾出来就行。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/1195581/1648212555526-70a80987-1713-4645-8396-baee282e4422.png#clientId=udd51a891-3a7f-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=126&id=uc68bc1c5&margin=%5Bobject%20Object%5D&name=image.png&originHeight=252&originWidth=1868&originalType=binary&ratio=1&rotation=0&showTitle=false&size=59511&status=done&style=none&taskId=uf56ad719-c9e0-410d-a8f5-1924fc72e4c&title=&width=934">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/1195581/1649132730067-ad17b63a-58af-4f7f-ba36-ff8d0750726f.png#clientId=u40ac71ae-d35f-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=606&id=uc9a1507d&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1212&originWidth=2844&originalType=binary&ratio=1&rotation=0&showTitle=false&size=926200&status=done&style=none&taskId=u97704c56-fd97-4833-a7e4-793bc96f86a&title=&width=1422">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/1195581/1649234958387-d763e943-015f-4dd5-9450-28cef91b2a37.png?x-oss-process=image/resize,w_1500,limit_0">
+<meta property="article:published_time" content="2022-04-06T09:04:58.000Z">
+<meta property="article:modified_time" content="2022-04-06T09:10:38.199Z">
+<meta property="article:author" content="Huang Sisi">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2022/png/1195581/1648212555526-70a80987-1713-4645-8396-baee282e4422.png#clientId=udd51a891-3a7f-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=126&id=uc68bc1c5&margin=%5Bobject%20Object%5D&name=image.png&originHeight=252&originWidth=1868&originalType=binary&ratio=1&rotation=0&showTitle=false&size=59511&status=done&style=none&taskId=uf56ad719-c9e0-410d-a8f5-1924fc72e4c&title=&width=934">
+
+
+<link rel="canonical" href="https://hc1023.github.io/2022/04/06/Install-PyTorch-on-Mac-M1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://hc1023.github.io/2022/04/06/Install-PyTorch-on-Mac-M1/","path":"2022/04/06/Install-PyTorch-on-Mac-M1/","title":"Install PyTorch on Mac M1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Install PyTorch on Mac M1 | Hc's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PyTorch"><span class="nav-number">1.</span> <span class="nav-text">PyTorch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#torchvision"><span class="nav-number">2.</span> <span class="nav-text">torchvision</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorBoard"><span class="nav-number">3.</span> <span class="nav-text">TensorBoard</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Huang Sisi"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Huang Sisi</p>
+  <div class="site-description" itemprop="description">No boundaries, no restrictions</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hc1023.github.io/2022/04/06/Install-PyTorch-on-Mac-M1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Huang Sisi">
+      <meta itemprop="description" content="No boundaries, no restrictions">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Install PyTorch on Mac M1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-06 17:04:58 / Modified: 17:10:38" itemprop="dateCreated datePublished" datetime="2022-04-06T17:04:58+08:00">2022-04-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Mac M1 的兼容性问题还是要多多完善啊……QVQ 打工人着实不容易了。<br>要干的事情可真真真多呀，我这么愚钝哪里学得了这么多！</p>
+<p>现在常用的两种深度学习框架：Tensorflow 和 PyTorch</p>
+<ul>
+<li>Tensorflow 更偏向于工业界应用</li>
+<li>PyTorch 更适用于研究</li>
+</ul>
+<p>两者在M1上都有兼容问题，总之能折腾出来就行。</p>
+<span id="more"></span>
+
+<p>Tensorflow 与 M1 暂时不太兼容，解决方法同学提供如下，未尝试<br><a target="_blank" rel="noopener" href="https://developer.apple.com/metal/tensorflow-plugin/">https://developer.apple.com/metal/tensorflow-plugin/</a></p>
+<blockquote>
+<p>需要 osx 12 和 brew installed python 3.8（没测试3.9，但是应该可行</p>
+</blockquote>
+<p>我之前都用 colab……</p>
+<h2 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a>PyTorch</h2><p>官网上给的方法不能直接成功<br>参考 <a target="_blank" rel="noopener" href="https://betterprogramming.pub/how-to-install-pytorch-on-apple-m1-series-512b3ad9bc6">https://betterprogramming.pub/how-to-install-pytorch-on-apple-m1-series-512b3ad9bc6</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> conda create --name pytorch_m1 python=3.8</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> conda activate pytorch_m1</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> conda install -c pytorch pytorch</span></span><br></pre></td></tr></table></figure>
+<p>在 Jupyter 上测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> conda install -c conda-forge jupyter jupyterlab</span></span><br></pre></td></tr></table></figure>
+
+<p>下面这个代码同样来源于链接，用梯度下降法拟合一个函数。</p>
+<p>Mac 上面似乎是不支持 gpu 的……否则可以安装<code>cuda</code>，device 那行可以改成 <code>device = torch.device(&quot;cuda&quot;)</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line">dtype = torch.<span class="built_in">float</span></span><br><span class="line">device = torch.device(<span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create random input and output data</span></span><br><span class="line">x = torch.linspace(-math.pi, math.pi, <span class="number">2000</span>, device=device, dtype=dtype)</span><br><span class="line">y = torch.sin(x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Randomly initialize weights</span></span><br><span class="line">a = torch.randn((), device=device, dtype=dtype)</span><br><span class="line">b = torch.randn((), device=device, dtype=dtype)</span><br><span class="line">c = torch.randn((), device=device, dtype=dtype)</span><br><span class="line">d = torch.randn((), device=device, dtype=dtype)</span><br><span class="line"></span><br><span class="line">learning_rate = <span class="number">1e-6</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2000</span>):</span><br><span class="line">    <span class="comment"># Forward pass: compute predicted y</span></span><br><span class="line">    y_pred = a + b * x + c * x ** <span class="number">2</span> + d * x ** <span class="number">3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute and print loss</span></span><br><span class="line">    loss = (y_pred - y).<span class="built_in">pow</span>(<span class="number">2</span>).<span class="built_in">sum</span>().item()</span><br><span class="line">    <span class="keyword">if</span> t % <span class="number">100</span> == <span class="number">99</span>:</span><br><span class="line">        <span class="built_in">print</span>(t, loss)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Backprop to compute gradients of a, b, c, d with respect to loss</span></span><br><span class="line">        grad_y_pred = <span class="number">2.0</span> * (y_pred - y)</span><br><span class="line">        grad_a = grad_y_pred.<span class="built_in">sum</span>()</span><br><span class="line">        grad_b = (grad_y_pred * x).<span class="built_in">sum</span>()</span><br><span class="line">        grad_c = (grad_y_pred * x ** <span class="number">2</span>).<span class="built_in">sum</span>()</span><br><span class="line">        grad_d = (grad_y_pred * x ** <span class="number">3</span>).<span class="built_in">sum</span>()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Update weights using gradient descent</span></span><br><span class="line">        a -= learning_rate * grad_a</span><br><span class="line">        b -= learning_rate * grad_b</span><br><span class="line">        c -= learning_rate * grad_c</span><br><span class="line">        d -= learning_rate * grad_d</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;Result: y = <span class="subst">&#123;a.item()&#125;</span> + <span class="subst">&#123;b.item()&#125;</span> x + <span class="subst">&#123;c.item()&#125;</span> x^2 + <span class="subst">&#123;d.item()&#125;</span> x^3&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在 Activity Monitor 上检查，其确实在 Apple 上运行，非 Intel<br><img src="https://cdn.nlark.com/yuque/0/2022/png/1195581/1648212555526-70a80987-1713-4645-8396-baee282e4422.png#clientId=udd51a891-3a7f-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=126&id=uc68bc1c5&margin=%5Bobject%20Object%5D&name=image.png&originHeight=252&originWidth=1868&originalType=binary&ratio=1&rotation=0&showTitle=false&size=59511&status=done&style=none&taskId=uf56ad719-c9e0-410d-a8f5-1924fc72e4c&title=&width=934" alt="image.png"></p>
+<h2 id="torchvision"><a href="#torchvision" class="headerlink" title="torchvision"></a>torchvision</h2><p>安装 <code>torchvision</code>，注意版本，直接 <code>conda</code>安装默认的最新版本会出错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(torch.__version__)</span><br><span class="line"><span class="number">1.11</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<p>有建议安装 0.9 版本，确实是能成功安装的，但是 load MNIST dataset 会报错。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install torchvision==0.9</span><br></pre></td></tr></table></figure>
+
+<p><code>urllib.error.HTTPError: HTTP Error 502: Bad Gateway</code>for downloading MNIST dataset</p>
+<p>大概还是版本问题，当时也没查看 conda 安装的版本是什么，这里 <code>pip</code>安装 0.12 的版本是可以的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip uninstall torchvision</span><br><span class="line">pip install torchvision</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(torchvision.__version__)</span><br><span class="line"><span class="number">0.12</span><span class="number">.0</span></span><br><span class="line"><span class="comment"># try it</span></span><br><span class="line">train_dataset = torchvision.datasets.MNIST(root=<span class="string">&#x27;./data&#x27;</span>, </span><br><span class="line">                                           train=<span class="literal">True</span>, </span><br><span class="line">                                           transform=torchvision.transforms.ToTensor(),  </span><br><span class="line">                                           download=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="TensorBoard"><a href="#TensorBoard" class="headerlink" title="TensorBoard"></a>TensorBoard</h2><p>TensorBoard 提供机器学习实验所需的可视化功能和工具。它是 tensorflow 下面的工具，折腾不要紧，能安装成功就谢天谢地了。</p>
+<p><code>pip</code>直接安装 <code>tensorboard</code>报错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">error: legacy-install-failure</span><br><span class="line"></span><br><span class="line">× Encountered error <span class="keyword">while</span> trying to install package.</span><br><span class="line">╰─&gt; grpcio</span><br></pre></td></tr></table></figure>
+
+<p>意思是<code>grpcio</code>安装失败了<br>安装<code>grpcio</code>，也不能直接 <code>pip</code>安装，参考<a target="_blank" rel="noopener" href="https://github.com/grpc/grpc/issues/25082#issuecomment-778392661">https://github.com/grpc/grpc/issues/25082#issuecomment-778392661</a></p>
+<p>先设置环境变量再安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1</span><br><span class="line">export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1</span><br><span class="line"></span><br><span class="line">pip install grpcio</span><br><span class="line">pip install tensorboard</span><br></pre></td></tr></table></figure>
+
+<p>后面说<code>TensorFlow installation not found</code>是这样的，我们没有安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir=runs</span><br><span class="line"></span><br><span class="line">TensorFlow installation not found - running with reduced feature set.</span><br><span class="line">Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all</span><br><span class="line">TensorBoard 2.8.0 at http://localhost:6006/ (Press CTRL+C to quit)</span><br></pre></td></tr></table></figure>
+
+<p>写入一些东西，将原来的 <code>plt.show()</code>展示到 tensorboard上面</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.utils.tensorboard <span class="keyword">import</span> SummaryWriter</span><br><span class="line">writer = SummaryWriter(<span class="string">&#x27;runs/mnist1&#x27;</span>)</span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line">img_grid = torchvision.utils.make_grid(example_data)</span><br><span class="line">writer.add_image(<span class="string">&#x27;mnist_images&#x27;</span>, img_grid)</span><br><span class="line">writer.close()</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1195581/1649132730067-ad17b63a-58af-4f7f-ba36-ff8d0750726f.png#clientId=u40ac71ae-d35f-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=606&id=uc9a1507d&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1212&originWidth=2844&originalType=binary&ratio=1&rotation=0&showTitle=false&size=926200&status=done&style=none&taskId=u97704c56-fd97-4833-a7e4-793bc96f86a&title=&width=1422" alt="image.png"></p>
+<p>用来做一些可视化</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1195581/1649234958387-d763e943-015f-4dd5-9450-28cef91b2a37.png?x-oss-process=image/resize,w_1500,limit_0" alt="image.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/02/github-connection/" rel="prev" title="github connection timed out">
+                  <i class="fa fa-chevron-left"></i> github connection timed out
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huang Sisi</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
